@@ -11,6 +11,8 @@ use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Http\Requests\Backend\Auth\User\StoreUserRequest;
 use App\Http\Requests\Backend\Auth\User\ManageUserRequest;
 use App\Http\Requests\Backend\Auth\User\UpdateUserRequest;
+use Session;
+use Yajra\DataTables\Facades\DataTables;
 
 /**
  * Class UserController.
@@ -39,8 +41,32 @@ class UserController extends Controller
      */
     public function index(ManageUserRequest $request)
     {
-        return view('backend.auth.user.index')
-            ->withUsers($this->userRepository->getActivePaginated(25, 'id', 'asc'));
+        if ($request->ajax()) {
+            $data = $this->userRepository->getActivePaginated(25, 'id', 'asc');
+            return Datatables::of($data)
+                ->editColumn('confirmed_label', function($row){
+                    return $row->confirmed_label;
+                })
+                ->editColumn('roles_label', function($row){
+                    return $row->roles_label;
+                })
+                ->editColumn('permissions_label', function($row){
+                    return $row->permissions_label;
+                })
+                ->editColumn('social_buttons', function($row){
+                    return $row->social_buttons;
+                })
+                ->editColumn('last_updated', function($row){
+                    return $row->updated_at->diffForHumans();
+                })
+                ->addColumn('actions', function($row){
+                    return $row->action_buttons;
+                })
+                ->rawColumns(['actions','social_buttons','confirmed_label','roles_label','permissions_label'])
+                ->make(true);
+        }
+
+        return view('backend.auth.user.index');//->withUsers($this->userRepository->getActivePaginated(25, 'id', 'asc'));
     }
 
     /**

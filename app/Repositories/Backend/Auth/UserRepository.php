@@ -49,13 +49,13 @@ class UserRepository extends BaseRepository
      *
      * @return mixed
      */
-    public function getActivePaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc') : LengthAwarePaginator
+    public function getActivePaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc')
     {
-        return $this->model
-            ->with('roles', 'permissions', 'providers')
+        return User::with('roles', 'permissions', 'providers')
             ->active()
             ->orderBy($orderBy, $sort)
-            ->paginate($paged);
+            //->paginate($paged)
+            ->get();
     }
 
     /**

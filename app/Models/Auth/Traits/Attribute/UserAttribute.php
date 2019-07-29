@@ -174,7 +174,7 @@ trait UserAttribute
      */
     public function getShowButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.user.show', $this).'" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.view').'" class="btn btn-info"><i class="fas fa-eye"></i></a>';
+        return '<a href="'.route('admin.auth.user.show', $this).'" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.view').'" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>';
     }
 
     /**
@@ -182,7 +182,7 @@ trait UserAttribute
      */
     public function getEditButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.user.edit', $this).'" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.edit').'" class="btn btn-primary"><i class="fas fa-edit"></i></a>';
+        return '<a href="'.route('admin.auth.user.edit', $this).'" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.edit').'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>';
     }
 
     /**
@@ -254,7 +254,7 @@ trait UserAttribute
      */
     public function getDeletePermanentlyButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.user.delete-permanently', $this).'" name="confirm_item" class="btn btn-danger"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.delete_permanently').'"></i></a> ';
+        return '<a href="'.route('admin.auth.user.delete-permanently', $this).'" name="confirm_item" class="btn btn-danger btn-sm"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.delete_permanently').'"></i></a> ';
     }
 
     /**
@@ -262,7 +262,7 @@ trait UserAttribute
      */
     public function getRestoreButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.user.restore', $this).'" name="confirm_item" class="btn btn-info"><i class="fas fa-sync" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.restore_user').'"></i></a> ';
+        return '<a href="'.route('admin.auth.user.restore', $this).'" name="confirm_item" class="btn btn-info btn-sm"><i class="fas fa-sync" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.restore_user').'"></i></a> ';
     }
 
     /**
@@ -272,30 +272,29 @@ trait UserAttribute
     {
         if ($this->trashed()) {
             return '
-				<div class="btn-group" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
+				<div class="btn-group btn-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
 				  '.$this->restore_button.'
 				  '.$this->delete_permanently_button.'
 				</div>';
         }
 
-        return '
-    	<div class="btn-group" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
+        return '<div class="btn-group btn-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
 		  '.$this->show_button.'
 		  '.$this->edit_button.'
-
-		  <div class="btn-group btn-group-sm" role="group">
-			<button id="userActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  '.__('labels.general.more').'
-			</button>
-			<div class="dropdown-menu" aria-labelledby="userActions">
-			  '.$this->clear_session_button.'
-			  '.$this->login_as_button.'
-			  '.$this->change_password_button.'
-			  '.$this->status_button.'
-			  '.$this->confirmed_button.'
-			  '.$this->delete_button.'
-			</div>
-		  </div>
 		</div>';
+
+        //		  <div class="btn-group btn-group-sm" role="group">
+//			<button id="userActions" type="button" class="btn btn-secondary dropdown-toggle btn-xs"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+//			  '.__('labels.general.more').'
+//			</button>
+//			<div class="dropdown-menu" aria-labelledby="userActions">
+//			  '.$this->clear_session_button.'
+//			  '.$this->login_as_button.'
+//			  '.$this->change_password_button.'
+//			  '.$this->status_button.'
+//			  '.$this->confirmed_button.'
+//			  '.$this->delete_button.'
+//			</div>
+//		  </div>
     }
 }
