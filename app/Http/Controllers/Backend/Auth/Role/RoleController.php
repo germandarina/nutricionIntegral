@@ -10,7 +10,8 @@ use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
-
+use Session;
+use Yajra\DataTables\Facades\DataTables;
 /**
  * Class RoleController.
  */
@@ -43,11 +44,35 @@ class RoleController extends Controller
      */
     public function index(ManageRoleRequest $request)
     {
-        return view('backend.auth.role.index')
-            ->withRoles($this->roleRepository
-            ->with('users', 'permissions')
-            ->orderBy('id')
-            ->paginate());
+        if ($request->ajax()) {
+            $data = $this->roleRepository->with('users', 'permissions')->orderBy('id')->get();
+            return Datatables::of($data)
+                ->addColumn('permissions', function($row){
+                    if ($row->id == 1) {
+                        return 'Todos';
+                    } else {
+                        if ($row->permissions->count()) {
+                            $stringRoles = "";
+                            foreach ($row->permissions as $permission) {
+                                $stringRoles .= $permission->name . ' / ';
+                            }
+                            return trim($stringRoles, ' / ');
+                        }else{
+                            return 'Ninguno';
+                        }
+                    }
+                })
+                ->editColumn('numbers_of_users', function($row) {
+                    return $row->users->count();
+                })
+                ->addColumn('actions', function($row){
+                    return $row->action_buttons;
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+        return view('backend.auth.role.index');
     }
 
     /**

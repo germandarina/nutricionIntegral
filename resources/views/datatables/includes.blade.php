@@ -3,7 +3,7 @@
 {{ script("datatables/pdfmake.min.js") }}
 {{ script("datatables/vfs_fonts.js") }}
 {{ script("datatables/popper.min.js") }}
-{{ script("datatables/datatables.min.js") }}
+{{ script("datatables/datatables.js") }}
 {{ script("datatables/tooltip.min.js") }}
 {{ script("datatables/dataTables.buttons.min.js") }}
 {{ script("datatables/jszip.min.js") }}
@@ -13,15 +13,13 @@
 <script>
     $(function () {
         setTimeout(function () {
-            var dt_buttons = $(".dt-buttons");
             $(".dt-buttons").addClass("btn-sm");
             $(".dt-buttons").children().addClass("btn-sm");
             $(".dt-buttons").children().removeClass("btn-secondary").addClass("btn-dark");
             $("#DataTables_Table_0_wrapper").children().css("font-size","0.75rem");
         },100);
-
-
     });
+
     $.extend(true, $.fn.dataTable.defaults, {
         dom: 'Bfrtip',
         buttons: [

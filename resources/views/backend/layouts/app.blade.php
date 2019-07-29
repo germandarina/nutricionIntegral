@@ -21,7 +21,7 @@
     {{ style(mix('css/backend.css')) }}
     {{ style('lobibox/css/lobibox.css') }}
     {{ style('select2/select2.min.css') }}
-{{--    {{ style('kartik-fileinput/fileinput.min.css') }}--}}
+    {{ style('kartik-fileinput/fileinput.min.css') }}
 
     @stack('after-styles')
     <script>
