@@ -37,9 +37,10 @@ trait RoleAttribute
             return 'N/A';
         }
 
+        //'.$this->delete_button.'
         return '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
 			  '.$this->edit_button.'
-			  '.$this->delete_button.'
+			  
 			</div>';
     }
 }

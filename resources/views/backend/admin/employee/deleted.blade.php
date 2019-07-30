@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Empleados
+                    Administración de Empleados - Empleados Eliminados
                 </h5>
             </div><!--col-->
 
@@ -46,7 +46,7 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
-                ajax: "{{ route('admin.employee.index') }}",
+                ajax: "{{ route('admin.employee.deleted') }}",
                 columns: [
                     {data: 'first_name', name: 'first_name'},
                     {data: 'last_name', name: 'last_name'},

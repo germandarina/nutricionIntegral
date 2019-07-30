@@ -30,6 +30,7 @@ return [
         'show' => 'Mostrar',
         'toggle_navigation' => 'Abrir/Cerrar menú de navegación',
         'more' => 'Mas',
+        'create_new'=>'Crear',
     ],
 
     'backend' => [
