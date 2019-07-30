@@ -89,8 +89,8 @@ class RoleController extends Controller
     /**
      * @param StoreRoleRequest $request
      *
-     * @throws \App\Exceptions\GeneralException
      * @return mixed
+     *@throws \App\Exceptions\GeneralException
      */
     public function store(StoreRoleRequest $request)
     {
@@ -121,8 +121,8 @@ class RoleController extends Controller
      * @param UpdateRoleRequest $request
      * @param Role              $role
      *
-     * @throws \App\Exceptions\GeneralException
      * @return mixed
+     *@throws \App\Exceptions\GeneralException
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
@@ -135,8 +135,8 @@ class RoleController extends Controller
      * @param ManageRoleRequest $request
      * @param Role              $role
      *
-     * @throws \Exception
      * @return mixed
+     *@throws \Exception
      */
     public function destroy(ManageRoleRequest $request, Role $role)
     {
