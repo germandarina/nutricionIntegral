@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\Auth\AuthHelper;
 
 /**
  * Class HomeController.
@@ -14,6 +15,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('frontend.index');
+        if (auth()->guest()){
+            return redirect('/login');
+        } else {
+            return redirect('/admin/dashboard');
+        }
     }
 }
