@@ -51,7 +51,7 @@
                         @yield('page-header')
                     </div><!--content-header-->
 
-                    @include('includes.partials.messages')
+{{--                    @include('includes.partials.messages')--}}
                     @yield('content')
                 </div><!--animated-->
             </div><!--container-fluid-->
@@ -84,10 +84,12 @@
         });
 
         var notifyOptions = {
-            'iconSource': "fontAwesome",
-            'soundPath': "{{ asset('/lobibox/sounds/').'/' }}",
+            'sound': false,
+            'icon': false,
+            'iconSource': false,
             'position': 'top right',
-            'size': 'normal'
+            'size': 'normal',
+            'iconClass': false,
         };
 
         Lobibox.notify.DEFAULTS = $.extend({}, Lobibox.notify.DEFAULTS, notifyOptions);

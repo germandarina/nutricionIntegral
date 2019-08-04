@@ -281,20 +281,33 @@ trait UserAttribute
         return '<div class="btn-group btn-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
 		  '.$this->show_button.'
 		  '.$this->edit_button.'
-		</div>';
+		</div>
+		<div class="btn-group btn-group-sm" role="group">
+			<button id="userActions" type="button" class="btn btn-secondary dropdown-toggle btn-xs"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			  '.__('labels.general.more').'
+			</button>
+			<div class="dropdown-menu" aria-labelledby="userActions">
+			  '.$this->change_password_button.'
+			  '.$this->status_button.'
+			  '.$this->confirmed_button.'
+			  '.$this->delete_button.'
+			</div>
+		  </div>
+		';
 
-        //		  <div class="btn-group btn-group-sm" role="group">
+//        <div class="btn-group btn-group-sm" role="group">
 //			<button id="userActions" type="button" class="btn btn-secondary dropdown-toggle btn-xs"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-//			  '.__('labels.general.more').'
-//			</button>
+//        '.__('labels.general.more').'
+//    </button>
 //			<div class="dropdown-menu" aria-labelledby="userActions">
-//			  '.$this->clear_session_button.'
+//        '.$this->clear_session_button.'
 //			  '.$this->login_as_button.'
 //			  '.$this->change_password_button.'
 //			  '.$this->status_button.'
 //			  '.$this->confirmed_button.'
 //			  '.$this->delete_button.'
-//			</div>
+//              </div>
 //		  </div>
+
     }
 }

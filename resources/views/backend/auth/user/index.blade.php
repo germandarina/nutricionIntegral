@@ -23,7 +23,6 @@
 
         <div class="row mt-4">
             <div class="col">
-
                 <div class="table-responsive" >
                     <table class="table data-table">
                         <thead>
@@ -64,7 +63,7 @@
                     {data: 'permissions_label', name: 'permissions_label'},
                     {data: 'social_buttons', name: 'social_buttons'},
                     {data: 'last_updated', name: 'last_updated'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false, width: "20%"},
                 ]
             });
         });

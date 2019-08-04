@@ -63,15 +63,15 @@ class UserRepository extends BaseRepository
      * @param string $orderBy
      * @param string $sort
      *
-     * @return LengthAwarePaginator
+     * @return mixed
      */
-    public function getInactivePaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc') : LengthAwarePaginator
+    public function getInactivePaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc')
     {
         return $this->model
             ->with('roles', 'permissions', 'providers')
             ->active(false)
-            ->orderBy($orderBy, $sort)
-            ->paginate($paged);
+            ->orderBy($orderBy, $sort);
+            //->paginate($paged);
     }
 
     /**
@@ -81,13 +81,13 @@ class UserRepository extends BaseRepository
      *
      * @return LengthAwarePaginator
      */
-    public function getDeletedPaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc') : LengthAwarePaginator
+    public function getDeletedPaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc')
     {
         return $this->model
             ->with('roles', 'permissions', 'providers')
             ->onlyTrashed()
-            ->orderBy($orderBy, $sort)
-            ->paginate($paged);
+            ->orderBy($orderBy, $sort);
+            //->paginate($paged);
     }
 
     /**

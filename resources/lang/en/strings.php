@@ -30,9 +30,9 @@ return [
 
         'general' => [
             'all_rights_reserved' => 'All Rights Reserved.',
-            'are_you_sure' => 'Are you sure you want to do this?',
+            'are_you_sure' => 'Está seguro de realizar esta acción?',
             'boilerplate_link' => 'Laravel 5 Boilerplate',
-            'continue' => 'Continue',
+            'continue' => 'Continuar',
             'member_since' => 'Member since',
             'minutes' => ' minutes',
             'search_placeholder' => 'Search...',

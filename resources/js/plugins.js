@@ -48,9 +48,9 @@ $(function () {
 
         const form = this;
         const link = $('a[data-method="delete"]');
-        const cancel = (link.attr('data-trans-button-cancel')) ? link.attr('data-trans-button-cancel') : 'Cancel';
-        const confirm = (link.attr('data-trans-button-confirm')) ? link.attr('data-trans-button-confirm') : 'Yes, delete';
-        const title = (link.attr('data-trans-title')) ? link.attr('data-trans-title') : 'Are you sure you want to delete this item?';
+        const cancel = (link.attr('data-trans-button-cancel')) ? link.attr('data-trans-button-cancel') : 'Cancelar';
+        const confirm = (link.attr('data-trans-button-confirm')) ? link.attr('data-trans-button-confirm') : 'Si, eliminar';
+        const title = (link.attr('data-trans-title')) ? link.attr('data-trans-title') : 'Está seguro de eliminar este item?';
 
         Swal.fire({
             title: title,
@@ -68,9 +68,9 @@ $(function () {
         e.preventDefault();
 
         const link = $(this);
-        const title = (link.attr('data-trans-title')) ? link.attr('data-trans-title') : 'Are you sure you want to do this?';
-        const cancel = (link.attr('data-trans-button-cancel')) ? link.attr('data-trans-button-cancel') : 'Cancel';
-        const confirm = (link.attr('data-trans-button-confirm')) ? link.attr('data-trans-button-confirm') : 'Continue';
+        const title = (link.attr('data-trans-title')) ? link.attr('data-trans-title') : 'Está seguro de realizar esta acción?';
+        const cancel = (link.attr('data-trans-button-cancel')) ? link.attr('data-trans-button-cancel') : 'Cancelar';
+        const confirm = (link.attr('data-trans-button-confirm')) ? link.attr('data-trans-button-confirm') : 'Continuar';
 
         Swal.fire({
             title: title,

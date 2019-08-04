@@ -33,7 +33,7 @@ Route::group([
             Route::get('/', [UserController::class, 'show'])->name('user.show');
             Route::get('edit', [UserController::class, 'edit'])->name('user.edit');
             Route::patch('/', [UserController::class, 'update'])->name('user.update');
-            Route::delete('/', [UserController::class, 'destroy'])->name('user.destroy');
+            Route::get('/destroy', [UserController::class, 'destroy'])->name('user.destroy');
 
             // Account
             Route::get('account/confirm/resend', [UserConfirmationController::class, 'sendConfirmationEmail'])->name('user.account.confirm.resend');
