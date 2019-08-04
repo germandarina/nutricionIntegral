@@ -150,4 +150,66 @@ class RoleController extends Controller
 
         return redirect()->route('admin.auth.role.index')->withFlashSuccess(__('alerts.backend.roles.deleted'));
     }
+
+    public function getDeleted(ManageRoleRequest $request)
+    {
+        if ($request->ajax()) {
+            $data = $this->roleRepository->getDeletedPaginated(25, 'id', 'asc');
+            return Datatables::of($data)
+                ->addColumn('permissions', function($row){
+                    if ($row->id == 1) {
+                        return 'Todos';
+                    } else {
+                        if ($row->permissions->count()) {
+                            $stringRoles = "";
+                            foreach ($row->permissions as $permission) {
+                                $stringRoles .= $permission->name . ' / ';
+                            }
+                            return trim($stringRoles, ' / ');
+                        }else{
+                            return 'Ninguno';
+                        }
+                    }
+                })
+                ->editColumn('numbers_of_users', function($row) {
+                    return $row->users->count();
+                })
+                ->addColumn('actions', function($row){
+                    return $row->action_buttons;
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+        return view('backend.auth.role.deleted');
+    }
+
+    /**
+     * @param ManageRoleRequest $request
+     * @param Role              $deletedRole
+     *
+     * @throws \App\Exceptions\GeneralException
+     * @throws \Throwable
+     * @return mixed
+     */
+    public function delete(ManageRoleRequest $request, Role $deletedRole)
+    {
+        $this->roleRepository->forceDelete($deletedRole);
+        Session::flash('success',__('alerts.backend.users.deleted_permanently'));
+        return redirect()->route('admin.auth.role.deleted');//->withFlashSuccess(__('alerts.backend.users.deleted_permanently'));
+    }
+
+    /**
+     * @param ManageRoleRequest $request
+     * @param Role              $deletedRole
+     *
+     * @throws \App\Exceptions\GeneralException
+     * @return mixed
+     */
+    public function restore(ManageRoleRequest $request, Role $deletedRole)
+    {
+        $this->roleRepository->restore($deletedRole);
+        Session::flash('success',__('alerts.backend.users.restored'));
+        return redirect()->route('admin.auth.role.index');//->withFlashSuccess(__('alerts.backend.users.restored'));
+    }
 }

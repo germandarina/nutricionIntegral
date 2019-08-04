@@ -63,7 +63,7 @@
                     {data: 'permissions_label', name: 'permissions_label'},
                     {data: 'social_buttons', name: 'social_buttons'},
                     {data: 'last_updated', name: 'last_updated'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false, width: "20%"},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false, width: "15%"},
                 ]
             });
         });

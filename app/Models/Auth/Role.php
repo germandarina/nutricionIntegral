@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use App\Models\Auth\Traits\Method\RoleMethod;
 use Spatie\Permission\Models\Role as SpatieRole;
@@ -15,7 +16,8 @@ class Role extends SpatieRole implements AuditableContract
 {
     use Auditable,
         RoleAttribute,
-        RoleMethod;
+        RoleMethod,
+        SoftDeletes;
 
     /**
      * Attributes to exclude from the Audit.

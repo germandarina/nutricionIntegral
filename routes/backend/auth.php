@@ -70,10 +70,16 @@ Route::group([
         Route::get('role/create', [RoleController::class, 'create'])->name('role.create');
         Route::post('role', [RoleController::class, 'store'])->name('role.store');
 
+        Route::get('role/deleted', [RoleController::class, 'getDeleted'])->name('role.deleted');
+
         Route::group(['prefix' => 'role/{role}'], function () {
             Route::get('edit', [RoleController::class, 'edit'])->name('role.edit');
             Route::patch('/', [RoleController::class, 'update'])->name('role.update');
-            Route::delete('/', [RoleController::class, 'destroy'])->name('role.destroy');
+            Route::get('/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
+
+            // Deleted
+            Route::get('/delete', [RoleController::class, 'delete'])->name('role.delete-permanently');
+            Route::get('/restore', [RoleController::class, 'restore'])->name('role.restore');
         });
     });
 });

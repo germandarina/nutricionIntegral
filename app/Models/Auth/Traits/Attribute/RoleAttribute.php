@@ -14,6 +14,17 @@ trait RoleAttribute
     {
         return '<a href="'.route('admin.auth.role.edit', $this).'" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.edit').'"></i></a>';
     }
+    /**
+     * @return string
+     */
+    public function getConfirmedButtonAttribute()
+    {
+        if (! config('access.users.requires_approval')) {
+            return '<a href="'.route('admin.auth.user.account.confirm.resend', $this).'" class="dropdown-item">'.__('buttons.backend.access.users.resend_email').'</a> ';
+        }
+
+        return '';
+    }
 
     /**
      * @return string
@@ -31,16 +42,40 @@ trait RoleAttribute
     /**
      * @return string
      */
+    public function getDeletePermanentlyButtonAttribute()
+    {
+        return '<a href="'.route('admin.auth.role.delete-permanently', $this).'" name="confirm_item" class="btn btn-danger btn-sm"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.delete_permanently').'"></i></a> ';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRestoreButtonAttribute()
+    {
+        return '<a href="'.route('admin.auth.role.restore', $this).'" name="confirm_item" class="btn btn-info btn-sm"><i class="fas fa-sync" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.restore_user').'"></i></a> ';
+    }
+
+    /**
+     * @return string
+     */
     public function getActionButtonsAttribute()
     {
         if ($this->id == 1) {
             return 'N/A';
         }
 
-        //'.$this->delete_button.'
-        return '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
+        if ($this->trashed()) {
+            return "N/A";
+//                '
+//				<div class="btn-group btn-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
+//				  '.$this->restore_button.'
+//				  '.$this->delete_permanently_button.'
+//				</div>';
+        }else{
+            return '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
 			  '.$this->edit_button.'
-			  
+              '.$this->delete_button.' 			  
 			</div>';
+        }
     }
 }

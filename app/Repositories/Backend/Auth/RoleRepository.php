@@ -8,6 +8,7 @@ use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
 use App\Events\Backend\Auth\Role\RoleCreated;
 use App\Events\Backend\Auth\Role\RoleUpdated;
+use Session;
 
 /**
  * Class RoleRepository.
@@ -91,16 +92,24 @@ class RoleRepository extends BaseRepository
         }
 
         return DB::transaction(function () use ($role, $data) {
-            if ($role->update([
-                'name' => strtolower($data['name']),
-            ])) {
+            $role->name = strtolower($data['name']);
+            if($role->save()){
                 $role->syncPermissions($data['permissions']);
 
                 event(new RoleUpdated($role));
 
                 return $role;
             }
-
+//            if ($role->update([
+//                'name' => strtolower($data['name']),
+//            ])) {
+//                $role->syncPermissions($data['permissions']);
+//
+//                event(new RoleUpdated($role));
+//
+//                return $role;
+//            }
+            Session::flash('error',__('exceptions.backend.access.users.restore_error'));
             throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
         });
     }
@@ -115,5 +124,58 @@ class RoleRepository extends BaseRepository
         return $this->model
             ->where('name', strtolower($name))
             ->count() > 0;
+    }
+
+    public function getDeletedPaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc')
+    {
+        return $this->model
+//            ->with('permissions')
+            ->onlyTrashed()
+            ->orderBy($orderBy, $sort);
+        //->paginate($paged);
+    }
+
+
+    /**
+     * @param Role $role
+     *
+     * @throws GeneralException
+     * @throws \Exception
+     * @throws \Throwable
+     * @return Role
+     */
+    public function forceDelete(Role $role) : Role
+    {
+        if ($role->deleted_at === null) {
+            throw new GeneralException(__('exceptions.backend.access.users.delete_first'));
+        }
+
+        return DB::transaction(function () use ($role) {
+            if ($role->forceDelete()) {
+                return $role;
+            }
+
+            throw new GeneralException(__('exceptions.backend.access.users.delete_error'));
+        });
+    }
+
+    /**
+     * @param Role $role
+     *
+     * @throws GeneralException
+     * @return Role
+     */
+    public function restore(Role $role) : Role
+    {
+        if ($role->deleted_at === null) {
+            Session::flash('error',__('exceptions.backend.access.users.cant_restore'));
+            dd($role);
+            throw new GeneralException(__('exceptions.backend.access.users.cant_restore'));
+        }
+        if ($role->restore()) {
+            return $role;
+        }
+        Session::flash('error',__('exceptions.backend.access.users.restore_error'));
+        throw new GeneralException(__('exceptions.backend.access.users.restore_error'));
     }
 }

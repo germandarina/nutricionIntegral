@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    @lang('labels.backend.access.roles.management')
+                    @lang('labels.backend.access.roles.management') <small class="text-muted">{{ __('labels.backend.access.roles.active') }}</small>
                 </h5>
             </div><!--col-->
 

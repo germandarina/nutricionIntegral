@@ -39,7 +39,8 @@ return [
                 'create' => 'Crear Rol',
                 'edit' => 'Modificar Rol',
                 'management' => 'Administración de Roles',
-
+                'deleted' =>'Roles Eliminados',
+                'active' =>'Roles Activos',
                 'table' => [
                     'number_of_users' => 'Número de Usuarios',
                     'permissions' => 'Permisos',

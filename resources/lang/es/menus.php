@@ -22,6 +22,7 @@ return [
                 'edit' => 'Modificar Rol',
                 'management' => 'Administración de Roles',
                 'main' => 'Roles',
+                'deleted' =>'Roles Eliminados',
             ],
 
             'users' => [
