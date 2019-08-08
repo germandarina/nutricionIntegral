@@ -18,6 +18,7 @@ use App\Events\Backend\Auth\User\UserPasswordChanged;
 use App\Notifications\Backend\Auth\UserAccountActive;
 use App\Events\Backend\Auth\User\UserPermanentlyDeleted;
 use App\Notifications\Frontend\Auth\UserNeedsConfirmation;
+use Session;
 
 /**
  * Class UserRepository.
@@ -118,6 +119,7 @@ class UserRepository extends BaseRepository
             if ($user) {
                 // User must have at least one role
                 if (! count($data['roles'])) {
+                    Session::flash('error',__('exceptions.backend.access.users.role_needed_create'));
                     throw new GeneralException(__('exceptions.backend.access.users.role_needed_create'));
                 }
 
@@ -134,7 +136,7 @@ class UserRepository extends BaseRepository
 
                 return $user;
             }
-
+            Session::flash('error',__('exceptions.backend.access.users.create_error'));
             throw new GeneralException(__('exceptions.backend.access.users.create_error'));
         });
     }
@@ -171,6 +173,7 @@ class UserRepository extends BaseRepository
 
                 return $user;
             }
+            Session::flash('error',__('exceptions.backend.access.users.update_error'));
 
             throw new GeneralException(__('exceptions.backend.access.users.update_error'));
         });
@@ -190,6 +193,7 @@ class UserRepository extends BaseRepository
 
             return $user;
         }
+        Session::flash('error',__('exceptions.backend.access.users.update_password_error'));
 
         throw new GeneralException(__('exceptions.backend.access.users.update_password_error'));
     }
@@ -204,6 +208,8 @@ class UserRepository extends BaseRepository
     public function mark(User $user, $status) : User
     {
         if ($status === 0 && auth()->id() === $user->id) {
+            Session::flash('error',__('exceptions.backend.access.users.cant_deactivate_self'));
+
             throw new GeneralException(__('exceptions.backend.access.users.cant_deactivate_self'));
         }
 
@@ -221,6 +227,7 @@ class UserRepository extends BaseRepository
         if ($user->save()) {
             return $user;
         }
+        Session::flash('error',__('exceptions.backend.access.users.mark_error'));
 
         throw new GeneralException(__('exceptions.backend.access.users.mark_error'));
     }
@@ -234,6 +241,8 @@ class UserRepository extends BaseRepository
     public function confirm(User $user) : User
     {
         if ($user->confirmed) {
+            Session::flash('error',__('exceptions.backend.access.users.already_confirmed'));
+
             throw new GeneralException(__('exceptions.backend.access.users.already_confirmed'));
         }
 
@@ -250,6 +259,7 @@ class UserRepository extends BaseRepository
 
             return $user;
         }
+        Session::flash('error',__('exceptions.backend.access.users.cant_confirm'));
 
         throw new GeneralException(__('exceptions.backend.access.users.cant_confirm'));
     }
@@ -263,16 +273,19 @@ class UserRepository extends BaseRepository
     public function unconfirm(User $user) : User
     {
         if (! $user->confirmed) {
+            Session::flash('error',__('exceptions.backend.access.users.not_confirmed'));
             throw new GeneralException(__('exceptions.backend.access.users.not_confirmed'));
         }
 
         if ($user->id === 1) {
             // Cant un-confirm admin
+            Session::flash('error',__('exceptions.backend.access.users.cant_unconfirm_admin'));
             throw new GeneralException(__('exceptions.backend.access.users.cant_unconfirm_admin'));
         }
 
         if ($user->id === auth()->id()) {
             // Cant un-confirm self
+            Session::flash('error',__('exceptions.backend.access.users.cant_unconfirm_self'));
             throw new GeneralException(__('exceptions.backend.access.users.cant_unconfirm_self'));
         }
 
@@ -284,7 +297,7 @@ class UserRepository extends BaseRepository
 
             return $user;
         }
-
+        Session::flash('error',__('exceptions.backend.access.users.cant_unconfirm'));
         throw new GeneralException(__('exceptions.backend.access.users.cant_unconfirm'));
     }
 
@@ -299,6 +312,7 @@ class UserRepository extends BaseRepository
     public function forceDelete(User $user) : User
     {
         if ($user->deleted_at === null) {
+            Session::flash('error',__('exceptions.backend.access.users.delete_first'));
             throw new GeneralException(__('exceptions.backend.access.users.delete_first'));
         }
 
@@ -312,7 +326,7 @@ class UserRepository extends BaseRepository
 
                 return $user;
             }
-
+            Session::flash('error',__('exceptions.backend.access.users.delete_error'));
             throw new GeneralException(__('exceptions.backend.access.users.delete_error'));
         });
     }
@@ -326,6 +340,7 @@ class UserRepository extends BaseRepository
     public function restore(User $user) : User
     {
         if ($user->deleted_at === null) {
+            Session::flash('error',__('exceptions.backend.access.users.cant_restore'));
             throw new GeneralException(__('exceptions.backend.access.users.cant_restore'));
         }
 
@@ -334,7 +349,7 @@ class UserRepository extends BaseRepository
 
             return $user;
         }
-
+        Session::flash('error',__('exceptions.backend.access.users.restore_error'));
         throw new GeneralException(__('exceptions.backend.access.users.restore_error'));
     }
 
@@ -348,6 +363,7 @@ class UserRepository extends BaseRepository
     {
         // Figure out if email is not the same and check to see if email exists
         if ($user->email !== $email && $this->model->where('email', '=', $email)->first()) {
+            Session::flash('error',trans('exceptions.backend.access.users.email_error'));
             throw new GeneralException(trans('exceptions.backend.access.users.email_error'));
         }
     }

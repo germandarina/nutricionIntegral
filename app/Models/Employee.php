@@ -4,6 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Employee
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Employee newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Employee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Employee query()
+ * @mixin \Eloquent
+ */
 class Employee extends BaseModel
 {
     public $table = 'employees';

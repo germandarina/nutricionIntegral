@@ -5,6 +5,14 @@ namespace App\Models;
 use Faker\Provider\Base;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\SocialWork
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialWork newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialWork newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialWork query()
+ * @mixin \Eloquent
+ */
 class SocialWork extends BaseModel
 {
 

@@ -8,6 +8,12 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
 /**
  * Class SocialAccount.
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount query()
+ * @mixin \Eloquent
  */
 class SocialAccount extends Model implements AuditableContract
 {

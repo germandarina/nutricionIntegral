@@ -34,6 +34,7 @@ class RoleRepository extends BaseRepository
     {
         // Make sure it doesn't already exist
         if ($this->roleExists($data['name'])) {
+            Session::flash('error','Ya existe un rol con el nombre'.$data['name']);
             throw new GeneralException('A role already exists with the name '.e($data['name']));
         }
 
@@ -43,6 +44,7 @@ class RoleRepository extends BaseRepository
 
         //See if the role must contain a permission as per config
         if (config('access.roles.role_must_contain_permission') && \count($data['permissions']) === 0) {
+            Session::flash('error',__('exceptions.backend.access.roles.needs_permission'));
             throw new GeneralException(__('exceptions.backend.access.roles.needs_permission'));
         }
 
@@ -56,7 +58,7 @@ class RoleRepository extends BaseRepository
 
                 return $role;
             }
-
+            Session::flash('error',trans('exceptions.backend.access.roles.create_error'));
             throw new GeneralException(trans('exceptions.backend.access.roles.create_error'));
         });
     }
@@ -72,12 +74,14 @@ class RoleRepository extends BaseRepository
     public function update(Role $role, array $data)
     {
         if ($role->isAdmin()) {
+            Session::flash('error','No puede editar un rol administrador');
             throw new GeneralException('You can not edit the administrator role.');
         }
 
         // If the name is changing make sure it doesn't already exist
         if ($role->name !== strtolower($data['name'])) {
             if ($this->roleExists($data['name'])) {
+                Session::flash('error','Ya existe un rol con el nombre'.$data['name']);
                 throw new GeneralException('A role already exists with the name '.$data['name']);
             }
         }
@@ -88,6 +92,7 @@ class RoleRepository extends BaseRepository
 
         //See if the role must contain a permission as per config
         if (config('access.roles.role_must_contain_permission') && \count($data['permissions']) === 0) {
+            Session::flash('error',trans('exceptions.backend.access.roles.needs_permission'));
             throw new GeneralException(__('exceptions.backend.access.roles.needs_permission'));
         }
 
@@ -109,7 +114,7 @@ class RoleRepository extends BaseRepository
 //
 //                return $role;
 //            }
-            Session::flash('error',__('exceptions.backend.access.users.restore_error'));
+            Session::flash('error',trans('exceptions.backend.access.roles.update_error'));
             throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
         });
     }
@@ -147,6 +152,7 @@ class RoleRepository extends BaseRepository
     public function forceDelete(Role $role) : Role
     {
         if ($role->deleted_at === null) {
+            Session::flash('error',__('exceptions.backend.access.roles.cant_restore'));
             throw new GeneralException(__('exceptions.backend.access.users.delete_first'));
         }
 
@@ -154,8 +160,8 @@ class RoleRepository extends BaseRepository
             if ($role->forceDelete()) {
                 return $role;
             }
-
-            throw new GeneralException(__('exceptions.backend.access.users.delete_error'));
+            Session::flash('error',__('exceptions.backend.access.roles.cant_restore'));
+            throw new GeneralException(__('exceptions.backend.access.roles.delete_error'));
         });
     }
 
@@ -168,14 +174,13 @@ class RoleRepository extends BaseRepository
     public function restore(Role $role) : Role
     {
         if ($role->deleted_at === null) {
-            Session::flash('error',__('exceptions.backend.access.users.cant_restore'));
-            dd($role);
+            Session::flash('error',__('exceptions.backend.access.roles.cant_restore'));
             throw new GeneralException(__('exceptions.backend.access.users.cant_restore'));
         }
         if ($role->restore()) {
             return $role;
         }
-        Session::flash('error',__('exceptions.backend.access.users.restore_error'));
-        throw new GeneralException(__('exceptions.backend.access.users.restore_error'));
+        Session::flash('error',__('exceptions.backend.access.roles.restore_error'));
+        throw new GeneralException(__('exceptions.backend.access.roles.restore_error'));
     }
 }

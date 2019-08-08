@@ -13,6 +13,23 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableInterface;
 
 /**
  * Class User.
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\BaseUser newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\BaseUser newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\BaseUser onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\BaseUser permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\BaseUser query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\BaseUser role($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\BaseUser uuid($uuid)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\BaseUser withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\BaseUser withoutTrashed()
+ * @mixin \Eloquent
  */
 class BaseUser extends Authenticatable implements AuditableInterface
 {

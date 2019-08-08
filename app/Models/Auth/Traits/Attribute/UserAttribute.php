@@ -240,6 +240,7 @@ trait UserAttribute
         if ($this->id != auth()->id() && $this->id != 1) {
             return '<a href="'.route('admin.auth.user.destroy', $this).'"
                  data-method="delete"
+                 name="confirm_item"
                  data-trans-button-cancel="'.__('buttons.general.cancel').'"
                  data-trans-button-confirm="'.__('buttons.general.crud.delete').'"
                  data-trans-title="'.__('strings.backend.general.are_you_sure').'"

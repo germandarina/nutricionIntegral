@@ -95,8 +95,8 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request)
     {
         $this->roleRepository->create($request->only('name', 'associated-permissions', 'permissions', 'sort'));
-
-        return redirect()->route('admin.auth.role.index')->withFlashSuccess(__('alerts.backend.roles.created'));
+        Session::flash('success',__('alerts.backend.roles.created'));
+        return redirect()->route('admin.auth.role.index');
     }
 
     /**
@@ -127,8 +127,8 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role)
     {
         $this->roleRepository->update($role, $request->only('name', 'permissions'));
-
-        return redirect()->route('admin.auth.role.index')->withFlashSuccess(__('alerts.backend.roles.updated'));
+        Session::flash('success',__('alerts.backend.roles.updated'));
+        return redirect()->route('admin.auth.role.index');
     }
 
     /**
@@ -147,8 +147,8 @@ class RoleController extends Controller
         $this->roleRepository->deleteById($role->id);
 
         event(new RoleDeleted($role));
-
-        return redirect()->route('admin.auth.role.index')->withFlashSuccess(__('alerts.backend.roles.deleted'));
+        Session::flash('success',__('alerts.backend.roles.deleted'));
+        return redirect()->route('admin.auth.role.index');
     }
 
     public function getDeleted(ManageRoleRequest $request)

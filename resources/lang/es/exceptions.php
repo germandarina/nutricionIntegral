@@ -23,6 +23,8 @@ return [
                 'needs_permission' => 'Debe seleccionar al menos un permiso para cada Rol.',
                 'not_found' => 'El Rol requerido no existe.',
                 'update_error' => 'Hubo un problema al modificar el Rol. Inténtelo de nuevo.',
+                'cant_restore' => 'Este Role no fue eliminado, por lo que no se puede restaurar.',
+                'restore_error' => 'Hubo un problema al restaurar el Role. Inténtelo de nuevo.',
             ],
 
             'users' => [
