@@ -33,6 +33,7 @@ trait UserAttribute
      */
     public function getStatusLabelAttribute()
     {
+
         if ($this->isActive()) {
             return "<span class='badge badge-success'>".__('labels.general.active').'</span>';
         }

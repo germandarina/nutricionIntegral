@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Empleados
+                    Administración de Empleados <small class="text-muted">Empleados Activos</small>
                 </h5>
             </div><!--col-->
 
@@ -36,6 +36,7 @@
         </div><!--row-->
     </div><!--card-body-->
 </div><!--card-->
+
 @endsection
 
 @push('after-scripts')

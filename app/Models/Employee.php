@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\Method\EmployeeMethod;
+use App\Models\Traits\Relationship\EmployeeRelationship;
 
 /**
  * App\Models\Employee
@@ -14,6 +15,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Employee extends BaseModel
 {
+    use EmployeeMethod,
+        EmployeeRelationship;
+
     public $table = 'employees';
 
     protected $dates = [
@@ -26,7 +30,7 @@ class Employee extends BaseModel
         'first_name',
         'last_name',
         'document',
-        'adress',
+        'address',
         'phone',
         'email',
         'created_at',

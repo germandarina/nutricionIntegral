@@ -18,7 +18,7 @@ class CreateTableEmployees extends Migration
             $table->string('first_name',100);
             $table->string('last_name',100);
             $table->string('document',11);
-            $table->string('adress',200);
+            $table->string('address',200);
             $table->string('phone');
             $table->string('email');
             $table->string('created_by')->nullable();

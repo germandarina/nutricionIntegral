@@ -58,8 +58,8 @@
         </main><!--main-->
 
         @include('backend.includes.aside')
+        @include('backend.modal-confirm')
     </div><!--app-body-->
-
     @include('backend.includes.footer')
 
     <!-- Scripts -->
@@ -176,6 +176,5 @@
     {{ script("datatables/popper.min.js") }}
     {{ script('kartik-fileinput/fileinput.min.js')}}
     {{ script('kartik-fileinput/theme-fontawesome5.js') }}
-
 </body>
 </html>

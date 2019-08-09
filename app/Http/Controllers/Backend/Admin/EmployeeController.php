@@ -40,11 +40,8 @@ class EmployeeController extends Controller
             $data = $this->employeeRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return '<div class="btn-group btn-group-sm" role="group" aria-label="labels.backend.access.users.user_actions">
-                              <a href='.route("admin.employee.edit",['id'=>$row->id]).' class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>
-                            </div>';
+                    return view('backend.admin.employee.includes.datatable-buttons',compact('row'));
                 })
-                //                              <a href='.route("admin.employee.destroy",['id'=>$row->id]).' data-method="delete" data-trans-button-cancel="Cancelar" data-trans-button-confirm="Eliminar" data-trans-title="¿Está seguro?" class="btn btn-danger"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                 ->rawColumns(['actions'])
                 ->make(true);
         }
