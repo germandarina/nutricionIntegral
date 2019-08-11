@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Empleados - Empleados Eliminados
+                    Administración de Empleados - <small class="text-muted">Empleados Eliminados</small>
                 </h5>
             </div><!--col-->
 
