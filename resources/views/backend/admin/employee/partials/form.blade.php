@@ -3,7 +3,7 @@
             <div class="form-group row">
                 {{ html()->label('Nombre/s')
                     ->class('col-md-2 form-control-label')
-                    ->for('name') }}
+                    ->for('first_name') }}
 
                 <div class="col-md-6">
                     {{ html()->text('first_name')
@@ -18,8 +18,7 @@
             <div class="form-group row">
                 {{ html()->label('Apellido/s')
                     ->class('col-md-2 form-control-label')
-                    ->for('name') }}
-
+                    ->for('last_name') }}
                 <div class="col-md-6">
                     {{ html()->text('last_name')
                         ->class('form-control')
@@ -49,7 +48,7 @@
                     ->for('name') }}
 
                 <div class="col-md-6">
-                    {{ html()->text('adress')
+                    {{ html()->text('address')
                         ->class('form-control')
                         ->placeholder('Direccion')
                         ->attribute('maxlength', 191)

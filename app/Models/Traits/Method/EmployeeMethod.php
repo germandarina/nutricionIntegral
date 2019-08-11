@@ -7,5 +7,11 @@ namespace App\Models\Traits\Method;
  */
 trait EmployeeMethod
 {
-
+    /**
+     * @return bool
+     */
+    public function isPending()
+    {
+        return config('access.users.requires_approval') && ! $this->confirmed;
+    }
 }

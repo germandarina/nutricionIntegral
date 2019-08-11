@@ -27,7 +27,7 @@
                             <th>Nombre</th>
                             <th>Documento</th>
                             <th>Telefono</th>
-                            <th>Acciones</th>
+                            <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
                     </table>
@@ -53,7 +53,7 @@
                     {data: 'last_name', name: 'last_name'},
                     {data: 'document', name: 'document'},
                     {data: 'phone', name: 'phone'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });
         });

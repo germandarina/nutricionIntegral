@@ -32,7 +32,7 @@ class UpdateEmployeeRequest extends FormRequest
             'document' => ['required', 'max:11'],
             'phone' => ['required', 'max:15'],
             'email' => ['required', 'max:100'],
-            'adress' => ['required', 'max:200'],
+            'address' => ['required', 'max:200'],
         ];
     }
 }

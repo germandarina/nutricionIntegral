@@ -176,5 +176,8 @@
     {{ script("datatables/popper.min.js") }}
     {{ script('kartik-fileinput/fileinput.min.js')}}
     {{ script('kartik-fileinput/theme-fontawesome5.js') }}
+    {{ script('vendor/jsvalidation/js/jsvalidation.js') }}
+{{--    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>--}}
+
 </body>
 </html>

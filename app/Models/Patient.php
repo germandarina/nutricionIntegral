@@ -26,7 +26,7 @@ class Patient extends BaseModel
         'first_name',
         'last_name',
         'document',
-        'adress',
+        'address',
         'phone',
         'email',
         'created_at',

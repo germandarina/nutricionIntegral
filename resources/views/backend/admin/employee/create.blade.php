@@ -31,3 +31,6 @@
     </div><!--card-->
 {{ html()->form()->close() }}
 @endsection
+@push('after-scripts')
+    {!! $validator !!}
+@endpush

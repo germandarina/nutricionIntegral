@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
+use App\Models\Auth\Role;
+use App\Models\Traits\Relationship\EmployeeRelationship;
 use App\Repositories\Backend\Admin\EmployeeRepository;
 use App\Http\Requests\Backend\Admin\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Backend\Admin\Employee\ManageEmployeeRequest;
 use App\Http\Requests\Backend\Admin\Employee\UpdateEmployeeRequest;
+use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Employee;
@@ -56,7 +60,8 @@ class EmployeeController extends Controller
      */
     public function create(ManageEmployeeRequest $request)
     {
-        return view('backend.admin.employee.create');
+        $validator = JsValidator::formRequest(StoreEmployeeRequest::class);
+        return view('backend.admin.employee.create',compact('validator'));
     }
 
     /**
@@ -82,8 +87,9 @@ class EmployeeController extends Controller
         if (!auth()->user()->isAdmin()) {
             return redirect()->route('admin.employee.index')->withFlashDanger('You can not edit the administrator role.');
         }
+        $validator = JsValidator::formRequest(UpdateEmployeeRequest::class);
 
-        return view('backend.admin.employee.edit',compact('employee'));
+        return view('backend.admin.employee.edit',compact('employee','validator'));
     }
 
     /**
@@ -119,16 +125,32 @@ class EmployeeController extends Controller
 
     public function getDeleted(ManageEmployeeRequest $request){
         if ($request->ajax()) {
-            $data = $this->employeeRepository->orderBy('id')
-                         ->get();
+            $data = $this->employeeRepository->getDeletedPaginated(25, 'id', 'asc');
+
+//            $data = $this->employeeRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return $row->action_buttons;
+                    return view('backend.admin.employee.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
         return view('backend.admin.employee.deleted');
+    }
+
+    /**
+     * @param ManageRoleRequest $request
+     * @param Role              $deletedRole
+     *
+     * @throws \App\Exceptions\GeneralException
+     * @return mixed
+     */
+    public function restore(ManageRoleRequest $request, $id)
+    {
+        $employee = Employee::onlyTrashed()->find($id);
+        $this->employeeRepository->restore($employee);
+        Session::flash('success','Empleado restaurado');
+        return redirect()->route('admin.employee.index');
     }
 }

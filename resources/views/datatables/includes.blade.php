@@ -20,10 +20,17 @@
             $("#DataTables_Table_0_wrapper>table").attr('data-form','deleteForm');
             $("#DataTables_Table_0_wrapper>table").attr('data-toggle','dataTable');
 
-            $('table[data-form="deleteForm"]').on('click', '.delete-item', function(e){
+            $('table[data-form="deleteForm"]').on('click', '.delete-item,.restore-item', function(e){
+                $("#delete-btn").empty();
+                var msj = "Se eliminó correctamente";
+                if($(this).hasClass('delete-item')){
+                    $("#delete-btn").html("Eliminar");
+                }else{
+                    $("#delete-btn").html("Restaurar");
+                    msj = "Se restauró correctamente";
+                }
                 $('#confirm').removeClass('swal2-hide');
                 $('#confirm').addClass('swal2-container swal2-center swal2-fade swal2-shown');
-
                 e.preventDefault();
                 $.ajaxSetup({
                     headers: {
@@ -44,7 +51,7 @@
                         }).always(function (data) {
                             $('#confirm').modal('hide');
                             $('.data-table').DataTable().draw(false);
-                            Lobibox.notify("success",{msg:'Se eliminó correctamente','position': 'top right','title':'Éxito'});
+                            Lobibox.notify("success",{msg: msj,'position': 'top right','title':'Éxito'});
                         });
                     });
             });
@@ -54,10 +61,22 @@
     $.extend(true, $.fn.dataTable.defaults, {
         dom: 'Bfrtip',
         buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
+            // 'copyHtml5',
+            // 'excelHtml5',
+            // 'csvHtml5',
+            //'pdfHtml5',
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: ':visible:not(.not-export-col)'
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible:not(.not-export-col)'
+                }
+            },
         ],
         'paging':true,
         'lengthChange' : true,

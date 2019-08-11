@@ -6,6 +6,7 @@ use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
+use Session;
 
 /**
  * Class EmployeeRepository.
@@ -54,7 +55,7 @@ class EmployeeRepository extends BaseRepository
      */
     public function update(array $data, Employee $employee)
     {
-//        if ($role->isAdmin()) {
+//        if ($employee->isAdmin()) {
 //            throw new GeneralException('You can not edit the administrator role.');
 //        }
 
@@ -95,5 +96,40 @@ class EmployeeRepository extends BaseRepository
         return $this->model
             ->where('document', strtolower($document))
             ->count() > 0;
+    }
+
+    /**
+     * @param int $paged
+     * @param string $orderBy
+     * @param string $sort
+     * @return mixed
+     */
+
+    public function getDeletedPaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc')
+    {
+        return $this->model
+//            ->with('roles', 'permissions', 'providers')
+            ->onlyTrashed()
+            ->orderBy($orderBy, $sort);
+        //->paginate($paged);
+    }
+
+    /**
+     * @param Employee $employee
+     *
+     * @throws GeneralException
+     * @return Employee
+     */
+    public function restore(Employee $employee) : Employee
+    {
+        if ($employee->deleted_at === null) {
+            Session::flash('error','El empleado no esta eliminado');
+            throw new GeneralException('El empleado no esta eliminado');
+        }
+        if ($employee->restore()) {
+            return $employee;
+        }
+        Session::flash('error','Error al restaurar empleado. Intente nuevamente');
+        throw new GeneralException('Error al restaurar empleado. Intente nuevamente');
     }
 }

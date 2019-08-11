@@ -10,5 +10,6 @@ Route::post('employee', [EmployeeController::class, 'store'])->name('employee.st
 Route::group(['prefix' => 'employee/{employee}'], function () {
     Route::get('edit', [EmployeeController::class, 'edit'])->name('employee.edit');
     Route::patch('/', [EmployeeController::class, 'update'])->name('employee.update');
-    Route::post('/destroy', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+    Route::post('destroy', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+    Route::post('restore', [EmployeeController::class, 'restore'])->name('employee.restore');
 });
