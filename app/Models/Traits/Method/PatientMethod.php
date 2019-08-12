@@ -3,8 +3,8 @@
 namespace App\Models\Traits\Method;
 
 /**
- * Trait EmployeeMethod.
+ * Trait PatientMethod.
  */
-trait EmployeeMethod
+trait PatientMethod
 {
 }

@@ -32,7 +32,8 @@ class EmployeeRepository extends BaseRepository
     {
         // Make sure it doesn't already exist
         if ($this->employeeExists($data['document'])) {
-            throw new GeneralException('A employee already exists with the document '.e($data['document']));
+            Session::flash('error','Ya existe un empleado con el documento '.$data['document']);
+            throw new GeneralException('Ya existe un empleado con el documento '.$data['document']);
         }
         return DB::transaction(function () use ($data) {
             $employee = parent::create($data);
@@ -40,8 +41,8 @@ class EmployeeRepository extends BaseRepository
             if ($employee) {
                 return $employee;
             }
-
-            throw new GeneralException(trans('exceptions.backend.access.roles.create_error'));
+            Session::flash('error','Error al crear empleado. Intente nuevamente');
+            throw new GeneralException('Error al crear empleado. Intente nuevamente');
         });
     }
 
@@ -55,34 +56,25 @@ class EmployeeRepository extends BaseRepository
      */
     public function update(array $data, Employee $employee)
     {
-//        if ($employee->isAdmin()) {
-//            throw new GeneralException('You can not edit the administrator role.');
-//        }
+        if (!auth()->user()->isAdmin()) {
+            Session::flash('error','No tiene permiso para realizar esta acción');
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
 
         // If the name is changing make sure it doesn't already exist
         if ($employee->document !== strtolower($data['document'])) {
             if ($this->employeeExists($data['document'])) {
-                throw new GeneralException('A employee already exists with the document '.$data['document']);
+                Session::flash('error','Ya existe un empleado con el documento '.$data['document']);
+                throw new GeneralException('Ya existe un empleado con el documento '.$data['document']);
             }
         }
 
-//        if (! isset($data['permissions']) || ! \count($data['permissions'])) {
-//            $data['permissions'] = [];
-//        }
-
-        //See if the role must contain a permission as per config
-//        if (config('access.roles.role_must_contain_permission') && \count($data['permissions']) === 0) {
-//            throw new GeneralException(__('exceptions.backend.access.roles.needs_permission'));
-//        }
-
         return DB::transaction(function () use ($employee, $data) {
             if ($employee->update($data)) {
-                //$employee->syncPermissions($data['permissions']);
-                //event(new EmployeeUpdated($employee));
                 return $employee;
             }
-
-            throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
+            Session::flash('error','Error al actualizar empleado. Intente nuevamente');
+            throw new GeneralException('Error al actualizar empleado. Intente nuevamente');
         });
     }
 

@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', app_name())</title>
-    <meta name="description" content="@yield('meta_description', 'Laravel 5 Boilerplate')">
-    <meta name="author" content="@yield('meta_author', 'Anthony Rappa')">
+    <meta name="description" content="@yield('meta_description', 'Renasser')">
+    <meta name="author" content="@yield('meta_author', 'Mandarina')">
     @yield('meta')
 
     {{-- See https://laravel.com/docs/5.5/blade#stacks for usage --}}
@@ -39,7 +39,6 @@
         @include('backend.includes.sidebar')
 
         <main class="main">
-{{--            @include('includes.partials.demo')--}}
             @include('includes.partials.logged-in-as')
             @if(Breadcrumbs::exists())
                 {!! Breadcrumbs::render() !!}
@@ -50,8 +49,6 @@
                     <div class="content-header">
                         @yield('page-header')
                     </div><!--content-header-->
-
-{{--                    @include('includes.partials.messages')--}}
                     @yield('content')
                 </div><!--animated-->
             </div><!--container-fluid-->
@@ -88,7 +85,7 @@
             'icon': false,
             'iconSource': false,
             'position': 'top right',
-            'size': 'normal',
+            'size': 'mini',
             'iconClass': false,
         };
 

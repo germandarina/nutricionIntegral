@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', __('labels.backend.access.roles.management') . ' | ' . __('labels.backend.access.roles.edit'))
+@section('title', app_name() . ' | Actualizar Empleado')
 
 @section('content')
 {{ html()->modelForm($employee, 'PATCH', route('admin.employee.update', $employee))->class('form-horizontal')->open() }}
@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="col-sm-5">
                     <h5 class="card-title mb-0">
-                        {{--                @lang('labels.backend.access.roles.management')--}}
                         <small class="text-muted">Actualizar Empleado</small>
                     </h5>
                 </div><!--col-->

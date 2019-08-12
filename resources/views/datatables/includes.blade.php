@@ -21,6 +21,7 @@
             $("#DataTables_Table_0_wrapper>table").attr('data-toggle','dataTable');
 
             $('table[data-form="deleteForm"]').on('click', '.delete-item,.restore-item', function(e){
+                e.preventDefault();
                 $("#delete-btn").empty();
                 var msj = "Se eliminó correctamente";
                 if($(this).hasClass('delete-item')){
@@ -31,7 +32,7 @@
                 }
                 $('#confirm').removeClass('swal2-hide');
                 $('#confirm').addClass('swal2-container swal2-center swal2-fade swal2-shown');
-                e.preventDefault();
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

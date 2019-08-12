@@ -19,13 +19,20 @@
 
             @if ($logged_in_user->isAdmin())
                 <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/log-viewer*'), 'open') }}">
-                    <a class="nav-link nav-dropdown-toggle {{active_class(Active::checkUriPattern('admin/employee*')) }}" href="#">
+                    <a class="nav-link nav-dropdown-toggle {{active_class(Active::checkUriPattern('admin/*')) }}" href="#">
                         <i class="nav-icon fas fa-list"></i> Administración
                     </a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link {{active_class(Active::checkUriPattern('admin/employee'))}}" href="{{ route('admin.employee.index') }}">
                                 Empleados
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/patient'))}}" href="{{ route('admin.patient.index') }}">
+                                Pacientes
                             </a>
                         </li>
                     </ul>

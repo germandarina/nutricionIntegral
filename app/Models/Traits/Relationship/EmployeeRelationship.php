@@ -10,4 +10,5 @@ use App\Models\Auth\PasswordHistory;
  */
 trait EmployeeRelationship
 {
+
 }

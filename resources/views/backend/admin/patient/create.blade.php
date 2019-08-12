@@ -1,26 +1,25 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | Crear Empleado')
+@section('title', app_name() . ' | Crear Paciente')
 
 @section('content')
-{{ html()->form('POST', route('admin.employee.store'))->class('form-horizontal')->open() }}
+{{ html()->form('POST', route('admin.patient.store'))->class('form-horizontal')->open() }}
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-5">
                     <h5 class="card-title mb-0">
-                        {{--                @lang('labels.backend.access.roles.management')--}}
-                        <small class="text-muted">Crear Empleado</small>
+                        <small class="text-muted">Crear Paciente</small>
                     </h5>
                 </div><!--col-->
             </div><!--row-->
             <hr>
-            @include('backend.admin.employee.partials.form')
+            @include('backend.admin.patient.partials.form')
         </div>
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ form_cancel(route('admin.employee.index'), __('buttons.general.cancel')) }}
+                    {{ form_cancel(route('admin.patient.index'), __('buttons.general.cancel')) }}
                 </div><!--col-->
 
                 <div class="col text-right">

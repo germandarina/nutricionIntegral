@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
-use App\Models\Auth\Role;
-use App\Models\Traits\Relationship\EmployeeRelationship;
 use App\Repositories\Backend\Admin\EmployeeRepository;
 use App\Http\Requests\Backend\Admin\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Backend\Admin\Employee\ManageEmployeeRequest;
@@ -73,7 +70,8 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         $this->employeeRepository->create($request->all());
-        return redirect()->route('admin.employee.index')->withFlashSuccess(__('alerts.backend.roles.created'));
+        Session::flash('success','Empleado Creado');
+        return redirect()->route('admin.employee.index');
     }
 
     /**
@@ -85,7 +83,8 @@ class EmployeeController extends Controller
     public function edit(ManageEmployeeRequest $request, Employee $employee)
     {
         if (!auth()->user()->isAdmin()) {
-            return redirect()->route('admin.employee.index')->withFlashDanger('You can not edit the administrator role.');
+            Session::flash('error','No tiene permiso para editar');
+            return redirect()->route('admin.employee.index');
         }
         $validator = JsValidator::formRequest(UpdateEmployeeRequest::class);
 
@@ -101,8 +100,8 @@ class EmployeeController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $this->employeeRepository->update($request->all(), $employee);
-
-        return redirect()->route('admin.employee.index')->withFlashSuccess(__('alerts.backend.roles.updated'));
+        Session::flash('success','Empleado Actualizado');
+        return redirect()->route('admin.employee.index');
     }
 
     /**
@@ -115,19 +114,18 @@ class EmployeeController extends Controller
     public function destroy(ManageEmployeeRequest $request, Employee $employee)
     {
         if (!auth()->user()->isAdmin()) {
-            return redirect()->route('admin.employee.index')->withFlashDanger(__('exceptions.backend.access.roles.cant_delete_admin'));
+            Session::flash('error','No tiene permiso para editar');
+            return redirect()->route('admin.employee.index');
         }
 
         $this->employeeRepository->deleteById($employee->id);
-
-        return redirect()->route('admin.employee.index')->withFlashSuccess(__('alerts.backend.roles.deleted'));
+        Session::flash('success','Empelado Eliminado');
+        return redirect()->route('admin.employee.index');
     }
 
     public function getDeleted(ManageEmployeeRequest $request){
         if ($request->ajax()) {
             $data = $this->employeeRepository->getDeletedPaginated(25, 'id', 'asc');
-
-//            $data = $this->employeeRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     return view('backend.admin.employee.includes.datatable-buttons',compact('row'));
@@ -140,13 +138,13 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @param ManageRoleRequest $request
-     * @param Role              $deletedRole
+     * @param ManageEmployeeRequest $request
+     * @param integer              $id
      *
-     * @throws \App\Exceptions\GeneralException
      * @return mixed
+     *@throws \App\Exceptions\GeneralException
      */
-    public function restore(ManageRoleRequest $request, $id)
+    public function restore(ManageEmployeeRequest $request, $id)
     {
         $employee = Employee::onlyTrashed()->find($id);
         $this->employeeRepository->restore($employee);
