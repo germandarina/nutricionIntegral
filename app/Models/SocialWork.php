@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Faker\Provider\Base;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\Method\SocialWorkMethod;
+use App\Models\Traits\Relationship\SocialWorkRelationship;
 
 /**
  * App\Models\SocialWork
@@ -13,8 +13,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialWork query()
  * @mixin \Eloquent
  */
+
 class SocialWork extends BaseModel
 {
+    use SocialWorkMethod,
+        SocialWorkRelationship;
 
     public $table = 'social_works';
 

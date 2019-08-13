@@ -35,4 +35,16 @@ class UpdatePatientRequest extends FormRequest
             'address' => ['required', 'max:200'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'first_name.required' => "El nombre es obligatorio.",
+            'last_name.required' => "El apellido es obligatorio.",
+            'document.required' => "El documento es obligatorio.",
+            'phone.required' => "El telefono es obligatorio.",
+            'email.required' => "El email es obligatorio.",
+            'address.required' => "El direccion es obligatorio.",
+        ];
+    }
 }
