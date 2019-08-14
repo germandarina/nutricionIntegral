@@ -15,19 +15,22 @@ use App\Models\SocialWork;
 /**
  * Class SocialWorkController.
  */
+
 class SocialWorkController extends Controller
 {
     /**
      * @var SocialWorkRepository
      */
-    protected $social_workRepository;
+
+    protected $socialWorkRepository;
 
     /**
-     * @param SocialWorkRepository       $social_workRepository
+     * @param SocialWorkRepository       $socialWorkRepository
      */
-    public function __construct(SocialWorkRepository $social_workRepository)
+
+    public function __construct(SocialWorkRepository $socialWorkRepository)
     {
-        $this->social_workRepository = $social_workRepository;
+        $this->socialWorkRepository = $socialWorkRepository;
     }
 
     /**
@@ -35,19 +38,20 @@ class SocialWorkController extends Controller
      *
      * @return mixed
      */
+
     public function index(ManageSocialWorkRequest $request)
     {
         if ($request->ajax()) {
-            $data = $this->social_workRepository->orderBy('id')->get();
+            $data = $this->socialWorkRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.social_work.includes.datatable-buttons',compact('row'));
+                    return view('backend.admin.social-work.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.social_work.index');
+        return view('backend.admin.social-work.index');
     }
 
     /**
@@ -55,10 +59,11 @@ class SocialWorkController extends Controller
      *
      * @return mixed
      */
+
     public function create(ManageSocialWorkRequest $request)
     {
         $validator = JsValidator::formRequest(StoreSocialWorkRequest::class);
-        return view('backend.admin.social_work.create',compact('validator'));
+        return view('backend.admin.social-work.create',compact('validator'));
     }
 
     /**
@@ -67,11 +72,12 @@ class SocialWorkController extends Controller
      * @return mixed
      *@throws \App\Exceptions\GeneralException
      */
+
     public function store(StoreSocialWorkRequest $request)
     {
-        $this->social_workRepository->create($request->all());
+        $this->socialWorkRepository->create($request->all());
         Session::flash('success','Obra Social Creada');
-        return redirect()->route('admin.social_work.index');
+        return redirect()->route('admin.social-work.index');
     }
 
     /**
@@ -80,15 +86,16 @@ class SocialWorkController extends Controller
      *
      * @return mixed
      */
+
     public function edit(ManageSocialWorkRequest $request, SocialWork $social_work)
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.social_work.index');
+            return redirect()->route('admin.social-work.index');
         }
         $validator = JsValidator::formRequest(UpdateSocialWorkRequest::class);
 
-        return view('backend.admin.social_work.edit',compact('social_work','validator'));
+        return view('backend.admin.social-work.edit',compact('social_work','validator'));
     }
 
     /**
@@ -97,11 +104,12 @@ class SocialWorkController extends Controller
      * @return mixed
      *@throws \App\Exceptions\GeneralException
      */
+
     public function update(UpdateSocialWorkRequest $request, SocialWork $social_work)
     {
-        $this->social_workRepository->update($request->all(), $social_work);
+        $this->socialWorkRepository->update($request->all(), $social_work);
         Session::flash('success','Obra Social Actualizada');
-        return redirect()->route('admin.social_work.index');
+        return redirect()->route('admin.social-work.index');
     }
 
     /**
@@ -111,30 +119,31 @@ class SocialWorkController extends Controller
      * @return mixed
      *@throws \Exception
      */
+
     public function destroy(ManageSocialWorkRequest $request, SocialWork $social_work)
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.social_work.index');
+            return redirect()->route('admin.social-work.index');
         }
 
-        $this->social_workRepository->deleteById($social_work->id);
-        Session::flash('success','Empelado Eliminado');
-        return redirect()->route('admin.social_work.index');
+        $this->socialWorkRepository->deleteById($social_work->id);
+        Session::flash('success','Obra Social Eliminada');
+        return redirect()->route('admin.social-work.index');
     }
 
     public function getDeleted(ManageSocialWorkRequest $request){
         if ($request->ajax()) {
-            $data = $this->social_workRepository->getDeletedPaginated(25, 'id', 'asc');
+            $data = $this->socialWorkRepository->getDeletedPaginated(25, 'id', 'asc');
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.social_work.includes.datatable-buttons',compact('row'));
+                    return view('backend.admin.social-work.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.social_work.deleted');
+        return view('backend.admin.social-work.deleted');
     }
 
     /**
@@ -144,11 +153,12 @@ class SocialWorkController extends Controller
      * @return mixed
      *@throws \App\Exceptions\GeneralException
      */
+
     public function restore(ManageSocialWorkRequest $request, $id)
     {
         $social_work = SocialWork::onlyTrashed()->find($id);
-        $this->social_workRepository->restore($social_work);
-        Session::flash('success','Obra Social restaurado');
-        return redirect()->route('admin.social_work.index');
+        $this->socialWorkRepository->restore($social_work);
+        Session::flash('success','Obra Social restaurada');
+        return redirect()->route('admin.social-work.index');
     }
 }
