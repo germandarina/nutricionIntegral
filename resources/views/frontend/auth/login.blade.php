@@ -10,7 +10,7 @@
     {{ style(mix('css/backend.css')) }}
     {{ style('css/animate.min.css') }}
     {{ style('css/login.css') }}
-    <title>Renasser - Login</title>
+    <title>Nutricion Integral - Login</title>
     <style>
         body {
             background-image:url('img/fondo.jpg');
@@ -46,7 +46,7 @@
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
                     <div class="logo-title-container">
                         <div class="copy animated fadeIn">
-                            <h1>Renasser</h1>
+                            <h1>Nutricion Integral</h1>
                             <p>Administración</p>
                         </div>
                     </div> <!-- .logo-title-container -->

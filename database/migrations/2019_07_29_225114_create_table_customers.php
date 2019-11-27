@@ -15,12 +15,15 @@ class CreateTableCustomers extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('first_name',100);
-            $table->string('last_name',100);
+            $table->string('full_name',200);
             $table->string('document',11);
+            $table->date('birthdate');
+            $table->integer('age');
             $table->string('address',200);
             $table->string('phone');
             $table->string('email');
+            $table->text('motive');
+            $table->integer('number_of_children');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();

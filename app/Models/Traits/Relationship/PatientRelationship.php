@@ -11,8 +11,5 @@ use App\Models\Employee;
  */
 trait PatientRelationship
 {
-    public function employees()
-    {
-        return $this->belongsToMany(Employee::class, 'employee_patient')->withTimestamps();
-    }
+
 }

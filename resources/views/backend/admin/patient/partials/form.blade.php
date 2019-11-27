@@ -1,28 +1,13 @@
     <div class="row mt-4">
         <div class="col">
             <div class="form-group row">
-                {{ html()->label('Nombre/s')
+                {{ html()->label('Nombre y Apellido')
                     ->class('col-md-2 form-control-label')
-                    ->for('first_name') }}
-
+                    ->for('full_name') }}
                 <div class="col-md-6">
-                    {{ html()->text('first_name')
+                    {{ html()->text('full_name')
                         ->class('form-control')
-                        ->placeholder(__('validation.attributes.backend.access.roles.name'))
-                        ->attribute('maxlength', 191)
-                        ->required()
-                        ->autofocus() }}
-                </div><!--col-->
-            </div><!--form-group-->
-
-            <div class="form-group row">
-                {{ html()->label('Apellido/s')
-                    ->class('col-md-2 form-control-label')
-                    ->for('last_name') }}
-                <div class="col-md-6">
-                    {{ html()->text('last_name')
-                        ->class('form-control')
-                        ->placeholder('Apellido')
+                        ->placeholder('Nombre y Apellido')
                         ->attribute('maxlength', 191)
                         ->required()
                         ->autofocus() }}
@@ -34,9 +19,35 @@
                     ->for('name') }}
 
                 <div class="col-md-6">
-                    {{ html()->text('document')
+                    {{ html()->input('number','document')
                         ->class('form-control')
                         ->placeholder('Documento')
+                        ->required()
+                        ->autofocus() }}
+                </div><!--col-->
+            </div><!--form-group-->
+
+            <div class="form-group row">
+                {{ html()->label('Edad')
+                    ->class('col-md-2 form-control-label')
+                    ->for('age') }}
+                <div class="col-md-6">
+                    {{ html()->input('number','age')
+                        ->class('form-control')
+                        ->placeholder('Edad')
+                        ->attribute('min', 1)
+                        ->required()
+                        ->autofocus() }}
+                </div><!--col-->
+            </div><!--form-group-->
+            <div class="form-group row">
+                {{ html()->label('Fecha de Nacimiento')
+                    ->class('col-md-2 form-control-label')
+                    ->for('birthdate') }}
+                <div class="col-md-6">
+                    {{ html()->date('birthdate')
+                        ->class('form-control')
+                        ->placeholder('Fecha de Nacimiento')
                         ->attribute('maxlength', 191)
                         ->required()
                         ->autofocus() }}
@@ -46,7 +57,6 @@
                 {{ html()->label('Direccion')
                     ->class('col-md-2 form-control-label')
                     ->for('name') }}
-
                 <div class="col-md-6">
                     {{ html()->text('address')
                         ->class('form-control')
@@ -83,6 +93,35 @@
                         ->required()
                         ->autofocus() }}
                 </div><!--col-->
+            </div><!--form-group-->
+            <div class="form-group row">
+                {{ html()->label('Cant. de Hijos')
+                    ->class('col-md-2 form-control-label')
+                    ->for('number_of_children') }}
+
+                <div class="col-md-6">
+                    {{ html()->input('number','number_of_children')
+                        ->class('form-control')
+                        ->placeholder('Cantidad de Hijos')
+                        ->attribute('min', 0)
+                        ->required()
+                        ->autofocus() }}
+                </div><!--col-->
+            </div><!--form-group-->
+            <div class="form-group row">
+                {{ html()->label('Motivo')
+                    ->class('col-md-2 form-control-label')
+                    ->for('motive') }}
+
+                <div class="col-md-6">
+                    {{ html()->textarea('motive')
+                        ->class('form-control')
+                        ->placeholder('Motivo')
+                        ->attribute('maxlength', 500)
+                        ->required()
+                        ->autofocus() }}
+                </div><!--col-->
+            </div>
             </div><!--form-group-->
         </div><!--col-->
     </div><!--row-->

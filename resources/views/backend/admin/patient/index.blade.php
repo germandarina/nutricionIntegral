@@ -23,10 +23,11 @@
                     <table class="table data-table">
                         <thead>
                         <tr>
-                            <th>Apellido</th>
-                            <th>Nombre</th>
+                            <th>Nombre y Apellido</th>
                             <th>Documento</th>
+                            <th>Edad</th>
                             <th>Telefono</th>
+                            <th>E-Mail</th>
                             <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
@@ -49,10 +50,11 @@
                 "draw": true,
                 ajax: "{{ route('admin.patient.index') }}",
                 columns: [
-                    {data: 'first_name', name: 'first_name'},
-                    {data: 'last_name', name: 'last_name'},
+                    {data: 'full_name', name: 'full_name'},
                     {data: 'document', name: 'document'},
+                    {data: 'age', name: 'age'},
                     {data: 'phone', name: 'phone'},
+                    {data: 'email', name: 'email'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });

@@ -28,12 +28,15 @@ class Patient extends BaseModel
     ];
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'full_name',
+        'birthdate',
+        'age',
         'document',
         'address',
         'phone',
         'email',
+        'motive',
+        'number_of_children',
         'created_at',
         'updated_at',
         'deleted_at',
