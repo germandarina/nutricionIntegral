@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Backend\Admin\Employee;
+namespace App\Http\Requests\Backend\Admin\FoodGroup;
 
 use Illuminate\Foundation\Http\FormRequest;
 

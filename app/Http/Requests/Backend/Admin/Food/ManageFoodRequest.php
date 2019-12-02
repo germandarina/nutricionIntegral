@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Backend\Admin\Employee;
+namespace App\Http\Requests\Backend\Admin\Food;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class ManageRoleRequest.
  */
-class ManageEmployeeRequest extends FormRequest
+class ManageFoodRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

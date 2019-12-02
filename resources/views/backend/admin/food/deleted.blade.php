@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | Pacientes Eliminados')
+@section('title', app_name() . ' | Grupo de Alimentos Eliminados')
 
 @section('content')
 <div class="card">
@@ -8,12 +8,12 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Pacientes - <small class="text-muted">Pacientes Eliminados</small>
+                    Administración de Grupo de Alimentos - <small class="text-muted">Grupo de Alimentos Eliminados</small>
                 </h5>
             </div><!--col-->
 
             <div class="col-sm-7 pull-right">
-                @include('backend.admin.patient.includes.header-buttons')
+                @include('backend.admin.food-group.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->
 
@@ -23,12 +23,8 @@
                     <table class="table data-table">
                         <thead>
                         <tr>
-                            <th>Nombre y Apellido</th>
-                            <th>Documento</th>
-                            <th>Edad</th>
-                            <th>Telefono</th>
-                            <th>E-Mail</th>
-                            <th class="not-export-col">Acciones</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                     </table>
@@ -47,14 +43,10 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
-                ajax: "{{ route('admin.patient.deleted') }}",
+                ajax: "{{ route('admin.food-group.deleted') }}",
                 columns: [
-                    {data: 'full_name', name: 'full_name'},
-                    {data: 'document', name: 'document'},
-                    {data: 'age', name: 'age'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'email', name: 'email'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false,},
+                    {data: 'name', name: 'name'},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false},
                 ]
             });
         });

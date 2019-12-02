@@ -1,34 +1,34 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | Actualizar Empleado')
+@section('title', app_name() . ' | Crear Alimento')
 
 @section('content')
-{{ html()->modelForm($employee, 'PATCH', route('admin.employee.update', $employee))->class('form-horizontal')->open() }}
+{{ html()->form('POST', route('admin.food.store'))->class('form-horizontal')->open() }}
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-5">
                     <h5 class="card-title mb-0">
-                        <small class="text-muted">Actualizar Empleado</small>
+                        <small class="text-muted">Crear Alimento</small>
                     </h5>
                 </div><!--col-->
             </div><!--row-->
             <hr>
-            @include('backend.admin.employee.partials.form')
+            @include('backend.admin.food.partials.form')
         </div>
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ form_cancel(route('admin.employee.index'), __('buttons.general.cancel')) }}
+                    {{ form_cancel(route('admin.food.index'), __('buttons.general.cancel')) }}
                 </div><!--col-->
 
                 <div class="col text-right">
-                    {{ form_submit(__('buttons.general.crud.update')) }}
+                    {{ form_submit(__('buttons.general.crud.create')) }}
                 </div><!--col-->
             </div><!--row-->
         </div><!--card-footer-->
     </div><!--card-->
-{{ html()->closeModelForm() }}
+{{ html()->form()->close() }}
 @endsection
 @push('after-scripts')
     {!! $validator !!}

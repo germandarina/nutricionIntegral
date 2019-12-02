@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | Administración de Empleados')
+@section('title', app_name() . ' | Administración de Alimentos')
 
 @section('content')
 <div class="card">
@@ -8,12 +8,12 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Empleados <small class="text-muted">Empleados Activos</small>
+                    Administración de Alimentos <small class="text-muted">Alimentos Activos</small>
                 </h5>
             </div><!--col-->
 
             <div class="col-sm-7 pull-right">
-                @include('backend.admin.employee.includes.header-buttons')
+                @include('backend.admin.food.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->
 
@@ -22,13 +22,10 @@
                 <div class="table-responsive">
                     <table class="table data-table">
                         <thead>
-                            <tr>
-                                <th>Apellido</th>
-                                <th>Nombre</th>
-                                <th>Documento</th>
-                                <th>Telefono</th>
-                                <th class="not-export-col">Acciones</th>
-                            </tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <th class="not-export-col">Acciones</th>
+                        </tr>
                         </thead>
                     </table>
                 </div>
@@ -47,12 +44,9 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
-                ajax: "{{ route('admin.employee.index') }}",
+                ajax: "{{ route('admin.food.index') }}",
                 columns: [
-                    {data: 'first_name', name: 'first_name'},
-                    {data: 'last_name', name: 'last_name'},
-                    {data: 'document', name: 'document'},
-                    {data: 'phone', name: 'phone'},
+                    {data: 'name', name: 'name'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });

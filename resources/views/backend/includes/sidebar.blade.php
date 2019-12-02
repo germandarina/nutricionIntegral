@@ -38,8 +38,8 @@
                     </ul>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
-                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/social-work'))}}" href="{{ route('admin.social-work.index') }}">
-                                Obras Sociales
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/food-group'))}}" href="{{ route('admin.food-group.index') }}">
+                                Grupo de Alimentos
                             </a>
                         </li>
                     </ul>
