@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | Alimentos Eliminados')
+@section('title', app_name() . ' | Grupo de Alimentos Eliminados')
 
 @section('content')
 <div class="card">
@@ -8,12 +8,12 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Alimentos - <small class="text-muted">Alimentos Eliminados</small>
+                    Administración de Grupo de Alimentos - <small class="text-muted">Grupo de Alimentos Eliminados</small>
                 </h5>
             </div><!--col-->
 
             <div class="col-sm-7 pull-right">
-                @include('backend.admin.food.includes.header-buttons')
+                @include('backend.admin.food-group.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->
 
@@ -43,7 +43,7 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
-                ajax: "{{ route('admin.food.deleted') }}",
+                ajax: "{{ route('admin.food-group.deleted') }}",
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false},
