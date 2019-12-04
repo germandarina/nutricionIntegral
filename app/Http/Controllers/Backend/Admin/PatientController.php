@@ -69,9 +69,9 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
-        $this->patientRepository->create($request->all());
+        $patient = $this->patientRepository->create($request->all());
         Session::flash('success','Paciente Creado');
-        return redirect()->route('admin.patient.index');
+        return redirect()->route('admin.patient.edit',compact('patient'));
     }
 
     /**

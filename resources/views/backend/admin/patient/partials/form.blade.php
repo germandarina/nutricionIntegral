@@ -26,7 +26,6 @@
                         ->autofocus() }}
                 </div><!--col-->
             </div><!--form-group-->
-
             <div class="form-group row">
                 {{ html()->label('Edad')
                     ->class('col-md-2 form-control-label')
@@ -122,6 +121,5 @@
                         ->autofocus() }}
                 </div><!--col-->
             </div>
-            </div><!--form-group-->
-        </div><!--col-->
-    </div><!--row-->
+        </div><!--form-group-->
+    </div><!--col-->
