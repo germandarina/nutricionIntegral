@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FoodGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FoodGroup query()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Patient[] $patients
  */
 class FoodGroup extends BaseModel
 {

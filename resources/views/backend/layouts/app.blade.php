@@ -113,6 +113,20 @@
             'clearMaskOnLostFocus': false
         };
 
+        var currency3DecimalOptions = {
+            'alias': 'numeric',
+            'groupSeparator': '.',
+            'radixPoint': ',',
+            'autoGroup': true,
+            'digits': 3,
+            'digitsOptional': false,
+            'prefix': '',
+            'placeholder': '0',
+            'removeMaskOnSubmit': true,
+            'unmaskAsNumber': true,
+            'clearMaskOnLostFocus': false
+        };
+
         var currencyInteger = {
             'alias': 'numeric',
             'groupSeparator': '.',
@@ -159,6 +173,8 @@
 
         $('.numericOptions').inputmask(currencyOptions);
         $('.numericInteger').inputmask(currencyInteger);
+        $('.numeric3Digits').inputmask(currency3DecimalOptions);
+
         $(".cuit").inputmask("99-99999999-9");
         $('.percentOptions').inputmask(percentOptions);
         $('.percentDecimalOptions').inputmask(percentDecimalOptions);

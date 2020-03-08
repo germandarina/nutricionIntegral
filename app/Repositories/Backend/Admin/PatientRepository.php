@@ -70,11 +70,13 @@ class PatientRepository extends BaseRepository
         }
 
         return DB::transaction(function () use ($patient, $data) {
-            if ($patient->update($data)) {
-                return $patient;
+            if (!$patient->update($data)) {
+                Session::flash('error','Error al actualizar paciente. Intente nuevamente');
+                throw new GeneralException('Error al actualizar paciente. Intente nuevamente');
             }
-            Session::flash('error','Error al actualizar paciente. Intente nuevamente');
-            throw new GeneralException('Error al actualizar paciente. Intente nuevamente');
+            $patient->foodGroups()->sync($data['food_group_id']);
+            $patient->foods()->sync($data['food_id']);
+            return $patient;
         });
     }
 

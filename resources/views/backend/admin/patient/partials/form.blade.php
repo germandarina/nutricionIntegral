@@ -148,4 +148,4 @@
     </div>
     </div>
 </div>
-    {{ html()->hidden('id',$patient->id) }}
+    {{ html()->hidden('id',isset($patient) ? $patient->id : null) }}

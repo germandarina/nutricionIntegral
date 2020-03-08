@@ -43,6 +43,13 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/food'))}}" href="{{ route('admin.food.index') }}">
+                                Alimentos
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">

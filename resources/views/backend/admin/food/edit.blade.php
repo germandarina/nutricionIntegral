@@ -3,7 +3,7 @@
 @section('title', app_name() . ' | Actualizar Alimentos')
 
 @section('content')
-{{ html()->modelForm($food_group, 'PATCH', route('admin.food.update', $food_group))->class('form-horizontal')->open() }}
+{{ html()->modelForm($food, 'PATCH', route('admin.food.update', $food))->class('form-horizontal')->open() }}
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -31,5 +31,5 @@
 {{ html()->closeModelForm() }}
 @endsection
 @push('after-scripts')
-    {!! $validator !!}
+    {!! $validator !!} ssh
 @endpush

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food query()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Patient[] $patients
  */
 class Food extends BaseModel
 {
@@ -30,6 +31,28 @@ class Food extends BaseModel
     protected $fillable = [
         'name',
         'food_group_id',
+        'energia_kj',
+        'energia_kcal',
+        'agua',
+        'protenia',
+        'grasa_total',
+        'carbohidratos_totales',
+        'cenizas',
+        'sodio',
+        'potasio',
+        'calcio',
+        'fosforo',
+        'hierro',
+        'zinc',
+        'tiamina',
+        'rivoflavina',
+        'niacina',
+        'vitamina_c',
+        'carbohidratos_disponibles',
+        'ac_grasos_saturados',
+        'ac_grasos_monoinsaturados',
+        'ac_grasos_poliinsaturados',
+        'colesterol',
         'created_at',
         'updated_at',
         'deleted_at',
