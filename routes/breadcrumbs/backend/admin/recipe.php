@@ -1,22 +1,22 @@
 <?php
 
-Breadcrumbs::for('admin.patient.index', function ($trail) {
+Breadcrumbs::for('admin.recipe.index', function ($trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Administración de Pacientes', route('admin.patient.index'));
+    $trail->push('Administración de Recetas', route('admin.recipe.index'));
 });
 
-Breadcrumbs::for('admin.patient.deleted', function ($trail) {
-    $trail->parent('admin.patient.index');
-    $trail->push('Pacientes Eliminados', route('admin.patient.deleted'));
+Breadcrumbs::for('admin.recipe.deleted', function ($trail) {
+    $trail->parent('admin.recipe.index');
+    $trail->push('Recetas Eliminadas', route('admin.recipe.deleted'));
 });
 
-Breadcrumbs::for('admin.patient.create', function ($trail) {
-    $trail->parent('admin.patient.index');
-    $trail->push('Crear Paciente', route('admin.patient.create'));
+Breadcrumbs::for('admin.recipe.create', function ($trail) {
+    $trail->parent('admin.recipe.index');
+    $trail->push('Crear Receta', route('admin.recipe.create'));
 });
 
-Breadcrumbs::for('admin.patient.edit', function ($trail, $id) {
-    $trail->parent('admin.patient.index');
-    $trail->push('Actualizar Paciente', route('admin.patient.edit', $id));
+Breadcrumbs::for('admin.recipe.edit', function ($trail, $id) {
+    $trail->parent('admin.recipe.index');
+    $trail->push('Actualizar Receta', route('admin.recipe.edit', $id));
 });
 

@@ -70,7 +70,7 @@ class RecipeController extends Controller
     public function store(StoreRecipeRequest $request)
     {
         $recipe = $this->recipeRepository->create($request->all());
-        Session::flash('success','Paciente Creado');
+        Session::flash('success','Receta Creada');
         return redirect()->route('admin.recipe.edit',compact('recipe'));
     }
 
@@ -87,10 +87,8 @@ class RecipeController extends Controller
             return redirect()->route('admin.recipe.index');
         }
         $validator = JsValidator::formRequest(UpdateRecipeRequest::class);
-        $foods = $recipe->foods->pluck('id');
-        $food_groups = $recipe->foodGroups->pluck('id');
-
-        return view('backend.admin.recipe.edit',compact('recipe','validator','foods','food_groups'));
+        $classifications = $recipe->classifications->pluck('id');
+        return view('backend.admin.recipe.edit',compact('recipe','validator','classifications'));
     }
 
     /**
@@ -102,7 +100,7 @@ class RecipeController extends Controller
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
         $this->recipeRepository->update($request->all(), $recipe);
-        Session::flash('success','Paciente Actualizado');
+        Session::flash('success','Receta Actualizada');
         return redirect()->route('admin.recipe.index');
     }
 
@@ -121,7 +119,7 @@ class RecipeController extends Controller
         }
 
         $this->recipeRepository->deleteById($recipe->id);
-        Session::flash('success','Empelado Eliminado');
+        Session::flash('success','Receta eliminada');
         return redirect()->route('admin.recipe.index');
     }
 
@@ -150,7 +148,17 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::onlyTrashed()->find($id);
         $this->recipeRepository->restore($recipe);
-        Session::flash('success','Paciente restaurado');
+        Session::flash('success','Receta restaurada');
         return redirect()->route('admin.recipe.index');
+    }
+
+    public function getIngredients($id){
+        $data = $this->recipeRepository->orderBy('name')->get();
+        return Datatables::of($data)
+            ->addColumn('actions', function($row){
+                return view('backend.admin.recipe.includes.datatable-buttons',compact('row'));
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 }

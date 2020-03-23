@@ -31,30 +31,31 @@ class RecipeRepository extends BaseRepository
     public function create(array $data) : Recipe
     {
         // Make sure it doesn't already exist
-        if ($this->patientExists($data['document'])) {
-            Session::flash('error','Ya existe un paciente con el documento '.$data['document']);
-            throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
-        }
+//        if ($this->patientExists($data['document'])) {
+//            Session::flash('error','Ya existe un receta con el documento '.$data['document']);
+//            throw new GeneralException('Ya existe un receta con el documento '.$data['document']);
+//        }
         return DB::transaction(function () use ($data) {
-            $patient = parent::create($data);
+            $recipe = parent::create($data);
 
-            if ($patient) {
-                return $patient;
+            if ($recipe) {
+                $recipe->classifications()->attach($data['classifications']);
+                return $recipe;
             }
-            Session::flash('error','Error al crear paciente. Intente nuevamente');
-            throw new GeneralException('Error al crear paciente. Intente nuevamente');
+            Session::flash('error','Error al crear receta. Intente nuevamente');
+            throw new GeneralException('Error al crear receta. Intente nuevamente');
         });
     }
 
     /**
-     * @param Recipe  $patient
+     * @param Recipe  $recipe
      * @param array $data
      *
      * @throws GeneralException
      * @throws \Throwable
      * @return mixed
      */
-    public function update(array $data, Recipe $patient)
+    public function update(array $data, Recipe $recipe)
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para realizar esta acción');
@@ -62,21 +63,20 @@ class RecipeRepository extends BaseRepository
         }
 
         // If the name is changing make sure it doesn't already exist
-        if ($patient->document !== strtolower($data['document'])) {
-            if ($this->patientExists($data['document'])) {
-                Session::flash('error','Ya existe un paciente con el documento '.$data['document']);
-                throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
-            }
-        }
+//        if ($recipe->document !== strtolower($data['document'])) {
+//            if ($this->patientExists($data['document'])) {
+//                Session::flash('error','Ya existe un receta con el documento '.$data['document']);
+//                throw new GeneralException('Ya existe un receta con el documento '.$data['document']);
+//            }
+//        }
 
-        return DB::transaction(function () use ($patient, $data) {
-            if (!$patient->update($data)) {
-                Session::flash('error','Error al actualizar paciente. Intente nuevamente');
-                throw new GeneralException('Error al actualizar paciente. Intente nuevamente');
+        return DB::transaction(function () use ($recipe, $data) {
+            if (!$recipe->update($data)) {
+                Session::flash('error','Error al actualizar receta. Intente nuevamente');
+                throw new GeneralException('Error al actualizar receta. Intente nuevamente');
             }
-            $patient->foodGroups()->sync($data['food_group_id']);
-            $patient->foods()->sync($data['food_id']);
-            return $patient;
+            $recipe->classifications()->async($data['classifications']);
+            return $recipe;
         });
     }
 
@@ -85,10 +85,10 @@ class RecipeRepository extends BaseRepository
      *
      * @return bool
      */
-    protected function patientExists($document) : bool
+    protected function recipeExists($name) : bool
     {
         return $this->model
-            ->where('document', strtolower($document))
+            ->where('name', strtolower($name))
             ->count() > 0;
     }
 
@@ -109,21 +109,21 @@ class RecipeRepository extends BaseRepository
     }
 
     /**
-     * @param Recipe $patient
+     * @param Recipe $recipe
      *
      * @throws GeneralException
      * @return Recipe
      */
-    public function restore(Recipe $patient) : Recipe
+    public function restore(Recipe $recipe) : Recipe
     {
-        if ($patient->deleted_at === null) {
-            Session::flash('error','El paciente no esta eliminado');
-            throw new GeneralException('El paciente no esta eliminado');
+        if ($recipe->deleted_at === null) {
+            Session::flash('error','El receta no esta eliminado');
+            throw new GeneralException('El receta no esta eliminado');
         }
-        if ($patient->restore()) {
-            return $patient;
+        if ($recipe->restore()) {
+            return $recipe;
         }
-        Session::flash('error','Error al restaurar paciente. Intente nuevamente');
-        throw new GeneralException('Error al restaurar paciente. Intente nuevamente');
+        Session::flash('error','Error al restaurar receta. Intente nuevamente');
+        throw new GeneralException('Error al restaurar receta. Intente nuevamente');
     }
 }

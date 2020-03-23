@@ -30,19 +30,19 @@ class UpdateRecipeRequest extends FormRequest
         return [
             'name' => ['required', 'max:200','min:6'],
             'recipe_type_id' => ['required', 'date','before:tomorrow'],
-            'observation'=>['required','integer'],
+            'observation'=>['max:200','min:6'],
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => "El nombre y apellido es obligatorio.",
-            'name.min' => "El nombre y apellido debe tener, al menos, 6 caracteres.",
-            'name.max' => "El nombre y apellido debe tener, maximo, 200 caracteres.",
-            'recipe_type_id.required' => "El documento es obligatorio.",
-            'recipe_type_id.between' => "El documento debe tener, entre, 7 y 11 caracteres.",
-            'observation.required' => "El telefono es obligatorio.",
+            'name.required' => "El nombre es obligatorio.",
+            'name.min' => "El nombre debe tener, al menos, 6 caracteres.",
+            'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
+            'recipe_type_id.required' => "El tipo de receta es obligatorio.",
+            'observation.min' => "La observacion debe tener, al menos, 6 caracteres.",
+            'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
         ];
     }
 }

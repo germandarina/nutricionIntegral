@@ -13,7 +13,7 @@ class CreateTableRecipes extends Migration
      */
     public function up()
     {
-        Schema::create('table_recipes', function (Blueprint $table) {
+        Schema::create('recipes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name',200);
             $table->unsignedBigInteger('recipe_type_id');
@@ -34,6 +34,6 @@ class CreateTableRecipes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_recipes');
+        Schema::dropIfExists('recipes');
     }
 }

@@ -1,16 +1,17 @@
 <?php
 
 
-use App\Http\Controllers\Backend\Admin\PatientController;
+use App\Http\Controllers\Backend\Admin\RecipeController;
 
-Route::get('patient/deleted', [PatientController::class, 'getDeleted'])->name('patient.deleted');
-Route::get('patient', [PatientController::class, 'index'])->name('patient.index');
-Route::get('patient/create', [PatientController::class, 'create'])->name('patient.create');
-Route::post('patient', [PatientController::class, 'store'])->name('patient.store');
+Route::get('recipe/deleted', [RecipeController::class, 'getDeleted'])->name('recipe.deleted');
+Route::get('recipe', [RecipeController::class, 'index'])->name('recipe.index');
+Route::get('recipe/create', [RecipeController::class, 'create'])->name('recipe.create');
+Route::post('recipe', [RecipeController::class, 'store'])->name('recipe.store');
 
-Route::group(['prefix' => 'patient/{patient}'], function () {
-    Route::get('edit', [PatientController::class, 'edit'])->name('patient.edit');
-    Route::patch('/', [PatientController::class, 'update'])->name('patient.update');
-    Route::post('destroy', [PatientController::class, 'destroy'])->name('patient.destroy');
-    Route::post('restore', [PatientController::class, 'restore'])->name('patient.restore');
+Route::group(['prefix' => 'recipe/{recipe}'], function () {
+    Route::get('edit', [RecipeController::class, 'edit'])->name('recipe.edit');
+    Route::patch('/', [RecipeController::class, 'update'])->name('recipe.update');
+    Route::post('destroy', [RecipeController::class, 'destroy'])->name('recipe.destroy');
+    Route::post('restore', [RecipeController::class, 'restore'])->name('recipe.restore');
+    Route::get('/get-ingredients', [RecipeController::class, 'getIngredients'])->name('recipe.getIngredients');
 });

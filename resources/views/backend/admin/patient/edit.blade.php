@@ -26,7 +26,7 @@
                                 @include('backend.admin.patient.partials.form')
                             </div>
                             <div class="tab-pane" id="profile-1" role="tabpanel">
-                                @include('backend.admin.patient.partials.foodForm')
+                                @include('backend.admin.patient.partials.food-form')
                             </div>
                         </div>
                     </div>

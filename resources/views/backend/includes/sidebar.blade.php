@@ -50,6 +50,13 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/recipe'))}}" href="{{ route('admin.recipe.index') }}">
+                                Recetas
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">

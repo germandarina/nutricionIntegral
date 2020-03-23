@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Recipe newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Recipe query()
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FoodGroup[] $foodGroups
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Food[] $foods
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Classification[] $classifications
+ * @property-read \App\Models\RecipeType $recipeType
  */
 class Recipe extends BaseModel
 {
