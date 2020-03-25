@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Food;
 use App\Repositories\Backend\Admin\RecipeRepository;
 use App\Http\Requests\Backend\Admin\Recipe\StoreRecipeRequest;
 use App\Http\Requests\Backend\Admin\Recipe\ManageRecipeRequest;
 use App\Http\Requests\Backend\Admin\Recipe\UpdateRecipeRequest;
 use JsValidator;
+use Request;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Recipe;
@@ -160,5 +162,23 @@ class RecipeController extends Controller
             })
             ->rawColumns(['actions'])
             ->make(true);
+    }
+
+    public function searchIngredients(){
+        $term = trim(request('q'));
+
+        if (empty($term)) {
+            return \Response::json([]);
+        }
+
+        $tags = Food::where('name','like','%'.$term.'%')->limit(20)->get(['id','name']);
+
+        $formatted_tags = [];
+
+        foreach ($tags as $tag) {
+            $formatted_tags[] = ['id' => $tag->id, 'text' => $tag->name];
+        }
+
+        return \Response::json($formatted_tags);
     }
 }

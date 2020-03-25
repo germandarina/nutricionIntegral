@@ -38,7 +38,7 @@ return [
     ],
 
     'general' => [
-        'cancel' => 'Cancelar',
+        'cancel' => 'Volver',
         'continue' => 'Continuar',
 
         'crud' => [

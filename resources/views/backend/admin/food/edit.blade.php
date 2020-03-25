@@ -31,5 +31,5 @@
 {{ html()->closeModelForm() }}
 @endsection
 @push('after-scripts')
-    {!! $validator !!} ssh
+    {!! $validator !!}
 @endpush

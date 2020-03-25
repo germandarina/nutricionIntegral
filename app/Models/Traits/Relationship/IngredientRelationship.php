@@ -4,14 +4,19 @@ namespace App\Models\Traits\Relationship;
 
 
 
+use App\Models\Food;
 use App\Models\Recipe;
 
 /**
- * Class RecipeTypeRelationship.
+ * Class IngredientRelationship.
  */
-trait RecipeTypeRelationship
+trait IngredientRelationship
 {
     public function recipe(){
         return $this->belongsTo(Recipe::class,'recipes');
+    }
+
+    public function food(){
+        return $this->belongsTo(Food::class,'foods');
     }
 }

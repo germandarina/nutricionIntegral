@@ -56,6 +56,7 @@
 
         @include('backend.includes.aside')
         @include('backend.modal-confirm')
+        @yield('modal-yield')
     </div><!--app-body-->
     @include('backend.includes.footer')
 
@@ -178,7 +179,8 @@
         $(".cuit").inputmask("99-99999999-9");
         $('.percentOptions').inputmask(percentOptions);
         $('.percentDecimalOptions').inputmask(percentDecimalOptions);
-        $('.select2 .select2-container .select2-container--default').css('width', '100% !important');
+        $('.select2 .select2-container .select2-container--default').css('width', '100%');
+        $("span.select2.select2-container.select2-container--default").css("width","100%");
     </script>
 
     @stack('after-scripts')
