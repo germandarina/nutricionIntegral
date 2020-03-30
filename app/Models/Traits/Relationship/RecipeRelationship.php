@@ -5,6 +5,7 @@ namespace App\Models\Traits\Relationship;
 
 
 use App\Models\Classification;
+use App\Models\Ingredient;
 use App\Models\RecipeType;
 
 /**
@@ -19,5 +20,9 @@ trait RecipeRelationship
 
     public function classifications(){
         return $this->belongsToMany(Classification::class,'classification_recipe');
+    }
+
+    public function ingredients(){
+        return $this->hasMany(Ingredient::class,'recipe_id');
     }
 }

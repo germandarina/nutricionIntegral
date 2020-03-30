@@ -6,14 +6,14 @@
 {{ html()->modelForm($recipe, 'PATCH', route('admin.recipe.update', $recipe))->class('form-horizontal')->open() }}
     <div class="card">
         <div class="card-body">
-            <div class="row">
-                <div class="col-sm-5">
-                    <h5 class="card-title mb-0">
-                        <small class="text-muted">Actualizar Recetas</small>
-                    </h5>
-                </div><!--col-->
-            </div><!--row-->
-            <hr>
+{{--            <div class="row">--}}
+{{--                <div class="col-sm-5">--}}
+{{--                    <h5 class="card-title mb-0">--}}
+{{--                        <small class="text-muted">Actualizar Recetas</small>--}}
+{{--                    </h5>--}}
+{{--                </div><!--col-->--}}
+{{--            </div><!--row-->--}}
+{{--            <hr>--}}
             @include('backend.admin.recipe.partials.form')
         </div>
         <div class="card-footer">
@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#largeModal">Agregar Ingredientes <icon class="fas fa-plus-circle"></icon></button>
+                    <button class="btn btn-success btn-sm" type="button" onclick="modalIngredientes(event)" >Agregar Ingredientes <icon class="fas fa-plus-circle"></icon></button>
                 </h5>
             </div><!--col-->
         </div><!--row-->
@@ -43,7 +43,7 @@
 </div>
 @endsection
 @section('modal-yield')
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="modalIngredientes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -71,10 +71,14 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
+                'paging':false,
+                "info":     false,
                 "buttons": [],
-                ajax: "{{ route('admin.recipe.index') }}",
+                ajax: "{{ route('admin.recipe.getIngredients',$recipe->id) }}",
                 columns: [
-                    {data: 'name', name: 'name'},
+                    {data: 'food.name', name: 'food.name'},
+                    {data: 'quantity_description', name: 'quantity_description'},
+                    {data: 'quantity_grs', name: 'quantity_grs'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });
@@ -87,7 +91,8 @@
                     dataType: 'json',
                     data: function (params) {
                         return {
-                            q: $.trim(params.term)
+                            q: $.trim(params.term),
+                            food_group_id: $("#food_group_id").val(),
                         };
                     },
                     processResults: function (data) {
@@ -102,7 +107,115 @@
 
         });
 
+        function limpiarModal() {
+            $("#food_group_id").select2("val",0);
+            $("#food_id").select2("val",0);
+            $("#quantity_description").val("");
+            $("#quantity_grs").val("");
+            $("#divComposicion").empty();
+        }
 
+        function modalIngredientes(event) {
+            event.preventDefault();
+            limpiarModal();
+            $("#modalIngredientes").modal("show");
+        }
+
+        function getComposicionBasica() {
+            var food_id = $("#food_id").val();
+            if(food_id != "" && food_id != null && food_id != undefined){
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:      '{{ route('admin.food.getComposicion') }}',
+                    type:     'POST',
+                    data:    {
+                        'food_id':food_id,
+                    },
+                    success: function(data) {
+                        var datos = data;
+                        $("#divComposicion").empty().html(datos);
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                        //alert('AJAX ERROR ! Check the console !');
+                        //console.error(errorThrown);
+                    }
+                });
+            }
+        }
+
+        function getComposicionCompleta(food_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.food.getComposicionCompleta') }}',
+                type:     'POST',
+                data:    {
+                    'food_id':food_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                    Swal.fire({
+                        title: '<strong>Composicion Completa</strong>',
+                        icon: 'info',
+                        html: datos,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        cancelButtonText: '',
+                        cancelButtonAriaLabel: 'Thumbs down'
+                    })
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function modificarComposicion(event,ingrediente_id) {
+            event.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.food.getComposicionCompleta') }}',
+                type:     'POST',
+                data:    {
+                    'food_id':food_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+
+        }
+        function eliminarComposicion(event,ingrediente_id) {
+            event.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.food.getComposicionCompleta') }}',
+                type:     'POST',
+                data:    {
+                    'food_id':food_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
     </script>
     {!! $validator !!}
 @endpush

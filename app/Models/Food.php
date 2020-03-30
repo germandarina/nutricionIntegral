@@ -34,7 +34,7 @@ class Food extends BaseModel
         'energia_kj',
         'energia_kcal',
         'agua',
-        'protenia',
+        'proteina',
         'grasa_total',
         'carbohidratos_totales',
         'cenizas',

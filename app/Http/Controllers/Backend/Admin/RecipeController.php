@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Food;
+use App\Models\Ingredient;
 use App\Repositories\Backend\Admin\RecipeRepository;
 use App\Http\Requests\Backend\Admin\Recipe\StoreRecipeRequest;
 use App\Http\Requests\Backend\Admin\Recipe\ManageRecipeRequest;
@@ -154,31 +155,31 @@ class RecipeController extends Controller
         return redirect()->route('admin.recipe.index');
     }
 
-    public function getIngredients($id){
-        $data = $this->recipeRepository->orderBy('name')->get();
+    public function getIngredients(Recipe $recipe){
+        $data =  Ingredient::with('food')->where('recipe_id',$recipe->id)->get();
         return Datatables::of($data)
             ->addColumn('actions', function($row){
-                return view('backend.admin.recipe.includes.datatable-buttons',compact('row'));
+                return view('backend.admin.recipe.includes.datatable-ingredients-buttons',compact('row'));
             })
             ->rawColumns(['actions'])
             ->make(true);
     }
 
     public function searchIngredients(){
-        $term = trim(request('q'));
-
-        if (empty($term)) {
+        $buscar = trim(request('q'));
+        $food_group_id = trim(request('food_group_id'));
+        if (empty($buscar)) {
             return \Response::json([]);
         }
-
-        $tags = Food::where('name','like','%'.$term.'%')->limit(20)->get(['id','name']);
-
-        $formatted_tags = [];
-
-        foreach ($tags as $tag) {
-            $formatted_tags[] = ['id' => $tag->id, 'text' => $tag->name];
+        $query = Food::where('foods.name','like',"%$buscar%");
+        if($food_group_id){
+            $query->where('food_group_id',$food_group_id);
         }
-
-        return \Response::json($formatted_tags);
+        $foods = $query->limit(20)->get(['id','name']);
+        $array_foods = [];
+        foreach ($foods as $food) {
+            $array_foods[] = ['id' => $food->id, 'text' => $food->name];
+        }
+        return \Response::json($array_foods);
     }
 }

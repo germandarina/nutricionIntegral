@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Admin\FoodRepository;
 use App\Http\Requests\Backend\Admin\Food\StoreFoodRequest;
@@ -165,7 +166,7 @@ class FoodController extends Controller
                     $alimento->energia_kj = empty($fila->energia_kj) || $fila->energia_kj == '...' ? 0 : (float) str_replace(',','.',$fila->energia_kj);
                     $alimento->energia_kcal = empty($fila->energia_kcal) || $fila->energia_kcal == '...' ? 0: (float) str_replace(',','.',$fila->energia_kcal);
                     $alimento->agua = empty($fila->agua) || $fila->agua == '...' ? 0: (float) str_replace(',','.',$fila->agua);
-                    $alimento->protenia = empty($fila->protenia) || $fila->protenia == '...' ? 0: (float) str_replace(',','.',$fila->protenia);
+                    $alimento->proteina = empty($fila->proteina) || $fila->proteina == '...' ? 0 : (float) str_replace(',','.', $fila->proteina);
                     $alimento->grasa_total = empty($fila->grasa_total) || $fila->grasa_total == '...' ? 0: (float) str_replace(',','.',$fila->grasa_total);
                     $alimento->carbohidratos_totales = empty($fila->carbohidratos_totales) || $fila->carbohidratos_totales == '...' ? 0: (float) str_replace(',','.',$fila->carbohidratos_totales);
                     $alimento->cenizas = empty($fila->cenizas) || $fila->cenizas == '...' ? 0: (float) str_replace(',','.',$fila->cenizas);
@@ -195,6 +196,24 @@ class FoodController extends Controller
         }catch (\Exception $exception){
             DB::rollBack();
             echo $exception->getMessage();
+        }
+    }
+
+    public function getComposicion(){
+        if(request('food_id')){
+            $food = Food::find(request('food_id'));
+            if($food){
+                return view('backend.admin.food.partials.table-composicion-modal',compact('food'));
+            }
+        }
+    }
+
+    public function getComposicionCompleta(){
+        if(request('food_id')){
+            $food = Food::find(request('food_id'));
+            if($food){
+                return view('backend.admin.food.partials.composicion-completa-modal',compact('food'));
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-2">
-        {{ html()->label('Energia Kj')
+        {{ html()->label('Energia (Kj)')
                  ->class('col-md-12 form-control-label')
                  ->for('energia_kj') }}
         {{ html()->text('energia_kj')
@@ -11,7 +11,7 @@
                  ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Energia Kcal')
+        {{ html()->label('Energia (Kcal)')
                  ->class('col-md-12 form-control-label')
                  ->for('energia_kcal') }}
         {{ html()->text('energia_kcal')
@@ -22,7 +22,7 @@
                 ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Agua')
+        {{ html()->label('Agua (g)')
                 ->class('col-md-12 form-control-label')
                 ->for('agua') }}
         {{ html()->text('agua')
@@ -33,10 +33,10 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Proteínas')
+        {{ html()->label('Proteínas (g)')
                  ->class('col-md-12 form-control-label')
-                 ->for('proteinas') }}
-        {{ html()->text('proteinas')
+                 ->for('proteina') }}
+        {{ html()->text('proteina')
             ->class('form-control numeric3Digits')
             ->placeholder('Proteínas')
             ->attribute('maxlength', 191)
@@ -44,7 +44,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Grasa Total')
+        {{ html()->label('Grasa Total (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('grasa_total') }}
         {{ html()->text('grasa_total')
@@ -55,7 +55,7 @@
                  ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Carbohidratos T')
+        {{ html()->label('Carbo Totales (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('carbohidratos_totales') }}
         {{ html()->text('carbohidratos_totales')
@@ -69,7 +69,7 @@
 <br>
 <div class="row">
     <div class="col-md-2">
-        {{ html()->label('Cenizas')
+        {{ html()->label('Cenizas (g)')
                 ->class('col-md-12 form-control-label')
                 ->for('cenizas') }}
         {{ html()->text('cenizas')
@@ -80,7 +80,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Sodio')
+        {{ html()->label('Sodio (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('sodio') }}
         {{ html()->text('sodio')
@@ -91,7 +91,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Potasio')
+        {{ html()->label('Potasio (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('potasio') }}
         {{ html()->text('potasio')
@@ -102,7 +102,7 @@
                  ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Calcio')
+        {{ html()->label('Calcio (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('calcio') }}
         {{ html()->text('calcio')
@@ -113,7 +113,7 @@
                 ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Fósforo')
+        {{ html()->label('Fósforo (mg)')
                 ->class('col-md-12 form-control-label')
                 ->for('fosforo') }}
         {{ html()->text('fosforo')
@@ -124,7 +124,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Hierro')
+        {{ html()->label('Hierro (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('hierro') }}
         {{ html()->text('hierro')
@@ -138,7 +138,7 @@
 <br>
 <div class="row">
     <div class="col-md-2">
-        {{ html()->label('Zinc')
+        {{ html()->label('Zinc (mg)')
                 ->class('col-md-12 form-control-label')
                 ->for('zing') }}
         {{ html()->text('zing')
@@ -149,7 +149,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Tiamina')
+        {{ html()->label('Tiamina (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('tiamina') }}
         {{ html()->text('tiamina')
@@ -160,7 +160,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Rivoflavina')
+        {{ html()->label('Rivoflavina (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('rivoflavina') }}
         {{ html()->text('rivoflavina')
@@ -171,7 +171,7 @@
                  ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Niacina')
+        {{ html()->label('Niacina (mg)')
                 ->class('col-md-12 form-control-label')
                 ->for('niacina') }}
         {{ html()->text('niacina')
@@ -182,7 +182,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Vitamina C')
+        {{ html()->label('Vitamina C (mg)')
                  ->class('col-md-12 form-control-label')
                  ->for('vitamina_c') }}
         {{ html()->text('vitamina_c')
@@ -193,7 +193,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Carbohidratos Disp')
+        {{ html()->label('Carbo Disp (g)')
                 ->class('col-md-12 form-control-label')
                 ->for('carbohidratos_disponibles') }}
         {{ html()->text('carbohidratos_disponibles')
@@ -208,7 +208,7 @@
 <div class="row">
 
     <div class="col-md-2">
-        {{ html()->label('Ac Grasos Satu')
+        {{ html()->label('A. Grasos Satu (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('ac_grasos_saturados') }}
         {{ html()->text('ac_grasos_saturados')
@@ -219,7 +219,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Ac Grasos Mono')
+        {{ html()->label('A. Grasos Mono (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('ac_grasos_monoinsaturados') }}
         {{ html()->text('ac_grasos_monoinsaturados')
@@ -230,7 +230,7 @@
                  ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Ac Grasos Poli')
+        {{ html()->label('A. Grasos Poli (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('ac_grasos_poliinsaturados') }}
         {{ html()->text('ac_grasos_poliinsaturados')
@@ -241,7 +241,7 @@
                 ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Colesterol')
+        {{ html()->label('Colesterol (mg)')
                 ->class('col-md-12 form-control-label')
                 ->for('colesterol') }}
         {{ html()->text('colesterol')

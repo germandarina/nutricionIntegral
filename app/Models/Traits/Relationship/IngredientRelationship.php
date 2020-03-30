@@ -13,10 +13,10 @@ use App\Models\Recipe;
 trait IngredientRelationship
 {
     public function recipe(){
-        return $this->belongsTo(Recipe::class,'recipes');
+        return $this->belongsTo(Recipe::class,'recipe_id');
     }
 
     public function food(){
-        return $this->belongsTo(Food::class,'foods');
+        return $this->belongsTo(Food::class,'food_id');
     }
 }

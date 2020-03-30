@@ -17,7 +17,7 @@ class AlterTableFoodAddColumns extends Migration
             $table->decimal('energia_kj',15,3)->default(0.00);
             $table->decimal('energia_kcal',15,3)->default(0.00);
             $table->decimal('agua',15,3)->default(0.00);
-            $table->decimal('protenia',15,3)->default(0.00);
+            $table->decimal('proteina',15,3)->default(0.00);
             $table->decimal('grasa_total',15,3)->default(0.00);
             $table->decimal('carbohidratos_totales',15,3)->default(0.00);
             $table->decimal('cenizas',15,3)->default(0.00);

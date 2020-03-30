@@ -1,4 +1,19 @@
 <div class="row">
+    {{ html()->label('Grupo de Alimento')
+               ->class('col-md-3 form-control-label')
+               ->for('food_group_id') }}
+    <div class="col-md-9">
+        {{ html()->select('food_group_id',\App\Models\FoodGroup::pluck('name','id'))
+            ->class('form-control')
+            ->placeholder('Seleccione...')
+            ->attribute("id","food_group_id")
+            ->required()
+            }}
+    </div><!--col-->
+</div>
+<br>
+
+<div class="row">
     {{ html()->label('Alimento')
                ->class('col-md-3 form-control-label')
                ->for('food_id') }}
@@ -7,11 +22,15 @@
             ->class('form-control')
             ->placeholder('Seleccione...')
             ->attribute("id","food_id")
+            ->attributes(['onchange'=>'getComposicionBasica()'])
             ->required()
             }}
     </div><!--col-->
 </div>
 <br>
+<div id="divComposicion">
+
+</div>
 <div class="row">
     {{ html()->label('Cantidad (Descripcion)')
                 ->class('col-md-3 form-control-label')

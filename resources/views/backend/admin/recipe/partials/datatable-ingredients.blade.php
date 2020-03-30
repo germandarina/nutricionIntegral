@@ -5,6 +5,8 @@
                 <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th>Cantidad Descripcion</th>
+                    <th>Cantidad Grs</th>
                     <th class="not-export-col">Acciones</th>
                 </tr>
                 </thead>

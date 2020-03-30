@@ -126,4 +126,8 @@ class RecipeRepository extends BaseRepository
         Session::flash('error','Error al restaurar receta. Intente nuevamente');
         throw new GeneralException('Error al restaurar receta. Intente nuevamente');
     }
+
+    public function getIngredients(){
+
+    }
 }
