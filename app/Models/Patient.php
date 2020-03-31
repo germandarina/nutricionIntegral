@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FoodGroup[] $foodGroups
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Food[] $foods
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Plan[] $plans
  */
 class Patient extends BaseModel
 {

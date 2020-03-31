@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ingredient newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ingredient query()
  * @mixin \Eloquent
+ * @property-read \App\Models\Food $food
+ * @property-read \App\Models\Recipe $recipe
  */
 class Ingredient extends BaseModel
 {

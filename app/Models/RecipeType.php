@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType query()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Recipe[] $recipes
  */
 class RecipeType extends BaseModel
 {

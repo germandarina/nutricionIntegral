@@ -3,18 +3,15 @@
 namespace App\Models\Auth;
 
 use App\Models\Traits\Uuid;
-use OwenIt\Auditing\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Auth\Traits\SendUserPasswordReset;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use OwenIt\Auditing\Contracts\Auditable as AuditableInterface;
 
 /**
  * Class User.
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
@@ -31,10 +28,9 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableInterface;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\BaseUser withoutTrashed()
  * @mixin \Eloquent
  */
-class BaseUser extends Authenticatable implements AuditableInterface
+class BaseUser extends Authenticatable
 {
-    use Auditable,
-        HasRoles,
+    use HasRoles,
         Notifiable,
         SendUserPasswordReset,
         SoftDeletes,

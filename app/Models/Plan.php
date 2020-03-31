@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Classification[] $classifications
  * @property-read \App\Models\RecipeType $recipeType
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ingredient[] $ingredients
  */
 class Plan extends BaseModel
 {

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FoodGroup query()
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Patient[] $patients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Food[] $foods
  */
 class FoodGroup extends BaseModel
 {
