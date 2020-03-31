@@ -16,7 +16,7 @@ trait FoodGroupRelationship
     }
 
     public function foods(){
-        return $this->hasMany(Food::class,'foods');
+        return $this->hasMany(Food::class,'food_group_id');
     }
 
 }

@@ -3,8 +3,8 @@
 namespace App\Models\Traits\Method;
 
 /**
- * Trait RecipeMethod.
+ * Trait PlanDetailMethod.
  */
-trait RecipeMethod
+trait PlanDetailMethod
 {
 }

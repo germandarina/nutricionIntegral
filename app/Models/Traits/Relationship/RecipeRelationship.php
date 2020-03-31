@@ -15,7 +15,7 @@ trait RecipeRelationship
 {
 
     public function recipeType(){
-        return $this->hasOne(RecipeType::class,'recipe_types');
+        return $this->belongsTo(RecipeType::class,'recipe_type_id');
     }
 
     public function classifications(){

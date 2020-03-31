@@ -11,7 +11,7 @@ use App\Models\Recipe;
  */
 trait RecipeTypeRelationship
 {
-    public function recipe(){
-        return $this->belongsTo(Recipe::class,'recipes');
+    public function recipes(){
+        return $this->hasMany(Recipe::class,'recipe_type_id');
     }
 }
