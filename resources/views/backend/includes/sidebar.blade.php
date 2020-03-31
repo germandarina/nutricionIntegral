@@ -1,34 +1,27 @@
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
-            <li class="nav-title">
-                @lang('menus.backend.sidebar.general')
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{
-                    active_class(Active::checkUriPattern('admin/dashboard'))
-                }}" href="{{ route('admin.dashboard') }}">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    @lang('menus.backend.sidebar.dashboard')
-                </a>
-            </li>
+{{--            <li class="nav-title">--}}
+{{--                @lang('menus.backend.sidebar.general')--}}
+{{--            </li>--}}
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link {{--}}
+{{--                    active_class(Active::checkUriPattern('admin/dashboard'))--}}
+{{--                }}" href="{{ route('admin.dashboard') }}">--}}
+{{--                    <i class="nav-icon fas fa-tachometer-alt"></i>--}}
+{{--                    @lang('menus.backend.sidebar.dashboard')--}}
+{{--                </a>--}}
+{{--            </li>--}}
 
-            <li class="nav-title">
-                @lang('menus.backend.sidebar.system')
-            </li>
+{{--            <li class="nav-title">--}}
+{{--                @lang('menus.backend.sidebar.system')--}}
+{{--            </li>--}}
 
             @if ($logged_in_user->isAdmin())
                 <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/log-viewer*'), 'open') }}">
                     <a class="nav-link nav-dropdown-toggle {{active_class(Active::checkUriPattern('admin/*')) }}" href="#">
                         <i class="nav-icon fas fa-list"></i> Administración
                     </a>
-{{--                    <ul class="nav-dropdown-items">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/employee'))}}" href="{{ route('admin.employee.index') }}">--}}
-{{--                                Empleados--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link {{active_class(Active::checkUriPattern('admin/patient'))}}" href="{{ route('admin.patient.index') }}">
@@ -36,6 +29,18 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/recipe'))}}" href="{{ route('admin.recipe.index') }}">
+                                Recetas
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/log-viewer*'), 'open') }}">
+                    <a class="nav-link nav-dropdown-toggle {{active_class(Active::checkUriPattern('admin/*')) }}" href="#">
+                        <i class="nav-icon fas fa-list"></i> Configuración
+                    </a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link {{active_class(Active::checkUriPattern('admin/food-group'))}}" href="{{ route('admin.food-group.index') }}">
@@ -50,51 +55,44 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/recipe'))}}" href="{{ route('admin.recipe.index') }}">
-                                Recetas
-                            </a>
-                        </li>
-                    </ul>
                 </li>
 
-                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">
-                    <a class="nav-link nav-dropdown-toggle {{
-                        active_class(Active::checkUriPattern('admin/auth*'))
-                    }}" href="#">
-                        <i class="nav-icon far fa-user"></i>
-                        Gestion de Acceso
+{{--                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">--}}
+{{--                    <a class="nav-link nav-dropdown-toggle {{--}}
+{{--                        active_class(Active::checkUriPattern('admin/auth*'))--}}
+{{--                    }}" href="#">--}}
+{{--                        <i class="nav-icon far fa-user"></i>--}}
+{{--                        Gestion de Acceso--}}
 {{--                        @lang('menus.backend.access.title')--}}
 
-                        @if ($pending_approval > 0)
-                            <span class="badge badge-danger">{{ $pending_approval }}</span>
-                        @endif
-                    </a>
+{{--                        @if ($pending_approval > 0)--}}
+{{--                            <span class="badge badge-danger">{{ $pending_approval }}</span>--}}
+{{--                        @endif--}}
+{{--                    </a>--}}
 
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link {{
-                                active_class(Active::checkUriPattern('admin/auth/user*'))
-                            }}" href="{{ route('admin.auth.user.index') }}">
-                                Usuarios
+{{--                    <ul class="nav-dropdown-items">--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a class="nav-link {{--}}
+{{--                                active_class(Active::checkUriPattern('admin/auth/user*'))--}}
+{{--                            }}" href="{{ route('admin.auth.user.index') }}">--}}
+{{--                                Usuarios--}}
 {{--                                @lang('labels.backend.access.users.management')--}}
 
-                                @if ($pending_approval > 0)
-                                    <span class="badge badge-danger">{{ $pending_approval }}</span>
-                                @endif
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{
-                                active_class(Active::checkUriPattern('admin/auth/role*'))
-                            }}" href="{{ route('admin.auth.role.index') }}">
-                                Roles
+{{--                                @if ($pending_approval > 0)--}}
+{{--                                    <span class="badge badge-danger">{{ $pending_approval }}</span>--}}
+{{--                                @endif--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a class="nav-link {{--}}
+{{--                                active_class(Active::checkUriPattern('admin/auth/role*'))--}}
+{{--                            }}" href="{{ route('admin.auth.role.index') }}">--}}
+{{--                                Roles--}}
 {{--                                @lang('labels.backend.access.roles.management')--}}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
 
                 <li class="divider"></li>
 

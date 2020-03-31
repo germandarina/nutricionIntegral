@@ -13,8 +13,10 @@ class InsertRecipeTypesDefaultValues extends Migration
      */
     public function up()
     {
-        DB::insert('insert into recipe_types(id,name) values (1,"Almuerzo/Cena")');
-        DB::insert('insert into recipe_types(id,name) values (2,"Desayuno/Merienda")');
+        DB::insert('insert into recipe_types(id,name) values (1,"Almuerzo")');
+        DB::insert('insert into recipe_types(id,name) values (2,"Cena")');
+        DB::insert('insert into recipe_types(id,name) values (3,"Desayuno")');
+        DB::insert('insert into recipe_types(id,name) values (4,"Merienda")');
         DB::insert('insert into recipe_types(id,name) values (3,"Colación")');
     }
 
