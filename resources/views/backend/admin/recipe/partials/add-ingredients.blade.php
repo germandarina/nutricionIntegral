@@ -57,5 +57,5 @@
             ->value(0)
             ->autofocus() }}
     </div><!--col-->
-
 </div>
+<input type="hidden" id="ingredient_id" name="ingredient_id">

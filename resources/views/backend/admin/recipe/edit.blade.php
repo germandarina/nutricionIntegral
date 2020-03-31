@@ -55,7 +55,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-                    <button class="btn btn-primary" type="button">Agregar</button>
+                    <button class="btn btn-primary" type="button" onclick="agregarIngrediente(event)">Agregar</button>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
     @include('datatables.includes')
     <script>
         $(function () {
-            $('.data-table').DataTable({
+            $('#table-ingredients').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
@@ -112,6 +112,7 @@
             $("#food_id").select2("val",0);
             $("#quantity_description").val("");
             $("#quantity_grs").val("");
+            $("#ingredient_id").val("");
             $("#divComposicion").empty();
         }
 
@@ -177,42 +178,116 @@
             });
         }
 
-        function modificarComposicion(event,ingrediente_id) {
+        function agregarIngrediente(event) {
+            event.preventDefault();
+            var food_id = $("#food_id").val();
+            var quantity_d = $("#quantity_description").val();
+            var quantity_grs = $("#quantity_grs").val();
+            if(food_id == null || food_id == undefined || food_id == ""){
+                return Lobibox.notify('error',{msg:'Seleccione un alimento'});
+            }
+            if(quantity_d == null || quantity_d == undefined || quantity_d == ""){
+                return Lobibox.notify('error',{msg:'Ingrese una descripcion de cantidades'});
+            }
+            if(quantity_grs == null || quantity_grs == undefined || quantity_grs == ""){
+                quantity_grs = 0;
+            }
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.recipe.addIngredients', $recipe->id) }}',
+                type:     'POST',
+                data:    {
+                    'food_id':food_id,
+                    'quantity_description' : quantity_d,
+                    'quantity_grs' :  quantity_grs,
+                },
+                success: function(data) {
+                    var datos = data;
+                    Lobibox.notify('success',{msg: datos.mensaje});
+                    limpiarModal();
+                    $('#table-ingredients').DataTable().ajax.reload();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if(xhr.status == 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
+                }
+            });
+        }
+
+        function modificarIngrediente(event,ingrediente_id) {
             event.preventDefault();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:      '{{ route('admin.food.getComposicionCompleta') }}',
+                url:      '{{ route('admin.recipe.getIngredient') }}',
                 type:     'POST',
                 data:    {
-                    'food_id':food_id,
+                    'ingredient_id':ingrediente_id,
                 },
                 success: function(data) {
                     var datos = data;
+                    $("#food_group_id").select2("val",0);
+                    var $newOption = $("<option selected='selected'></option>").val(datos.ingredient.food_id).text(datos.food.name);
+                    $("#food_id").append($newOption).trigger('change');
+
+                    //$('#food_id').select2('data', {id: datos.food_id, text: 'res_data.primary_email'});
+                    //$("#food_id").select2("val",datos.food_id);
+                    $("#quantity_description").val(datos.ingredient.quantity_description);
+                    $("#quantity_grs").val(datos.ingredient.quantity_grs);
+                    $("#ingredient_id").val(datos.ingredient.id);
+                    $("#modalIngredientes").modal("show");
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                    if(xhr.status == 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
                 }
             });
 
         }
-        function eliminarComposicion(event,ingrediente_id) {
+        function eliminarIngrediente(event,ingrediente_id) {
             event.preventDefault();
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url:      '{{ route('admin.food.getComposicionCompleta') }}',
-                type:     'POST',
-                data:    {
-                    'food_id':food_id,
-                },
-                success: function(data) {
-                    var datos = data;
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+
+            Swal.fire({
+                title: 'Esta seguro de realizar esta accion?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText : 'No',
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:      '{{ route('admin.recipe.deleteIngredient') }}',
+                        type:     'DELETE',
+                        data:    {
+                            'ingredient_id':ingrediente_id,
+                        },
+                        success: function(data) {
+                            var datos = data;
+                            Swal.fire(
+                                datos.mensaje,
+                                '',
+                                'success'
+                            );
+                            $('#table-ingredients').DataTable().ajax.reload();
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                        }
+                    });
                 }
             });
         }

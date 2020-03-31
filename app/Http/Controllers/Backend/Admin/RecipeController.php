@@ -182,4 +182,43 @@ class RecipeController extends Controller
         }
         return \Response::json($array_foods);
     }
+
+    public function addIngredients(Recipe $recipe){
+        if(request('food_id')){
+            $ingredient_exist = Ingredient::where('recipe_id',$recipe->id)
+                                            ->where('food_id',request('food_id'))
+                                            ->first();
+            if($ingredient_exist){
+                return response()->json(['error'=>'El alimento que intenta agregar ya esta en la receta'],422);
+            }
+            $this->recipeRepository->addIngredient($recipe,request());
+            return response()->json(['mensaje'=>'Ingrediente agregado'],200);
+        }
+        return App::abort(422);
+    }
+
+    public function deleteIngredient(){
+        if(request('ingredient_id')){
+            $ingredient = Ingredient::find(request('ingredient_id'));
+            if($ingredient){
+                if(!$ingredient->delete()){
+                    return response()->json(['error'=>'Error al eliminar ingrediente'],422);
+                }
+                return response()->json(['mensaje'=>'Ingrediente eliminado'],200);
+            }
+            return App::abort(422);
+        }
+        return App::abort(422);
+    }
+
+    public function getIngredient(){
+        if(request('ingredient_id')){
+            $ingredient = Ingredient::find(request('ingredient_id'));
+            if($ingredient){
+                return ['ingredient'=>$ingredient,'food'=>$ingredient->food];
+            }
+            return App::abort(422);
+        }
+        return App::abort(422);
+    }
 }

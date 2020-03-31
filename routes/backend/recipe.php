@@ -8,7 +8,8 @@ Route::get('recipe', [RecipeController::class, 'index'])->name('recipe.index');
 Route::get('recipe/create', [RecipeController::class, 'create'])->name('recipe.create');
 Route::post('recipe', [RecipeController::class, 'store'])->name('recipe.store');
 Route::get('recipe/search-ingredients', [RecipeController::class, 'searchIngredients'])->name('recipe.searchIngredients');
-
+Route::delete('recipe/delete-ingredient', [RecipeController::class, 'deleteIngredient'])->name('recipe.deleteIngredient');
+Route::post('recipe/get-ingredient', [RecipeController::class, 'getIngredient'])->name('recipe.getIngredient');
 
 Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::get('edit', [RecipeController::class, 'edit'])->name('recipe.edit');
@@ -16,4 +17,6 @@ Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::post('destroy', [RecipeController::class, 'destroy'])->name('recipe.destroy');
     Route::post('restore', [RecipeController::class, 'restore'])->name('recipe.restore');
     Route::get('/get-ingredients', [RecipeController::class, 'getIngredients'])->name('recipe.getIngredients');
+    Route::post('/add-ingredients', [RecipeController::class, 'addIngredients'])->name('recipe.addIngredients');
+
 });

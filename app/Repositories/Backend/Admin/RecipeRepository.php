@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Backend\Admin;
 
+use App\Models\Ingredient;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
@@ -127,7 +128,20 @@ class RecipeRepository extends BaseRepository
         throw new GeneralException('Error al restaurar receta. Intente nuevamente');
     }
 
-    public function getIngredients(){
+    public function addIngredient(Recipe $recipe,$data){
+        if (!auth()->user()->isAdmin()) {
+            Session::flash('error','No tiene permiso para realizar esta acción');
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
 
+        return DB::transaction(function () use ($recipe, $data) {
+            $ingredient = new Ingredient();
+            $data['recipe_id'] = $recipe->id;
+            $ingredient->fill($data->all());
+            if (!$ingredient->save()) {
+                throw new GeneralException('Error al agregar ingrediente. Intente nuevamente',422);
+            }
+            return $ingredient;
+        });
     }
 }

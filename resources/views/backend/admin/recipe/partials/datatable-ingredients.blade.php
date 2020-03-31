@@ -1,7 +1,7 @@
 <div class="row mt-4" style="margin-top: 0px !important;">
     <div class="col">
         <div class="table-responsive">
-            <table class="table data-table">
+            <table class="table data-table" id="table-ingredients">
                 <thead>
                 <tr>
                     <th>Nombre</th>
