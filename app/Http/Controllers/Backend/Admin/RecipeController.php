@@ -185,14 +185,19 @@ class RecipeController extends Controller
 
     public function addIngredients(Recipe $recipe){
         if(request('food_id')){
-            $ingredient_exist = Ingredient::where('recipe_id',$recipe->id)
-                                            ->where('food_id',request('food_id'))
-                                            ->first();
-            if($ingredient_exist){
-                return response()->json(['error'=>'El alimento que intenta agregar ya esta en la receta'],422);
+            if(request('ingredient_id')){
+                $this->recipeRepository->updateIngredient(request()->all());
+                return response()->json(['mensaje'=>'Ingrediente actualizado'],200);
+            }else{
+                $ingredient_exist = Ingredient::where('recipe_id',$recipe->id)
+                    ->where('food_id',request('food_id'))
+                    ->first();
+                if($ingredient_exist){
+                    return response()->json(['error'=>'El alimento que intenta agregar ya esta en la receta'],422);
+                }
+                $this->recipeRepository->addIngredient($recipe,request());
+                return response()->json(['mensaje'=>'Ingrediente agregado'],200);
             }
-            $this->recipeRepository->addIngredient($recipe,request());
-            return response()->json(['mensaje'=>'Ingrediente agregado'],200);
         }
         return App::abort(422);
     }

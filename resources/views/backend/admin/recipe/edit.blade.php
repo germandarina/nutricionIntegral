@@ -55,7 +55,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-                    <button class="btn btn-primary" type="button" onclick="agregarIngrediente(event)">Agregar</button>
+                    <button id="btnGuardar" class="btn btn-primary" type="button" onclick="agregarIngrediente(event)">Agregar</button>
                 </div>
             </div>
         </div>
@@ -119,6 +119,8 @@
         function modalIngredientes(event) {
             event.preventDefault();
             limpiarModal();
+            $(".modal-title").empty().html("Agregar Ingredientes");
+            $("#btnGuardar").empty().html("Agregar");
             $("#modalIngredientes").modal("show");
         }
 
@@ -140,8 +142,6 @@
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
-                        //alert('AJAX ERROR ! Check the console !');
-                        //console.error(errorThrown);
                     }
                 });
             }
@@ -183,6 +183,8 @@
             var food_id = $("#food_id").val();
             var quantity_d = $("#quantity_description").val();
             var quantity_grs = $("#quantity_grs").val();
+            var ingredient_id = $("#ingredient_id").val();
+
             if(food_id == null || food_id == undefined || food_id == ""){
                 return Lobibox.notify('error',{msg:'Seleccione un alimento'});
             }
@@ -191,6 +193,10 @@
             }
             if(quantity_grs == null || quantity_grs == undefined || quantity_grs == ""){
                 quantity_grs = 0;
+            }
+
+            if(ingredient_id == null || ingredient_id == undefined || ingredient_id == ""){
+                ingredient_id = 0;
             }
             $.ajax({
                 headers: {
@@ -202,6 +208,7 @@
                     'food_id':food_id,
                     'quantity_description' : quantity_d,
                     'quantity_grs' :  quantity_grs,
+                    'ingredient_id' : ingredient_id
                 },
                 success: function(data) {
                     var datos = data;
@@ -221,6 +228,8 @@
 
         function modificarIngrediente(event,ingrediente_id) {
             event.preventDefault();
+            $(".modal-title").empty().html("Editar Ingredientes");
+            $("#btnGuardar").empty().html("Editar");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -235,9 +244,6 @@
                     $("#food_group_id").select2("val",0);
                     var $newOption = $("<option selected='selected'></option>").val(datos.ingredient.food_id).text(datos.food.name);
                     $("#food_id").append($newOption).trigger('change');
-
-                    //$('#food_id').select2('data', {id: datos.food_id, text: 'res_data.primary_email'});
-                    //$("#food_id").select2("val",datos.food_id);
                     $("#quantity_description").val(datos.ingredient.quantity_description);
                     $("#quantity_grs").val(datos.ingredient.quantity_grs);
                     $("#ingredient_id").val(datos.ingredient.id);

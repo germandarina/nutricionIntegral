@@ -144,4 +144,19 @@ class RecipeRepository extends BaseRepository
             return $ingredient;
         });
     }
+
+    public function updateIngredient($data){
+        if (!auth()->user()->isAdmin()) {
+            Session::flash('error','No tiene permiso para realizar esta acción');
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
+
+        return DB::transaction(function () use ($data) {
+            $ingredient = Ingredient::find($data['ingredient_id']);
+            if (!$ingredient->update($data)) {
+                throw new GeneralException('Error al actualizar ingrediente. Intente nuevamente',422);
+            }
+            return $ingredient;
+        });
+    }
 }
