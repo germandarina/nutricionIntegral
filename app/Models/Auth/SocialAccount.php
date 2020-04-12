@@ -15,9 +15,9 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount query()
  * @mixin \Eloquent
  */
-class SocialAccount extends Model implements AuditableContract
+class SocialAccount extends Model //implements AuditableContract
 {
-    use Auditable;
+//    use Auditable;
 
     /**
      * The database table used by the model.
