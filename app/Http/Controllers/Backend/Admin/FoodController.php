@@ -121,7 +121,7 @@ class FoodController extends Controller
         }
 
         $this->foodRepository->deleteById($food->id);
-        Session::flash('success','Empelado Eliminado');
+        Session::flash('success','Alimento Eliminado');
         return redirect()->route('admin.food.index');
     }
 

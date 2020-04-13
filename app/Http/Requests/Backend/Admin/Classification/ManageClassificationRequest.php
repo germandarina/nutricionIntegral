@@ -5,7 +5,7 @@ namespace App\Http\Requests\Backend\Admin\Classification;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class ManageRoleRequest.
+ * Class ManageClassificationRequest.
  */
 class ManageClassificationRequest extends FormRequest
 {

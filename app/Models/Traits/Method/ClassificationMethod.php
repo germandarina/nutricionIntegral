@@ -3,7 +3,7 @@
 namespace App\Models\Traits\Method;
 
 /**
- * Trait PatientMethod.
+ * Trait ClassificationMethod.
  */
 trait ClassificationMethod
 {

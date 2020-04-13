@@ -119,7 +119,7 @@ class FoodGroupController extends Controller
         }
 
         $this->foodGroupRepository->deleteById($food_group->id);
-        Session::flash('success','Empelado Eliminado');
+        Session::flash('success','Grupo de Alimento Eliminado');
         return redirect()->route('admin.food-group.index');
     }
 

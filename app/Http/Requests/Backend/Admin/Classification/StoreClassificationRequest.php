@@ -5,7 +5,7 @@ namespace App\Http\Requests\Backend\Admin\Classification;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class StoreRoleRequest.
+ * Class StoreClassificationRequest.
  */
 class StoreClassificationRequest extends FormRequest
 {

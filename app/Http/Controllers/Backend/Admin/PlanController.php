@@ -121,7 +121,7 @@ class PlanController extends Controller
         }
 
         $this->planRepository->deleteById($plan->id);
-        Session::flash('success','Empelado Eliminado');
+        Session::flash('success','Plan Eliminado');
         return redirect()->route('admin.plan.index');
     }
 

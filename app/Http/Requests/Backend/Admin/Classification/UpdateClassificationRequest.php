@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Class UpdateRoleRequest.
+ * Class UpdateClassificationRequest.
  */
 class UpdateClassificationRequest extends FormRequest
 {

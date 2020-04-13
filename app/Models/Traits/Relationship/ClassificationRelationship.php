@@ -8,16 +8,16 @@ use App\Models\Patient;
 use App\Models\Recipe;
 
 /**
- * Class PatientRelationship.
+ * Class ClassificationRelationship.
  */
 trait ClassificationRelationship
 {
 
     public function patients(){
-        return $this->hasOne(Patient::class,'classification_patient');
+        return $this->belongsToMany(Patient::class,'classification_patient','classification_id');
     }
 
     public function recipes(){
-        return $this->belongsToMany(Recipe::class,'classfication_recipe');
+        return $this->belongsToMany(Recipe::class,'classfication_recipe','classification_id');
     }
 }

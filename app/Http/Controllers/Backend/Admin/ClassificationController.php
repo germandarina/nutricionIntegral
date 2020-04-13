@@ -70,7 +70,7 @@ class ClassificationController extends Controller
     public function store(StoreClassificationRequest $request)
     {
         $this->classificationRepository->create($request->all());
-        Session::flash('success','Clasificacion Creado');
+        Session::flash('success','Clasificacion Creada');
         return redirect()->route('admin.classification.index');
     }
 
@@ -100,7 +100,7 @@ class ClassificationController extends Controller
     public function update(UpdateClassificationRequest $request, Classification $classification)
     {
         $this->classificationRepository->update($request->all(), $classification);
-        Session::flash('success','Clasificacion Actualizado');
+        Session::flash('success','Clasificacion Actualizada');
         return redirect()->route('admin.classification.index');
     }
 
@@ -119,7 +119,7 @@ class ClassificationController extends Controller
         }
 
         $this->classificationRepository->deleteById($classification->id);
-        Session::flash('success','Empelado Eliminado');
+        Session::flash('success','Clasificación Eliminada');
         return redirect()->route('admin.classification.index');
     }
 
@@ -148,7 +148,7 @@ class ClassificationController extends Controller
     {
         $classification = Classification::onlyTrashed()->find($id);
         $this->classificationRepository->restore($classification);
-        Session::flash('success','Clasificacion restaurado');
+        Session::flash('success','Clasificacion restaurada');
         return redirect()->route('admin.classification.index');
     }
 }

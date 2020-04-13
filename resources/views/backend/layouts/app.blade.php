@@ -92,8 +92,6 @@
 
         Lobibox.notify.DEFAULTS = $.extend({}, Lobibox.notify.DEFAULTS, notifyOptions);
 
-
-
         //Esta funcion deshabilita el enter en para hacer un submit del formulario
         $(document).on("keypress", "form", function(event) {
             return event.keyCode != 13;

@@ -121,7 +121,7 @@ class PatientController extends Controller
         }
 
         $this->patientRepository->deleteById($patient->id);
-        Session::flash('success','Empelado Eliminado');
+        Session::flash('success','Paciente Eliminado');
         return redirect()->route('admin.patient.index');
     }
 
