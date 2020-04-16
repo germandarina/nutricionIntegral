@@ -19,7 +19,7 @@
                     <div class="nav-tabs-boxed">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home-1" role="tab" aria-controls="home">Datos Personales</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile">Alimentos</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile">Clasificación y Alimentos</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="home-1" role="tabpanel">

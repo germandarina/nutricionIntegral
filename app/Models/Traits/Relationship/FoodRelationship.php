@@ -13,7 +13,7 @@ trait FoodRelationship
 {
     public function patients()
     {
-        return $this->belongsToMany(Patient::class,'food_patient');
+        return $this->belongsToMany(Patient::class,'food_patient','food_id');
     }
 
     public function foodGroup(){

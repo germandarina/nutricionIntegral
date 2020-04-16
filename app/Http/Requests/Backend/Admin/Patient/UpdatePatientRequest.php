@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Backend\Admin\Patient;
 
+use App\Rules\MultiSelect;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -38,6 +39,9 @@ class UpdatePatientRequest extends FormRequest
             'phone' => ['required', 'max:15','min:7'],
             'email' => ['max:100','email',Rule::unique('patients')->ignore($id,'id'),'min:10'],
             'address' => ['required', 'max:200','min:10'],
+            'classification_id'=>['array','min:1'],
+            'food_group_id'=>['array'],
+            'food_id'=>['array'],
         ];
     }
 
@@ -68,6 +72,7 @@ class UpdatePatientRequest extends FormRequest
             'age.integer'=>'La edad debe ser un numero entero',
             'motive.required'=>'El motivo es obligatorio',
             'number_of_children' =>'La cantidad de hijos es obligatoria',
+            'classification_id.required'=>'La clasificación es obligatoria',
         ];
     }
 }

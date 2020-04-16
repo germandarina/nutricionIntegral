@@ -27,6 +27,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\BaseUser withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\BaseUser withoutTrashed()
  * @mixin \Eloquent
+ * @property-read int|null $notifications_count
+ * @property-read int|null $permissions_count
+ * @property-read int|null $roles_count
  */
 class BaseUser extends Authenticatable
 {

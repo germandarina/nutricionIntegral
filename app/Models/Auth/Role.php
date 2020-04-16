@@ -31,10 +31,30 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\Role withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Auth\Role withoutTrashed()
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $name
+ * @property string $guard_name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string|null $created_by
+ * @property string|null $updated_by
+ * @property string|null $deleted_by
+ * @property-read int|null $permissions_count
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereGuardName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereUpdatedBy($value)
  */
-class Role extends SpatieRole implements AuditableContract
+class Role extends SpatieRole //implements AuditableContract
 {
-    use Auditable,
+    use //Auditable,
         RoleAttribute,
         RoleMethod,
         SoftDeletes;

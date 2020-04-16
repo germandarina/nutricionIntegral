@@ -89,8 +89,8 @@ class PatientController extends Controller
         $validator = JsValidator::formRequest(UpdatePatientRequest::class);
         $foods = $patient->foods->pluck('id');
         $food_groups = $patient->foodGroups->pluck('id');
-
-        return view('backend.admin.patient.edit',compact('patient','validator','foods','food_groups'));
+        $classifications = $patient->classifications->pluck('id');
+        return view('backend.admin.patient.edit',compact('patient','validator','foods','food_groups','classifications'));
     }
 
     /**

@@ -16,6 +16,23 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType query()
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Recipe[] $recipes
+ * @property int $id
+ * @property string $name
+ * @property string|null $created_by
+ * @property string|null $updated_by
+ * @property string|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read int|null $recipes_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RecipeType whereUpdatedBy($value)
  */
 class RecipeType extends BaseModel
 {

@@ -74,8 +74,17 @@ class PatientRepository extends BaseRepository
                 Session::flash('error','Error al actualizar paciente. Intente nuevamente');
                 throw new GeneralException('Error al actualizar paciente. Intente nuevamente');
             }
-            $patient->foodGroups()->sync($data['food_group_id']);
-            $patient->foods()->sync($data['food_id']);
+            if(isset($data['food_group_id'])){
+                $patient->foodGroups()->sync($data['food_group_id']);
+            }
+            if(isset($data['food_id'])){
+                $patient->foods()->sync($data['food_id']);
+            }
+            if(!isset($data['classification_id'])){
+                Session::flash('error','Seleccione al menos 1 valor para clasificacion');
+                throw new GeneralException('Seleccione al menos 1 valor para clasificacion');
+            }
+            $patient->classifications()->sync($data['classification_id']);
             return $patient;
         });
     }
