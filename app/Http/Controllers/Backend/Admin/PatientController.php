@@ -153,4 +153,14 @@ class PatientController extends Controller
         Session::flash('success','Paciente restaurado');
         return redirect()->route('admin.patient.index');
     }
+
+    public function searchPatients(){
+        $buscar = trim(request('q'));
+        $query = Patient::fullText($buscar);
+        $patients = $query->limit(20)->get(["id","full_name","document"])->toArray();
+        $patients = array_map(function ($item){
+                                return ['id' => $item['id'], 'text' => $item['full_name']];
+                            }, $patients);
+        return \Response::json($patients);
+    }
 }

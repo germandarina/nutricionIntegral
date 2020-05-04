@@ -18,7 +18,7 @@ class CreateTableRecipes extends Migration
             $table->string('name',200);
             $table->unsignedBigInteger('recipe_type_id');
             $table->foreign('recipe_type_id')->references('id')->on('recipe_types')->onDelete('cascade');
-            $table->string('observation',200);
+            $table->string('observation',200)->nullable()->default(NULL);
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();

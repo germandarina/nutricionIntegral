@@ -30,7 +30,7 @@ class UpdatePlanRequest extends FormRequest
         return [
             'name' => ['required', 'max:200','min:6'],
             'patient_id' => ['required'], // agregar validacion de si existe en la tabla food_group
-            'days' =>['required|numeric']
+            'days' =>['required','numeric']
         ];
     }
 
@@ -42,6 +42,7 @@ class UpdatePlanRequest extends FormRequest
             'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
             'patient_id.required'=>'El grupo de alimentos es obligatorio',
             'days.required' =>'La cantidad de días es requerida',
+            'days.numeric' => 'Debe ingresar el número de días',
         ];
     }
 }

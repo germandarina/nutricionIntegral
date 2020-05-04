@@ -32,4 +32,31 @@
 @endsection
 @push('after-scripts')
     {!! $validator !!}
+
+    <script>
+        $(function () {
+            $('#patient_id').select2({
+                placeholder: "Buscar paciente...",
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{ route('admin.patient.searchPatients') }}",
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            q: $.trim(params.term),
+                            // food_group_id: $("#food_group_id").val(),
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+            $("span.select2.select2-container.select2-container--default").css("width","100%");
+        });
+
+    </script>
 @endpush

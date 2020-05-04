@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Planes <small class="text-muted">Grupo de Planes Activos</small>
+                    Administración de Planes <small class="text-muted">Planes Activos</small>
                 </h5>
             </div><!--col-->
 
@@ -23,7 +23,9 @@
                     <table class="table data-table">
                         <thead>
                         <tr>
-                            <th>Nombre</th>
+                            <th>Paciente</th>
+                            <th>Nombre Plan</th>
+                            <th>Cant. Días</th>
                             <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
@@ -46,7 +48,9 @@
                 "draw": true,
                 ajax: "{{ route('admin.plan.index') }}",
                 columns: [
+                    {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
+                    {data: 'days', name: 'days'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });

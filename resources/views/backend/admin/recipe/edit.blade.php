@@ -67,6 +67,7 @@
     @include('datatables.includes')
     <script>
         $(function () {
+
             $('#table-ingredients').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -80,7 +81,17 @@
                     {data: 'quantity_description', name: 'quantity_description'},
                     {data: 'quantity_grs', name: 'quantity_grs'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
-                ]
+                ],
+                "footerCallback": function ( row, data, start, end, display ) {
+
+                    // sirve? buscar ocmo hacer  un footer
+                    var api = this.api(), data;
+
+                    // Update footer
+                    $( api.column( 4 ).footer() ).html(
+                        '$'+pageTotal +' ( $'+ total +' total)'
+                    );
+                }
             });
 
             $('#food_id').select2({

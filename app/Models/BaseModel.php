@@ -22,6 +22,13 @@ class BaseModel extends Model
 {
     use SoftDeletes;
 
+    /**
+     * Columnas a utilizar con un índice de full text search
+     *
+     * @var array
+     */
+    protected $columns_full_text = [];
+
     public static function boot()
     {
         parent::boot();
@@ -55,5 +62,46 @@ class BaseModel extends Model
 
         });
 
+    }
+
+    public function scopeFullText($query, $term, $or = false)
+    {
+        // armar array si es mas de una columna implode(',' , ['campo1', 'campo2', '...'])
+
+        $columns = implode(',' , $this->columns_full_text);
+
+        $match = "MATCH ({$columns}) AGAINST (? IN BOOLEAN MODE)";
+
+        $pattern = $this->fullTextWildcards($term);
+
+        if ($or)
+            $query->orWhereRaw($match , $pattern);
+        else
+            $query->whereRaw($match, $pattern);
+
+        return $query;
+    }
+
+    protected function fullTextWildcards($term)
+    {
+        // removing symbols used by MySQL
+        $reservedSymbols = ['-', '+', '<', '>', '@', '(', ')', '~'];
+        $term = str_replace($reservedSymbols, '', $term);
+
+        $words = explode(' ', $term);
+
+        foreach($words as $key => $word) {
+            /*
+             * applying + operator (required word) only big words
+             * because smaller ones are not indexed by mysql
+             */
+            if(strlen($word) >= 3) {
+                $words[$key] = '+' . $word . '*';
+            }
+        }
+
+        $searchTerm = implode( ' ', $words);
+
+        return [$searchTerm];
     }
 }

@@ -85,6 +85,7 @@ class Food extends BaseModel
         FoodRelationship;
 
     public $table = 'foods';
+    protected $columns_full_text  = ['name'];
 
     protected $dates = [
         'updated_at',
@@ -116,6 +117,7 @@ class Food extends BaseModel
         'ac_grasos_saturados',
         'ac_grasos_monoinsaturados',
         'ac_grasos_poliinsaturados',
+        'fibra',
         'colesterol',
         'created_at',
         'updated_at',

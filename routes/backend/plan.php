@@ -12,4 +12,5 @@ Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::patch('/', [PlanController::class, 'update'])->name('plan.update');
     Route::post('destroy', [PlanController::class, 'destroy'])->name('plan.destroy');
     Route::post('restore', [PlanController::class, 'restore'])->name('plan.restore');
+    Route::get('add-recipes', [PlanController::class, 'addRecipes'])->name('plan.addRecipes');
 });

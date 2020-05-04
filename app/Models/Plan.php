@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Traits\Method\PlanMethod;
-use App\Models\Traits\Relationship\RecipeRelationship;
+use App\Models\Traits\Relationship\PlanRelationship;
+use App\Models\Traits\Relationship\PlanRelationshipRelationship;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Recipe
+ * App\Models\Plan
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Plan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Plan newQuery()
@@ -42,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends BaseModel
 {
     use PlanMethod,
-        RecipeRelationship;
+        PlanRelationship;
 
     public $table = 'plans';
 

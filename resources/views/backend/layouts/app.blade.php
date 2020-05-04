@@ -179,6 +179,7 @@
         $('.percentDecimalOptions').inputmask(percentDecimalOptions);
         $('.select2 .select2-container .select2-container--default').css('width', '100%');
         $("span.select2.select2-container.select2-container--default").css("width","100%");
+        $(".form-control-label").css('font-size','12px').css('padding','1');
     </script>
 
     @stack('after-scripts')

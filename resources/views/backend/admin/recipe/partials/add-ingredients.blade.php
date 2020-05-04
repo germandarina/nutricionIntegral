@@ -20,7 +20,7 @@
     <div class="col-md-9">
         {{ html()->select('food_id',[])
             ->class('form-control')
-            ->placeholder('Seleccione...')
+            ->placeholder('Buscar alimento...')
             ->attribute("id","food_id")
             ->attributes(['onchange'=>'getComposicionBasica()'])
             ->required()

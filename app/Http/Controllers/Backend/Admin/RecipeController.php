@@ -156,7 +156,7 @@ class RecipeController extends Controller
     }
 
     public function getIngredients(Recipe $recipe){
-        $data =  Ingredient::with('food')->where('recipe_id',$recipe->id)->get();
+        $data =  Ingredient::with(['food','recipe'])->where('recipe_id',$recipe->id)->get();
         return Datatables::of($data)
             ->addColumn('actions', function($row){
                 return view('backend.admin.recipe.includes.datatable-ingredients-buttons',compact('row'));
@@ -171,16 +171,15 @@ class RecipeController extends Controller
         if (empty($buscar)) {
             return \Response::json([]);
         }
-        $query = Food::where('foods.name','like',"%$buscar%");
+        $query = Food::fullText($buscar);
         if($food_group_id){
             $query->where('food_group_id',$food_group_id);
         }
-        $foods = $query->limit(20)->get(['id','name']);
-        $array_foods = [];
-        foreach ($foods as $food) {
-            $array_foods[] = ['id' => $food->id, 'text' => $food->name];
-        }
-        return \Response::json($array_foods);
+        $foods = $query->limit(20)->get(['id','name'])->toArray();
+        $foods = array_map(function ($item){
+                    return ['id' => $item['id'], 'text' => $item['name']];
+                }, $foods);
+        return \Response::json($foods);
     }
 
     public function addIngredients(Recipe $recipe){

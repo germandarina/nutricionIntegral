@@ -40,7 +40,7 @@ class PlanController extends Controller
     public function index(ManagePlanRequest $request)
     {
         if ($request->ajax()) {
-            $data = $this->planRepository->orderBy('id')->get();
+            $data = $this->planRepository->with('patient')->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     return view('backend.admin.plan.includes.datatable-buttons',compact('row'));
@@ -152,5 +152,14 @@ class PlanController extends Controller
         $this->planRepository->restore($plan);
         Session::flash('success','Alimento restaurado');
         return redirect()->route('admin.plan.index');
+    }
+
+    public function addRecipes(ManagePlanRequest $request, Plan $plan){
+        $paciente = $plan->patient;
+        $foods = $paciente->foods->pluck('id');
+        $food_groups = $paciente->foodGroups->pluck('id');
+        $classifications = $paciente->classifications->pluck('id');
+        $recipes = App\Models\Recipe::with('ingredients.food')->get();
+        return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications','recipes'));
     }
 }

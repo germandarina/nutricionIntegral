@@ -1,16 +1,5 @@
 <div class="row">
     <div class="col-md-2">
-        {{ html()->label('Energia (Kj)')
-                 ->class('col-md-12 form-control-label')
-                 ->for('energia_kj') }}
-        {{ html()->text('energia_kj')
-                 ->class('form-control numeric3Digits')
-                 ->placeholder('Energia Kj')
-                 ->attribute('maxlength', 191)
-                 ->required()
-                 ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
         {{ html()->label('Energia (Kcal)')
                  ->class('col-md-12 form-control-label')
                  ->for('energia_kcal') }}
@@ -20,17 +9,6 @@
                 ->attribute('maxlength', 191)
                 ->required()
                 ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
-        {{ html()->label('Agua (g)')
-                ->class('col-md-12 form-control-label')
-                ->for('agua') }}
-        {{ html()->text('agua')
-            ->class('form-control numeric3Digits')
-            ->placeholder('Agua')
-            ->attribute('maxlength', 191)
-            ->required()
-            ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
         {{ html()->label('Proteínas (g)')
@@ -65,16 +43,107 @@
                 ->required()
                 ->autofocus() }}
     </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('Colesterol (mg)')
+                ->class('col-md-12 form-control-label')
+                ->for('colesterol') }}
+        {{ html()->text('colesterol')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Colesterol')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('Carbo Disp (g)')
+                ->class('col-md-12 form-control-label')
+                ->for('carbohidratos_disponibles') }}
+        {{ html()->text('carbohidratos_disponibles')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Carbohidratos Disp')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
 </div>
 <br>
 <div class="row">
     <div class="col-md-2">
-        {{ html()->label('Cenizas (g)')
-                ->class('col-md-12 form-control-label')
-                ->for('cenizas') }}
-        {{ html()->text('cenizas')
+        {{ html()->label('Fibra (g)')
+                 ->class('col-md-12 form-control-label')
+                 ->for('fibra') }}
+        {{ html()->text('fibra')
             ->class('form-control numeric3Digits')
-            ->placeholder('Cenizas')
+            ->placeholder('Fibra')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('A. Grasos Satu (g)')
+                 ->class('col-md-12 form-control-label')
+                 ->for('ac_grasos_saturados') }}
+        {{ html()->text('ac_grasos_saturados')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Ac Grasos Satu')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('A. Grasos Mono (g)')
+                 ->class('col-md-12 form-control-label')
+                 ->for('ac_grasos_monoinsaturados') }}
+        {{ html()->text('ac_grasos_monoinsaturados')
+                 ->class('form-control numeric3Digits')
+                 ->placeholder('Ac Grasos Mono')
+                 ->attribute('maxlength', 191)
+                 ->required()
+                 ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('A. Grasos Poli (g)')
+                 ->class('col-md-12 form-control-label')
+                 ->for('ac_grasos_poliinsaturados') }}
+        {{ html()->text('ac_grasos_poliinsaturados')
+                ->class('form-control numeric3Digits')
+                ->placeholder('Ac Grasos Poli')
+                ->attribute('maxlength', 191)
+                ->required()
+                ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('Energia (Kj)')
+                 ->class('col-md-12 form-control-label')
+                 ->for('energia_kj') }}
+        {{ html()->text('energia_kj')
+                 ->class('form-control numeric3Digits')
+                 ->placeholder('Energia Kj')
+                 ->attribute('maxlength', 191)
+                 ->required()
+                 ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('Agua (g)')
+                ->class('col-md-12 form-control-label')
+                ->for('agua') }}
+        {{ html()->text('agua')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Agua')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
+</div>
+<br>
+<div class="row">
+    <div class="col-md-2">
+        {{ html()->label('Vitamina C (mg)')
+                 ->class('col-md-12 form-control-label')
+                 ->for('vitamina_c') }}
+        {{ html()->text('vitamina_c')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Vitamina C')
             ->attribute('maxlength', 191)
             ->required()
             ->autofocus() }}
@@ -140,10 +209,21 @@
     <div class="col-md-2">
         {{ html()->label('Zinc (mg)')
                 ->class('col-md-12 form-control-label')
-                ->for('zing') }}
-        {{ html()->text('zing')
+                ->for('zinc') }}
+        {{ html()->text('zinc')
             ->class('form-control numeric3Digits')
             ->placeholder('Zinc')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
+    <div class="col-md-2">
+        {{ html()->label('Cenizas (g)')
+                ->class('col-md-12 form-control-label')
+                ->for('cenizas') }}
+        {{ html()->text('cenizas')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Cenizas')
             ->attribute('maxlength', 191)
             ->required()
             ->autofocus() }}
@@ -181,74 +261,5 @@
             ->required()
             ->autofocus() }}
     </div><!--col-->
-    <div class="col-md-2">
-        {{ html()->label('Vitamina C (mg)')
-                 ->class('col-md-12 form-control-label')
-                 ->for('vitamina_c') }}
-        {{ html()->text('vitamina_c')
-            ->class('form-control numeric3Digits')
-            ->placeholder('Vitamina C')
-            ->attribute('maxlength', 191)
-            ->required()
-            ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
-        {{ html()->label('Carbo Disp (g)')
-                ->class('col-md-12 form-control-label')
-                ->for('carbohidratos_disponibles') }}
-        {{ html()->text('carbohidratos_disponibles')
-            ->class('form-control numeric3Digits')
-            ->placeholder('Carbohidratos Disp')
-            ->attribute('maxlength', 191)
-            ->required()
-            ->autofocus() }}
-    </div><!--col-->
 </div>
 <br>
-<div class="row">
-
-    <div class="col-md-2">
-        {{ html()->label('A. Grasos Satu (g)')
-                 ->class('col-md-12 form-control-label')
-                 ->for('ac_grasos_saturados') }}
-        {{ html()->text('ac_grasos_saturados')
-            ->class('form-control numeric3Digits')
-            ->placeholder('Ac Grasos Satu')
-            ->attribute('maxlength', 191)
-            ->required()
-            ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
-        {{ html()->label('A. Grasos Mono (g)')
-                 ->class('col-md-12 form-control-label')
-                 ->for('ac_grasos_monoinsaturados') }}
-        {{ html()->text('ac_grasos_monoinsaturados')
-                 ->class('form-control numeric3Digits')
-                 ->placeholder('Ac Grasos Mono')
-                 ->attribute('maxlength', 191)
-                 ->required()
-                 ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
-        {{ html()->label('A. Grasos Poli (g)')
-                 ->class('col-md-12 form-control-label')
-                 ->for('ac_grasos_poliinsaturados') }}
-        {{ html()->text('ac_grasos_poliinsaturados')
-                ->class('form-control numeric3Digits')
-                ->placeholder('Ac Grasos Poli')
-                ->attribute('maxlength', 191)
-                ->required()
-                ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
-        {{ html()->label('Colesterol (mg)')
-                ->class('col-md-12 form-control-label')
-                ->for('colesterol') }}
-        {{ html()->text('colesterol')
-            ->class('form-control numeric3Digits')
-            ->placeholder('Colesterol')
-            ->attribute('maxlength', 191)
-            ->required()
-            ->autofocus() }}
-    </div><!--col-->
-</div>

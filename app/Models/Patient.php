@@ -60,6 +60,7 @@ class Patient extends BaseModel
         PatientRelationship;
 
     public $table = 'patients';
+    protected $columns_full_text  = ['full_name','document'];
 
     protected $dates = [
         'updated_at',

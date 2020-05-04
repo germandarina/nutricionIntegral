@@ -1,6 +1,6 @@
     <div class="row">
         {{ html()->label('Nombre')
-                    ->class('col-md-2 form-control-label')
+                    ->class('col-md-1 form-control-label')
                     ->for('name') }}
         <div class="col-md-4">
             {{ html()->text('name')
@@ -11,7 +11,7 @@
                 ->autofocus() }}
         </div><!--col-->
         {{ html()->label('Grupo de Alimentos')
-                   ->class('col-md-2 form-control-label')
+                   ->class('col-md-1 form-control-label')
                    ->for('name') }}
         <div class="col-md-4">
             {{ html()->select('food_group_id',\App\Models\FoodGroup::all()->pluck('name','id'))

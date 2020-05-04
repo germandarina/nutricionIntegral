@@ -36,6 +36,11 @@ class FoodRepository extends BaseRepository
             throw new GeneralException('Ya existe un alimento con el nombre '.$data['name']);
         }
         return DB::transaction(function () use ($data) {
+            foreach ($data as $indice => $valor){
+                if($valor == '0,000' || is_null($valor)){
+                    $data[$indice] = 0;
+                }
+            }
             $food = parent::create($data);
 
             if ($food) {
@@ -62,14 +67,19 @@ class FoodRepository extends BaseRepository
         }
 
         // If the name is changing make sure it doesn't already exist
-        if ($food->name !== strtolower($data['name'])) {
-            if ($this->foodExists($data['name'])) {
-                Session::flash('error','Ya existe un alimento con el nombre '.$data['name']);
-                throw new GeneralException('Ya existe un alimento con el nombre '.$data['name']);
-            }
-        }
+//        if ($food->name !== strtolower($data['name'])) {
+//            if ($this->foodExists($data['name'])) {
+//                Session::flash('error','Ya existe un alimento con el nombre '.$data['name']);
+//                throw new GeneralException('Ya existe un alimento con el nombre '.$data['name']);
+//            }
+//        }
 
         return DB::transaction(function () use ($food, $data) {
+            foreach ($data as $indice => $valor){
+                if($valor == '0,000' || is_null($valor)){
+                    $data[$indice] = 0;
+                }
+            }
             if ($food->update($data)) {
                 return $food;
             }
