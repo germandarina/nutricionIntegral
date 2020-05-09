@@ -225,4 +225,22 @@ class RecipeController extends Controller
         }
         return App::abort(422);
     }
+
+    public function getTotal(){
+        if(request('id_recipe')){
+            $recipe = Recipe::find(request('id_recipe'));
+            if($recipe){
+                return view('backend.admin.recipe.partials.table-total-recipe',compact('recipe'));
+            }
+        }
+    }
+
+    public function getTotalCompleto(){
+        if(request('id_recipe')){
+            $recipe = Recipe::find(request('id_recipe'));
+            if($recipe){
+                return view('backend.admin.recipe.partials.total-completo-recipe',compact('recipe'));
+            }
+        }
+    }
 }

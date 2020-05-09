@@ -10,6 +10,8 @@ Route::post('recipe', [RecipeController::class, 'store'])->name('recipe.store');
 Route::get('recipe/search-ingredients', [RecipeController::class, 'searchIngredients'])->name('recipe.searchIngredients');
 Route::delete('recipe/delete-ingredient', [RecipeController::class, 'deleteIngredient'])->name('recipe.deleteIngredient');
 Route::post('recipe/get-ingredient', [RecipeController::class, 'getIngredient'])->name('recipe.getIngredient');
+Route::post('recipe/get-total', [RecipeController::class, 'getTotal'])->name('recipe.getTotal');
+Route::post('get-total-completo', [RecipeController::class, 'getTotalCompleto'])->name('recipe.getTotalCompleto');
 
 Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::get('edit', [RecipeController::class, 'edit'])->name('recipe.edit');

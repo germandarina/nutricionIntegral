@@ -79,6 +79,7 @@
                 }
             },
         ],
+        responsive: true,
         'paging':true,
         'lengthChange' : true,
         'pageLength': 20,

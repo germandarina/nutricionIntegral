@@ -7,8 +7,8 @@ Route::get('food/deleted', [FoodController::class, 'getDeleted'])->name('food.de
 Route::get('food', [FoodController::class, 'index'])->name('food.index');
 Route::get('food/create', [FoodController::class, 'create'])->name('food.create');
 Route::post('food', [FoodController::class, 'store'])->name('food.store');
-Route::post('getComposicion', [FoodController::class, 'getComposicion'])->name('food.getComposicion');
-Route::post('getComposicionCompleta', [FoodController::class, 'getComposicionCompleta'])->name('food.getComposicionCompleta');
+Route::post('get-composicion', [FoodController::class, 'getComposicion'])->name('food.getComposicion');
+Route::post('get-composicion-completa', [FoodController::class, 'getComposicionCompleta'])->name('food.getComposicionCompleta');
 
 Route::group(['prefix' => 'food/{food}'], function () {
     Route::get('edit', [FoodController::class, 'edit'])->name('food.edit');

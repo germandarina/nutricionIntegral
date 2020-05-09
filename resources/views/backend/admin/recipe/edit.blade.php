@@ -39,6 +39,9 @@
             </div><!--col-->
         </div><!--row-->
         @include('backend.admin.recipe.partials.datatable-ingredients')
+        <div class="row mt-lg-2" id="divTotales">
+
+        </div>
     </div>
 </div>
 @endsection
@@ -67,7 +70,6 @@
     @include('datatables.includes')
     <script>
         $(function () {
-
             $('#table-ingredients').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -77,20 +79,13 @@
                 "buttons": [],
                 ajax: "{{ route('admin.recipe.getIngredients',$recipe->id) }}",
                 columns: [
-                    {data: 'food.name', name: 'food.name'},
-                    {data: 'quantity_description', name: 'quantity_description'},
-                    {data: 'quantity_grs', name: 'quantity_grs'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false,},
+                    {data: 'food.name', name: 'food.name',width:'40%'},
+                    {data: 'quantity_description', name: 'quantity_description',width:'30%'},
+                    {data: 'quantity_grs', name: 'quantity_grs',width:'20%'},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false,width:'1%'},
                 ],
-                "footerCallback": function ( row, data, start, end, display ) {
-
-                    // sirve? buscar ocmo hacer  un footer
-                    var api = this.api(), data;
-
-                    // Update footer
-                    $( api.column( 4 ).footer() ).html(
-                        '$'+pageTotal +' ( $'+ total +' total)'
-                    );
+                "footerCallback": function( tfoot, data, start, end, display ) {
+                    mostrarTotales();
                 }
             });
 
@@ -308,6 +303,57 @@
                 }
             });
         }
+
+        function mostrarTotales(){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:   '{{ route('admin.recipe.getTotal') }}',
+                type:  'POST',
+                data:   {
+                    'id_recipe': "{{ $recipe->id }}",
+                },
+                success: function(data) {
+                    $('#divTotales').empty().html(data);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function getTotalCompleto(id_recipe) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.recipe.getTotalCompleto') }}',
+                type:     'POST',
+                data:    {
+                    'id_recipe':id_recipe,
+                },
+                success: function(data) {
+                    var datos = data;
+                    Swal.fire({
+                        title: '<strong>Total Composicion Receta</strong>',
+                        icon: 'info',
+                        html: datos,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        cancelButtonText: '',
+                        cancelButtonAriaLabel: 'Thumbs down'
+                    })
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
     </script>
     {!! $validator !!}
 @endpush

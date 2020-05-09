@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $energia_kj
  * @property float $energia_kcal
  * @property float $agua
- * @property float $protenia
+ * @property float $proteina
  * @property float $grasa_total
  * @property float $carbohidratos_totales
  * @property float $cenizas
