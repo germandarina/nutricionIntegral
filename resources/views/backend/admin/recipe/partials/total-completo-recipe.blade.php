@@ -3,7 +3,6 @@
         <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
             <thead>
                 <tr>
-                    <th> Total Energia (Kj)</th>
                     <th> Total Energia (Kcal)</th>
                     <th> Total Proteínas (g)</th>
                     <th> Total Grasa Total (g)</th>
@@ -13,7 +12,6 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align: center;" >{{$recipe->total_energia_kj}}</td>
                     <td style="text-align: center;">{{$recipe->total_energia_kcal}}</td>
                     <td style="text-align: center;">{{$recipe->total_proteina}}</td>
                     <td style="text-align: center;">{{$recipe->total_grasa_total}}</td>
