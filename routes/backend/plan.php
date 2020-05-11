@@ -6,6 +6,7 @@ Route::get('plan/deleted', [PlanController::class, 'getDeleted'])->name('plan.de
 Route::get('plan', [PlanController::class, 'index'])->name('plan.index');
 Route::get('plan/create', [PlanController::class, 'create'])->name('plan.create');
 Route::post('plan', [PlanController::class, 'store'])->name('plan.store');
+Route::post('get-recipes-for-plan', [PlanController::class, 'getRecipesForPlan'])->name('plan.getRecipesForPlan');
 
 Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('edit', [PlanController::class, 'edit'])->name('plan.edit');

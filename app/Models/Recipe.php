@@ -45,6 +45,7 @@ class Recipe extends BaseModel
         RecipeRelationship;
 
     public $table = 'recipes';
+    protected $columns_full_text  = ['name'];
 
     protected $dates = [
         'updated_at',

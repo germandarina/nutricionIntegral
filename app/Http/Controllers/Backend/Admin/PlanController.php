@@ -12,6 +12,7 @@ use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
+use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -99,11 +100,11 @@ class PlanController extends Controller
      * @return mixed
      *@throws \App\Exceptions\GeneralException
      */
-    public function update(UpdatePlanRequest $request, Plan $plan)
+        public function update(UpdatePlanRequest $request, Plan $plan)
     {
         $this->planRepository->update($request->all(), $plan);
         Session::flash('success','Alimento Actualizado');
-        return redirect()->route('admin.plan.index');
+        return redirect()->route('admin.plan.index')->status(200);
     }
 
     /**
@@ -159,7 +160,48 @@ class PlanController extends Controller
         $foods = $paciente->foods->pluck('id');
         $food_groups = $paciente->foodGroups->pluck('id');
         $classifications = $paciente->classifications->pluck('id');
-        $recipes = App\Models\Recipe::with('ingredients.food')->get();
-        return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications','recipes'));
+        return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications'));
+    }
+
+    public function getRecipesForPlan(){
+        $foods              = request('foods');
+        $food_groups        = request('food_groups');
+        $classifications    = request('classifications');
+        $recipe_types       = request('recipe_types');
+        $recipe_name        = request('recipe_name');
+        $min_calorias       = request('min_calorias');
+        $max_calorias       = request('max_calorias');
+        $query_recipes      = Recipe::with(['ingredients.food','classifications','recipeType']);
+        if($recipe_name){
+            $query_recipes->fullText($recipe_name);
+        }
+        if($min_calorias){
+            $query_recipes->where('total_calorias','>=',$min_calorias);
+        }
+        if($max_calorias){
+            $query_recipes->where('total_calorias','<=',$max_calorias);
+        }
+        if($foods || $food_groups){
+            $query_recipes->whereHas('ingredients.food',function ($query)use($foods,$food_groups){
+                if($foods){
+                    $query->whereNotIn('id',$foods);
+                }
+                if($food_groups){
+                    $query->whereNotIn('food_group_id',$food_groups);
+                }
+            });
+        }
+        if($classifications){
+            $query_recipes->whereHas('classifications',function ($query)use($classifications){
+                $query->whereIn('id',$classifications);
+            });
+        }
+        if($recipe_types){
+            $query_recipes->whereHas('recipeType',function ($query)use($recipe_types){
+                $query->whereIn('id',$recipe_types);
+            });
+        }
+        $recipes = $query_recipes->get();
+        return view('backend.admin.plan.partials.list-recipes',compact('recipes'));
     }
 }

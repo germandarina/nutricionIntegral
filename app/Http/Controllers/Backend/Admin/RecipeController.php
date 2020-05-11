@@ -155,14 +155,17 @@ class RecipeController extends Controller
         return redirect()->route('admin.recipe.index');
     }
 
-    public function getIngredients(Recipe $recipe){
-        $data =  Ingredient::with(['food','recipe'])->where('recipe_id',$recipe->id)->get();
-        return Datatables::of($data)
-            ->addColumn('actions', function($row){
-                return view('backend.admin.recipe.includes.datatable-ingredients-buttons',compact('row'));
-            })
-            ->rawColumns(['actions'])
-            ->make(true);
+    public function getIngredients(){
+        if(request('recipe_id')){
+            $recipe = Recipe::find(request('recipe_id'));
+            $data =  Ingredient::with(['food','recipe'])->where('recipe_id',$recipe->id)->get();
+            return Datatables::of($data)
+                ->addColumn('actions', function($row){
+                    return view('backend.admin.recipe.includes.datatable-ingredients-buttons',compact('row'));
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
     }
 
     public function searchIngredients(){
@@ -184,6 +187,7 @@ class RecipeController extends Controller
 
     public function addIngredients(Recipe $recipe){
         if(request('food_id')){
+            //$recipe = Recipe::find(request('recipe_id'));
             if(request('ingredient_id')){
                 $this->recipeRepository->updateIngredient(request()->all());
                 return response()->json(['mensaje'=>'Ingrediente actualizado'],200);

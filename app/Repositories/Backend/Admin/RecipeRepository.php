@@ -76,7 +76,7 @@ class RecipeRepository extends BaseRepository
                 Session::flash('error','Error al actualizar receta. Intente nuevamente');
                 throw new GeneralException('Error al actualizar receta. Intente nuevamente');
             }
-            $recipe->classifications()->async($data['classifications']);
+            $recipe->classifications()->sync($data['classifications']);
             return $recipe;
         });
     }

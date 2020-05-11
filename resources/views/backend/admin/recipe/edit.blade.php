@@ -6,14 +6,6 @@
 {{ html()->modelForm($recipe, 'PATCH', route('admin.recipe.update', $recipe))->class('form-horizontal')->open() }}
     <div class="card">
         <div class="card-body">
-{{--            <div class="row">--}}
-{{--                <div class="col-sm-5">--}}
-{{--                    <h5 class="card-title mb-0">--}}
-{{--                        <small class="text-muted">Actualizar Recetas</small>--}}
-{{--                    </h5>--}}
-{{--                </div><!--col-->--}}
-{{--            </div><!--row-->--}}
-{{--            <hr>--}}
             @include('backend.admin.recipe.partials.form')
         </div>
         <div class="card-footer">
@@ -77,7 +69,12 @@
                 'paging':false,
                 "info":     false,
                 "buttons": [],
-                ajax: "{{ route('admin.recipe.getIngredients',$recipe->id) }}",
+                ajax: {
+                    url: "{{ route('admin.recipe.getIngredients',$recipe->id) }}",
+                    data: function ( d ) {
+                        d.recipe_id = "{{$recipe->id}}";
+                    },
+                },
                 columns: [
                     {data: 'food.name', name: 'food.name',width:'40%'},
                     {data: 'quantity_description', name: 'quantity_description',width:'30%'},
@@ -208,13 +205,14 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:      '{{ route('admin.recipe.addIngredients', $recipe->id) }}',
-                type:     'POST',
+                url: '{{ route('admin.recipe.addIngredients',$recipe->id) }}',
+                type:     'GET',
                 data:    {
                     'food_id':food_id,
                     'quantity_description' : quantity_d,
                     'quantity_grs' :  quantity_grs,
-                    'ingredient_id' : ingredient_id
+                    'ingredient_id' : ingredient_id,
+                    {{--'recipe_id': "{{$recipe->id}}",--}}
                 },
                 success: function(data) {
                     var datos = data;
@@ -241,7 +239,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url:      '{{ route('admin.recipe.getIngredient') }}',
-                type:     'POST',
+                type:     'GET',
                 data:    {
                     'ingredient_id':ingrediente_id,
                 },
@@ -283,7 +281,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         url:      '{{ route('admin.recipe.deleteIngredient') }}',
-                        type:     'DELETE',
+                        type:     'POST',
                         data:    {
                             'ingredient_id':ingrediente_id,
                         },

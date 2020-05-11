@@ -29,8 +29,9 @@ class UpdateRecipeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:200','min:6'],
-            'recipe_type_id' => ['required', 'date','before:tomorrow'],
+            'recipe_type_id' => ['required'],
             'observation'=>['max:200','min:6'],
+            'classifications' =>['required'],
         ];
     }
 
