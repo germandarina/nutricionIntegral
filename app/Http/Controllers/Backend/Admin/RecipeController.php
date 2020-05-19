@@ -187,7 +187,6 @@ class RecipeController extends Controller
 
     public function addIngredients(Recipe $recipe){
         if(request('food_id')){
-            //$recipe = Recipe::find(request('recipe_id'));
             if(request('ingredient_id')){
                 $this->recipeRepository->updateIngredient(request()->all());
                 return response()->json(['mensaje'=>'Ingrediente actualizado'],200);
@@ -231,8 +230,8 @@ class RecipeController extends Controller
     }
 
     public function getTotal(){
-        if(request('id_recipe')){
-            $recipe = Recipe::find(request('id_recipe'));
+        if(request('recipe_id')){
+            $recipe = Recipe::find(request('recipe_id'));
             if($recipe){
                 return view('backend.admin.recipe.partials.table-total-recipe',compact('recipe'));
             }
@@ -240,8 +239,8 @@ class RecipeController extends Controller
     }
 
     public function getTotalCompleto(){
-        if(request('id_recipe')){
-            $recipe = Recipe::find(request('id_recipe'));
+        if(request('recipe_id')){
+            $recipe = Recipe::find(request('recipe_id'));
             if($recipe){
                 return view('backend.admin.recipe.partials.total-completo-recipe',compact('recipe'));
             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App;
 use App\Http\Controllers\Controller;
+use App\Models\Ingredient;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
@@ -73,7 +74,7 @@ class PlanController extends Controller
     public function store(StorePlanRequest $request)
     {
         $this->planRepository->create($request->all());
-        Session::flash('success','Alimento Creado');
+        Session::flash('success','Plan Creado');
         return redirect()->route('admin.plan.index');
     }
 
@@ -103,7 +104,7 @@ class PlanController extends Controller
         public function update(UpdatePlanRequest $request, Plan $plan)
     {
         $this->planRepository->update($request->all(), $plan);
-        Session::flash('success','Alimento Actualizado');
+        Session::flash('success','Plan Actualizado');
         return redirect()->route('admin.plan.index')->status(200);
     }
 
@@ -151,7 +152,7 @@ class PlanController extends Controller
     {
         $plan = Plan::onlyTrashed()->find($id);
         $this->planRepository->restore($plan);
-        Session::flash('success','Alimento restaurado');
+        Session::flash('success','Plan restaurado');
         return redirect()->route('admin.plan.index');
     }
 
@@ -171,7 +172,9 @@ class PlanController extends Controller
         $recipe_name        = request('recipe_name');
         $min_calorias       = request('min_calorias');
         $max_calorias       = request('max_calorias');
-        $query_recipes      = Recipe::with(['ingredients.food','classifications','recipeType']);
+        $query_recipes      = Recipe::with(['ingredients.food','classifications','recipeType'])
+                                        ->has('ingredients')
+                                        ->where('edit',false);
         if($recipe_name){
             $query_recipes->fullText($recipe_name);
         }
@@ -203,5 +206,26 @@ class PlanController extends Controller
         }
         $recipes = $query_recipes->get();
         return view('backend.admin.plan.partials.list-recipes',compact('recipes'));
+    }
+
+    public function getModalRecipe(){
+        if(request('recipe_id')){
+            $recipe = Recipe::find(request('recipe_id'));
+            $recipe->load('ingredients.food');
+            return view('backend.admin.plan.partials.modal-recipe',compact('recipe'));
+        }
+        return App::abort(422);
+    }
+
+    public function addRecipeToPlan(){
+        if(request('recipe_id') && request('plan_id')){
+            $recipe = $this->planRepository->addRecipe(request()->all());
+            $html = "";
+            if(request('edit') == 1){
+                $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe'));
+            }
+            return response()->json(['mensaje'=>'Receta agregada','html'=>$html],200);
+        }
+        return App::abort(422);
     }
 }

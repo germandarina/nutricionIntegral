@@ -1,6 +1,6 @@
-<div class="row mt-4" style="margin-top: 0px !important;">
+<div class="row mt-4" >
     <div class="col">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-x: hidden !important;">
             <table class="table data-table" id="table-ingredients">
                 <thead>
                     <tr>

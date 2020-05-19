@@ -79,6 +79,7 @@ class Recipe extends BaseModel
         'total_ac_grasos_poliinsaturados',
         'total_fibra',
         'total_colesterol',
+        'edit',
         'created_at',
         'updated_at',
         'deleted_at',

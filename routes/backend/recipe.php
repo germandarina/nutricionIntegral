@@ -12,13 +12,12 @@ Route::delete('recipe/delete-ingredient', [RecipeController::class, 'deleteIngre
 Route::post('recipe/get-ingredient', [RecipeController::class, 'getIngredient'])->name('recipe.getIngredient');
 Route::post('recipe/get-total', [RecipeController::class, 'getTotal'])->name('recipe.getTotal');
 Route::post('get-total-completo', [RecipeController::class, 'getTotalCompleto'])->name('recipe.getTotalCompleto');
+Route::get('/get-ingredients', [RecipeController::class, 'getIngredients'])->name('recipe.getIngredients');
 
 Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::get('edit', [RecipeController::class, 'edit'])->name('recipe.edit');
     Route::patch('/', [RecipeController::class, 'update'])->name('recipe.update');
     Route::post('destroy', [RecipeController::class, 'destroy'])->name('recipe.destroy');
     Route::post('restore', [RecipeController::class, 'restore'])->name('recipe.restore');
-    Route::get('/get-ingredients', [RecipeController::class, 'getIngredients'])->name('recipe.getIngredients');
     Route::post('/add-ingredients', [RecipeController::class, 'addIngredients'])->name('recipe.addIngredients');
-
 });

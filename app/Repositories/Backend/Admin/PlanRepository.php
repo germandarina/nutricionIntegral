@@ -2,7 +2,10 @@
 
 namespace App\Repositories\Backend\Admin;
 
+use App\Models\Ingredient;
 use App\Models\Plan;
+use App\Models\PlanDetail;
+use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
@@ -123,5 +126,33 @@ class PlanRepository extends BaseRepository
         }
         Session::flash('error','Error al restaurar plan. Intente nuevamente');
         throw new GeneralException('Error al restaurar plan. Intente nuevamente');
+    }
+
+    public function addRecipe(array $datos) {
+        if (!auth()->user()->isAdmin()) {
+            Session::flash('error','No tiene permiso para realizar esta acción');
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
+        return DB::transaction(function () use ($datos) {
+            $planDetail = new PlanDetail();
+            $planDetail->fill($datos);
+            if (!$planDetail->save()) {
+                throw new GeneralException('Error al agregar plan. Intente nuevamente',422);
+            }
+            $recipe_origin = $planDetail->recipe;
+            if(isset($datos['edit']) && $datos['edit']){
+                $recipe_edit = new Recipe();
+                $recipe_edit->fill($recipe_origin->toArray());
+                $recipe_edit->edit = true;
+                $recipe_edit->save();
+                foreach ($recipe_origin->ingredients as $ingredient){
+                    $ingredient_edit = new Ingredient();
+                    $ingredient_edit->fill($ingredient->toArray());
+                    $ingredient_edit->recipe_id = $recipe_edit->id;
+                    $ingredient_edit->save();
+                }
+                return $recipe_edit;
+            }
+        });
     }
 }

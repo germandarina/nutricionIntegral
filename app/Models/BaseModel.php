@@ -44,7 +44,7 @@ class BaseModel extends Model
         });
 
         //this function not work when updating
-        static::updating(function ($table) {
+        static::updated(function ($table) {
             if (auth()->user()) {
                 $table->updated_by = auth()->user()->email;
             }else{

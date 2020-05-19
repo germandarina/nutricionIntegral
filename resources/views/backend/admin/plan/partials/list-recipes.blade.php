@@ -10,11 +10,8 @@
                        aria-controls="collapse_{{$recipe->id}}"
                        class="">{{substr($recipe->name,0,35)}}</a>
                     <div class="card-header-actions">
-                        <a class="btn btn-sm btn-success" href="#">
+                        <a class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}})">
                             <icon class="fas fa-plus-square"></icon>
-                        </a>
-                        <a class="btn btn-sm btn-warning" href="#">
-                            <icon class="fas fa-pencil-alt"></icon>
                         </a>
                     </div>
                 </div>
@@ -27,7 +24,7 @@
                             <li style="padding: 1px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-xs">Carbohidratos<span class="badge badge-info badge-pill">{{$recipe->total_carbohidratos_totales}}</span></li>
                             <li style="padding: 1px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-xs">Colesterol<span class="badge badge-info badge-pill">{{$recipe->total_colesterol}}</span></li>
                             <li style="padding: 1px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-xs">
-                                <a href="#" class="btn btn-xs btn-success btn-block" onclick="getTotalCompleto({{$recipe->id}}, event)">TOTAL COMPOSICION RECETA</a>
+                                <a href="#" class="btn btn-xs btn-success btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})">TOTAL COMPOSICION RECETA</a>
                             </li>
                         </ul>
                     </div>

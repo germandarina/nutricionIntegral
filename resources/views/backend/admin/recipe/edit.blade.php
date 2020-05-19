@@ -310,7 +310,7 @@
                 url:   '{{ route('admin.recipe.getTotal') }}',
                 type:  'POST',
                 data:   {
-                    'id_recipe': "{{ $recipe->id }}",
+                    'recipe_id': "{{ $recipe->id }}",
                 },
                 success: function(data) {
                     $('#divTotales').empty().html(data);
@@ -321,7 +321,7 @@
             });
         }
 
-        function getTotalCompleto(id_recipe) {
+        function getTotalCompleto(recipe_id) {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -329,7 +329,7 @@
                 url:      '{{ route('admin.recipe.getTotalCompleto') }}',
                 type:     'POST',
                 data:    {
-                    'id_recipe':id_recipe,
+                    'recipe_id':recipe_id,
                 },
                 success: function(data) {
                     var datos = data;
