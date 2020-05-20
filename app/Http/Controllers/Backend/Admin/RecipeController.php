@@ -185,8 +185,9 @@ class RecipeController extends Controller
         return \Response::json($foods);
     }
 
-    public function addIngredients(Recipe $recipe){
-        if(request('food_id')){
+    public function addIngredients(){
+        if(request('recipe_id')){
+            $recipe = Recipe::find(request('recipe_id'));
             if(request('ingredient_id')){
                 $this->recipeRepository->updateIngredient(request()->all());
                 return response()->json(['mensaje'=>'Ingrediente actualizado'],200);

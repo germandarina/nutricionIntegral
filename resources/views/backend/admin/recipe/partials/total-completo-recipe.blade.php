@@ -5,8 +5,8 @@
                 <tr>
                     <th> Total Energia (Kcal)</th>
                     <th> Total Proteínas (g)</th>
-                    <th> Total Grasa Total (g)</th>
-                    <th> Total Carbohidratos Totales (g)</th>
+                    <th> Total Grasa (g)</th>
+                    <th> Total Carbohidratos (g)</th>
                     <th> Total Hierro (mg)</th>
                 </tr>
             </thead>

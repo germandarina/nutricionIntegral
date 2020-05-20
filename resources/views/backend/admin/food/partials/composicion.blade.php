@@ -22,7 +22,7 @@
             ->autofocus() }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Grasa Total (g)')
+        {{ html()->label('Grasa (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('grasa_total') }}
         {{ html()->text('grasa_total')

@@ -87,7 +87,7 @@
 
     {!! $rows->render('log-viewer::_pagination.bootstrap-4') !!}
 
-    <div id="delete-log-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delete-log-modal-label" aria-hidden="true">
+    <div id="delete-log-modal" class="modal fade" role="dialog" aria-labelledby="delete-log-modal-label" aria-hidden="true">
         <div class="modal-dialog">
             <form id="delete-log-form" action="{{ route('log-viewer::logs.delete') }}" method="POST">
                 <input type="hidden" name="_method" value="DELETE">

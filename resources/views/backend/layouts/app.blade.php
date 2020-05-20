@@ -96,10 +96,6 @@
         $(document).on("keypress", "form", function(event) {
             return event.keyCode != 13;
         });
-        // deshabilitar esc
-        $(document).on('keypress',function(e) {
-            return e.keyCode != 27;
-        });
 
         var currencyOptions = {
             'alias': 'numeric',

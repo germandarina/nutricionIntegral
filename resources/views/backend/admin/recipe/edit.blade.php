@@ -38,7 +38,7 @@
 </div>
 @endsection
 @section('modal-yield')
-    <div class="modal fade" id="modalIngredientes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="modalIngredientes" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -163,7 +163,7 @@
                 success: function(data) {
                     var datos = data;
                     Swal.fire({
-                        title: '<strong>Composicion Completa</strong>',
+                        title: '<strong>Composicion Completa Alimento</strong>',
                         icon: 'info',
                         html: datos,
                         showCloseButton: true,
@@ -195,7 +195,7 @@
                 return Lobibox.notify('error',{msg:'Ingrese una descripcion de cantidades'});
             }
             if(quantity_grs == null || quantity_grs == undefined || quantity_grs == ""){
-                quantity_grs = 0;
+                return Lobibox.notify('error',{msg:'Ingrese la cantidad en grs'});
             }
 
             if(ingredient_id == null || ingredient_id == undefined || ingredient_id == ""){
@@ -205,14 +205,14 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '{{ route('admin.recipe.addIngredients',$recipe->id) }}',
-                type:     'GET',
+                url: '{{ route('admin.recipe.addIngredients') }}',
+                type:     'POST',
                 data:    {
                     'food_id':food_id,
                     'quantity_description' : quantity_d,
                     'quantity_grs' :  quantity_grs,
                     'ingredient_id' : ingredient_id,
-                    {{--'recipe_id': "{{$recipe->id}}",--}}
+                    'recipe_id': "{{$recipe->id}}",
                 },
                 success: function(data) {
                     var datos = data;
@@ -239,7 +239,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url:      '{{ route('admin.recipe.getIngredient') }}',
-                type:     'GET',
+                type:     'POST',
                 data:    {
                     'ingredient_id':ingrediente_id,
                 },
@@ -261,7 +261,6 @@
                     }
                 }
             });
-
         }
         function eliminarIngrediente(event,ingrediente_id) {
             event.preventDefault();
@@ -281,7 +280,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         url:      '{{ route('admin.recipe.deleteIngredient') }}',
-                        type:     'POST',
+                        type:     'DELETE',
                         data:    {
                             'ingredient_id':ingrediente_id,
                         },
@@ -321,7 +320,8 @@
             });
         }
 
-        function getTotalCompleto(recipe_id) {
+        function getTotalCompleto(event,recipe_id) {
+            event.preventDefault();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

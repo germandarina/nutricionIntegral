@@ -1,6 +1,6 @@
 <div class="modal" style="overflow-y: auto;" id="confirm">
     <div aria-labelledby="swal2-title" aria-describedby="swal2-content"
-         class="swal2-popup swal2-modal swal2-show" tabindex="-1" role="dialog" aria-live="assertive"
+         class="swal2-popup swal2-modal swal2-show"  role="dialog" aria-live="assertive"
          aria-modal="true" style="display: flex;">
         <div class="swal2-header">
             <div class="swal2-icon swal2-info swal2-animate-info-icon" style="display: flex;"></div>

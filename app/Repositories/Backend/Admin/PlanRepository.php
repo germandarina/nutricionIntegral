@@ -151,6 +151,7 @@ class PlanRepository extends BaseRepository
                     $ingredient_edit->recipe_id = $recipe_edit->id;
                     $ingredient_edit->save();
                 }
+                $recipe_edit->classifications()->sync($recipe_origin->classifications->pluck('id'));
                 return $recipe_edit;
             }
         });

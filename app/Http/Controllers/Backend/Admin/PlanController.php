@@ -205,7 +205,9 @@ class PlanController extends Controller
             });
         }
         $recipes = $query_recipes->get();
-        return view('backend.admin.plan.partials.list-recipes',compact('recipes'));
+        $cantidad = count($recipes);
+        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes'));
+        return compact('html','cantidad');
     }
 
     public function getModalRecipe(){

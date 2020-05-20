@@ -8,7 +8,7 @@
         <!-- roww and table -->
         <div class="row">
             <div class="col-sm-12">
-                <table class="table table-responsive-sm table-sm">
+                <table class="table table-responsive-sm table-sm font-xs">
                     <thead>
                         <tr style="background-color: #20a8d8; color: white; ">
                             <th style="text-align: center;">Paciente</th>
@@ -32,26 +32,6 @@
 </div><!--card-->
 
 @endsection
-
-@push('after-scripts')
-    @include('datatables.includes')
-    <script>
-        $(function () {
-            {{--$('.data-table').DataTable({--}}
-            {{--    "processing": true,--}}
-            {{--    "serverSide": true,--}}
-            {{--    "draw": true,--}}
-            {{--    ajax: "{{ route('admin.plan.index') }}",--}}
-            {{--    columns: [--}}
-            {{--        {data: 'patient.full_name', name: 'patient.full_name'},--}}
-            {{--        {data: 'name', name: 'name'},--}}
-            {{--        {data: 'days', name: 'days'},--}}
-            {{--        {data: 'actions', name: 'actions', orderable: false, searchable: false,},--}}
-            {{--    ]--}}
-            {{--});--}}
-        });
-    </script>
-@endpush
 <style>
     .select2-selection__choice{
      font-size: 11px;

@@ -60,8 +60,6 @@
                 {{ html()->number('min_calorias','min_calorias')
                     ->class('form-control')
                     ->placeholder('Min Calorias')
-                    ->attribute('maxlength', 191)
-                    ->required()
                     ->autofocus()
                     ->attribute('min', 0)
                     ->attributes(['onchange'=>'getRecipes()'])}}
@@ -70,8 +68,6 @@
                 {{ html()->number('max_calorias','max_calorias')
                     ->class('form-control')
                     ->placeholder('Max Calorias')
-                    ->attribute('maxlength', 191)
-                    ->required()
                     ->autofocus()
                     ->attribute('min', 0)
                     ->attributes(['onchange'=>'getRecipes()'])}}
@@ -80,20 +76,18 @@
     </div><!--col-->
 </div><!--row-->
 <hr>
-<div class="row" style="height: 500px;overflow-y: scroll;" id="divRecipes"></div>
+<div class="row" id="divRecipes"></div>
 
 @section('modal-yield')
-    <div class="modal fade" id="modalRecipe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true"></div>
+    <div class="modal fade" id="modalRecipe" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false"></div>
 @endsection
 @push('after-scripts')
-
+    @include('datatables.includes')
     <script>
-        $(document).on('keypress',function(e) {
-            return e.keyCode != 27;
-        });
         $(function () {
             getRecipes();
         });
+
         function getRecipes() {
             $.ajax({
                 headers: {
@@ -107,19 +101,30 @@
                     'classifications': $("#classification_id").val(),
                     'recipe_types' : $("#recipe_type_id").val(),
                     'recipe_name' : $("#recipe_name").val(),
-                    'min_calorias' : $("#min_calorias").val(),
-                    'max_calorias' : $("#max_calorias").val(),
+                   // 'min_calorias' : $("#min_calorias").val(),
+                   // 'max_calorias' : $("#max_calorias").val(),
                 },
                 success: function(data) {
-                    $("#divRecipes").empty().html(data);
+                    var datos = data;
+                    $("#divRecipes").empty().html(datos.html);
+                    if(datos.cantidad < 9){
+                        $("#divRecipes").css('height','').css('overflow-y','');
+                    }
+                    if(datos.cantidad > 9 && datos.cantidad < 15){
+                        $("#divRecipes").css('height','400px').css('overflow-y','scroll');
+                    }
+                    if(datos.cantidad > 15){
+                        $("#divRecipes").css('height','500px').css('overflow-y','scroll');
+                    }
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
         }
-        function getTotalCompleto(e,recipe_id) {
-            e.preventDefault();
+
+        function getTotalCompleto(event,recipe_id) {
+            event.preventDefault();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -188,8 +193,10 @@
                     var datos = data;
                     Lobibox.notify('success',{msg: datos.mensaje });
                     if(edit === "1"){
-                        $("#modalRecipe").empty().html(datos.html).modal('show');
+                        $("#modalRecipe").empty().html(datos.html);
                         iniciarJs();
+                        limpiarModal();
+                        $("#modalRecipe").modal('show');
                     }else{
                         $("#modalRecipe").modal('hide');
                     }
@@ -209,7 +216,7 @@
         }
 
         function getComposicionBasica() {
-            var food_id = $("#food_id").val();
+            var food_id = $("#edit_food_id").val();
             if(food_id != "" && food_id != null && food_id != undefined){
                 $.ajax({
                     headers: {
@@ -244,7 +251,7 @@
                 success: function(data) {
                     var datos = data;
                     Swal.fire({
-                        title: '<strong>Composicion Completa</strong>',
+                        title: '<strong>Composicion Completa Alimento</strong>',
                         icon: 'info',
                         html: datos,
                         showCloseButton: true,
@@ -260,13 +267,6 @@
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
-        }
-
-        function editIngredient(event,ingredient_id){
-
-        }
-        function deleteIngredient(event,ingredient_id){
-
         }
 
         function iniciarJs() {
@@ -320,6 +320,14 @@
             });
         }
 
+        function limpiarModal() {
+            $("#edit_food_id").select2("val",0);
+            $("#quantity_description").val("");
+            $("#quantity_grs").val("");
+            $("#ingredient_id").val("");
+            $("#divComposicion").empty();
+        }
+
         function eliminarIngrediente(event,ingredient_id) {
             event.preventDefault();
 
@@ -338,7 +346,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         url:      '{{ route('admin.recipe.deleteIngredient') }}',
-                        type:     'POST',
+                        type:     'DELETE',
                         data:    {
                             'ingredient_id':ingredient_id,
                         },
@@ -374,6 +382,84 @@
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function modificarIngrediente(event,ingredient_id) {
+            event.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.recipe.getIngredient') }}',
+                type:     'POST',
+                data:    {
+                    'ingredient_id':ingredient_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                    var $newOption = $("<option selected='selected'></option>").val(datos.ingredient.food_id).text(datos.food.name);
+                    $("#edit_food_id").append($newOption).trigger('change');
+                    $("#quantity_description").val(datos.ingredient.quantity_description);
+                    $("#quantity_grs").val(datos.ingredient.quantity_grs);
+                    $("#ingredient_id").val(datos.ingredient.id);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if(xhr.status == 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
+                }
+            });
+        }
+
+        function storeIngredient(event) {
+            event.preventDefault();
+            var food_id = $("#edit_food_id").val();
+            var quantity_d = $("#quantity_description").val();
+            var quantity_grs = $("#quantity_grs").val();
+            var ingredient_id = $("#ingredient_id").val();
+
+            if(food_id == null || food_id == undefined || food_id == ""){
+                return Lobibox.notify('error',{msg:'Seleccione un alimento'});
+            }
+            if(quantity_d == null || quantity_d == undefined || quantity_d == ""){
+                return Lobibox.notify('error',{msg:'Ingrese una descripcion de cantidades'});
+            }
+            if(quantity_grs == null || quantity_grs == undefined || quantity_grs == ""){
+                return Lobibox.notify('error',{msg:'Ingrese la cantidad en grs'});
+            }
+
+            if(ingredient_id == null || ingredient_id == undefined || ingredient_id == ""){
+                ingredient_id = 0;
+            }
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route('admin.recipe.addIngredients') }}',
+                type:     'POST',
+                data:    {
+                    'food_id':food_id,
+                    'quantity_description' : quantity_d,
+                    'quantity_grs' :  quantity_grs,
+                    'ingredient_id' : ingredient_id,
+                    'recipe_id': $("#hidden_recipe_id").val(),
+                },
+                success: function(data) {
+                    var datos = data;
+                    Lobibox.notify('success',{msg: datos.mensaje});
+                    limpiarModal();
+                    $('#table-ingredients').DataTable().ajax.reload();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if(xhr.status == 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
                 }
             });
         }

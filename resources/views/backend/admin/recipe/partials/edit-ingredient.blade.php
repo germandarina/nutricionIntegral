@@ -1,4 +1,4 @@
-<div>
+<div style="background-color: #d8e6f0; padding: 5px;">
     <div class="row">
         {{ html()->label('Alimento')
                    ->class('col-md-2 form-control-label')
@@ -13,11 +13,7 @@
                 }}
         </div><!--col-->
     </div>
-    <br>
-    <div id="divComposicion">
-
-    </div>
-    <div class="row">
+    <div class="row mt-2">
         {{ html()->label('Cant.(Desc.)')
                     ->class('col-md-2 form-control-label')
                     ->for('quantity_description') }}
@@ -40,9 +36,10 @@
                 ->value(0)
                 ->autofocus() }}
         </div><!--col-->
-        <div class="col-md-2">
-            <a href="#" class="btn btn-sm- btn-success"><i class="fas fa-save"></i></a>
+        <div class="col-md-2 mt-1">
+            <a href="#" class="btn btn-md btn-success" onclick="storeIngredient(event)"><i class="fas fa-save"></i></a>
         </div>
     </div>
 </div>
+<div class="mt-2" id="divComposicion"></div>
 
