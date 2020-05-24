@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredient;
+use App\Models\PlanDetail;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
@@ -161,7 +162,11 @@ class PlanController extends Controller
         $foods = $paciente->foods->pluck('id');
         $food_groups = $paciente->foodGroups->pluck('id');
         $classifications = $paciente->classifications->pluck('id');
-        return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications'));
+        $array_dias = [];
+        for ($i=1;$i<=$plan->days;$i++){
+            $array_dias[$i] = "Día {$i}";
+        }
+        return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications','array_dias'));
     }
 
     public function getRecipesForPlan(){
@@ -227,6 +232,35 @@ class PlanController extends Controller
                 $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe'));
             }
             return response()->json(['mensaje'=>'Receta agregada','html'=>$html],200);
+        }
+        return App::abort(422);
+    }
+
+    public function getRecipes(Plan $plan){
+        $data =  PlanDetail::with(['recipe.recipeType','recipe.classifications'])->where('plan_id',$plan->id)->get();
+        return Datatables::of($data)
+            ->editColumn('classifications',function ($row){
+                $string_classifications = "";
+                foreach ($row->recipe->classifications as $classification){
+                    $string_classifications .= $classification->name.' / ';
+                }
+                return trim($string_classifications,' / ');
+            })
+            ->editColumn('recipeType',function ($row){
+                return $row->recipe->recipeType->name;
+            })
+            ->addColumn('actions', function($row){
+                return view('backend.admin.plan.includes.datatable-plan-detail-buttons',compact('row'));
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
+
+    public function deleteDetail(){
+        if(request('id')){
+            $detail = PlanDetail::find(request('id'));
+            $detail->delete();
+            return response()->json(['mensaje'=>'Receta eliminada'],200);
         }
         return App::abort(422);
     }

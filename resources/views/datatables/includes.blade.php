@@ -80,12 +80,13 @@
             },
         ],
         responsive: true,
-        'paging':true,
-        'lengthChange' : true,
-        'pageLength': 20,
-        'lengthMenu':[[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
-        "stateSave": true,
-        "language": {
+        paging:true,
+        lengthChange : true,
+        pageLength: 20,
+        lengthMenu:[[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
+        stateSave: true,
+        fixedHeader: true,
+        language: {
             "url": "/datatables/Spanish.json"
         }
     });

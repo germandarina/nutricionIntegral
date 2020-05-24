@@ -286,11 +286,7 @@
                         },
                         success: function(data) {
                             var datos = data;
-                            Swal.fire(
-                                datos.mensaje,
-                                '',
-                                'success'
-                            );
+                            Lobibox.notify('succes',{msg:datos.mensaje});
                             $('#table-ingredients').DataTable().ajax.reload();
                         },
                         error: function(xhr, textStatus, errorThrown) {
