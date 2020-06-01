@@ -1,10 +1,11 @@
 <div class="row">
     <div class="col-md-3">
-        {{ html()->number('quantity_per_day')
+        {{ html()->number('quantity_by_day')
                             ->class('form-control')
                             ->placeholder('Cant. de veces por día')
                             ->attribute('min', 1)
                             ->attribute('max',2)
+                            ->attributes(['id'=>'quantity_by_day'])
                             ->required()
                             ->autofocus()
          }}
@@ -18,33 +19,32 @@
     <div class="col-md-4">
         {{ html()->multiselect('days',$array_dias,[])
                         ->class('form-control')
+                        ->attributes(['id'=>'days'])
                         ->required()
         }}
     </div><!--col-->
     <div class="col-2">
-        <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i> Asignar Días</a>
+        <a href="#" class="btn btn-success btn-sm" onclick="addPlanDetailDay(event);"><i class="fas fa-plus-square"></i> Asignar Días</a>
     </div>
 </div>
 <div class="row">
     <div class="col">
-        <div class="table-responsive">
-            <table class="table data-table font-xs" id="recipes-datatable" style="width: 100% !important;">
-                <thead>
-                    <tr>
-                        <th class="not-export-col"></th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Clasificación</th>
-                        <th>Energia</th>
-                        <th>Proteinas</th>
-                        <th>Grasa</th>
-                        <th>Carbohidratos</th>
-                        <th>Colesterol</th>
-                        <th class="not-export-col">Acciones</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+        <table class="table data-table font-xs" id="recipes-datatable" style="width: 100% !important;">
+            <thead>
+                <tr>
+                    <th class="not-export-col"></th>
+                    <th class="center;">Nombre</th>
+                    <th>Tipo</th>
+                    <th>Clasificación</th>
+                    <th>Energia</th>
+                    <th>Proteinas</th>
+                    <th>Grasa</th>
+                    <th>Carbohidratos</th>
+                    <th>Colesterol</th>
+                    <th class="not-export-col">Acciones</th>
+                </tr>
+            </thead>
+        </table>
     </div><!--col-->
 </div><!--row-->
 

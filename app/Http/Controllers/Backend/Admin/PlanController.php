@@ -6,6 +6,7 @@ use App;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredient;
 use App\Models\PlanDetail;
+use App\Models\PlanDetailDay;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
@@ -263,5 +264,38 @@ class PlanController extends Controller
             return response()->json(['mensaje'=>'Receta eliminada'],200);
         }
         return App::abort(422);
+    }
+
+    public function addPlanDetailDay(){
+        if(request('recipes')){
+            $this->planRepository->addPlanDetailDay(request()->all());
+            return response()->json(['mensaje'=>'Recetas agregadas por día'],200);
+        }
+        return App::abort(422);
+    }
+
+    public function getRecipesByDay(Plan $plan){
+        $data =  PlanDetail::with(['recipe.recipeType','recipe.classifications'])
+                                ->whereHas('planDetailsDays',function ($query){
+                                    $query->where('day',request('day'));
+                                })
+                                ->where('plan_id',$plan->id)
+                                ->get();
+        return Datatables::of($data)
+            ->editColumn('classifications',function ($row){
+                $string_classifications = "";
+                foreach ($row->recipe->classifications as $classification){
+                    $string_classifications .= $classification->name.' / ';
+                }
+                return trim($string_classifications,' / ');
+            })
+            ->editColumn('recipeType',function ($row){
+                return $row->recipe->recipeType->name;
+            })
+            ->addColumn('actions', function($row){
+                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row'));
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 }
