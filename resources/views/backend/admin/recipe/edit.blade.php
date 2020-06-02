@@ -286,7 +286,7 @@
                         },
                         success: function(data) {
                             var datos = data;
-                            Lobibox.notify('succes',{msg:datos.mensaje});
+                            Lobibox.notify('success',{msg:datos.mensaje});
                             $('#table-ingredients').DataTable().ajax.reload();
                         },
                         error: function(xhr, textStatus, errorThrown) {

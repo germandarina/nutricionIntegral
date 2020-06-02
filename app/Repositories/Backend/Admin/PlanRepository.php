@@ -164,14 +164,15 @@ class PlanRepository extends BaseRepository
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
         return DB::transaction(function () use ($datos) {
-            $dias = $datos['days'];
-            for ($i=0;$i<count($dias);$i++){
-                foreach ($datos['recipes'] as $id_plan_recipe){
-                    $plan_detail_day = new PlanDetailDay();
-                    $plan_detail_day->plan_detail_id = $id_plan_recipe['id'];
-                    $plan_detail_day->day = $dias[$i];
-                    if(!$plan_detail_day->save()){
-                        throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
+            for ($i=0;$i< $datos['quantity_by_day'];$i++){
+                foreach ($datos['days'] as $day){
+                    foreach ($datos['recipes'] as $id_plan_recipe){
+                        $plan_detail_day = new PlanDetailDay();
+                        $plan_detail_day->plan_detail_id = $id_plan_recipe['id'];
+                        $plan_detail_day->day = $day;
+                        if(!$plan_detail_day->save()){
+                            throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
+                        }
                     }
                 }
             }

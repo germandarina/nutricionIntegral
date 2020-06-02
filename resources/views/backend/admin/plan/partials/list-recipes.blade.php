@@ -24,7 +24,7 @@
                             <li style="padding: 1px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-xs">Carbohidratos<span class="badge badge-info badge-pill">{{$recipe->total_carbohidratos_totales}}</span></li>
                             <li style="padding: 1px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-xs">Colesterol<span class="badge badge-info badge-pill">{{$recipe->total_colesterol}}</span></li>
                             <li style="padding: 1px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-xs">
-                                <a href="#" class="btn btn-xs btn-success btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})">TOTAL COMPOSICION RECETA</a>
+                                <a href="#" class="btn btn-sm btn-success btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})">TOTAL COMPOSICION RECETA</a>
                             </li>
                         </ul>
                     </div>

@@ -275,9 +275,10 @@ class PlanController extends Controller
     }
 
     public function getRecipesByDay(Plan $plan){
+        $dia = request('day');
         $data =  PlanDetail::with(['recipe.recipeType','recipe.classifications'])
-                                ->whereHas('planDetailsDays',function ($query){
-                                    $query->where('day',request('day'));
+                                ->whereHas('planDetailsDays',function ($query) use($dia){
+                                    $query->where('day',$dia);
                                 })
                                 ->where('plan_id',$plan->id)
                                 ->get();
@@ -292,10 +293,38 @@ class PlanController extends Controller
             ->editColumn('recipeType',function ($row){
                 return $row->recipe->recipeType->name;
             })
-            ->addColumn('actions', function($row){
-                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row'));
+            ->addColumn('actions', function($row) use ($dia){
+                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','dia'));
             })
             ->rawColumns(['actions'])
             ->make(true);
+    }
+
+    public function deleteDetailByDay(){
+        if(request('id')){
+            $detail = PlanDetailDay::where('plan_detail_id',request('id'))
+                                    ->where('day',request('day'))
+                                    ->first();
+            $dia = request('day');
+            $detail->delete();
+            return response()->json(['mensaje'=>"Receta eliminada del día $dia"],200);
+        }
+        return App::abort(422);
+    }
+
+    public function getTotalRecipesByDay(Plan $plan){
+        if(request('day')){
+            $dia = request('day');
+            $data =  PlanDetail::with('recipe')
+                ->with(['planDetailDays'=>function($query_with){
+                    $query_with->
+                }])
+                ->whereHas('planDetailsDays',function ($query) use($dia){
+                    $query->where('day',$dia);
+                })
+                ->where('plan_id',$plan->id)
+                ->get();
+        }
+        return App::abort(422);
     }
 }

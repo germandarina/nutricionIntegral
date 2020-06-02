@@ -17,5 +17,8 @@
         </table>
     </div><!--col-->
 </div><!--row-->
+<div class="row mt-lg-2" id="div-total-by-day-{{$i}}">
+
+</div>
 
 
