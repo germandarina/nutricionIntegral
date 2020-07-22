@@ -3,6 +3,7 @@
         <table class="table data-table font-xs" id="recipes-by-day-datatable-{{$i}}" style="width: 100% !important; ">
             <thead>
                 <tr>
+                    <th>Cant. por Día</th>
                     <th class="center;">Nombre</th>
                     <th>Tipo</th>
                     <th>Clasificación</th>

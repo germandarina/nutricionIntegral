@@ -118,7 +118,7 @@
 
         function iniciarDataTablesPordia() {
             @for($day=1;$day<=$plan->days;$day++)
-                $('#recipes-by-day-datatable-{{$i}}').DataTable({
+                $('#recipes-by-day-datatable-{{$day}}').DataTable({
                     fixedHeader: true,
                     paging:false,
                     "scrollY": "250px",
@@ -135,6 +135,7 @@
                         },
                     },
                     columns: [
+                        {data: 'quantity_day', name: 'quantity_day' },
                         {data: 'recipe.name', name: 'recipe.name',},
                         {data: 'recipeType', name: 'recipeType',},
                         {data: 'classifications', name: 'classifications',},
@@ -159,11 +160,11 @@
                 url:      '{{ route('admin.plan.getTotalRecipesByDay',$plan->id) }}',
                 type:     'POST',
                 data:    {
-                    'day': dia,
+                    'day': day,
                 },
                 success: function(data) {
                     var datos = data;
-                    $(`#div-total-by-day-${day}`).empty().html(datos.html);
+                    $(`#div-total-by-day-${day}`).empty().html(datos);
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
@@ -468,17 +469,17 @@
             var quantity_grs = $("#quantity_grs").val();
             var ingredient_id = $("#ingredient_id").val();
 
-            if(food_id == null || food_id == undefined || food_id == ""){
+            if(food_id === null || food_id === undefined || food_id === ""){
                 return Lobibox.notify('error',{msg:'Seleccione un alimento'});
             }
-            if(quantity_d == null || quantity_d == undefined || quantity_d == ""){
+            if(quantity_d === null || quantity_d === undefined || quantity_d === ""){
                 return Lobibox.notify('error',{msg:'Ingrese una descripcion de cantidades'});
             }
-            if(quantity_grs == null || quantity_grs == undefined || quantity_grs == ""){
+            if(quantity_grs === null || quantity_grs === undefined || quantity_grs === ""){
                 return Lobibox.notify('error',{msg:'Ingrese la cantidad en grs'});
             }
 
-            if(ingredient_id == null || ingredient_id == undefined || ingredient_id == ""){
+            if(ingredient_id === null || ingredient_id === undefined || ingredient_id === ""){
                 ingredient_id = 0;
             }
             $.ajax({
@@ -501,7 +502,7 @@
                     $('#table-ingredients').DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    if(xhr.status == 422){
+                    if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
                         Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
@@ -592,8 +593,9 @@
                     $("#days").select2("val",0);
                     $('#recipes-datatable').DataTable().ajax.reload();
                     $.each(days,function (i,v) {
-                        let dia = parseInt(v);
-                        $(`#recipes-by-day-datatable-${dia}`).DataTable().ajax.reload();
+                        let day = parseInt(v);
+                        $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
+                        getTotalesPorDia(day);
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -602,7 +604,7 @@
             });
         }
 
-        function eliminarRecetaPorDia(event,plan_detail_day_id,dia) {
+        function eliminarRecetaPorDia(event,plan_detail_day_id,day) {
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
@@ -622,12 +624,13 @@
                         type:     'DELETE',
                         data:    {
                             'id':plan_detail_day_id,
-                            'day':dia,
+                            'day':day,
                         },
                         success: function(data) {
                             var datos = data;
                             Lobibox.notify('success',{msg:datos.mensaje});
-                            $(`#recipes-by-day-datatable-${dia}`).DataTable().ajax.reload();
+                            $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
+                            getTotalesPorDia(day);
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});

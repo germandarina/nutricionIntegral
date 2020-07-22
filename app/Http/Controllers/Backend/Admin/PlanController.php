@@ -277,11 +277,14 @@ class PlanController extends Controller
     public function getRecipesByDay(Plan $plan){
         $dia = request('day');
         $data =  PlanDetail::with(['recipe.recipeType','recipe.classifications'])
-                                ->whereHas('planDetailsDays',function ($query) use($dia){
-                                    $query->where('day',$dia);
-                                })
-                                ->where('plan_id',$plan->id)
-                                ->get();
+                            ->with(['planDetailsDays'=>function($query_with)use($dia){
+                                $query_with->where('day',$dia);
+                            }])
+                            ->whereHas('planDetailsDays',function ($query) use($dia){
+                                $query->where('day',$dia);
+                            })
+                            ->where('plan_id',$plan->id)
+                            ->get();
         return Datatables::of($data)
             ->editColumn('classifications',function ($row){
                 $string_classifications = "";
@@ -293,6 +296,9 @@ class PlanController extends Controller
             ->editColumn('recipeType',function ($row){
                 return $row->recipe->recipeType->name;
             })
+            ->addColumn('quantity_day',function ($row){
+               return $row->planDetailsDays->count();
+            })
             ->addColumn('actions', function($row) use ($dia){
                 return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','dia'));
             })
@@ -302,28 +308,50 @@ class PlanController extends Controller
 
     public function deleteDetailByDay(){
         if(request('id')){
-            $detail = PlanDetailDay::where('plan_detail_id',request('id'))
+            $details = PlanDetailDay::where('plan_detail_id',request('id'))
                                     ->where('day',request('day'))
-                                    ->first();
+                                    ->get();
+            foreach ($details as $detail){
+                $detail->delete();
+            }
             $dia = request('day');
-            $detail->delete();
-            return response()->json(['mensaje'=>"Receta eliminada del día $dia"],200);
+            return response()->json(['mensaje'=>"Receta/s eliminada del día $dia"],200);
         }
         return App::abort(422);
     }
 
     public function getTotalRecipesByDay(Plan $plan){
         if(request('day')){
-            $dia = request('day');
-            $data =  PlanDetail::with('recipe')
-                ->with(['planDetailDays'=>function($query_with){
-                    $query_with->
+            $day = request('day');
+            $plan_details =  PlanDetail::with('recipe')
+                ->with(['planDetailsDays'=>function($query_with)use($day){
+                    $query_with->where('day',$day);
                 }])
-                ->whereHas('planDetailsDays',function ($query) use($dia){
-                    $query->where('day',$dia);
+                ->whereHas('planDetailsDays',function ($query) use($day){
+                    $query->where('day',$day);
                 })
                 ->where('plan_id',$plan->id)
                 ->get();
+
+            $total['total_energia_kcal']          = 0;
+            $total['total_proteina']              = 0;
+            $total['total_grasa_total']           = 0;
+            $total['total_carbohidratos_totales'] = 0;
+            $total['total_colesterol']            = 0;
+
+            foreach ($plan_details as $detail){
+                $quantity_by_day =  $detail->planDetailsDays->count();
+                $recipe = $detail->recipe;
+                $total['total_energia_kcal']          += $recipe->total_energia_kcal * $quantity_by_day;
+                $total['total_proteina']              += $recipe->total_proteina * $quantity_by_day;
+                $total['total_grasa_total']           += $recipe->total_grasa_total * $quantity_by_day;
+                $total['total_carbohidratos_totales'] += $recipe->total_carbohidratos_totales * $quantity_by_day;
+                $total['total_colesterol']            += $recipe->total_colesterol * $quantity_by_day;
+            }
+
+            return view('backend.admin.plan.partials.table-total-plan-by-day',
+                        compact('total','plan','day'));
+
         }
         return App::abort(422);
     }

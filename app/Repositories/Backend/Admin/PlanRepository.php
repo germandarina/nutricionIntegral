@@ -164,8 +164,8 @@ class PlanRepository extends BaseRepository
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
         return DB::transaction(function () use ($datos) {
-            for ($i=0;$i< $datos['quantity_by_day'];$i++){
-                foreach ($datos['days'] as $day){
+            foreach ($datos['days'] as $day){
+                for ($i=0;$i< $datos['quantity_by_day'];$i++){
                     foreach ($datos['recipes'] as $id_plan_recipe){
                         $plan_detail_day = new PlanDetailDay();
                         $plan_detail_day->plan_detail_id = $id_plan_recipe['id'];
