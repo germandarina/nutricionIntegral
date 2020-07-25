@@ -323,36 +323,85 @@ class PlanController extends Controller
     public function getTotalRecipesByDay(Plan $plan){
         if(request('day')){
             $day = request('day');
-            $plan_details =  PlanDetail::with('recipe')
-                ->with(['planDetailsDays'=>function($query_with)use($day){
-                    $query_with->where('day',$day);
-                }])
-                ->whereHas('planDetailsDays',function ($query) use($day){
-                    $query->where('day',$day);
-                })
-                ->where('plan_id',$plan->id)
-                ->get();
-
-            $total['total_energia_kcal']          = 0;
-            $total['total_proteina']              = 0;
-            $total['total_grasa_total']           = 0;
-            $total['total_carbohidratos_totales'] = 0;
-            $total['total_colesterol']            = 0;
-
-            foreach ($plan_details as $detail){
-                $quantity_by_day =  $detail->planDetailsDays->count();
-                $recipe = $detail->recipe;
-                $total['total_energia_kcal']          += $recipe->total_energia_kcal * $quantity_by_day;
-                $total['total_proteina']              += $recipe->total_proteina * $quantity_by_day;
-                $total['total_grasa_total']           += $recipe->total_grasa_total * $quantity_by_day;
-                $total['total_carbohidratos_totales'] += $recipe->total_carbohidratos_totales * $quantity_by_day;
-                $total['total_colesterol']            += $recipe->total_colesterol * $quantity_by_day;
-            }
-
+            $total = [];
+            $this->getValuesForDay($plan->id,$day,$total);
             return view('backend.admin.plan.partials.table-total-plan-by-day',
                         compact('total','plan','day'));
 
         }
         return App::abort(422);
+    }
+
+    public function getTotalCompletoPlanPorDia(){
+        if(request('plan_id') && request('day')){
+            $day        = request('day');
+            $plan_id    = request('plan_id');
+            $total = [];
+            $this->getValuesForDay($plan_id,$day,$total);
+            return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
+        }
+    }
+
+    private function getValuesForDay($plan_id,$day,&$total){
+        $plan_details =  PlanDetail::with('recipe')
+            ->with(['planDetailsDays'=>function($query_with)use($day){
+                $query_with->where('day',$day);
+            }])
+            ->whereHas('planDetailsDays',function ($query) use($day){
+                $query->where('day',$day);
+            })
+            ->where('plan_id',$plan_id)
+            ->get();
+
+        $total['total_energia_kcal']            = 0;
+        $total['total_proteina']                = 0;
+        $total['total_grasa_total']             = 0;
+        $total['total_carbohidratos_totales']   = 0;
+        $total['total_colesterol']              = 0;
+        $total['total_agua']                    = 0;
+        $total['total_cenizas']                 = 0;
+        $total['total_sodio']                   = 0;
+        $total['total_potasio']                 = 0;
+        $total['total_calcio']                  = 0;
+        $total['total_fosforo']                 = 0;
+        $total['total_hierro']                  = 0;
+        $total['total_zinc']                    = 0;
+        $total['total_tiamina']                 = 0;
+        $total['total_rivoflavina']             = 0;
+        $total['total_niacina']                 = 0;
+        $total['total_vitamina_c']              = 0;
+        $total['total_carbohidratos_disponibles']    = 0;
+        $total['total_ac_grasos_saturados']          = 0;
+        $total['total_ac_grasos_monoinsaturados']    = 0;
+        $total['total_ac_grasos_poliinsaturados']    = 0;
+        $total['total_fibra']                        = 0;
+
+        foreach ($plan_details as $detail){
+            $quantity_by_day =  $detail->planDetailsDays->count();
+            $recipe = $detail->recipe;
+
+            $total['total_energia_kcal']            += $recipe->total_energia_kcal * $quantity_by_day;
+            $total['total_proteina']                += $recipe->total_proteina * $quantity_by_day;
+            $total['total_grasa_total']             += $recipe->total_grasa_total * $quantity_by_day;
+            $total['total_carbohidratos_totales']   += $recipe->total_carbohidratos_totales * $quantity_by_day;
+            $total['total_colesterol']              += $recipe->total_colesterol * $quantity_by_day;
+            $total['total_agua']                    += $recipe->total_agua * $quantity_by_day;
+            $total['total_cenizas']                 += $recipe->total_cenizas * $quantity_by_day;
+            $total['total_sodio']                   += $recipe->total_sodio * $quantity_by_day;
+            $total['total_potasio']                 += $recipe->total_potasio * $quantity_by_day;
+            $total['total_calcio']                  += $recipe->total_calcio * $quantity_by_day;
+            $total['total_fosforo']                 += $recipe->total_fosforo * $quantity_by_day;
+            $total['total_hierro']                  += $recipe->total_hierro * $quantity_by_day;
+            $total['total_zinc']                    += $recipe->total_zinc * $quantity_by_day;
+            $total['total_tiamina']                 += $recipe->total_tiamina * $quantity_by_day;
+            $total['total_rivoflavina']             += $recipe->total_rivoflavina * $quantity_by_day;
+            $total['total_niacina']                 += $recipe->total_niacina * $quantity_by_day;
+            $total['total_vitamina_c']              += $recipe->tota_vitamina_c * $quantity_by_day;
+            $total['total_carbohidratos_disponibles']  += $recipe->total_carbohidratos_disponibles * $quantity_by_day;
+            $total['total_ac_grasos_saturados']        += $recipe->total_ac_grasos_saturados * $quantity_by_day;
+            $total['total_ac_grasos_monoinsaturados']  += $recipe->total_ac_grasos_monoinsaturados * $quantity_by_day;
+            $total['total_ac_grasos_poliinsaturados']  += $recipe->total_ac_grasos_poliinsaturados * $quantity_by_day;
+            $total['total_fibra']                      += $recipe->total_fibra * $quantity_by_day;
+        }
     }
 }

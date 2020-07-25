@@ -12,11 +12,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align: center;">{{$recipe->total_energia_kcal}}</td>
-                    <td style="text-align: center;">{{$recipe->total_proteina}}</td>
-                    <td style="text-align: center;">{{$recipe->total_grasa_total}}</td>
-                    <td style="text-align: center;">{{$recipe->total_carbohidratos_totales}}</td>
-                    <td style="text-align: center;">{{$recipe->total_hierro}}</td>
+                    <td style="text-align: center;">{{$total['total_energia_kcal'] }}</td>
+                    <td style="text-align: center;">{{$total['total_proteina'] }}</td>
+                    <td style="text-align: center;">{{$total['total_grasa_total'] }}</td>
+                    <td style="text-align: center;">{{$total['total_carbohidratos_totales'] }}</td>
+                    <td style="text-align: center;">{{$total['total_hierro'] }}</td>
                 </tr>
             </tbody>
         </table>
@@ -37,12 +37,12 @@
             </thead>
             <tbody>
             <tr>
-                <td style="text-align: center;">{{$recipe->total_agua}}</td>
-                <td style="text-align: center;">{{$recipe->total_cenizas}}</td>
-                <td style="text-align: center;">{{$recipe->total_sodio}}</td>
-                <td style="text-align: center;">{{$recipe->total_potasio}}</td>
-                <td style="text-align: center;">{{$recipe->total_calcio}}</td>
-                <td style="text-align: center;">{{$recipe->total_fosforo}}</td>
+                <td style="text-align: center;">{{$total['total_agua'] }}</td>
+                <td style="text-align: center;">{{$total['total_cenizas'] }}</td>
+                <td style="text-align: center;">{{$total['total_sodio'] }}</td>
+                <td style="text-align: center;">{{$total['total_potasio'] }}</td>
+                <td style="text-align: center;">{{$total['total_calcio'] }}</td>
+                <td style="text-align: center;">{{$total['total_fosforo'] }}</td>
             </tr>
             </tbody>
         </table>
@@ -63,12 +63,12 @@
             </thead>
             <tbody>
             <tr>
-                <td style="text-align: center;">{{$recipe->total_zinc}}</td>
-                <td style="text-align: center;">{{$recipe->total_tiamina}}</td>
-                <td style="text-align: center;">{{$recipe->total_rivoflavina}}</td>
-                <td style="text-align: center;">{{$recipe->total_niacina}}</td>
-                <td style="text-align: center;">{{$recipe->total_vitamina_c}}</td>
-                <td style="text-align: center;">{{$recipe->total_carbohidratos_disponibles}}</td>
+                <td style="text-align: center;">{{$total['total_zinc'] }}</td>
+                <td style="text-align: center;">{{$total['total_tiamina'] }}</td>
+                <td style="text-align: center;">{{$total['total_rivoflavina'] }}</td>
+                <td style="text-align: center;">{{$total['total_niacina'] }}</td>
+                <td style="text-align: center;">{{$total['total_vitamina_c'] }}</td>
+                <td style="text-align: center;">{{$total['total_carbohidratos_disponibles'] }}</td>
             </tr>
             </tbody>
         </table>
@@ -87,10 +87,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align: center;">{{$recipe->total_ac_grasos_saturados}}</td>
-                    <td style="text-align: center;">{{$recipe->total_ac_grasos_monoinsaturados}}</td>
-                    <td style="text-align: center;">{{$recipe->total_ac_grasos_poliinsaturados}}</td>
-                    <td style="text-align: center;">{{$recipe->total_colesterol}}</td>
+                    <td style="text-align: center;">{{$total['total_ac_grasos_saturados'] }}</td>
+                    <td style="text-align: center;">{{$total['total_ac_grasos_monoinsaturados'] }}</td>
+                    <td style="text-align: center;">{{$total['total_ac_grasos_poliinsaturados'] }}</td>
+                    <td style="text-align: center;">{{$total['total_colesterol'] }}</td>
                 </tr>
             </tbody>
         </table>

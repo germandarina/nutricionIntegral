@@ -186,7 +186,7 @@
                     var datos = data;
                     Swal.fire({
                         title: '<strong>Total Composicion Receta</strong>',
-                        icon: 'info',
+                        // icon: 'info',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,
@@ -303,7 +303,7 @@
                     var datos = data;
                     Swal.fire({
                         title: '<strong>Composicion Completa Alimento</strong>',
-                        icon: 'info',
+                        // icon: 'info',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,
@@ -384,7 +384,7 @@
 
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
-                icon: 'warning',
+                // icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -519,7 +519,7 @@
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
-                icon: 'warning',
+                // icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -608,7 +608,7 @@
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
-                icon: 'warning',
+                // icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -636,6 +636,39 @@
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                         }
                     });
+                }
+            });
+        }
+
+        function getTotalCompletoPlanPorDia(e,plan_id,day) {
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.getTotalCompletoPlanPorDia') }}',
+                type:     'POST',
+                data:    {
+                    'plan_id':plan_id,
+                    'day':day
+                },
+                success: function(data) {
+                    var datos = data;
+                    Swal.fire({
+                        title: '<strong>Total Completo Por Día</strong>',
+                        // icon: 'info',
+                        html: datos,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        cancelButtonText: '',
+                        cancelButtonAriaLabel: 'Thumbs down'
+                    })
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
         }
