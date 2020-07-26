@@ -66,8 +66,18 @@
             ->autofocus() }}
     </div><!--col-->
 </div>
-<br>
-<div class="row">
+<div class="row mt-4">
+    <div class="col-md-2">
+        {{ html()->label('Calorias')
+                 ->class('col-md-12 form-control-label')
+                 ->for('calorias') }}
+        {{ html()->text('calorias')
+            ->class('form-control numeric3Digits')
+            ->placeholder('Calorias')
+            ->attribute('maxlength', 191)
+            ->required()
+            ->autofocus() }}
+    </div><!--col-->
     <div class="col-md-2">
         {{ html()->label('Fibra (g)')
                  ->class('col-md-12 form-control-label')
@@ -123,6 +133,8 @@
                  ->required()
                  ->autofocus() }}
     </div><!--col-->
+</div>
+<div class="row mt-4">
     <div class="col-md-2">
         {{ html()->label('Agua (g)')
                 ->class('col-md-12 form-control-label')
@@ -134,9 +146,6 @@
             ->required()
             ->autofocus() }}
     </div><!--col-->
-</div>
-<br>
-<div class="row">
     <div class="col-md-2">
         {{ html()->label('Vitamina C (mg)')
                  ->class('col-md-12 form-control-label')
@@ -192,6 +201,8 @@
             ->required()
             ->autofocus() }}
     </div><!--col-->
+</div>
+<div class="row mt-4">
     <div class="col-md-2">
         {{ html()->label('Hierro (mg)')
                  ->class('col-md-12 form-control-label')
@@ -203,9 +214,6 @@
             ->required()
             ->autofocus() }}
     </div><!--col-->
-</div>
-<br>
-<div class="row">
     <div class="col-md-2">
         {{ html()->label('Zinc (mg)')
                 ->class('col-md-12 form-control-label')
@@ -262,4 +270,3 @@
             ->autofocus() }}
     </div><!--col-->
 </div>
-<br>

@@ -118,6 +118,7 @@ class Food extends BaseModel
         'ac_grasos_monoinsaturados',
         'ac_grasos_poliinsaturados',
         'fibra',
+        'calorias',
         'colesterol',
         'created_at',
         'updated_at',

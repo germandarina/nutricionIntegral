@@ -8,6 +8,7 @@
                     <th> Total Grasa (g)</th>
                     <th> Total Carbohidratos (g)</th>
                     <th> Total Hierro (mg)</th>
+                    <th> Total Calorías</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +18,7 @@
                     <td style="text-align: center;">{{$recipe->total_grasa_total}}</td>
                     <td style="text-align: center;">{{$recipe->total_carbohidratos_totales}}</td>
                     <td style="text-align: center;">{{$recipe->total_hierro}}</td>
+                    <td style="text-align: center;">{{ $recipe->total_calorias }}</td>
                 </tr>
             </tbody>
         </table>

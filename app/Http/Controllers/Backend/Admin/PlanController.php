@@ -375,6 +375,7 @@ class PlanController extends Controller
         $total['total_ac_grasos_monoinsaturados']    = 0;
         $total['total_ac_grasos_poliinsaturados']    = 0;
         $total['total_fibra']                        = 0;
+        $total['total_calorias']                     = 0;
 
         foreach ($plan_details as $detail){
             $quantity_by_day =  $detail->planDetailsDays->count();
@@ -402,6 +403,7 @@ class PlanController extends Controller
             $total['total_ac_grasos_monoinsaturados']  += $recipe->total_ac_grasos_monoinsaturados * $quantity_by_day;
             $total['total_ac_grasos_poliinsaturados']  += $recipe->total_ac_grasos_poliinsaturados * $quantity_by_day;
             $total['total_fibra']                      += $recipe->total_fibra * $quantity_by_day;
+            $total['total_calorias']                   += $recipe->total_calorias * $quantity_by_day;
         }
     }
 }
