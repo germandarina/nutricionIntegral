@@ -66,6 +66,7 @@ class Patient extends BaseModel
         'updated_at',
         'created_at',
         'deleted_at',
+        'birthdate',
     ];
 
     protected $fillable = [

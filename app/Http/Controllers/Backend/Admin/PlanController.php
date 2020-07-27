@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App;
 use App\Http\Controllers\Controller;
-use App\Models\Ingredient;
 use App\Models\PlanDetail;
 use App\Models\PlanDetailDay;
 use App\Repositories\Backend\Admin\PlanRepository;
@@ -16,7 +15,7 @@ use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
 use App\Models\Recipe;
-use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 
 /**
  * Class PlanController.
@@ -260,7 +259,7 @@ class PlanController extends Controller
     public function deleteDetail(){
         if(request('id')){
             $detail = PlanDetail::find(request('id'));
-            $detail->delete();
+            $detail->forceDelete();
             return response()->json(['mensaje'=>'Receta eliminada'],200);
         }
         return App::abort(422);
@@ -312,7 +311,7 @@ class PlanController extends Controller
                                     ->where('day',request('day'))
                                     ->get();
             foreach ($details as $detail){
-                $detail->delete();
+                $detail->forceDelete();
             }
             $dia = request('day');
             return response()->json(['mensaje'=>"Receta/s eliminada del día $dia"],200);
@@ -342,16 +341,29 @@ class PlanController extends Controller
         }
     }
 
-    private function getValuesForDay($plan_id,$day,&$total){
-        $plan_details =  PlanDetail::with('recipe')
-            ->with(['planDetailsDays'=>function($query_with)use($day){
-                $query_with->where('day',$day);
-            }])
-            ->whereHas('planDetailsDays',function ($query) use($day){
-                $query->where('day',$day);
-            })
-            ->where('plan_id',$plan_id)
-            ->get();
+    private function getValuesForDay($plan_id,$day = null,&$total){
+
+        if(!is_null($day)){
+            $plan_details =  PlanDetail::with('recipe')
+                ->with(['planDetailsDays'=>function($query_with)use($day){
+                    $query_with->where('day',$day)
+                               ->whereNull('deleted_at');
+
+                }])
+                ->whereHas('planDetailsDays',function ($query) use($day){
+                    $query->where('day',$day)
+                          ->whereNull('deleted_at');
+                })
+                ->where('plan_id',$plan_id)
+                ->get();
+        }else{
+            $plan_details =  PlanDetail::with('recipe')
+                                        ->has('planDetailsDays')
+                                        ->where('plan_id',$plan_id)
+                                        ->whereNull('deleted_at')
+                                        ->get();
+        }
+
 
         $total['total_energia_kcal']            = 0;
         $total['total_proteina']                = 0;
@@ -405,5 +417,24 @@ class PlanController extends Controller
             $total['total_fibra']                      += $recipe->total_fibra * $quantity_by_day;
             $total['total_calorias']                   += $recipe->total_calorias * $quantity_by_day;
         }
+    }
+
+    public function getTotalComposionPorPlan(){
+        if(request('id')){
+            $total = [];
+            $plan_id = request('id');
+            $this->getValuesForDay($plan_id,null,$total);
+            return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
+        }
+    }
+
+    public function sendPlan(Plan $plan){
+        $patient = $plan->patient;
+        for ($i=1;$i<=$plan->days;$i++){
+            // armar array con los diferentes tipos de recetas por dia.
+            // un array de desayuno, almuerzo, etc.
+        }
+        return view('backend.admin.plan.pdf',compact('plan','patient'));
+
     }
 }

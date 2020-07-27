@@ -22,6 +22,7 @@ class PlanDetailDay extends BaseModel
     protected $fillable = [
         'plan_detail_id',
         'day',
+        'plan_id',
         'created_at',
         'updated_at',
         'deleted_at',

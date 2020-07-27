@@ -46,6 +46,7 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
+                "buttons": [],
                 ajax: "{{ route('admin.plan.index') }}",
                 columns: [
                     {data: 'patient.full_name', name: 'patient.full_name'},
@@ -55,6 +56,37 @@
                 ]
             });
         });
+
+        function getTotalComposicionForPlan(event,plan_id) {
+            event.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.getTotalComposionPorPlan') }}',
+                type:     'POST',
+                data:    {
+                    'id':plan_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                    Swal.fire({
+                        title: '<strong>Total Composición</strong>',
+                        html: datos,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        cancelButtonText: '',
+                        cancelButtonAriaLabel: 'Thumbs down'
+                    })
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
     </script>
 @endpush
 

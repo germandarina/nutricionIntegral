@@ -167,9 +167,10 @@ class PlanRepository extends BaseRepository
             foreach ($datos['days'] as $day){
                 for ($i=0;$i< $datos['quantity_by_day'];$i++){
                     foreach ($datos['recipes'] as $id_plan_recipe){
-                        $plan_detail_day = new PlanDetailDay();
-                        $plan_detail_day->plan_detail_id = $id_plan_recipe['id'];
-                        $plan_detail_day->day = $day;
+                        $plan_detail_day                    = new PlanDetailDay();
+                        $plan_detail_day->plan_detail_id    = $id_plan_recipe['id'];
+                        $plan_detail_day->day               = $day;
+                        $plan_detail_day->plan_id           = $datos['plan_id'];
                         if(!$plan_detail_day->save()){
                             throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
                         }

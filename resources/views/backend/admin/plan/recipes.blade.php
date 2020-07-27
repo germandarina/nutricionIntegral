@@ -59,8 +59,8 @@
                     'classifications': $("#classification_id").val(),
                     'recipe_types' : $("#recipe_type_id").val(),
                     'recipe_name' : $("#recipe_name").val(),
-                    // 'min_calorias' : $("#min_calorias").val(),
-                    // 'max_calorias' : $("#max_calorias").val(),
+                    'min_calorias' : $("#min_calorias").val(),
+                    'max_calorias' : $("#max_calorias").val(),
                 },
                 success: function(data) {
                     var datos = data;
@@ -585,6 +585,7 @@
                     'recipes':recipes,
                     'days':days,
                     'quantity_by_day' :quantity_by_day,
+                    'plan_id': {{ $plan->id }}
                 },
                 success: function(data) {
                     var datos = data;
