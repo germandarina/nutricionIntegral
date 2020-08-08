@@ -15,6 +15,9 @@ Route::delete('delete-detail-by-day', [PlanController::class, 'deleteDetailByDay
 Route::post('total-completo-plan-por-dia', [PlanController::class, 'getTotalCompletoPlanPorDia'])->name('plan.getTotalCompletoPlanPorDia');
 Route::post('total-completo-por-plan',[PlanController::class,'getTotalComposionPorPlan'])->name('plan.getTotalComposionPorPlan');
 
+Route::post('store-order-plan-datail-day',[PlanController::class,'storeOrderPlanDetailDay'])->name('plan.storeOrderPlanDetailDay');
+
+
 Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('edit', [PlanController::class, 'edit'])->name('plan.edit');
     Route::patch('/', [PlanController::class, 'update'])->name('plan.update');

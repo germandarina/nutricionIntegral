@@ -6,6 +6,7 @@ use App;
 use App\Http\Controllers\Controller;
 use App\Models\PlanDetail;
 use App\Models\PlanDetailDay;
+use App\Models\RecipeType;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
@@ -274,34 +275,23 @@ class PlanController extends Controller
     }
 
     public function getRecipesByDay(Plan $plan){
-        $dia = request('day');
-        $data =  PlanDetail::with(['recipe.recipeType','recipe.classifications'])
-                            ->with(['planDetailsDays'=>function($query_with)use($dia){
-                                $query_with->where('day',$dia);
-                            }])
-                            ->whereHas('planDetailsDays',function ($query) use($dia){
-                                $query->where('day',$dia);
-                            })
+        $day = request('day');
+        $data =  PlanDetailDay::with(['planDetail.recipe.recipeType','planDetail.recipe.classifications'])
+                            ->where('day',$day)
                             ->where('plan_id',$plan->id)
+                            ->orderBy('order')
                             ->get();
         return Datatables::of($data)
-            ->editColumn('classifications',function ($row){
-                $string_classifications = "";
-                foreach ($row->recipe->classifications as $classification){
-                    $string_classifications .= $classification->name.' / ';
-                }
-                return trim($string_classifications,' / ');
+            ->addColumn('order',function ($row) use ($day){
+                return view('backend.admin.plan.includes.plan-detail-day-order',compact('row','day'));
             })
             ->editColumn('recipeType',function ($row){
-                return $row->recipe->recipeType->name;
+                return $row->planDetail->recipe->recipeType->name;
             })
-            ->addColumn('quantity_day',function ($row){
-               return $row->planDetailsDays->count();
+            ->addColumn('actions', function($row) use ($day){
+                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
             })
-            ->addColumn('actions', function($row) use ($dia){
-                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','dia'));
-            })
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions','order'])
             ->make(true);
     }
 
@@ -314,7 +304,7 @@ class PlanController extends Controller
                 $detail->forceDelete();
             }
             $dia = request('day');
-            return response()->json(['mensaje'=>"Receta/s eliminada del día $dia"],200);
+            return response()->json(['mensaje'=>"Receta eliminada del día $dia"],200);
         }
         return App::abort(422);
     }
@@ -430,11 +420,36 @@ class PlanController extends Controller
 
     public function sendPlan(Plan $plan){
         $patient = $plan->patient;
+        $recipes_types = RecipeType::all();
+        $array_details_by_day = [];
+        $view_by_day = "";
         for ($i=1;$i<=$plan->days;$i++){
-            // armar array con los diferentes tipos de recetas por dia.
-            // un array de desayuno, almuerzo, etc.
+            $details_days = PlanDetailDay::with(['planDetail.recipe.ingredients.food','planDetail.recipe.recipeType'])
+                                            ->where('plan_id',$plan->id)
+                                            ->where('day',$i)
+                                            ->orderBy('order')
+                                            ->get();
+            if(!$details_days->isEmpty() && !$details_days->first()->order){
+                foreach ($recipes_types as $type){
+                    $recipes = $details_days->filter(function ($detail) use ($i,$type){
+                        return $detail->day == $i && $detail->planDetail->recipe->recipe_type_id == $type->id;
+                    });
+                    $array_details_by_day[$type->id] = [$recipes];
+                }
+                $view_by_day .= view('backend.admin.plan.table_by_day',compact('i','details_days','array_details_by_day'));
+            }
+            $view_by_day .= view('backend.admin.plan.table_by_day',compact('i','details_days','array_details_by_day'));
         }
-        return view('backend.admin.plan.pdf',compact('plan','patient'));
+        return view('backend.admin.plan.pdf',compact('plan','patient','view_by_day'));
+    }
 
+    public function storeOrderPlanDetailDay(){
+       if(request('order') && request('id')){
+          $plan_detail_day = PlanDetailDay::find(request('id'));
+          $plan_detail_day->order = request('order');
+          $plan_detail_day->save();
+          return response()->json(['mensaje'=>"Orden guardado con éxito"],200);
+       }
+       return App::abort(422);
     }
 }

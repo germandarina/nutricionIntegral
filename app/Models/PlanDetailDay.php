@@ -23,6 +23,7 @@ class PlanDetailDay extends BaseModel
         'plan_detail_id',
         'day',
         'plan_id',
+        'order',
         'created_at',
         'updated_at',
         'deleted_at',

@@ -57,7 +57,7 @@
                     ->attributes(['onblur'=>'getRecipes()']) }}
             </div><!--col-->
             <div class="col-md-2">
-                {{ html()->number('min_calorias','min_calorias')
+                {{ html()->number('min_calorias','')
                     ->class('form-control')
                     ->placeholder('Min Calorias')
                     ->autofocus()
@@ -65,7 +65,7 @@
                     ->attributes(['onchange'=>'getRecipes()'])}}
             </div><!--col-->
             <div class="col-md-2">
-                {{ html()->number('max_calorias','max_calorias')
+                {{ html()->number('max_calorias','')
                     ->class('form-control')
                     ->placeholder('Max Calorias')
                     ->autofocus()

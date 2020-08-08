@@ -135,15 +135,14 @@
                         },
                     },
                     columns: [
-                        {data: 'quantity_day', name: 'quantity_day' },
-                        {data: 'recipe.name', name: 'recipe.name',},
-                        {data: 'recipeType', name: 'recipeType',},
-                        {data: 'classifications', name: 'classifications',},
-                        {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
-                        {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
-                        {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
-                        {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},
-                        {data: 'recipe.total_colesterol', name: 'recipe.total_colesterol',},
+                        {data: 'order', name: 'order', width: "10%" },
+                        {data: 'plan_detail.recipe.name', name: 'plan_detail.recipe.name', width: "30%"},
+                        {data: 'recipeType', name: 'recipeType',width: "10%"},
+                        {data: 'plan_detail.recipe.total_energia_kcal', name: 'plan_detail.recipe.total_energia_kcal',},
+                        {data: 'plan_detail.recipe.total_proteina', name: 'plan_detail.recipe.total_proteina',},
+                        {data: 'plan_detail.recipe.total_grasa_total', name: 'plan_detail.recipe.total_grasa_total',},
+                        {data: 'plan_detail.recipe.total_carbohidratos_totales', name: 'plan_detail.recipe.total_carbohidratos_totales',},
+                        {data: 'plan_detail.recipe.total_colesterol', name: 'plan_detail.recipe.total_colesterol',},
                         {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                     ],
                 });
@@ -667,6 +666,33 @@
                         cancelButtonText: '',
                         cancelButtonAriaLabel: 'Thumbs down'
                     })
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function storeOrder(e,plan_detail_day_id,day){
+            e.preventDefault();
+            var order = $(`#order_${plan_detail_day_id}`).val();
+            if(order === null || order === 0 || order === undefined || order === ""){
+                return Lobibox.notify('error',{msg: 'Ingrese el valor del orden.'});
+            }
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.storeOrderPlanDetailDay') }}',
+                type:     'POST',
+                data:    {
+                    'id':plan_detail_day_id,
+                    'order':order,
+                },
+                success: function(data) {
+                    var datos = data;
+                    Lobibox.notify('success',{msg:datos.mensaje});
+                    $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
