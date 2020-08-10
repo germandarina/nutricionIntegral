@@ -41,10 +41,17 @@ class RecipeController extends Controller
     public function index(ManageRecipeRequest $request)
     {
         if ($request->ajax()) {
-            $data = $this->recipeRepository->orderBy('id')->get();
+            $data = Recipe::with('recipeType','classifications')->orderBy('name')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     return view('backend.admin.recipe.includes.datatable-buttons',compact('row'));
+                })
+                ->editColumn('recipeType',function ($row){
+                    return $row->recipeType->name;
+                })
+                ->editColumn('classifications',function ($row){
+                    $clasifications = $row->classifications->pluck('name')->toArray();
+                    return implode('/',$clasifications);
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
@@ -170,14 +177,14 @@ class RecipeController extends Controller
 
     public function searchIngredients(){
         $buscar = trim(request('q'));
-        $food_group_id = trim(request('food_group_id'));
+//        $food_group_id = trim(request('food_group_id'));
         if (empty($buscar)) {
             return \Response::json([]);
         }
         $query = Food::fullText($buscar);
-        if($food_group_id){
-            $query->where('food_group_id',$food_group_id);
-        }
+//        if($food_group_id){
+//            $query->where('food_group_id',$food_group_id);
+//        }
         $foods = $query->limit(20)->get(['id','name'])->toArray();
         $foods = array_map(function ($item){
                     return ['id' => $item['id'], 'text' => $item['name']];

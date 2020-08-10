@@ -24,6 +24,8 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Clasificación</th>
                             <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
@@ -44,9 +46,12 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
+                "buttons": [],
                 ajax: "{{ route('admin.recipe.index') }}",
                 columns: [
                     {data: 'name', name: 'name'},
+                    {data: 'recipeType', name: 'recipeType'},
+                    {data: 'classifications', name: 'classifications'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });

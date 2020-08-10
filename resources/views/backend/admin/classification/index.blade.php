@@ -44,6 +44,7 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
+                "buttons": [],
                 ajax: "{{ route('admin.classification.index') }}",
                 columns: [
                     {data: 'name', name: 'name'},

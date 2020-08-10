@@ -40,10 +40,13 @@ class FoodController extends Controller
     public function index(ManageFoodRequest $request)
     {
         if ($request->ajax()) {
-            $data = $this->foodRepository->orderBy('id')->get();
+            $data = Food::with('foodGroup')->orderBy('name')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     return view('backend.admin.food.includes.datatable-buttons',compact('row'));
+                })
+                ->editColumn('foodGroup',function ($row){
+                    return $row->foodGroup->name;
                 })
                 ->rawColumns(['actions'])
                 ->make(true);

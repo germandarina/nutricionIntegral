@@ -1,6 +1,6 @@
 <div class="row" >
     <div class="col">
-        <div class="table-responsive " style="overflow-x: hidden !important;">
+        <div class="table-responsive" style="overflow-x: hidden !important;">
             <table class="table data-table font-xs" id="table-ingredients">
                 <thead>
                     <tr>

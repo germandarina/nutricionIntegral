@@ -63,11 +63,11 @@
     <script>
         $(function () {
             $('#table-ingredients').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "draw": true,
-                'paging':false,
-                "info":     false,
+                "processing":   true,
+                "serverSide":   true,
+                "draw":         true,
+                'paging':       false,
+                "info":         false,
                 "buttons": [],
                 ajax: {
                     url: "{{ route('admin.recipe.getIngredients',$recipe->id) }}",
@@ -79,7 +79,7 @@
                     {data: 'food.name', name: 'food.name',width:'40%'},
                     {data: 'quantity_description', name: 'quantity_description',width:'30%'},
                     {data: 'quantity_grs', name: 'quantity_grs',width:'20%'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false,width:'1%'},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false,width:'10%'},
                 ],
                 "footerCallback": function( tfoot, data, start, end, display ) {
                     mostrarTotales();
@@ -95,7 +95,7 @@
                     data: function (params) {
                         return {
                             q: $.trim(params.term),
-                            food_group_id: $("#food_group_id").val(),
+                            // food_group_id: $("#food_group_id").val(),
                         };
                     },
                     processResults: function (data) {
@@ -129,7 +129,7 @@
 
         function getComposicionBasica() {
             var food_id = $("#food_id").val();
-            if(food_id != "" && food_id != null && food_id != undefined){
+            if(food_id !== "" && food_id !== null && food_id !== undefined){
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -188,17 +188,17 @@
             var quantity_grs = $("#quantity_grs").val();
             var ingredient_id = $("#ingredient_id").val();
 
-            if(food_id == null || food_id == undefined || food_id == ""){
+            if(food_id === null || food_id === undefined || food_id === ""){
                 return Lobibox.notify('error',{msg:'Seleccione un alimento'});
             }
-            if(quantity_d == null || quantity_d == undefined || quantity_d == ""){
+            if(quantity_d === null || quantity_d === undefined || quantity_d === ""){
                 return Lobibox.notify('error',{msg:'Ingrese una descripcion de cantidades'});
             }
-            if(quantity_grs == null || quantity_grs == undefined || quantity_grs == ""){
+            if(quantity_grs === null || quantity_grs === undefined || quantity_grs === ""){
                 return Lobibox.notify('error',{msg:'Ingrese la cantidad en grs'});
             }
 
-            if(ingredient_id == null || ingredient_id == undefined || ingredient_id == ""){
+            if(ingredient_id === null || ingredient_id === undefined || ingredient_id === ""){
                 ingredient_id = 0;
             }
             $.ajax({

@@ -44,6 +44,7 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
+                "buttons": [],
                 ajax: "{{ route('admin.food-group.index') }}",
                 columns: [
                     {data: 'name', name: 'name'},

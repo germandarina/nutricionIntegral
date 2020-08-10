@@ -24,6 +24,7 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Grupo</th>
                             <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
@@ -47,6 +48,7 @@
                 ajax: "{{ route('admin.food.index') }}",
                 columns: [
                     {data: 'name', name: 'name'},
+                    {data: 'foodGroup', name: 'foodGroup'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });
