@@ -1,102 +1,58 @@
-<h3 style="text-align: center;">DÍA {{ $i }}</h3>
-<hr>
-@foreach($details_days as $j => $detail)
-    <div>
-        @switch(true)
-            @case($j == 0 and $detail->planDetail->recipe->recipe_type_id == 1)
-                <h5>DESAYUNO</h5>
-            @break
+<h3 style="text-align: center; background-color: lightgrey; padding: 2px;">DÍA {{ $day }}</h3>
+@if(isset($array_details_by_day))
+    @for ($i = 0; $i <= 1; $i++)
+        @foreach($array_details_by_day as $detail_by_day)
+            @if(isset($detail_by_day[$i]))
+                    @switch(true)
+                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 1)
+                            <h3>DESAYUNO</h3>
+                        @break
 
-            @case(($j == 3 || $j == 4) and $detail->planDetail->recipe->recipe_type_id == 1)
-                <h5>MERIENDA</h5>
-            @break
+                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 1)
+                            <h3>MERIENDA</h3>
+                        @break
 
-            @case(($j == 1 || $j == 3) and $detail->planDetail->recipe->recipe_type_id == 3)
-                <h5>COLACIÓN</h5>
-            @break
+                        @case($detail_by_day[$i]->planDetail->recipe->recipe_type_id == 3)
+                            <h3>COLACIÓN</h3>
+                        @break
 
-            @case(($j == 1 || $j == 2) and $detail->planDetail->recipe->recipe_type_id == 2)
-                <h5>ALMUERZO</h5>
-            @break
+                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 2)
+                            <h3>ALMUERZO</h3>
+                        @break
 
-            @case(($j == 4 || $j == 5) and $detail->planDetail->recipe->recipe_type_id == 2)
-                <h5>CENA</h5>
-            @break
-        @endswitch
-    </div>
-    <div>
-        <table>
-            <thead>
-            <tr>
-                <th colspan="2">{{ strtoupper($detail->planDetail->recipe->name) }}</th>
-            </tr>
-            <tr>
-                <th>INGREDIENTES</th>
-                <th>CANTIDAD</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($detail->planDetail->recipe->ingredients as $ingredient)
-                <tr>
-                    <td style="text-align: left;">{{$ingredient->food->name}}</td>
-                    <td style="text-align: left;">{{$ingredient->quantity_description}} ({{$ingredient->quantity_grs}} grs)</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-
-@endforeach
-{{--        <table>--}}
-{{--        <thead>--}}
-{{--        <tr>--}}
-{{--            <th class="service">SERVICE</th>--}}
-{{--            <th class="desc">DESCRIPTION</th>--}}
-{{--            <th>PRICE</th>--}}
-{{--            <th>QTY</th>--}}
-{{--            <th>TOTAL</th>--}}
-{{--        </tr>--}}
-{{--        </thead>--}}
-{{--        <tbody>--}}
-{{--        <tr>--}}
-{{--            <td class="service">Design</td>--}}
-{{--            <td class="desc">Creating a recognizable design solution based on the company's existing visual identity</td>--}}
-{{--            <td class="unit">$40.00</td>--}}
-{{--            <td class="qty">26</td>--}}
-{{--            <td class="total">$1,040.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td class="service">Development</td>--}}
-{{--            <td class="desc">Developing a Content Management System-based Website</td>--}}
-{{--            <td class="unit">$40.00</td>--}}
-{{--            <td class="qty">80</td>--}}
-{{--            <td class="total">$3,200.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td class="service">SEO</td>--}}
-{{--            <td class="desc">Optimize the site for search engines (SEO)</td>--}}
-{{--            <td class="unit">$40.00</td>--}}
-{{--            <td class="qty">20</td>--}}
-{{--            <td class="total">$800.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td class="service">Training</td>--}}
-{{--            <td class="desc">Initial training sessions for staff responsible for uploading web content</td>--}}
-{{--            <td class="unit">$40.00</td>--}}
-{{--            <td class="qty">4</td>--}}
-{{--            <td class="total">$160.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td colspan="4">SUBTOTAL</td>--}}
-{{--            <td class="total">$5,200.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td colspan="4">TAX 25%</td>--}}
-{{--            <td class="total">$1,300.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td colspan="4" class="grand total">GRAND TOTAL</td>--}}
-{{--            <td class="grand total">$6,500.00</td>--}}
-{{--        </tr>--}}
-{{--        </tbody>--}}
-{{--    </table>--}}
+                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 2)
+                            <h3>CENA</h3>
+                        @break
+                    @endswitch
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">{{ strtoupper($detail_by_day[$i]->planDetail->recipe->name) }}</th>
+                            </tr>
+                            <tr>
+                                <th>INGREDIENTES</th>
+                                <th>CANTIDAD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($detail_by_day[$i]->planDetail->recipe->ingredients as $ingredient)
+                            <tr>
+                                <td style="text-align: left;">{{$ingredient->food->name}}</td>
+                                <td style="text-align: left;">{{$ingredient->quantity_description}} ({{$ingredient->quantity_grs}} grs)</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        @if(!empty($detail_by_day[$i]->planDetail->recipe->observation))
+                            <tfoot>
+                            <tr>
+                                <td style="text-align: left;background-color: #b7f55b;"><strong>Observaciones</strong></td>
+                                <td style="text-align: left;background-color: #b7f55b;"><strong>{{$detail_by_day[$i]->planDetail->recipe->observation}}</strong></td>
+                            </tr>
+                            </tfoot>
+                        @endif
+                    </table>
+            @endif
+        @endforeach
+    @endfor
+    <div style="page-break-after: always;"></div>
+@endif

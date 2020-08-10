@@ -16,7 +16,7 @@ use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
 use App\Models\Recipe;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 /**
  * Class PlanController.
@@ -227,12 +227,16 @@ class PlanController extends Controller
 
     public function addRecipeToPlan(){
         if(request('recipe_id') && request('plan_id')){
-            $recipe = $this->planRepository->addRecipe(request()->all());
-            $html = "";
-            if(request('edit') == 1){
-                $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe'));
+            try{
+                $recipe = $this->planRepository->addRecipe(request()->all());
+                $html = "";
+                if(request('edit') == 1){
+                    $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe'));
+                }
+                return response()->json(['mensaje'=>'Receta agregada','html'=>$html],200);
+            }catch (\Exception $exception){
+                return response()->json(['error'=>$exception->getMessage()],422);
             }
-            return response()->json(['mensaje'=>'Receta agregada','html'=>$html],200);
         }
         return App::abort(422);
     }
@@ -421,26 +425,37 @@ class PlanController extends Controller
     public function sendPlan(Plan $plan){
         $patient = $plan->patient;
         $recipes_types = RecipeType::all();
-        $array_details_by_day = [];
         $view_by_day = "";
-        for ($i=1;$i<=$plan->days;$i++){
+        for ($day=1;$day<=$plan->days;$day++){
             $details_days = PlanDetailDay::with(['planDetail.recipe.ingredients.food','planDetail.recipe.recipeType'])
                                             ->where('plan_id',$plan->id)
-                                            ->where('day',$i)
+                                            ->where('day',$day)
                                             ->orderBy('order')
                                             ->get();
-            if(!$details_days->isEmpty() && !$details_days->first()->order){
-                foreach ($recipes_types as $type){
-                    $recipes = $details_days->filter(function ($detail) use ($i,$type){
-                        return $detail->day == $i && $detail->planDetail->recipe->recipe_type_id == $type->id;
-                    });
-                    $array_details_by_day[$type->id] = [$recipes];
-                }
-                $view_by_day .= view('backend.admin.plan.table_by_day',compact('i','details_days','array_details_by_day'));
+            if($details_days->isEmpty()){
+                return redirect()->route('admin.plan.index')->with(['error'=>'Plan Sin Recetas']);
             }
-            $view_by_day .= view('backend.admin.plan.table_by_day',compact('i','details_days','array_details_by_day'));
+            if($details_days->isNotEmpty() && !$details_days->first()->order){
+                $array_details_by_day = [];
+                foreach ($recipes_types as $type){
+                    $recipes = $details_days->filter(function ($detail) use ($day,$type){
+                        return $detail->planDetail->recipe->recipe_type_id == $type->id;
+                    });
+                    if($recipes->isNotEmpty()){
+                        $array_details_by_day[] = $recipes->values()->all();
+                    }
+                }
+                $view_by_day .= view('backend.admin.plan.table_by_day',compact('day','array_details_by_day'));
+            }else{
+                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_days'));
+            }
         }
-        return view('backend.admin.plan.pdf',compact('plan','patient','view_by_day'));
+        $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
+        $final_data = view('backend.admin.plan.final_data_plan_pdf');
+       // return view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header'));
+        $pdf = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+        $nombre_archivo = snake_case("{$plan->name}_{$patient->full_name}");
+        return $pdf->download("{$nombre_archivo}.pdf");
     }
 
     public function storeOrderPlanDetailDay(){

@@ -250,6 +250,7 @@
                     }else{
                         $("#modalRecipe").modal('hide');
                     }
+                    $("#recipes-datatable").DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     if(xhr.status == 422){

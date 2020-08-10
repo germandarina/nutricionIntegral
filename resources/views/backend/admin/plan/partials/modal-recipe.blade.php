@@ -18,8 +18,8 @@
                         @foreach($recipe->ingredients as $ingredient)
                             <tr>
                                 <td>{{$ingredient->food->name}}</td>
-                                <td>{{$ingredient->quantity_description}}</td>
                                 <td>{{$ingredient->quantity_grs}}</td>
+                                <td>{{$ingredient->quantity_description}}</td>
                             </tr>
                         @endforeach
                      </tbody>

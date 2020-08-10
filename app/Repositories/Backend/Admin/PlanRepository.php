@@ -134,6 +134,14 @@ class PlanRepository extends BaseRepository
             Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
+
+        $planDetailExist = PlanDetail::where('plan_id',$datos['plan_id'])
+            ->where('recipe_id',$datos['recipe_id'])
+            ->first();
+        if($planDetailExist){
+            throw new GeneralException('La receta seleccionada ya forma parte del plan',422);
+        }
+
         return DB::transaction(function () use ($datos) {
             $planDetail = new PlanDetail();
             $planDetail->fill($datos);
