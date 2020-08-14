@@ -47,14 +47,18 @@
 <div class="row"  style="background-color: #d8e6f1; padding: 10px;">
     <div class="col">
         <div class="form-group row">
-            <div class="col-md-8">
-                {{ html()->text('recipe_name')
-                    ->class('form-control')
-                    ->placeholder('Buscar recetas por nombre...')
-                    ->attribute('maxlength', 191)
-                    ->required()
-                    ->autofocus()
-                    ->attributes(['onblur'=>'getRecipes()']) }}
+            <div class="col-md-6">
+                <div class="input-group">
+                    {{ html()->text('recipe_name')
+                       ->class('form-control')
+                       ->placeholder('Buscar recetas por nombre...')
+                       ->attribute('maxlength', 191)
+                       ->required()
+                       ->autofocus()
+                       ->attributes([])
+                       ->child('<span class="input-group-addon"><a href="#" onclick="getRecipes()" class="btn btn-primary btn-lg" title="Buscar..." rel="tooltip"><i class="fas fa-search-plus"></i></a></span>')
+                    }}
+                </div>
             </div><!--col-->
             <div class="col-md-2">
                 {{ html()->number('min_calorias','')
