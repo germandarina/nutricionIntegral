@@ -216,7 +216,7 @@ class RecipeController extends Controller
         if(request('ingredient_id')){
             $ingredient = Ingredient::find(request('ingredient_id'));
             if($ingredient){
-                if(!$ingredient->delete()){
+                if(!$ingredient->forceDelete()){
                     return response()->json(['error'=>'Error al eliminar ingrediente'],422);
                 }
                 return response()->json(['mensaje'=>'Ingrediente eliminado'],200);
