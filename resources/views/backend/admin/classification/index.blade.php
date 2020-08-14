@@ -20,7 +20,7 @@
         <div class="row mt-4">
             <div class="col">
                 <div class="table-responsive">
-                    <table class="table display compact">
+                    <table class="table data-table">
                         <thead>
                         <tr>
                             <th>Nombre</th>
@@ -40,7 +40,7 @@
     @include('datatables.includes')
     <script>
         $(function () {
-            $('.compact').DataTable({
+            $('.data-table').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "draw": true,

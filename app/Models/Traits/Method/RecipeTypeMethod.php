@@ -7,4 +7,9 @@ namespace App\Models\Traits\Method;
  */
 trait RecipeTypeMethod
 {
+    public static function getIdByName($name){
+        $recipe_type = self::where('name',$name)->first();
+        return $recipe_type->id;
+    }
+
 }

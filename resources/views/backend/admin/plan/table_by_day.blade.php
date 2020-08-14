@@ -4,23 +4,23 @@
         @foreach($array_details_by_day as $detail_by_day)
             @if(isset($detail_by_day[$i]))
                     @switch(true)
-                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 1)
+                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))
                             <h3>DESAYUNO</h3>
                         @break
 
-                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 1)
+                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))
                             <h3>MERIENDA</h3>
                         @break
 
-                        @case($detail_by_day[$i]->planDetail->recipe->recipe_type_id == 3)
+                        @case($detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Colacion'))
                             <h3>COLACIÓN</h3>
                         @break
 
-                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 2)
+                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Almuerzo/Cena'))
                             <h3>ALMUERZO</h3>
                         @break
 
-                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == 2)
+                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Almuerzo/Cena'))
                             <h3>CENA</h3>
                         @break
                     @endswitch

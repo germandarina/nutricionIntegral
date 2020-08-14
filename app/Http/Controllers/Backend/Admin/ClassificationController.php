@@ -41,7 +41,10 @@ class ClassificationController extends Controller
             $data = $this->classificationRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.classification.includes.datatable-buttons',compact('row'));
+                    if(!$row->default_register){
+                        return view('backend.admin.classification.includes.datatable-buttons',compact('row'));
+                    }
+                    return "";
                 })
                 ->rawColumns(['actions'])
                 ->make(true);

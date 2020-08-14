@@ -36,6 +36,7 @@ class ClassificationRepository extends BaseRepository
             throw new GeneralException('Ya existe un clasificacion con el nombre '.$data['name']);
         }
         return DB::transaction(function () use ($data) {
+            $data['default_register'] = 0;
             $clasification = parent::create($data);
 
             if ($clasification) {

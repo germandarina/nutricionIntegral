@@ -50,6 +50,7 @@ class Classification extends BaseModel
 
     protected $fillable = [
         'name',
+        'default_register',
         'created_at',
         'updated_at',
         'deleted_at',
