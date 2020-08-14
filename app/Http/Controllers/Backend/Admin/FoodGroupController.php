@@ -114,8 +114,7 @@ class FoodGroupController extends Controller
     public function destroy(ManageFoodGroupRequest $request, FoodGroup $food_group)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.food-group.index');
+            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
         $this->foodGroupRepository->deleteById($food_group->id);

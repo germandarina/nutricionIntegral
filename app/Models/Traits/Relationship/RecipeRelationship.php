@@ -6,6 +6,7 @@ namespace App\Models\Traits\Relationship;
 
 use App\Models\Classification;
 use App\Models\Ingredient;
+use App\Models\PlanDetail;
 use App\Models\RecipeType;
 
 /**
@@ -24,5 +25,9 @@ trait RecipeRelationship
 
     public function ingredients(){
         return $this->hasMany(Ingredient::class,'recipe_id');
+    }
+
+    public function planDetails(){
+        return $this->hasMany(PlanDetail::class,'recipe_id');
     }
 }

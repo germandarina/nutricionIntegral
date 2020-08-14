@@ -116,13 +116,15 @@ class PatientController extends Controller
     public function destroy(ManagePatientRequest $request, Patient $patient)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.patient.index');
+            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
+        $patient->load('plans');
+        if($patient->plans->isNotEmpty()){
+            return response()->json(['mensaje'=>"El paciente ya posee planes asignados"],422);
+        }
         $this->patientRepository->deleteById($patient->id);
-        Session::flash('success','Paciente Eliminado');
-        return redirect()->route('admin.patient.index');
+        return response()->json(['mensaje'=>"Paciente eliminado"],200);
     }
 
     public function getDeleted(ManagePatientRequest $request){

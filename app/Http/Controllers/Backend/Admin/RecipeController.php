@@ -124,13 +124,14 @@ class RecipeController extends Controller
     public function destroy(ManageRecipeRequest $request, Recipe $recipe)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.recipe.index');
+            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
-
+        $recipe->load('planDetails');
+        if($recipe->planDetails->isNotEmpty()){
+            return response()->json(['mensaje'=>"La receta forma parte de planes"],422);
+        }
         $this->recipeRepository->deleteById($recipe->id);
-        Session::flash('success','Receta eliminada');
-        return redirect()->route('admin.recipe.index');
+        return response()->json(['mensaje'=>"Receta eliminada"],200);
     }
 
     public function getDeleted(ManageRecipeRequest $request){

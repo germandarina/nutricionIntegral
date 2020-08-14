@@ -117,8 +117,7 @@ class ClassificationController extends Controller
     public function destroy(ManageClassificationRequest $request, Classification $classification)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.classification.index');
+            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
         $this->classificationRepository->deleteById($classification->id);

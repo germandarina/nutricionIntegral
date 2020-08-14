@@ -48,12 +48,23 @@
                             url: url,
                             type: 'POST',
                             dataType: 'json',
-                            data: {_method: 'POST'}
-                        }).always(function (data) {
-                            $('#confirm').modal('hide');
-                            $('.data-table').DataTable().draw(false);
-                            Lobibox.notify("success",{msg: msj,'position': 'top right','title':'Éxito'});
+                            data: {_method: 'POST'},
+                            success: (function (data){
+                                Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
+                            }),
+                            error: (function (jqXHR, exception) {
+                                var mensaje
+                                if (jqXHR.status === 422)
+                                    mensaje = jqXHR.responseJSON.mensaje
+
+                                Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                            }),
+                            complete:(function (data) {
+                                $('#confirm').modal('hide');
+                                $('.data-table').DataTable().draw(false);
+                            })
                         });
+
                     });
             });
         },100);

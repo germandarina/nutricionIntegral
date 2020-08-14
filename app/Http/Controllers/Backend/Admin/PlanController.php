@@ -120,13 +120,11 @@ class PlanController extends Controller
     public function destroy(ManagePlanRequest $request, Plan $plan)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.plan.index');
+            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
         $this->planRepository->deleteById($plan->id);
-        Session::flash('success','Plan Eliminado');
-        return redirect()->route('admin.plan.index');
+        return response()->json(['mensaje'=>"Plan eliminado"],200);
     }
 
     public function getDeleted(ManagePlanRequest $request){
