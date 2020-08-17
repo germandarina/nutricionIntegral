@@ -74,7 +74,12 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        $this->foodRepository->create($request->all());
+        try{
+            $this->foodRepository->create($request->all());
+        }catch (\Exception $exception){
+            Session::flash('error',$exception->getMessage());
+            return redirect()->route('admin.food.create')->withInput($request->all());
+        }
         Session::flash('success','Alimento Creado');
         return redirect()->route('admin.food.index');
     }
@@ -104,7 +109,12 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Food $food)
     {
-        $this->foodRepository->update($request->all(), $food);
+        try{
+            $this->foodRepository->update($request->all(), $food);
+        }catch (\Exception $exception){
+            Session::flash('error',$exception->getMessage());
+            return redirect()->route('admin.food.edit',compact('food'))->withInput($request->all());
+        }
         Session::flash('success','Alimento Actualizado');
         return redirect()->route('admin.food.index');
     }
@@ -156,7 +166,11 @@ class FoodController extends Controller
     public function restore(ManageFoodRequest $request, $id)
     {
         $food = Food::onlyTrashed()->find($id);
-        $this->foodRepository->restore($food);
+        try{
+            $this->foodRepository->restore($food);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
         return response()->json(['mensaje'=>"Alimento restaurado"],200);
     }
 

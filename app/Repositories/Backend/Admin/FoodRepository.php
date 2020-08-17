@@ -32,7 +32,6 @@ class FoodRepository extends BaseRepository
     {
         // Make sure it doesn't already exist
         if ($this->foodExists($data['name'])) {
-            Session::flash('error','Ya existe un alimento con el nombre '.$data['name']);
             throw new GeneralException('Ya existe un alimento con el nombre '.$data['name']);
         }
         return DB::transaction(function () use ($data) {
@@ -46,7 +45,6 @@ class FoodRepository extends BaseRepository
             if ($food) {
                 return $food;
             }
-            Session::flash('error','Error al crear alimento. Intente nuevamente');
             throw new GeneralException('Error al crear alimento. Intente nuevamente');
         });
     }
@@ -62,17 +60,8 @@ class FoodRepository extends BaseRepository
     public function update(array $data, Food $food)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
-
-        // If the name is changing make sure it doesn't already exist
-//        if ($food->name !== strtolower($data['name'])) {
-//            if ($this->foodExists($data['name'])) {
-//                Session::flash('error','Ya existe un alimento con el nombre '.$data['name']);
-//                throw new GeneralException('Ya existe un alimento con el nombre '.$data['name']);
-//            }
-//        }
 
         return DB::transaction(function () use ($food, $data) {
             foreach ($data as $indice => $valor){
@@ -83,7 +72,6 @@ class FoodRepository extends BaseRepository
             if ($food->update($data)) {
                 return $food;
             }
-            Session::flash('error','Error al actualizar alimento. Intente nuevamente');
             throw new GeneralException('Error al actualizar alimento. Intente nuevamente');
         });
     }
@@ -125,13 +113,11 @@ class FoodRepository extends BaseRepository
     public function restore(Food $food) : Food
     {
         if (is_null($food->deleted_at)) {
-            Session::flash('error','El alimento no esta eliminado');
             throw new GeneralException('El alimento no esta eliminado');
         }
         if ($food->restore()) {
             return $food;
         }
-        Session::flash('error','Error al restaurar alimento. Intente nuevamente');
         throw new GeneralException('Error al restaurar alimento. Intente nuevamente');
     }
 }

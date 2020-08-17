@@ -105,9 +105,8 @@
                             Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
                         }),
                         error: (function (jqXHR, exception) {
-                            var mensaje = "";
                             if (jqXHR.status === 422){
-                                mensaje = jqXHR.responseJSON.mensaje
+                                let mensaje = jqXHR.responseJSON.error
                                 Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
                             }
                         }),
@@ -143,9 +142,8 @@
                             Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
                         }),
                         error: (function (jqXHR, exception) {
-                            var mensaje = "";
                             if (jqXHR.status === 422){
-                                mensaje = jqXHR.responseJSON.mensaje
+                                let mensaje = jqXHR.responseJSON.error
                                 Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
                             }
                         }),

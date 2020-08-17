@@ -34,18 +34,11 @@ class PlanRepository extends BaseRepository
      */
     public function create(array $data) : Plan
     {
-        // Make sure it doesn't already exist
-//        if ($this->planExists($data['name'])) {
-//            Session::flash('error','Ya existe un plan con el nombre '.$data['name']);
-//            throw new GeneralException('Ya existe un plan con el nombre '.$data['name']);
-//        }
         return DB::transaction(function () use ($data) {
             $plan = parent::create($data);
-
             if ($plan) {
                 return $plan;
             }
-            Session::flash('error','Error al crear plan. Intente nuevamente');
             throw new GeneralException('Error al crear plan. Intente nuevamente');
         });
     }
@@ -61,23 +54,13 @@ class PlanRepository extends BaseRepository
     public function update(array $data, Plan $plan)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
-
-        // If the name is changing make sure it doesn't already exist
-//        if ($plan->name !== strtolower($data['name'])) {
-//            if ($this->planExists($data['name'])) {
-//                Session::flash('error','Ya existe un plan con el nombre '.$data['name']);
-//                throw new GeneralException('Ya existe un plan con el nombre '.$data['name']);
-//            }
-//        }
 
         return DB::transaction(function () use ($plan, $data) {
             if ($plan->update($data)) {
                 return $plan;
             }
-            Session::flash('error','Error al actualizar plan. Intente nuevamente');
             throw new GeneralException('Error al actualizar plan. Intente nuevamente');
         });
     }
@@ -119,19 +102,16 @@ class PlanRepository extends BaseRepository
     public function restore(Plan $plan) : Plan
     {
         if ($plan->deleted_at === null) {
-            Session::flash('error','El plan no esta eliminado');
             throw new GeneralException('El plan no esta eliminado');
         }
         if ($plan->restore()) {
             return $plan;
         }
-        Session::flash('error','Error al restaurar plan. Intente nuevamente');
         throw new GeneralException('Error al restaurar plan. Intente nuevamente');
     }
 
     public function addRecipe(array $datos) {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
@@ -168,7 +148,6 @@ class PlanRepository extends BaseRepository
 
     public function addPlanDetailDay(array $datos){
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
         return DB::transaction(function () use ($datos) {

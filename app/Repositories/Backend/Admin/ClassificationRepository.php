@@ -32,7 +32,6 @@ class ClassificationRepository extends BaseRepository
     {
         // Make sure it doesn't already exist
         if ($this->classificationExists($data['name'])) {
-            Session::flash('error','Ya existe un clasificacion con el nombre '.$data['name']);
             throw new GeneralException('Ya existe un clasificacion con el nombre '.$data['name']);
         }
         return DB::transaction(function () use ($data) {
@@ -42,7 +41,6 @@ class ClassificationRepository extends BaseRepository
             if ($clasification) {
                 return $clasification;
             }
-            Session::flash('error','Error al crear clasificacion. Intente nuevamente');
             throw new GeneralException('Error al crear clasificacion. Intente nuevamente');
         });
     }
@@ -58,14 +56,12 @@ class ClassificationRepository extends BaseRepository
     public function update(array $data, Classification $clasification)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
         // If the name is changing make sure it doesn't already exist
         if (strtolower($clasification->name) !== strtolower($data['name'])) {
             if ($this->classificationExists($data['name'])) {
-                Session::flash('error','Ya existe un clasificacion con el nombre '.$data['name']);
                 throw new GeneralException('Ya existe un clasificacion con el nombre '.$data['name']);
             }
         }
@@ -74,7 +70,6 @@ class ClassificationRepository extends BaseRepository
             if ($clasification->update($data)) {
                 return $clasification;
             }
-            Session::flash('error','Error al actualizar clasificacion. Intente nuevamente');
             throw new GeneralException('Error al actualizar clasificacion. Intente nuevamente');
         });
     }
@@ -116,13 +111,11 @@ class ClassificationRepository extends BaseRepository
     public function restore(Classification $clasification) : Classification
     {
         if ($clasification->deleted_at === null) {
-            Session::flash('error','El clasificacion no esta eliminado');
             throw new GeneralException('El clasificacion no esta eliminado');
         }
         if ($clasification->restore()) {
             return $clasification;
         }
-        Session::flash('error','Error al restaurar clasificacion. Intente nuevamente');
         throw new GeneralException('Error al restaurar clasificacion. Intente nuevamente');
     }
 }

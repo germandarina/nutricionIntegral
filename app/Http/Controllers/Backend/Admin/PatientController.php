@@ -69,7 +69,13 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
-        $patient = $this->patientRepository->create($request->all());
+        try{
+            $patient = $this->patientRepository->create($request->all());
+        }catch (\Exception $exception){
+            Session::flash('error', $exception->getMessage());
+            return redirect()->route('admin.patient.create')->withInput($request->all());
+        }
+
         Session::flash('success','Paciente Creado');
         return redirect()->route('admin.patient.edit',compact('patient'));
     }
@@ -101,7 +107,12 @@ class PatientController extends Controller
      */
     public function update(UpdatePatientRequest $request, Patient $patient)
     {
-        $this->patientRepository->update($request->all(), $patient);
+        try{
+            $this->patientRepository->update($request->all(), $patient);
+        }catch (\Exception $exception){
+            Session::flash('error', $exception->getMessage());
+            return redirect()->route('admin.patient.edit',compact('patient'))->withInput($request->all());
+        }
         Session::flash('success','Paciente Actualizado');
         return redirect()->route('admin.patient.index');
     }
@@ -116,12 +127,12 @@ class PatientController extends Controller
     public function destroy(ManagePatientRequest $request, Patient $patient)
     {
         if (!auth()->user()->isAdmin()) {
-            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
+            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
         }
 
         $patient->load('plans');
         if($patient->plans->isNotEmpty()){
-            return response()->json(['mensaje'=>"El paciente ya posee planes asignados"],422);
+            return response()->json(['error'=>"El paciente ya posee planes asignados"],422);
         }
         $this->patientRepository->deleteById($patient->id);
         return response()->json(['mensaje'=>"Paciente eliminado"],200);
@@ -151,17 +162,21 @@ class PatientController extends Controller
     public function restore(ManagePatientRequest $request, $id)
     {
         $patient = Patient::onlyTrashed()->find($id);
-        $this->patientRepository->restore($patient);
+        try{
+            $this->patientRepository->restore($patient);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
         return response()->json(['mensaje'=>"Paciente restaurado"],200);
     }
 
     public function searchPatients(){
-        $buscar = trim(request('q'));
-        $query = Patient::fullText($buscar);
-        $patients = $query->limit(20)->get(["id","full_name","document"])->toArray();
-        $patients = array_map(function ($item){
-                                return ['id' => $item['id'], 'text' => $item['full_name']];
-                            }, $patients);
+        $buscar     = trim(request('q'));
+        $query      = Patient::fullText($buscar);
+        $patients   = $query->limit(20)->get(["id","full_name","document"])->toArray();
+        $patients   = array_map(function ($item){
+                          return ['id' => $item['id'], 'text' => $item['full_name']];
+                      }, $patients);
         return \Response::json($patients);
     }
 }

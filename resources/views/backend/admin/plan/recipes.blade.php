@@ -253,7 +253,7 @@
                     $("#recipes-datatable").DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    if(xhr.status == 422){
+                    if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
                         Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
@@ -453,7 +453,7 @@
                     $("#ingredient_id").val(datos.ingredient.id);
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    if(xhr.status == 422){
+                    if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
                         Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
@@ -657,7 +657,6 @@
                     var datos = data;
                     Swal.fire({
                         title: '<strong>Total Completo Por Día</strong>',
-                        // icon: 'info',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,

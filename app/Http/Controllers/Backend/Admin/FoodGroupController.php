@@ -7,6 +7,7 @@ use App\Repositories\Backend\Admin\FoodGroupRepository;
 use App\Http\Requests\Backend\Admin\FoodGroup\StoreFoodGroupRequest;
 use App\Http\Requests\Backend\Admin\FoodGroup\ManageFoodGroupRequest;
 use App\Http\Requests\Backend\Admin\FoodGroup\UpdateFoodGroupRequest;
+use Egulias\EmailValidator\Exception\AtextAfterCFWS;
 use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -69,7 +70,12 @@ class FoodGroupController extends Controller
      */
     public function store(StoreFoodGroupRequest $request)
     {
-        $this->foodGroupRepository->create($request->all());
+        try{
+            $this->foodGroupRepository->create($request->all());
+        }catch (\Exception $exception){
+            Session::flash('error',$exception->getMessage());
+            return redirect()->route('admin.food-group.create')->withInput($request->all());
+        }
         Session::flash('success','Grupo de Alimentos Creado');
         return redirect()->route('admin.food-group.index');
     }
@@ -99,7 +105,12 @@ class FoodGroupController extends Controller
      */
     public function update(UpdateFoodGroupRequest $request, FoodGroup $food_group)
     {
-        $this->foodGroupRepository->update($request->all(), $food_group);
+        try{
+            $this->foodGroupRepository->update($request->all(), $food_group);
+        }catch (\Exception $exception){
+            Session::flash('error',$exception->getMessage());
+            return redirect()->route('admin.food-group.edit',compact('food_group'))->withInput($request->all());
+        }
         Session::flash('success','Grupo de Alimentos Actualizado');
         return redirect()->route('admin.food-group.index');
     }
@@ -120,11 +131,11 @@ class FoodGroupController extends Controller
         $food_group->load('foods');
 
         if($food_group->foods->isNotEmpty()){
-            return response()->json(['mensaje'=>"Un alimento ya tiene asignado este grupo"],422);
+            return response()->json(['error'=>"Un alimento ya tiene asignado este grupo"],422);
         }
 
         $this->foodGroupRepository->deleteById($food_group->id);
-        return response()->json(['mensaje'=>"Grupo de alimento eliminado"],200);
+        return response()->json(['error'=>"Grupo de alimento eliminado"],200);
     }
 
     public function getDeleted(ManageFoodGroupRequest $request){
@@ -151,7 +162,12 @@ class FoodGroupController extends Controller
     public function restore(ManageFoodGroupRequest $request, $id)
     {
         $food_group = FoodGroup::onlyTrashed()->find($id);
-        $this->foodGroupRepository->restore($food_group);
+        try{
+            $this->foodGroupRepository->restore($food_group);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+
+        }
         return response()->json(['mensaje'=>"Grupo de alimento restaturado"],200);
     }
 }

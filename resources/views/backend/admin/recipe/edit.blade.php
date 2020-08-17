@@ -221,7 +221,7 @@
                     $('#table-ingredients').DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    if(xhr.status == 422){
+                    if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
                         Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
@@ -254,7 +254,7 @@
                     $("#modalIngredientes").modal("show");
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    if(xhr.status == 422){
+                    if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
                         Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
@@ -290,7 +290,11 @@
                             $('#table-ingredients').DataTable().ajax.reload();
                         },
                         error: function(xhr, textStatus, errorThrown) {
-                            Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                            if(xhr.status === 422){
+                                Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                            }else{
+                                Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                            }
                         }
                     });
                 }

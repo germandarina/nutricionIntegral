@@ -16,7 +16,6 @@ use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
 use App\Models\Recipe;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 /**
  * Class PlanController.
@@ -75,7 +74,13 @@ class PlanController extends Controller
      */
     public function store(StorePlanRequest $request)
     {
-        $this->planRepository->create($request->all());
+        try{
+            $this->planRepository->create($request->all());
+        }catch (\Exception $exception)
+        {
+            Session::flash('error', $exception->getMessage());
+            return redirect()->route('admin.plan.create')->withInput($request->all());
+        }
         Session::flash('success','Plan Creado');
         return redirect()->route('admin.plan.index');
     }
@@ -105,7 +110,12 @@ class PlanController extends Controller
      */
         public function update(UpdatePlanRequest $request, Plan $plan)
     {
-        $this->planRepository->update($request->all(), $plan);
+        try{
+            $this->planRepository->update($request->all(), $plan);
+        }catch (\Exception $exception){
+            Session::flash('error', $exception->getMessage());
+            return redirect()->route('admin.plan.edit',compact('plan'))->withInput($request->all());
+        }
         Session::flash('success','Plan Actualizado');
         return redirect()->route('admin.plan.index')->status(200);
     }
@@ -120,10 +130,11 @@ class PlanController extends Controller
     public function destroy(ManagePlanRequest $request, Plan $plan)
     {
         if (!auth()->user()->isAdmin()) {
-            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
+            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
         }
 
         $this->planRepository->deleteById($plan->id);
+
         return response()->json(['mensaje'=>"Plan eliminado"],200);
     }
 
@@ -151,7 +162,12 @@ class PlanController extends Controller
     public function restore(ManagePlanRequest $request, $id)
     {
         $plan = Plan::onlyTrashed()->find($id);
-        $this->planRepository->restore($plan);
+
+        try{
+            $this->planRepository->restore($plan);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
         return response()->json(['mensaje'=>"Plan restaurado"],200);
     }
 
@@ -219,7 +235,7 @@ class PlanController extends Controller
             $recipe->load('ingredients.food');
             return view('backend.admin.plan.partials.modal-recipe',compact('recipe'));
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function addRecipeToPlan(){
@@ -235,7 +251,7 @@ class PlanController extends Controller
                 return response()->json(['error'=>$exception->getMessage()],422);
             }
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function getRecipes(Plan $plan){
@@ -264,15 +280,19 @@ class PlanController extends Controller
             $detail->forceDelete();
             return response()->json(['mensaje'=>'Receta eliminada'],200);
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function addPlanDetailDay(){
         if(request('recipes')){
-            $this->planRepository->addPlanDetailDay(request()->all());
+            try{
+                $this->planRepository->addPlanDetailDay(request()->all());
+            }catch (\Exception $exception){
+                return response()->json(['error'=>$exception->getMessage()],422);
+            }
             return response()->json(['mensaje'=>'Recetas agregadas por día'],200);
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function getRecipesByDay(Plan $plan){
@@ -307,7 +327,7 @@ class PlanController extends Controller
             $dia = request('day');
             return response()->json(['mensaje'=>"Receta eliminada del día $dia"],200);
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function getTotalRecipesByDay(Plan $plan){
@@ -319,7 +339,7 @@ class PlanController extends Controller
                         compact('total','plan','day'));
 
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function getTotalCompletoPlanPorDia(){
@@ -330,6 +350,7 @@ class PlanController extends Controller
             $this->getValuesForDay($plan_id,$day,$total);
             return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
         }
+        return App::abort(402);
     }
 
     private function getValuesForDay($plan_id,$day = null,&$total){
@@ -417,6 +438,7 @@ class PlanController extends Controller
             $this->getValuesForDay($plan_id,null,$total);
             return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
         }
+        return App::abort(402);
     }
 
     public function sendPlan(Plan $plan){
@@ -462,6 +484,6 @@ class PlanController extends Controller
           $plan_detail_day->save();
           return response()->json(['mensaje'=>"Orden guardado con éxito"],200);
        }
-       return App::abort(422);
+       return App::abort(402);
     }
 }

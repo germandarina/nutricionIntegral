@@ -72,7 +72,12 @@ class ClassificationController extends Controller
      */
     public function store(StoreClassificationRequest $request)
     {
-        $this->classificationRepository->create($request->all());
+        try{
+            $this->classificationRepository->create($request->all());
+        }catch (\Exception $exception){
+            Session::flash('error',$exception->getMessage());
+            return redirect()->route('admin.classification.create')->withInput($request->all());
+        }
         Session::flash('success','Clasificacion Creada');
         return redirect()->route('admin.classification.index');
     }
@@ -108,7 +113,12 @@ class ClassificationController extends Controller
             return redirect()->route('admin.classification.index');
         }
 
-        $this->classificationRepository->update($request->all(), $classification);
+        try{
+            $this->classificationRepository->update($request->all(), $classification);
+        }catch (\Exception $exception){
+            Session::flash('error',$exception->getMessage());
+            return redirect()->route('admin.classification.edit',compact('classification'))->withInput($request->all());
+        }
         Session::flash('success','Clasificacion Actualizada');
         return redirect()->route('admin.classification.index');
     }
@@ -164,7 +174,11 @@ class ClassificationController extends Controller
     public function restore(ManageClassificationRequest $request, $id)
     {
         $classification = Classification::onlyTrashed()->find($id);
-        $this->classificationRepository->restore($classification);
+        try{
+            $this->classificationRepository->restore($classification);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
         return response()->json(['mensaje'=>"Clasificación restaurada"],200);
     }
 }

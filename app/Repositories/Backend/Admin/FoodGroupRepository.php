@@ -32,16 +32,15 @@ class FoodGroupRepository extends BaseRepository
     {
         // Make sure it doesn't already exist
         if ($this->foodGroupExists($data['name'])) {
-            Session::flash('error','Ya existe un grupo de alimento con el nombre '.$data['name']);
             throw new GeneralException('Ya existe un grupo de alimento con el nombre '.$data['name']);
         }
+
         return DB::transaction(function () use ($data) {
             $foodGroup = parent::create($data);
 
             if ($foodGroup) {
                 return $foodGroup;
             }
-            Session::flash('error','Error al crear grupo de alimento. Intente nuevamente');
             throw new GeneralException('Error al crear grupo de alimento. Intente nuevamente');
         });
     }
@@ -57,14 +56,12 @@ class FoodGroupRepository extends BaseRepository
     public function update(array $data, FoodGroup $foodGroup)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
         // If the name is changing make sure it doesn't already exist
         if ($foodGroup->name !== strtolower($data['name'])) {
             if ($this->foodGroupExists($data['name'])) {
-                Session::flash('error','Ya existe un grupo de alimento con el nombre '.$data['name']);
                 throw new GeneralException('Ya existe un grupo de alimento con el nombre '.$data['name']);
             }
         }
@@ -73,7 +70,6 @@ class FoodGroupRepository extends BaseRepository
             if ($foodGroup->update($data)) {
                 return $foodGroup;
             }
-            Session::flash('error','Error al actualizar grupo de alimento. Intente nuevamente');
             throw new GeneralException('Error al actualizar grupo de alimento. Intente nuevamente');
         });
     }
@@ -114,14 +110,12 @@ class FoodGroupRepository extends BaseRepository
      */
     public function restore(FoodGroup $foodGroup) : FoodGroup
     {
-        if ($foodGroup->deleted_at === null) {
-            Session::flash('error','El grupo de alimento no esta eliminado');
+        if (is_null($foodGroup->deleted_at)) {
             throw new GeneralException('El grupo de alimento no esta eliminado');
         }
         if ($foodGroup->restore()) {
             return $foodGroup;
         }
-        Session::flash('error','Error al restaurar grupo de alimento. Intente nuevamente');
         throw new GeneralException('Error al restaurar grupo de alimento. Intente nuevamente');
     }
 }

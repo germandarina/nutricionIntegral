@@ -31,19 +31,15 @@ class RecipeRepository extends BaseRepository
      */
     public function create(array $data) : Recipe
     {
-        // Make sure it doesn't already exist
-//        if ($this->patientExists($data['document'])) {
-//            Session::flash('error','Ya existe un receta con el documento '.$data['document']);
-//            throw new GeneralException('Ya existe un receta con el documento '.$data['document']);
-//        }
+
         return DB::transaction(function () use ($data) {
+
             $recipe = parent::create($data);
 
             if ($recipe) {
                 $recipe->classifications()->attach($data['classifications']);
                 return $recipe;
             }
-            Session::flash('error','Error al crear receta. Intente nuevamente');
             throw new GeneralException('Error al crear receta. Intente nuevamente');
         });
     }
@@ -59,21 +55,11 @@ class RecipeRepository extends BaseRepository
     public function update(array $data, Recipe $recipe)
     {
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
-        // If the name is changing make sure it doesn't already exist
-//        if ($recipe->document !== strtolower($data['document'])) {
-//            if ($this->patientExists($data['document'])) {
-//                Session::flash('error','Ya existe un receta con el documento '.$data['document']);
-//                throw new GeneralException('Ya existe un receta con el documento '.$data['document']);
-//            }
-//        }
-
         return DB::transaction(function () use ($recipe, $data) {
             if (!$recipe->update($data)) {
-                Session::flash('error','Error al actualizar receta. Intente nuevamente');
                 throw new GeneralException('Error al actualizar receta. Intente nuevamente');
             }
             $recipe->classifications()->sync($data['classifications']);
@@ -117,20 +103,18 @@ class RecipeRepository extends BaseRepository
      */
     public function restore(Recipe $recipe) : Recipe
     {
-        if ($recipe->deleted_at === null) {
-            Session::flash('error','El receta no esta eliminado');
+        if (is_null($recipe->deleted_at)) {
             throw new GeneralException('El receta no esta eliminado');
         }
         if ($recipe->restore()) {
             return $recipe;
         }
-        Session::flash('error','Error al restaurar receta. Intente nuevamente');
+
         throw new GeneralException('Error al restaurar receta. Intente nuevamente');
     }
 
     public function addIngredient(Recipe $recipe,$data){
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
@@ -147,7 +131,6 @@ class RecipeRepository extends BaseRepository
 
     public function updateIngredient($data){
         if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para realizar esta acción');
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 

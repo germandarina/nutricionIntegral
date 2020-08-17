@@ -79,7 +79,13 @@ class RecipeController extends Controller
      */
     public function store(StoreRecipeRequest $request)
     {
-        $recipe = $this->recipeRepository->create($request->all());
+        try{
+            $recipe = $this->recipeRepository->create($request->all());
+        }catch (\Exception $exception){
+            Session::flash('error', $exception->getMessage());
+            return redirect()->route('admin.recipe.create')->withInput($request->all());
+        }
+
         Session::flash('success','Receta Creada');
         return redirect()->route('admin.recipe.edit',compact('recipe'));
     }
@@ -109,7 +115,12 @@ class RecipeController extends Controller
      */
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
-        $this->recipeRepository->update($request->all(), $recipe);
+        try{
+            $this->recipeRepository->update($request->all(), $recipe);
+        }catch (\Exception $exception){
+            Session::flash('error', $exception->getMessage());
+            return redirect()->route('admin.recipe.create')->withInput($request->all());
+        }
         Session::flash('success','Receta Actualizada');
         return redirect()->route('admin.recipe.index');
     }
@@ -124,12 +135,15 @@ class RecipeController extends Controller
     public function destroy(ManageRecipeRequest $request, Recipe $recipe)
     {
         if (!auth()->user()->isAdmin()) {
-            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
+            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
         }
+
         $recipe->load('planDetails');
+
         if($recipe->planDetails->isNotEmpty()){
-            return response()->json(['mensaje'=>"La receta forma parte de planes"],422);
+            return response()->json(['error'=>"La receta forma parte de planes"],422);
         }
+
         $this->recipeRepository->deleteById($recipe->id);
         return response()->json(['mensaje'=>"Receta eliminada"],200);
     }
@@ -158,7 +172,11 @@ class RecipeController extends Controller
     public function restore(ManageRecipeRequest $request, $id)
     {
         $recipe = Recipe::onlyTrashed()->find($id);
-        $this->recipeRepository->restore($recipe);
+        try{
+            $this->recipeRepository->restore($recipe);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
         return response()->json(['mensaje'=>"Receta restaurada"],200);
     }
 
@@ -177,39 +195,43 @@ class RecipeController extends Controller
 
     public function searchIngredients(){
         $buscar = trim(request('q'));
-//        $food_group_id = trim(request('food_group_id'));
+
         if (empty($buscar)) {
             return \Response::json([]);
         }
+
         $query = Food::fullText($buscar);
-//        if($food_group_id){
-//            $query->where('food_group_id',$food_group_id);
-//        }
         $foods = $query->limit(20)->get(['id','name'])->toArray();
+
         $foods = array_map(function ($item){
                     return ['id' => $item['id'], 'text' => $item['name']];
                 }, $foods);
+
         return \Response::json($foods);
     }
 
     public function addIngredients(){
         if(request('recipe_id')){
             $recipe = Recipe::find(request('recipe_id'));
-            if(request('ingredient_id')){
-                $this->recipeRepository->updateIngredient(request()->all());
-                return response()->json(['mensaje'=>'Ingrediente actualizado'],200);
-            }else{
-                $ingredient_exist = Ingredient::where('recipe_id',$recipe->id)
-                    ->where('food_id',request('food_id'))
-                    ->first();
-                if($ingredient_exist){
-                    return response()->json(['error'=>'El alimento que intenta agregar ya esta en la receta'],422);
+            try{
+                if(request('ingredient_id')){
+                    $this->recipeRepository->updateIngredient(request()->all());
+                    return response()->json(['mensaje'=>'Ingrediente actualizado'],200);
+                }else{
+                    $ingredient_exist = Ingredient::where('recipe_id',$recipe->id)
+                        ->where('food_id',request('food_id'))
+                        ->first();
+                    if($ingredient_exist){
+                        return response()->json(['error'=>'El alimento que intenta agregar ya esta en la receta'],422);
+                    }
+                    $this->recipeRepository->addIngredient($recipe,request());
+                    return response()->json(['mensaje'=>'Ingrediente agregado'],200);
                 }
-                $this->recipeRepository->addIngredient($recipe,request());
-                return response()->json(['mensaje'=>'Ingrediente agregado'],200);
+            }catch (\Exception $exception){
+                return response()->json(['error'=>$exception->getMessage()],422);
             }
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function deleteIngredient(){
@@ -221,9 +243,9 @@ class RecipeController extends Controller
                 }
                 return response()->json(['mensaje'=>'Ingrediente eliminado'],200);
             }
-            return App::abort(422);
+            return App::abort(402);
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function getIngredient(){
@@ -232,9 +254,9 @@ class RecipeController extends Controller
             if($ingredient){
                 return ['ingredient'=>$ingredient,'food'=>$ingredient->food];
             }
-            return App::abort(422);
+            return App::abort(402);
         }
-        return App::abort(422);
+        return App::abort(402);
     }
 
     public function getTotal(){
