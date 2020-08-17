@@ -85,10 +85,11 @@ class ClassificationController extends Controller
      */
     public function edit(ManageClassificationRequest $request, Classification $classification)
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->isAdmin() || $classification->default_register) {
             Session::flash('error','No tiene permiso para editar');
             return redirect()->route('admin.classification.index');
         }
+
         $validator = JsValidator::formRequest(UpdateClassificationRequest::class);
 
         return view('backend.admin.classification.edit',compact('classification','validator'));
@@ -102,6 +103,11 @@ class ClassificationController extends Controller
      */
     public function update(UpdateClassificationRequest $request, Classification $classification)
     {
+        if (!auth()->user()->isAdmin() || $classification->default_register) {
+            Session::flash('error','No tiene permiso para editar');
+            return redirect()->route('admin.classification.index');
+        }
+
         $this->classificationRepository->update($request->all(), $classification);
         Session::flash('success','Clasificacion Actualizada');
         return redirect()->route('admin.classification.index');
@@ -116,13 +122,22 @@ class ClassificationController extends Controller
      */
     public function destroy(ManageClassificationRequest $request, Classification $classification)
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->isAdmin() || $classification->default_register) {
             return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
+        $classification->load('patients','recipes');
+
+        if($classification->recipes->isNotEmpty()){
+            return response()->json(['mensaje'=>"Una receta tiene asignada esta clasificación"],422);
+        }
+
+        if($classification->patients->isNotEmpty()){
+            return response()->json(['mensaje'=>"Un paciente tiene asignado esta clasificación"],422);
+        }
+
         $this->classificationRepository->deleteById($classification->id);
-        Session::flash('success','Clasificación Eliminada');
-        return redirect()->route('admin.classification.index');
+        return response()->json(['mensaje'=>"Clasificación eliminada"],200);
     }
 
     public function getDeleted(ManageClassificationRequest $request){
@@ -150,7 +165,6 @@ class ClassificationController extends Controller
     {
         $classification = Classification::onlyTrashed()->find($id);
         $this->classificationRepository->restore($classification);
-        Session::flash('success','Clasificacion restaurada');
-        return redirect()->route('admin.classification.index');
+        return response()->json(['mensaje'=>"Clasificación restaurada"],200);
     }
 }

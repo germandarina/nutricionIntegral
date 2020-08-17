@@ -122,9 +122,14 @@ class FoodController extends Controller
             return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
+        $food->load('ingredients');
+
+        if($food->ingredients->isNotEmpty()){
+            return response()->json(['mensaje'=>"El alimento ya forma parte de una receta"],422);
+        }
+
         $this->foodRepository->deleteById($food->id);
-        Session::flash('success','Alimento Eliminado');
-        return redirect()->route('admin.food.index');
+        return response()->json(['mensaje'=>"Alimento eliminado"],200);
     }
 
     public function getDeleted(ManageFoodRequest $request){
@@ -152,8 +157,7 @@ class FoodController extends Controller
     {
         $food = Food::onlyTrashed()->find($id);
         $this->foodRepository->restore($food);
-        Session::flash('success','Alimento restaurado');
-        return redirect()->route('admin.food.index');
+        return response()->json(['mensaje'=>"Alimento restaurado"],200);
     }
 
     public function importarAlimentos(){

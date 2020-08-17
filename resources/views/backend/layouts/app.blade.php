@@ -81,6 +81,84 @@
             });
         });
 
+        function eliminarItem(e,input){
+            e.preventDefault();
+            var url = input.data('url');
+            Swal.fire({
+                title: 'Esta seguro de realizar esta accion?',
+                // icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText : 'No',
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:      url,
+                        type:     'POST',
+                        data: {_method: 'POST'},
+                        success: (function (data){
+                            Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
+                        }),
+                        error: (function (jqXHR, exception) {
+                            var mensaje = "";
+                            if (jqXHR.status === 422){
+                                mensaje = jqXHR.responseJSON.mensaje
+                                Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                            }
+                        }),
+                        complete:(function (data) {
+                            $('#confirm').modal('hide');
+                            $('.data-table').DataTable().draw(false);
+                        })
+                    });
+                }
+            });
+        }
+
+        function restaurarItem(e,input){
+            e.preventDefault();
+            var url = input.data('url');
+            Swal.fire({
+                title: 'Esta seguro de realizar esta accion?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Restaurar',
+                cancelButtonText : 'No',
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:      url,
+                        type:     'POST',
+                        data: {_method: 'POST'},
+                        success: (function (data){
+                            Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
+                        }),
+                        error: (function (jqXHR, exception) {
+                            var mensaje = "";
+                            if (jqXHR.status === 422){
+                                mensaje = jqXHR.responseJSON.mensaje
+                                Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                            }
+                        }),
+                        complete:(function (data) {
+                            $('#confirm').modal('hide');
+                            $('.data-table').DataTable().draw(false);
+                        })
+                    });
+                }
+            });
+        }
+
+
         var notifyOptions = {
             'sound': false,
             'icon': false,

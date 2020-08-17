@@ -124,7 +124,7 @@ class FoodRepository extends BaseRepository
      */
     public function restore(Food $food) : Food
     {
-        if ($food->deleted_at === null) {
+        if (is_null($food->deleted_at)) {
             Session::flash('error','El alimento no esta eliminado');
             throw new GeneralException('El alimento no esta eliminado');
         }

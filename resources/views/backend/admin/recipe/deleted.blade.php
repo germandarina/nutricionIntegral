@@ -13,7 +13,7 @@
             </div><!--col-->
 
             <div class="col-sm-7 pull-right">
-                @include('backend.admin.food.includes.header-buttons')
+                @include('backend.admin.recipe.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->
 
@@ -43,7 +43,7 @@
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
-                ajax: "{{ route('admin.food.deleted') }}",
+                ajax: "{{ route('admin.recipe.deleted') }}",
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false},

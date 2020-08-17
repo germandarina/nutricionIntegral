@@ -152,8 +152,7 @@ class PatientController extends Controller
     {
         $patient = Patient::onlyTrashed()->find($id);
         $this->patientRepository->restore($patient);
-        Session::flash('success','Paciente restaurado');
-        return redirect()->route('admin.patient.index');
+        return response()->json(['mensaje'=>"Paciente restaurado"],200);
     }
 
     public function searchPatients(){

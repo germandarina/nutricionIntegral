@@ -159,8 +159,7 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::onlyTrashed()->find($id);
         $this->recipeRepository->restore($recipe);
-        Session::flash('success','Receta restaurada');
-        return redirect()->route('admin.recipe.index');
+        return response()->json(['mensaje'=>"Receta restaurada"],200);
     }
 
     public function getIngredients(){

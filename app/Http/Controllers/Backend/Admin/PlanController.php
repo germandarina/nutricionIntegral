@@ -152,8 +152,7 @@ class PlanController extends Controller
     {
         $plan = Plan::onlyTrashed()->find($id);
         $this->planRepository->restore($plan);
-        Session::flash('success','Plan restaurado');
-        return redirect()->route('admin.plan.index');
+        return response()->json(['mensaje'=>"Plan restaurado"],200);
     }
 
     public function addRecipes(ManagePlanRequest $request, Plan $plan){

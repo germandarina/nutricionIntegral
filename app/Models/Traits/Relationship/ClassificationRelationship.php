@@ -18,6 +18,6 @@ trait ClassificationRelationship
     }
 
     public function recipes(){
-        return $this->belongsToMany(Recipe::class,'classfication_recipe','classification_id');
+        return $this->belongsToMany(Recipe::class,'classification_recipe','classification_id');
     }
 }

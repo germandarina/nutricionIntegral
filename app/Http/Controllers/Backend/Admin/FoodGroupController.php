@@ -117,9 +117,14 @@ class FoodGroupController extends Controller
             return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
         }
 
+        $food_group->load('foods');
+
+        if($food_group->foods->isNotEmpty()){
+            return response()->json(['mensaje'=>"Un alimento ya tiene asignado este grupo"],422);
+        }
+
         $this->foodGroupRepository->deleteById($food_group->id);
-        Session::flash('success','Grupo de Alimento Eliminado');
-        return redirect()->route('admin.food-group.index');
+        return response()->json(['mensaje'=>"Grupo de alimento eliminado"],200);
     }
 
     public function getDeleted(ManageFoodGroupRequest $request){
@@ -147,7 +152,6 @@ class FoodGroupController extends Controller
     {
         $food_group = FoodGroup::onlyTrashed()->find($id);
         $this->foodGroupRepository->restore($food_group);
-        Session::flash('success','Grupo de Alimentos restaurado');
-        return redirect()->route('admin.food-group.index');
+        return response()->json(['mensaje'=>"Grupo de alimento restaturado"],200);
     }
 }
