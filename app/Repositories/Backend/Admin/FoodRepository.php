@@ -40,6 +40,7 @@ class FoodRepository extends BaseRepository
                     $data[$indice] = 0;
                 }
             }
+            $data['name'] = $this->model->_sanear_string($data['name']);
             $food = parent::create($data);
 
             if ($food) {
@@ -69,6 +70,7 @@ class FoodRepository extends BaseRepository
                     $data[$indice] = 0;
                 }
             }
+            $data['name'] = $this->model->_sanear_string($data['name']);
             if ($food->update($data)) {
                 return $food;
             }

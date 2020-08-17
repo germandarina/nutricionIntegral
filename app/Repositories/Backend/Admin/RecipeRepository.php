@@ -34,6 +34,8 @@ class RecipeRepository extends BaseRepository
 
         return DB::transaction(function () use ($data) {
 
+            $data['name'] = $this->model->_sanear_string($data['name']);
+
             $recipe = parent::create($data);
 
             if ($recipe) {
@@ -59,6 +61,7 @@ class RecipeRepository extends BaseRepository
         }
 
         return DB::transaction(function () use ($recipe, $data) {
+            $data['name'] = $this->model->_sanear_string($data['name']);
             if (!$recipe->update($data)) {
                 throw new GeneralException('Error al actualizar receta. Intente nuevamente');
             }

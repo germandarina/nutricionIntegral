@@ -180,7 +180,9 @@ class FoodController extends Controller
             $alimentos_importar = DB::select("select * from importacion_alimentos");
             if(!empty($alimentos_importar)){
                 foreach ($alimentos_importar as $fila){
-                    $existe = Food::where('name',trim($fila->nombre))->where('food_group_id',$fila->grupo_alimento);
+                    $existe = Food::where('name',trim($fila->nombre))
+                                    ->where('food_group_id',$fila->grupo_alimento)
+                                    ->first();
                     if(is_null($existe)){
                         $alimento = new Food();
                         $alimento->name = trim($fila->nombre);
