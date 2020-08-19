@@ -605,7 +605,7 @@
             });
         }
 
-        function eliminarRecetaPorDia(event,plan_detail_day_id,day) {
+        function eliminarRecetaPorDia(event,plan_detail_day_id) {
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
@@ -625,13 +625,12 @@
                         type:     'DELETE',
                         data:    {
                             'id':plan_detail_day_id,
-                            'day':day,
                         },
                         success: function(data) {
                             var datos = data;
                             Lobibox.notify('success',{msg:datos.mensaje});
-                            $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
-                            getTotalesPorDia(day);
+                            $(`#recipes-by-day-datatable-${datos.day}`).DataTable().ajax.reload();
+                            getTotalesPorDia(datos.day);
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});

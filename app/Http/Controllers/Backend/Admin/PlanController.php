@@ -318,14 +318,10 @@ class PlanController extends Controller
 
     public function deleteDetailByDay(){
         if(request('id')){
-            $details = PlanDetailDay::where('plan_detail_id',request('id'))
-                                    ->where('day',request('day'))
-                                    ->get();
-            foreach ($details as $detail){
-                $detail->forceDelete();
-            }
-            $dia = request('day');
-            return response()->json(['mensaje'=>"Receta eliminada del día $dia"],200);
+            $detail = PlanDetailDay::find(request('id'));
+            $day    = $detail->day;
+            $detail->forceDelete();
+            return response()->json(['mensaje'=>"Receta eliminada del día $day",'day'=>$day],200);
         }
         return App::abort(402);
     }
