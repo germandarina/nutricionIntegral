@@ -18,7 +18,6 @@
                     <td style="text-align: center;">{{$recipe->total_grasa_total}}</td>
                     <td style="text-align: center;">{{$recipe->total_carbohidratos_totales}}</td>
                     <td style="text-align: center;">{{$recipe->total_hierro}}</td>
-                    <td style="text-align: center;">{{ $recipe->total_calorias }}</td>
                 </tr>
             </tbody>
         </table>

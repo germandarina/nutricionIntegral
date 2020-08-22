@@ -68,17 +68,6 @@
 </div>
 <div class="row mt-4">
     <div class="col-md-2">
-        {{ html()->label('Calorias')
-                 ->class('col-md-12 form-control-label')
-                 ->for('calorias') }}
-        {{ html()->text('calorias')
-            ->class('form-control numeric3Digits')
-            ->placeholder('Calorias')
-            ->attribute('maxlength', 191)
-            ->required()
-            ->autofocus() }}
-    </div><!--col-->
-    <div class="col-md-2">
         {{ html()->label('Fibra (g)')
                  ->class('col-md-12 form-control-label')
                  ->for('fibra') }}

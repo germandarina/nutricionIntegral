@@ -63,7 +63,6 @@ trait IngredientMethod
         $recipe->total_ac_grasos_poliinsaturados = 0;
         $recipe->total_fibra = 0;
         $recipe->total_colesterol = 0;
-        $recipe->total_calorias = 0;
         $recipe->save();
     }
     private static function updateRecipe(Recipe &$recipe,Ingredient $ingredient,Food $food){
@@ -90,7 +89,6 @@ trait IngredientMethod
         $recipe->total_ac_grasos_poliinsaturados += $food->ac_grasos_poliinsaturados >0 ? round((( $ingredient->quantity_grs * $food->ac_grasos_poliinsaturados)/100),3)  : 0;
         $recipe->total_fibra += $food->fibra >0 ? round((( $ingredient->quantity_grs * $food->fibra)/100),3)  : 0;
         $recipe->total_colesterol += $food->colesterol >0 ? round((( $ingredient->quantity_grs *$food->colesterol)/100),3)  : 0;
-        $recipe->total_calorias += $food->calorias >0 ? round((( $ingredient->quantity_grs *$food->calorias)/100),3)  : 0;
 
         $recipe->save();
     }

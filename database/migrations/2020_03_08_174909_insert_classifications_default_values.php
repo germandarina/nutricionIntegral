@@ -13,7 +13,7 @@ class InsertClassificationsDefaultValues extends Migration
      */
     public function up()
     {
-        DB::insert('insert into classifications(id,name) values (1,"Normal")');
+        DB::insert('insert into classifications(id,name) values (1,"Omnivoros")');
         DB::insert('insert into classifications(id,name) values (2,"Vegetariano/a")');
         DB::insert('insert into classifications(id,name) values (3,"Vegano/a")');
         DB::insert('insert into classifications(id,name) values (4,"Sin TACC")');

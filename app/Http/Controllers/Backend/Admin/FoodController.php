@@ -209,7 +209,6 @@ class FoodController extends Controller
                         $alimento->ac_grasos_monoinsaturados = empty($fila->ac_grasos_monoinsaturados) || $fila->ac_grasos_monoinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_monoinsaturados);
                         $alimento->ac_grasos_poliinsaturados = empty($fila->ac_grasos_poliinsaturados) || $fila->ac_grasos_poliinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_poliinsaturados);
                         $alimento->colesterol = empty($fila->colesterol) || $fila->colesterol == '...' ? 0: (float) str_replace(',','.',$fila->colesterol);
-                        $alimento->calorias = empty($fila->calorias) || $fila->calorias == '...' ? 0: (float) str_replace(',','.',$fila->calorias);
                         if(!$alimento->save()){
                             throw new \Exception("Error al importar alimento".$fila->nombre);
                         }

@@ -198,10 +198,10 @@ class PlanController extends Controller
             $query_recipes->fullText($recipe_name);
         }
         if($min_calorias){
-            $query_recipes->where('total_calorias','>=',$min_calorias);
+            $query_recipes->where('total_energia_kcal','>=',$min_calorias);
         }
         if($max_calorias){
-            $query_recipes->where('total_calorias','<=',$max_calorias);
+            $query_recipes->where('total_energia_kcal','<=',$max_calorias);
         }
         if($foods || $food_groups){
             $query_recipes->whereHas('ingredients.food',function ($query)use($foods,$food_groups){
@@ -395,7 +395,6 @@ class PlanController extends Controller
         $total['total_ac_grasos_monoinsaturados']    = 0;
         $total['total_ac_grasos_poliinsaturados']    = 0;
         $total['total_fibra']                        = 0;
-        $total['total_calorias']                     = 0;
 
         foreach ($plan_details as $detail){
             $quantity_by_day =  $detail->planDetailsDays->count();
@@ -423,7 +422,6 @@ class PlanController extends Controller
             $total['total_ac_grasos_monoinsaturados']  += $recipe->total_ac_grasos_monoinsaturados * $quantity_by_day;
             $total['total_ac_grasos_poliinsaturados']  += $recipe->total_ac_grasos_poliinsaturados * $quantity_by_day;
             $total['total_fibra']                      += $recipe->total_fibra * $quantity_by_day;
-            $total['total_calorias']                   += $recipe->total_calorias * $quantity_by_day;
         }
     }
 

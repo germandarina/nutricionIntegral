@@ -18,7 +18,6 @@
                     <td style="text-align: center;">{{$total['total_grasa_total'] }}</td>
                     <td style="text-align: center;">{{$total['total_carbohidratos_totales'] }}</td>
                     <td style="text-align: center;">{{$total['total_hierro'] }}</td>
-                    <td style="text-align: center;">{{$total['total_calorias'] }}</td>
                 </tr>
             </tbody>
         </table>
