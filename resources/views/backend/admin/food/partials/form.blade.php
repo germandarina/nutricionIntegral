@@ -23,9 +23,9 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-sm-5">
+        <div class="col-sm-12">
             <h5 class="card-title mb-0">
-                <small class="text-muted">Composición</small>
+                <small class="text-muted"><strong>Composición</strong><span style="color:red; font-size: 12px;">&nbsp;&nbsp; * Calculado por 100 gramos de porción comestible. Diferencia  = 100 - (agua + proteína + lípidos + cenizas). </span></small>
             </h5>
         </div><!--col-->
     </div><!--row-->
