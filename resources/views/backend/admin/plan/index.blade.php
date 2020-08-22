@@ -22,10 +22,18 @@
                 <div class="table-responsive">
                     <table class="table data-table">
                         <thead>
+                        <tr >
+                            <th colspan="3"></th>
+                            <th colspan="4" style="text-align: center;background: #4dbd74; color: white;">Necesidades Diarias</th>
+                        </tr>
                         <tr>
                             <th>Paciente</th>
                             <th>Nombre Plan</th>
                             <th>Cant. Días</th>
+                            <th>Energia (kcal)</th>
+                            <th>Proteina (g)</th>
+                            <th>Carbohidratos (g)</th>
+                            <th>Grasa (g)</th>
                             <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
@@ -52,6 +60,10 @@
                     {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
                     {data: 'days', name: 'days'},
+                    {data: 'energia_kcal_por_dia', name: 'energia_kcal_por_dia'},
+                    {data: 'proteina_por_dia', name: 'proteina_por_dia'},
+                    {data: 'carbohidratos_por_dia', name: 'carbohidratos_por_dia'},
+                    {data: 'grasa_total_por_dia', name: 'grasa_total_por_dia'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });

@@ -51,3 +51,59 @@
             </div><!--form-group-->
         </div><!--col-->
     </div><!--row-->
+    <div class="row mt-1">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Valores</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Energía (kcal) necesaria por día</td>
+                <td>
+                    {{ html()->text('energia_kcal_por_dia')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('Energia (kcal) necesarias por día')
+                               ->attribute('maxlength', 191)
+                               ->required()
+                               ->autofocus() }}
+                </td>
+            </tr>
+            <tr>
+                <td>Proteína (g) necesaria por día</td>
+                <td>
+                    {{ html()->text('proteina_por_dia')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('Proteína (g) necesaria por día')
+                               ->attribute('maxlength', 191)
+                               ->required()
+                               ->autofocus() }}
+                </td>
+            </tr>
+            <tr>
+                <td>Carbohidratos (g) necesarios por día</td>
+                <td>
+                    {{ html()->text('carbohidratos_por_dia')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('Carbohidratos (g) necesarios por día')
+                               ->attribute('maxlength', 191)
+                               ->required()
+                               ->autofocus() }}
+                </td>
+            </tr>
+            <tr>
+                <td>Grasa (g) necesaria por día</td>
+                <td>
+                    {{ html()->text('grasa_total_por_dia')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('Grasa Total Necesaria por día (g)')
+                               ->attribute('maxlength', 191)
+                               ->required()
+                               ->autofocus() }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
