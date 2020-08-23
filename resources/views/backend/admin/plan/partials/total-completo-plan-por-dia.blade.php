@@ -8,7 +8,6 @@
                     <th> Total Grasa (g)</th>
                     <th> Total Carbohidratos (g)</th>
                     <th> Total Hierro (mg)</th>
-                    <th> Total Calorías</th>
                 </tr>
             </thead>
             <tbody>

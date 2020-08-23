@@ -14,6 +14,7 @@
                             <th style="text-align: center;">Paciente</th>
                             <th style="text-align: center;">Plan</th>
                             <th style="text-align: center;" >Cant Días</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,6 +22,7 @@
                             <td style="text-align: center;" ><strong>{{$paciente->full_name}}</strong></td>
                             <td style="text-align: center;"><strong>{{$plan->name}}</strong></td>
                             <td style="text-align: center;"><strong>{{$plan->days}}</strong></td>
+                            <th>{{ form_cancel(route('admin.classification.index'), __('buttons.general.cancel')) }}</th>
                         </tr>
                     </tbody>
                 </table>
