@@ -69,7 +69,7 @@ trait IngredientMethod
 
         $recipe->total_energia_kcal += $food->energia_kcal >0 ? round((($ingredient->quantity_grs *  $food->energia_kcal)/100),3) : 0;
         $recipe->total_agua += $food->agua >0 ? round((( $ingredient->quantity_grs * $food->agua)/100),3)  : 0;
-        $recipe->total_proteina += $food->protenia >0 ? round((( $ingredient->quantity_grs * $food->proteina)/100),3)  : 0;
+        $recipe->total_proteina += $food->proteina >0 ? round((( $ingredient->quantity_grs * $food->proteina)/100),3)  : 0;
         $recipe->total_grasa_total += $food->grasa_total >0 ? round((( $ingredient->quantity_grs * $food->grasa_total)/100),3)  : 0;
         $recipe->total_carbohidratos_totales += $food->carbohidratos_totales >0 ? round((( $ingredient->quantity_grs * $food->carbohidratos_totales)/100),3)  : 0;
         $recipe->total_cenizas += $food->cenizas >0 ? round((( $ingredient->quantity_grs * $food->cenizas)/100),3)  : 0;

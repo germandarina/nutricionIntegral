@@ -243,4 +243,20 @@ class FoodController extends Controller
             }
         }
     }
+
+    public function actualizarAlimentosParaCalculosReceta(){
+        try{
+            DB::beginTransaction();
+            $foods = Food::all();
+            foreach ($foods as $food){
+                $food->touch();
+                $food->update();
+            }
+            DB::commit();
+            echo "termine bien la actualizacion";
+        }catch (\Exception $exception){
+            DB::rollBack();
+            echo $exception->getMessage();
+        }
+    }
 }

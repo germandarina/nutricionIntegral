@@ -176,21 +176,6 @@
                 </tr>
                 <tr>
                     <td>
-                        {{ html()->label('Energia (Kj)')
-                            ->class('col-md-12 form-control-label')
-                            ->for('energia_kj') }}
-
-                    </td>
-                    <td>{{ html()->text('energia_kj')
-                         ->class('form-control numeric3Digits')
-                         ->placeholder('Energia Kj')
-                         ->attribute('maxlength', 191)
-                         ->required()
-                         ->autofocus() }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         {{ html()->label('Agua (g)')
                           ->class('col-md-12 form-control-label')
                           ->for('agua') }}
