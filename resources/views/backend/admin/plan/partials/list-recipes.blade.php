@@ -8,10 +8,13 @@
                        href="#collapse_{{$recipe->id}}"
                        aria-expanded="true"
                        aria-controls="collapse_{{$recipe->id}}"
-                       class=""><strong>{{substr(strtoupper($recipe->name),0,40)}}</strong></a>
+                       class=""><strong>{{substr(strtoupper($recipe->name),0,35)}}</strong></a>
                     <div class="card-header-actions">
                         <a class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}},null)">
                             <icon class="fas fa-plus-square"></icon>
+                        </a>
+                        <a class="btn btn-sm btn-warning" href="#" onclick="agregarYEditarReceta(event,{{$recipe->id}})">
+                            <icon class="fas fa-pencil-alt"></icon>
                         </a>
                     </div>
                 </div>
@@ -24,7 +27,7 @@
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Grasa (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_grasa_total}}</span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Colesterol (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_colesterol}}</span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm">
-                                <a href="#" class="btn btn-sm btn-success btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})"><strong>TOTAL COMPOSICION RECETA</strong></a>
+                                <a href="#" class="btn btn-sm btn-success btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})"><strong>Composicíon Total</strong></a>
                             </li>
                         </ul>
                     </div>

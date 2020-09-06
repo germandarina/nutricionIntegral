@@ -216,7 +216,7 @@ class RecipeController extends Controller
             try{
                 if(request('ingredient_id')){
                     $this->recipeRepository->updateIngredient(request()->all());
-                    return response()->json(['mensaje'=>'Ingrediente actualizado'],200);
+                    return response()->json(['mensaje'=>'Ingrediente actualizado','edit'=>true],200);
                 }else{
                     $ingredient_exist = Ingredient::where('recipe_id',$recipe->id)
                         ->where('food_id',request('food_id'))
@@ -225,7 +225,7 @@ class RecipeController extends Controller
                         return response()->json(['error'=>'El alimento que intenta agregar ya esta en la receta'],422);
                     }
                     $this->recipeRepository->addIngredient($recipe,request());
-                    return response()->json(['mensaje'=>'Ingrediente agregado'],200);
+                    return response()->json(['mensaje'=>'Ingrediente agregado','edit'=>false],200);
                 }
             }catch (\Exception $exception){
                 return response()->json(['error'=>$exception->getMessage()],422);

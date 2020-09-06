@@ -39,15 +39,14 @@
                 <td style="text-align: center;"><strong>{{ $total['total_proteina'] }}</strong></td>
                 <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->proteina_por_dia -  $total['total_proteina'] }}</strong></td>
 
-                <td style="text-align: center;" ><strong>{{ $plan->carbohidratos_por_dia }}</strong></td>
-                <td style="text-align: center;"><strong>{{ $total['total_carbohidratos_totales'] }}</strong></td>
-                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->carbohidratos_por_dia -  $total['total_carbohidratos_totales'] }}</strong></td>
-
                 <td style="text-align: center;" ><strong>{{ $plan->grasa_total_por_dia }}</strong></td>
                 <td style="text-align: center;"><strong>{{ $total['total_grasa_total'] }}</strong></td>
                 <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->grasa_total_por_dia -  $total['total_grasa_total'] }}</strong></td>
 
-                <td style="text-align: center;"><a title="Ver Total Completo" href="#" class="btn btn-sm btn-primary" onclick="getTotalCompletoPlanPorDia(event,{{$plan->id}},{{$day}})"><i class="fas fa-eye"></i></a></td>
+                <td style="text-align: center;" ><strong>{{ $plan->carbohidratos_por_dia }}</strong></td>
+                <td style="text-align: center;"><strong>{{ $total['total_carbohidratos_totales'] }}</strong></td>
+                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->carbohidratos_por_dia -  $total['total_carbohidratos_totales'] }}</strong></td>
+                <td style="text-align: center;"><a title="Total Completo" href="#" class="btn btn-sm btn-primary" onclick="getTotalCompletoPlanPorDia(event,{{$plan->id}},{{$day}})"><i class="fas fa-eye"></i></a></td>
             </tr>
         </tbody>
     </table>

@@ -22,7 +22,7 @@
                             <td style="text-align: center;" ><strong>{{$paciente->full_name}}</strong></td>
                             <td style="text-align: center;"><strong>{{$plan->name}}</strong></td>
                             <td style="text-align: center;"><strong>{{$plan->days}}</strong></td>
-                            <th>{{ form_cancel(route('admin.classification.index'), __('buttons.general.cancel')) }}</th>
+                            <th>{{ form_cancel(route('admin.plan.index'), __('buttons.general.cancel')) }}</th>
                         </tr>
                     </tbody>
                 </table>
@@ -42,6 +42,8 @@
 @push('after-scripts')
     @include('datatables.includes')
     <script>
+        var procesando = null;
+
         $(function () {
             getRecipes();
             iniciarDataTableRecetasAgregadas();
@@ -49,6 +51,10 @@
         });
 
         function getRecipes() {
+            $("#divRecipes").LoadingOverlay("show", {
+                background  : "rgba(165, 190, 100, 0.5)"
+            });
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -67,6 +73,7 @@
                 success: function(data) {
                     var datos = data;
                     $("#divRecipes").empty().html(datos.html);
+
                     if(datos.cantidad < 9){
                         $("#divRecipes").css('height','').css('overflow-y','');
                     }
@@ -76,6 +83,9 @@
                     if(datos.cantidad > 15){
                         $("#divRecipes").css('height','500px').css('overflow-y','scroll');
                     }
+
+                    $("#divRecipes").LoadingOverlay("hide", true);
+                    $(".card-header").find("[rel=tooltip]").tooltip();
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
@@ -84,33 +94,33 @@
         }
 
         function iniciarDataTableRecetasAgregadas() {
-            $('#recipes-datatable').DataTable({
-                fixedHeader: true,
-                paging:false,
-                "scrollY": "250px",
-                "scrollCollapse": true,
-                "processing": true,
-                "serverSide": true,
-                "draw": true,
-                "buttons":[],
-                "ordering": false,
-                ajax: "{{ route('admin.plan.getRecipes',$plan->id) }}",
-                columns: [
-                    {data: null, defaultContent: '',render:function (row, type, val, meta) {
-                            return  `<input type="checkbox" class="checkboxs" id= "detail_${row.id}" />`;
-                        }
-                    },
-                    {data: 'recipe.name', name: 'recipe.name',},
-                    {data: 'recipeType', name: 'recipeType',},
-                    {data: 'classifications', name: 'classifications',},
-                    {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
-                    {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
-                    {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
-                    {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},
-                    {data: 'recipe.total_colesterol', name: 'recipe.total_colesterol',},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false,},
-                ],
-            });
+            {{--$('#recipes-datatable').DataTable({--}}
+            {{--    fixedHeader: true,--}}
+            {{--    paging:false,--}}
+            {{--    "scrollY": "250px",--}}
+            {{--    "scrollCollapse": true,--}}
+            {{--    "processing": true,--}}
+            {{--    "serverSide": true,--}}
+            {{--    "draw": true,--}}
+            {{--    "buttons":[],--}}
+            {{--    "ordering": false,--}}
+            {{--    ajax: "{{ route('admin.plan.getRecipes',$plan->id) }}",--}}
+            {{--    columns: [--}}
+            {{--        {data: null, defaultContent: '',render:function (row, type, val, meta) {--}}
+            {{--                return  `<input type="checkbox" class="checkboxs" id= "detail_${row.id}" />`;--}}
+            {{--            }--}}
+            {{--        },--}}
+            {{--        {data: 'recipe.name', name: 'recipe.name',},--}}
+            {{--        {data: 'recipeType', name: 'recipeType',},--}}
+            {{--        {data: 'classifications', name: 'classifications',},--}}
+            {{--        {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},--}}
+            {{--        {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},--}}
+            {{--        {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},--}}
+            {{--        {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},--}}
+            {{--        {data: 'recipe.total_colesterol', name: 'recipe.total_colesterol',},--}}
+            {{--        {data: 'actions', name: 'actions', orderable: false, searchable: false,},--}}
+            {{--    ],--}}
+            {{--});--}}
 
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
                 $($.fn.dataTable.tables(true)).DataTable()
@@ -120,7 +130,9 @@
 
         function iniciarDataTablesPordia() {
             @for($day=1;$day<=$plan->days;$day++)
+
                 $('#recipes-by-day-datatable-{{$day}}').DataTable({
+                    dom: 'Brtp',
                     fixedHeader: true,
                     paging:false,
                     "scrollY": "250px",
@@ -154,6 +166,7 @@
         }
 
         function getTotalesPorDia(day) {
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -172,7 +185,11 @@
                 }
             });
         }
+
         function getTotalCompleto(event,recipe_id) {
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             event.preventDefault();
             $.ajax({
                 headers: {
@@ -185,6 +202,9 @@
                 },
                 success: function(data) {
                     var datos = data;
+
+                    procesando.remove();
+
                     Swal.fire({
                         title: '<strong>Total Composicion Receta</strong>',
                         // icon: 'info',
@@ -199,6 +219,7 @@
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
@@ -206,6 +227,9 @@
 
         function modalAgregarReceta(event,recipe_id,parametro = null) {
             event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -214,15 +238,25 @@
                 type:     'POST',
                 data:    {
                     'recipe_id': recipe_id,
+                    'plan_id'  : "{{$plan->id}}"
                 },
                 success: function(data) {
                     var datos = data;
-                    $("#modalRecipe").empty().html(datos).modal('show');
+                    procesando.remove();
+                    $("#modalRecipe").empty().html(datos);
+                    $("select").select2({
+                        minimumResultsForSearch: 5,
+                        width: '100%',
+                    });
+                    $("span.select2.select2-container.select2-container--default").css("width","100%");
+                    $("#modalRecipe").modal('show');
                     if(parametro === "ver"){
+                        $("#divAgregarReceta").hide();
                         $("#modalRecipe .modal-footer").hide();
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
@@ -230,6 +264,9 @@
 
         function agregarReceta(event,recipe_id,edit) {
             event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -243,8 +280,11 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
+
                     Lobibox.notify('success',{msg: datos.mensaje });
-                    if(edit === "1"){
+
+                    if(edit){
                         $("#modalRecipe").empty().html(datos.html);
                         iniciarJs();
                         limpiarModal();
@@ -252,9 +292,11 @@
                     }else{
                         $("#modalRecipe").modal('hide');
                     }
+
                     $("#recipes-datatable").DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
@@ -265,12 +307,12 @@
         }
 
         function agregarYEditarReceta(event,recipe_id) {
-            agregarReceta(event,recipe_id,'1');
+            agregarReceta(event,recipe_id,true);
         }
 
         function getComposicionBasica() {
             var food_id = $("#edit_food_id").val();
-            if(food_id != "" && food_id != null && food_id != undefined){
+            if(food_id !== "" && food_id !== null && food_id !== undefined){
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -292,6 +334,9 @@
         }
 
         function getComposicionCompleta(food_id) {
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -303,6 +348,7 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Swal.fire({
                         title: '<strong>Composicion Completa Alimento</strong>',
                         // icon: 'info',
@@ -317,6 +363,7 @@
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
@@ -327,6 +374,17 @@
             $('#edit_food_id').select2({
                 placeholder: "Buscar alimentos...",
                 minimumInputLength: 2,
+                language: {
+                    noResults: function () {
+                        return "No hay resultados";
+                    },
+                    searching: function () {
+                        return "Buscando...";
+                    },
+                    inputTooShort: function(a){
+                        return"Por favor ingrese "+(a.minimum-a.input.length)+" o más caracteres"
+                    }
+                },
                 ajax: {
                     url: "{{ route('admin.recipe.searchIngredients') }}",
                     dataType: 'json',
@@ -344,6 +402,7 @@
                     cache: true
                 }
             });
+
             $("span.select2.select2-container.select2-container--default").css("width","100%");
 
 
@@ -394,6 +453,9 @@
                 cancelButtonText : 'No',
             }).then((result) => {
                 if (result.value) {
+
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -405,10 +467,12 @@
                         },
                         success: function(data) {
                             var datos = data;
+                            procesando.remove();
                             Lobibox.notify('success',{msg:datos.mensaje});
                             $('#table-ingredients').DataTable().ajax.reload();
                         },
                         error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                         }
                     });
@@ -437,6 +501,9 @@
 
         function modificarIngrediente(event,ingredient_id) {
             event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -448,6 +515,7 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     var $newOption = $("<option selected='selected'></option>").val(datos.ingredient.food_id).text(datos.food.name);
                     $("#edit_food_id").append($newOption).trigger('change');
                     $("#quantity_description").val(datos.ingredient.quantity_description);
@@ -455,6 +523,7 @@
                     $("#ingredient_id").val(datos.ingredient.id);
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
@@ -484,6 +553,9 @@
             if(ingredient_id === null || ingredient_id === undefined || ingredient_id === ""){
                 ingredient_id = 0;
             }
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -499,11 +571,13 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Lobibox.notify('success',{msg: datos.mensaje});
                     limpiarModal();
                     $('#table-ingredients').DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
@@ -529,6 +603,9 @@
                 cancelButtonText : 'No',
             }).then((result) => {
                 if (result.value) {
+
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -540,10 +617,12 @@
                         },
                         success: function(data) {
                             var datos = data;
+                            procesando.remove();
                             Lobibox.notify('success',{msg:datos.mensaje});
                             $('#recipes-datatable').DataTable().ajax.reload();
                         },
                         error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                         }
                     });
@@ -577,6 +656,9 @@
             if(days.length === 0 || days === "" || days === null || days === undefined){
                 return Lobibox.notify('error',{msg: "Seleccione al menos un día"});
             }
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -591,6 +673,7 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Lobibox.notify('success',{msg:datos.mensaje});
                     $("#quantity_by_day").val("");
                     $("#days").select2("val",0);
@@ -602,6 +685,7 @@
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
@@ -619,6 +703,9 @@
                 cancelButtonText : 'No',
             }).then((result) => {
                 if (result.value) {
+
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -630,11 +717,13 @@
                         },
                         success: function(data) {
                             var datos = data;
+                            procesando.remove();
                             Lobibox.notify('success',{msg:datos.mensaje});
                             $(`#recipes-by-day-datatable-${datos.day}`).DataTable().ajax.reload();
                             getTotalesPorDia(datos.day);
                         },
                         error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                         }
                     });
@@ -644,6 +733,9 @@
 
         function getTotalCompletoPlanPorDia(e,plan_id,day) {
             e.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -656,6 +748,7 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Swal.fire({
                         title: '<strong>Total Completo Por Día</strong>',
                         html: datos,
@@ -669,6 +762,7 @@
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });

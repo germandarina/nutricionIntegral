@@ -230,10 +230,15 @@ class PlanController extends Controller
     }
 
     public function getModalRecipe(){
-        if(request('recipe_id')){
+        if(request('recipe_id') && request('plan_id')){
             $recipe = Recipe::find(request('recipe_id'));
             $recipe->load('ingredients.food');
-            return view('backend.admin.plan.partials.modal-recipe',compact('recipe'));
+            $plan  = Plan::find(request('plan_id'));
+            $array_dias = [];
+            for ($i=1;$i<=$plan->days;$i++){
+                $array_dias[$i] = "Día {$i}";
+            }
+            return view('backend.admin.plan.partials.modal-recipe',compact('recipe','array_dias'));
         }
         return App::abort(402);
     }
@@ -243,7 +248,7 @@ class PlanController extends Controller
             try{
                 $recipe = $this->planRepository->addRecipe(request()->all());
                 $html = "";
-                if(request('edit') == 1){
+                if(request('edit')){
                     $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe'));
                 }
                 return response()->json(['mensaje'=>'Receta agregada','html'=>$html],200);

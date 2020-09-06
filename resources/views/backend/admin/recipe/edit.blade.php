@@ -21,21 +21,23 @@
         </div><!--card-footer-->
     </div><!--card-->
 {{ html()->closeModelForm() }}
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm-5">
-                <h5 class="card-title mb-0">
-                    <button class="btn btn-success btn-sm" type="button" onclick="modalIngredientes(event)" >Agregar Ingredientes <icon class="fas fa-plus-circle"></icon></button>
-                </h5>
-            </div><!--col-->
-        </div><!--row-->
-        @include('backend.admin.recipe.partials.datatable-ingredients')
-        <div class="row mt-lg-2" id="divTotales">
 
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h5 class="card-title mb-0">
+                        <button class="btn btn-success btn-sm" type="button" onclick="modalIngredientes(event)" >Agregar Ingredientes <i class="fas fa-plus-circle"></i></button>
+                    </h5>
+                </div><!--col-->
+            </div><!--row-->
+            @include('backend.admin.recipe.partials.datatable-ingredients')
+            <div class="row mt-lg-2" id="divTotales">
+
+            </div>
         </div>
     </div>
-</div>
+
 @endsection
 @section('modal-yield')
     <div class="modal fade" id="modalIngredientes" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
@@ -61,6 +63,8 @@
 @push('after-scripts')
     @include('datatables.includes')
     <script>
+        var procesando = null;
+
         $(function () {
             $('#table-ingredients').DataTable({
                 "processing":   true,
@@ -89,13 +93,23 @@
             $('#food_id').select2({
                 placeholder: "Buscar alimentos...",
                 minimumInputLength: 2,
+                language: {
+                    noResults: function () {
+                        return "No hay resultados";
+                    },
+                    searching: function () {
+                        return "Buscando...";
+                    },
+                    inputTooShort: function(a){
+                        return"Por favor ingrese "+(a.minimum-a.input.length)+" o más caracteres"
+                    }
+                },
                 ajax: {
                     url: "{{ route('admin.recipe.searchIngredients') }}",
                     dataType: 'json',
                     data: function (params) {
                         return {
                             q: $.trim(params.term),
-                            // food_group_id: $("#food_group_id").val(),
                         };
                     },
                     processResults: function (data) {
@@ -128,15 +142,17 @@
         }
 
         function getComposicionBasica() {
+
             var food_id = $("#food_id").val();
+
             if(food_id !== "" && food_id !== null && food_id !== undefined){
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:      '{{ route('admin.food.getComposicion') }}',
-                    type:     'POST',
-                    data:    {
+                    url:  '{{ route('admin.food.getComposicion') }}',
+                    type: 'POST',
+                    data: {
                         'food_id':food_id,
                     },
                     success: function(data) {
@@ -151,17 +167,21 @@
         }
 
         function getComposicionCompleta(food_id) {
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:      '{{ route('admin.food.getComposicionCompleta') }}',
-                type:     'POST',
+                url:  '{{ route('admin.food.getComposicionCompleta') }}',
+                type: 'POST',
                 data:    {
                     'food_id':food_id,
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Swal.fire({
                         title: '<strong>Composicion Completa Alimento</strong>',
                         icon: 'info',
@@ -176,12 +196,14 @@
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
         }
 
         function agregarIngrediente(event) {
+
             event.preventDefault();
             var food_id = $("#food_id").val();
             var quantity_d = $("#quantity_description").val();
@@ -201,6 +223,9 @@
             if(ingredient_id === null || ingredient_id === undefined || ingredient_id === ""){
                 ingredient_id = 0;
             }
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -216,11 +241,16 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Lobibox.notify('success',{msg: datos.mensaje});
                     limpiarModal();
+                    if(datos.edit){
+                       $("#modalIngredientes").modal("hide");
+                    }
                     $('#table-ingredients').DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     if(xhr.status === 422){
                         Lobibox.notify('error',{msg: xhr.responseJSON.error});
                     }else{
@@ -262,6 +292,7 @@
                 }
             });
         }
+
         function eliminarIngrediente(event,ingrediente_id) {
             event.preventDefault();
 
@@ -275,6 +306,9 @@
                 cancelButtonText : 'No',
             }).then((result) => {
                 if (result.value) {
+
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -286,10 +320,12 @@
                         },
                         success: function(data) {
                             var datos = data;
+                            procesando.remove();
                             Lobibox.notify('success',{msg:datos.mensaje});
                             $('#table-ingredients').DataTable().ajax.reload();
                         },
                         error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
                             if(xhr.status === 422){
                                 Lobibox.notify('error',{msg: xhr.responseJSON.error});
                             }else{
@@ -322,6 +358,9 @@
 
         function getTotalCompleto(event,recipe_id) {
             event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -333,6 +372,7 @@
                 },
                 success: function(data) {
                     var datos = data;
+                    procesando.remove();
                     Swal.fire({
                         title: '<strong>Total Composicion Receta</strong>',
                         icon: 'info',
@@ -347,6 +387,7 @@
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });

@@ -170,22 +170,22 @@
 
         //Esta funcion deshabilita el enter en para hacer un submit del formulario
         $(document).on("keypress", "form", function(event) {
-            return event.keyCode != 13;
+            return event.keyCode !== 13;
         });
 
-        var currencyOptions = {
-            'alias': 'numeric',
-            'groupSeparator': '.',
-            'radixPoint': ',',
-            'autoGroup': true,
-            'digits': 2,
-            'digitsOptional': false,
-            'prefix': '',
-            'placeholder': '0',
-            'removeMaskOnSubmit': true,
-            'unmaskAsNumber': true,
-            'clearMaskOnLostFocus': false
-        };
+        // var currencyOptions = {
+        //     'alias': 'numeric',
+        //     'groupSeparator': '.',
+        //     'radixPoint': ',',
+        //     'autoGroup': true,
+        //     'digits': 2,
+        //     'digitsOptional': false,
+        //     'prefix': '',
+        //     'placeholder': '0',
+        //     'removeMaskOnSubmit': true,
+        //     'unmaskAsNumber': true,
+        //     'clearMaskOnLostFocus': false
+        // };
 
         var currency3DecimalOptions = {
             'alias': 'numeric',
@@ -201,57 +201,57 @@
             'clearMaskOnLostFocus': false
         };
 
-        var currencyInteger = {
-            'alias': 'numeric',
-            'groupSeparator': '.',
-            'radixPoint': ',',
-            'autoGroup': true,
-            'digits': 0,
-            'digitsOptional': false,
-            'prefix': '',
-            'placeholder': '0',
-            'removeMaskOnSubmit': true,
-            'unmaskAsNumber': true,
-            'clearMaskOnLostFocus': false
-        };
+        // var currencyInteger = {
+        //     'alias': 'numeric',
+        //     'groupSeparator': '.',
+        //     'radixPoint': ',',
+        //     'autoGroup': true,
+        //     'digits': 0,
+        //     'digitsOptional': false,
+        //     'prefix': '',
+        //     'placeholder': '0',
+        //     'removeMaskOnSubmit': true,
+        //     'unmaskAsNumber': true,
+        //     'clearMaskOnLostFocus': false
+        // };
 
-        var percentOptions = {
-            'alias': 'numeric',
-            'groupSeparator': '.',
-            'radixPoint': ',',
-            'autoGroup': true,
-            'digits': 0,
-            'suffix': ' %',
-            'digitsOptional': false,
-            'prefix':'',
-            'placeholder': '0',
-            'removeMaskOnSubmit': true,
-            'unmaskAsNumber': true,
-            'clearMaskOnLostFocus': false
-        };
+        // var percentOptions = {
+        //     'alias': 'numeric',
+        //     'groupSeparator': '.',
+        //     'radixPoint': ',',
+        //     'autoGroup': true,
+        //     'digits': 0,
+        //     'suffix': ' %',
+        //     'digitsOptional': false,
+        //     'prefix':'',
+        //     'placeholder': '0',
+        //     'removeMaskOnSubmit': true,
+        //     'unmaskAsNumber': true,
+        //     'clearMaskOnLostFocus': false
+        // };
 
-        var percentDecimalOptions = {
-            'alias': 'numeric',
-            'groupSeparator': '.',
-            'radixPoint': ',',
-            'autoGroup': true,
-            'digits': 2,
-            'digitsOptional': false,
-            'prefix': '',
-            'suffix': ' %',
-            'placeholder': '0',
-            'removeMaskOnSubmit': true,
-            'unmaskAsNumber': true,
-            'clearMaskOnLostFocus': false
-        };
+        // var percentDecimalOptions = {
+        //     'alias': 'numeric',
+        //     'groupSeparator': '.',
+        //     'radixPoint': ',',
+        //     'autoGroup': true,
+        //     'digits': 2,
+        //     'digitsOptional': false,
+        //     'prefix': '',
+        //     'suffix': ' %',
+        //     'placeholder': '0',
+        //     'removeMaskOnSubmit': true,
+        //     'unmaskAsNumber': true,
+        //     'clearMaskOnLostFocus': false
+        // };
 
-        $('.numericOptions').inputmask(currencyOptions);
-        $('.numericInteger').inputmask(currencyInteger);
+        //$('.numericOptions').inputmask(currencyOptions);
+        //$('.numericInteger').inputmask(currencyInteger);
         $('.numeric3Digits').inputmask(currency3DecimalOptions);
 
-        $(".cuit").inputmask("99-99999999-9");
-        $('.percentOptions').inputmask(percentOptions);
-        $('.percentDecimalOptions').inputmask(percentDecimalOptions);
+        //$(".cuit").inputmask("99-99999999-9");
+        //$('.percentOptions').inputmask(percentOptions);
+        //$('.percentDecimalOptions').inputmask(percentDecimalOptions);
         $('.select2 .select2-container .select2-container--default').css('width', '100%');
         $("span.select2.select2-container.select2-container--default").css("width","100%");
         $(".form-control-label").css('font-size','12px').css('padding','1');
@@ -262,10 +262,11 @@
     {{ script('kartik-fileinput/piexif.min.js')}}
     {{ script('kartik-fileinput/sortable.min.js')}}
     {{ script('kartik-fileinput/purify.min.js')}}
-    {{ script("datatables/popper.min.js") }}
+{{--    {{ script("datatables/popper.min.js") }}--}}
     {{ script('kartik-fileinput/fileinput.min.js')}}
     {{ script('kartik-fileinput/theme-fontawesome5.js') }}
     {{ script('vendor/jsvalidation/js/jsvalidation.js') }}
+    {{ script('loading/loadingoverlay.min.js') }}
 
 </body>
 </html>
