@@ -8,13 +8,10 @@
                        href="#collapse_{{$recipe->id}}"
                        aria-expanded="true"
                        aria-controls="collapse_{{$recipe->id}}"
-                       class=""><strong>{{substr(strtoupper($recipe->name),0,35)}}</strong></a>
+                       class=""><strong>{{substr(strtoupper($recipe->name),0,40)}}</strong></a>
                     <div class="card-header-actions">
                         <a class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}},null)">
                             <icon class="fas fa-plus-square"></icon>
-                        </a>
-                        <a class="btn btn-sm btn-warning" href="#" onclick="agregarYEditarReceta(event,{{$recipe->id}})">
-                            <icon class="fas fa-pencil-alt"></icon>
                         </a>
                     </div>
                 </div>

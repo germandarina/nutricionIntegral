@@ -53,6 +53,8 @@ class PlanDetail extends BaseModel
     protected $fillable = [
         'plan_id',
         'recipe_id',
+        'day',
+        'order',
         'created_at',
         'updated_at',
         'deleted_at',

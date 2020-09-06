@@ -46,7 +46,6 @@
 
         $(function () {
             getRecipes();
-            iniciarDataTableRecetasAgregadas();
             iniciarDataTablesPordia();
         });
 
@@ -93,41 +92,6 @@
             });
         }
 
-        function iniciarDataTableRecetasAgregadas() {
-            {{--$('#recipes-datatable').DataTable({--}}
-            {{--    fixedHeader: true,--}}
-            {{--    paging:false,--}}
-            {{--    "scrollY": "250px",--}}
-            {{--    "scrollCollapse": true,--}}
-            {{--    "processing": true,--}}
-            {{--    "serverSide": true,--}}
-            {{--    "draw": true,--}}
-            {{--    "buttons":[],--}}
-            {{--    "ordering": false,--}}
-            {{--    ajax: "{{ route('admin.plan.getRecipes',$plan->id) }}",--}}
-            {{--    columns: [--}}
-            {{--        {data: null, defaultContent: '',render:function (row, type, val, meta) {--}}
-            {{--                return  `<input type="checkbox" class="checkboxs" id= "detail_${row.id}" />`;--}}
-            {{--            }--}}
-            {{--        },--}}
-            {{--        {data: 'recipe.name', name: 'recipe.name',},--}}
-            {{--        {data: 'recipeType', name: 'recipeType',},--}}
-            {{--        {data: 'classifications', name: 'classifications',},--}}
-            {{--        {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},--}}
-            {{--        {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},--}}
-            {{--        {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},--}}
-            {{--        {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},--}}
-            {{--        {data: 'recipe.total_colesterol', name: 'recipe.total_colesterol',},--}}
-            {{--        {data: 'actions', name: 'actions', orderable: false, searchable: false,},--}}
-            {{--    ],--}}
-            {{--});--}}
-
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-        }
-
         function iniciarDataTablesPordia() {
             @for($day=1;$day<=$plan->days;$day++)
 
@@ -150,13 +114,13 @@
                     },
                     columns: [
                         {data: 'order', name: 'order', width: "10%" },
-                        {data: 'plan_detail.recipe.name', name: 'plan_detail.recipe.name', width: "30%"},
+                        {data: 'recipe.name', name: 'recipe.name', width: "30%"},
                         {data: 'recipeType', name: 'recipeType',width: "10%"},
-                        {data: 'plan_detail.recipe.total_energia_kcal', name: 'plan_detail.recipe.total_energia_kcal',},
-                        {data: 'plan_detail.recipe.total_proteina', name: 'plan_detail.recipe.total_proteina',},
-                        {data: 'plan_detail.recipe.total_grasa_total', name: 'plan_detail.recipe.total_grasa_total',},
-                        {data: 'plan_detail.recipe.total_carbohidratos_totales', name: 'plan_detail.recipe.total_carbohidratos_totales',},
-                        {data: 'plan_detail.recipe.total_colesterol', name: 'plan_detail.recipe.total_colesterol',},
+                        {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
+                        {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
+                        {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
+                        {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},
+                        {data: 'recipe.total_colesterol', name: 'recipe.total_colesterol',},
                         {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                     ],
                 });
@@ -207,7 +171,6 @@
 
                     Swal.fire({
                         title: '<strong>Total Composicion Receta</strong>',
-                        // icon: 'info',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,
@@ -262,8 +225,19 @@
             });
         }
 
-        function agregarReceta(event,recipe_id,edit) {
+        function agregarReceta(event,recipe_id) {
             event.preventDefault();
+
+            var quantity_by_day = $("#quantity_by_day").val();
+            var days = $("#days").val();
+
+            if(quantity_by_day <= 0 || quantity_by_day === "" || quantity_by_day === null || quantity_by_day === undefined){
+                return Lobibox.notify('error',{msg: "Ingrese la cantidad de veces por día"});
+            }
+
+            if(days.length === 0 || days === "" || days === null || days === undefined){
+                return Lobibox.notify('error',{msg: "Seleccione al menos un día"});
+            }
 
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
@@ -276,22 +250,21 @@
                 data:    {
                     'recipe_id': recipe_id,
                     'plan_id': "{{$plan->id}}",
-                    'edit' : edit,
+                    'quantity_by_day': quantity_by_day,
+                    'days': days
                 },
                 success: function(data) {
                     var datos = data;
                     procesando.remove();
 
                     Lobibox.notify('success',{msg: datos.mensaje });
+                    $("#modalRecipe").modal('hide');
 
-                    if(edit){
-                        $("#modalRecipe").empty().html(datos.html);
-                        iniciarJs();
-                        limpiarModal();
-                        $("#modalRecipe").modal('show');
-                    }else{
-                        $("#modalRecipe").modal('hide');
-                    }
+                    $.each(days,function (i,v) {
+                        let day = parseInt(v);
+                        $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
+                        getTotalesPorDia(day);
+                    })
 
                     $("#recipes-datatable").DataTable().ajax.reload();
                 },
@@ -306,8 +279,36 @@
             });
         }
 
-        function agregarYEditarReceta(event,recipe_id) {
-            agregarReceta(event,recipe_id,true);
+        function editarReceta(event,recipe_id) {
+            event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.getRecipe') }}',
+                type:     'POST',
+                data:    {
+                    'recipe_id': recipe_id,
+                    'plan_id'  : "{{$plan->id}}"
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    $("#modalRecipe").empty().html(datos.html);
+                    iniciarJs();
+                    limpiarModal();
+                    $("#modalRecipe").modal('show');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+
+
         }
 
         function getComposicionBasica() {
@@ -430,6 +431,13 @@
                     mostrarTotales();
                 }
             });
+
+            $("select").select2({
+                minimumResultsForSearch: 5,
+                width: '100%',
+            });
+
+            $("span.select2.select2-container.select2-container--default").css("width","100%");
         }
 
         function limpiarModal() {
@@ -445,7 +453,6 @@
 
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
-                // icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -595,7 +602,6 @@
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
-                // icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -630,68 +636,7 @@
             });
         }
 
-        function addPlanDetailDay(event) {
-            event.preventDefault();
-            var quantity_by_day = $("#quantity_by_day").val();
-            var days = $("#days").val();
-            var recipes =[];
-            var all_recipes = $("input:checkbox.checkboxs");
-            $.each(all_recipes,function (i,v) {
-                if($(this).prop('checked')){
-                    var id_split = $(this).attr('id').split('_');
-                    recipes.push({
-                        id: id_split[1],
-                    });
-                }
-            })
-
-            if(recipes.length === 0){
-                return Lobibox.notify('error',{msg: "Seleccione al menos una receta"});
-            }
-
-            if(quantity_by_day <= 0 || quantity_by_day === "" || quantity_by_day === null || quantity_by_day === undefined){
-                return Lobibox.notify('error',{msg: "Ingrese la cantidad de veces por día"});
-            }
-
-            if(days.length === 0 || days === "" || days === null || days === undefined){
-                return Lobibox.notify('error',{msg: "Seleccione al menos un día"});
-            }
-
-            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url:      '{{ route('admin.plan.addPlanDetailDay') }}',
-                type:     'POST',
-                data:    {
-                    'recipes':recipes,
-                    'days':days,
-                    'quantity_by_day' :quantity_by_day,
-                    'plan_id': {{ $plan->id }}
-                },
-                success: function(data) {
-                    var datos = data;
-                    procesando.remove();
-                    Lobibox.notify('success',{msg:datos.mensaje});
-                    $("#quantity_by_day").val("");
-                    $("#days").select2("val",0);
-                    $('#recipes-datatable').DataTable().ajax.reload();
-                    $.each(days,function (i,v) {
-                        let day = parseInt(v);
-                        $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
-                        getTotalesPorDia(day);
-                    })
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    procesando.remove();
-                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
-                }
-            });
-        }
-
-        function eliminarRecetaPorDia(event,plan_detail_day_id) {
+        function eliminarRecetaPorDia(event,plan_detail_id) {
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',
@@ -713,7 +658,7 @@
                         url:      '{{ route('admin.plan.deleteDetailByDay') }}',
                         type:     'DELETE',
                         data:    {
-                            'id':plan_detail_day_id,
+                            'id':plan_detail_id,
                         },
                         success: function(data) {
                             var datos = data;

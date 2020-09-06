@@ -115,55 +115,43 @@ class PlanRepository extends BaseRepository
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
-        $planDetailExist = PlanDetail::where('plan_id',$datos['plan_id'])
-            ->where('recipe_id',$datos['recipe_id'])
-            ->first();
-        if($planDetailExist){
-            throw new GeneralException('La receta seleccionada ya forma parte del plan',422);
-        }
-
         return DB::transaction(function () use ($datos) {
-            $planDetail = new PlanDetail();
-            $planDetail->fill($datos);
-            if (!$planDetail->save()) {
-                throw new GeneralException('Error al agregar plan. Intente nuevamente',422);
-            }
-            $recipe_origin = $planDetail->recipe;
-            if(isset($datos['edit']) && $datos['edit']){
-                $recipe_edit = new Recipe();
-                $recipe_edit->fill($recipe_origin->toArray());
-                $recipe_edit->edit = true;
-                $recipe_edit->save();
-                foreach ($recipe_origin->ingredients as $ingredient){
-                    $ingredient_edit = new Ingredient();
-                    $ingredient_edit->fill($ingredient->toArray());
-                    $ingredient_edit->recipe_id = $recipe_edit->id;
-                    $ingredient_edit->save();
+
+            foreach ($datos['days'] as $day){
+                for ($i=0;$i< $datos['quantity_by_day'];$i++){
+                    $plan_detail                    = new PlanDetail();
+                    $plan_detail->plan_id           = $datos['plan_id'];
+                    $plan_detail->recipe_id         = $datos['recipe_id'];
+                    $plan_detail->day               = $day;
+                    if(!$plan_detail->save()){
+                        throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
+                    }
                 }
-                $recipe_edit->classifications()->sync($recipe_origin->classifications->pluck('id'));
-                return $recipe_edit;
             }
         });
     }
 
-    public function addPlanDetailDay(array $datos){
+
+    public function copyRecipeToEdit($recipe_original){
         if (!auth()->user()->isAdmin()) {
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
-        return DB::transaction(function () use ($datos) {
-            foreach ($datos['days'] as $day){
-                for ($i=0;$i< $datos['quantity_by_day'];$i++){
-                    foreach ($datos['recipes'] as $id_plan_recipe){
-                        $plan_detail_day                    = new PlanDetailDay();
-                        $plan_detail_day->plan_detail_id    = $id_plan_recipe['id'];
-                        $plan_detail_day->day               = $day;
-                        $plan_detail_day->plan_id           = $datos['plan_id'];
-                        if(!$plan_detail_day->save()){
-                            throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
-                        }
-                    }
-                }
-            }
+        return DB::transaction(function () use ($recipe_original) {
+              $recipe = new Recipe();
+              $recipe->fill($recipe_original->toArray());
+              $recipe->id   = null;
+              $recipe->edit = true;
+              $recipe->save();
+
+              foreach ($recipe_original->ingredients as $ingredient_original){
+                  $ingredient = new Ingredient();
+                  $ingredient->fill($ingredient_original->toArray());
+                  $ingredient->recipe_id    = $recipe->id;
+                  $ingredient->id           = null;
+                  $ingredient->save();
+              }
+
+              return $recipe;
         });
     }
 }

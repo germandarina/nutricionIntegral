@@ -1,12 +1,3 @@
-{{--<style>--}}
-{{--    .select2-search--inline {--}}
-{{--        display: contents; /*this will make the container disappear, making the child the one who sets the width of the element*/--}}
-{{--    }--}}
-
-{{--    .select2-search__field:placeholder-shown {--}}
-{{--        width: 100% !important; /*makes the placeholder to be 100% of the width while there are no options selected*/--}}
-{{--    }--}}
-{{--</style>--}}
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header" style="border-bottom: none !important;">
@@ -74,8 +65,8 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-            <button id="btnGuardar" class="btn btn-primary" type="button" onclick="agregarReceta(event,{{$recipe->id}},false)">Agregar</button>
-{{--            <button id="btnGuardar" class="btn btn-warning" type="button" onclick="agregarYEditarReceta(event,{{$recipe->id}})">Agregar y Editar</button>--}}
+            <button id="btnGuardar" class="btn btn-primary" type="button" onclick="agregarReceta(event,{{$recipe->id}})">Agregar</button>
+            <button id="btnGuardar" class="btn btn-warning" type="button" onclick="editarReceta(event,{{$recipe->id}})">Editar</button>
         </div>
     </div>
 </div>

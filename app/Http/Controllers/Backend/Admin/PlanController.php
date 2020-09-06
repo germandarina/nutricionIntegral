@@ -226,6 +226,7 @@ class PlanController extends Controller
         $recipes = $query_recipes->get();
         $cantidad = count($recipes);
         $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes'));
+
         return compact('html','cantidad');
     }
 
@@ -246,15 +247,29 @@ class PlanController extends Controller
     public function addRecipeToPlan(){
         if(request('recipe_id') && request('plan_id')){
             try{
-                $recipe = $this->planRepository->addRecipe(request()->all());
-                $html = "";
-                if(request('edit')){
-                    $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe'));
-                }
-                return response()->json(['mensaje'=>'Receta agregada','html'=>$html],200);
+                $this->planRepository->addRecipe(request()->all());
+                return response()->json(['mensaje'=>'Receta agregada'],200);
             }catch (\Exception $exception){
                 return response()->json(['error'=>$exception->getMessage()],422);
             }
+        }
+        return App::abort(402);
+    }
+
+    public function getRecipe(){
+        if(request('recipe_id') && request('plan_id')){
+            $recipe_original = Recipe::find(request('recipe_id'));
+            $recipe          = $this->planRepository->copyRecipeToEdit($recipe_original);
+            $recipe->load('ingredients.food');
+
+            $plan  = Plan::find(request('plan_id'));
+            $array_dias = [];
+            for ($i=1;$i<=$plan->days;$i++){
+                $array_dias[$i] = "Día {$i}";
+            }
+
+            $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe','array_dias'));
+            return response()->json(['html'=>$html],200);
         }
         return App::abort(402);
     }
@@ -288,31 +303,21 @@ class PlanController extends Controller
         return App::abort(402);
     }
 
-    public function addPlanDetailDay(){
-        if(request('recipes')){
-            try{
-                $this->planRepository->addPlanDetailDay(request()->all());
-            }catch (\Exception $exception){
-                return response()->json(['error'=>$exception->getMessage()],422);
-            }
-            return response()->json(['mensaje'=>'Recetas agregadas por día'],200);
-        }
-        return App::abort(402);
-    }
-
     public function getRecipesByDay(Plan $plan){
-        $day = request('day');
-        $data =  PlanDetailDay::with(['planDetail.recipe.recipeType','planDetail.recipe.classifications'])
+        $day  = request('day');
+
+        $data =  PlanDetail::with(['recipe.recipeType'])
                             ->where('day',$day)
                             ->where('plan_id',$plan->id)
                             ->orderBy('order')
                             ->get();
+
         return Datatables::of($data)
             ->addColumn('order',function ($row) use ($day){
                 return view('backend.admin.plan.includes.plan-detail-day-order',compact('row','day'));
             })
             ->editColumn('recipeType',function ($row){
-                return $row->planDetail->recipe->recipeType->name;
+                return $row->recipe->recipeType->name;
             })
             ->addColumn('actions', function($row) use ($day){
                 return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
@@ -323,7 +328,7 @@ class PlanController extends Controller
 
     public function deleteDetailByDay(){
         if(request('id')){
-            $detail = PlanDetailDay::find(request('id'));
+            $detail = PlanDetail::find(request('id'));
             $day    = $detail->day;
             $detail->forceDelete();
             return response()->json(['mensaje'=>"Receta eliminada del día $day",'day'=>$day],200);
@@ -358,25 +363,14 @@ class PlanController extends Controller
 
         if(!is_null($day)){
             $plan_details =  PlanDetail::with('recipe')
-                ->with(['planDetailsDays'=>function($query_with)use($day){
-                    $query_with->where('day',$day)
-                               ->whereNull('deleted_at');
-
-                }])
-                ->whereHas('planDetailsDays',function ($query) use($day){
-                    $query->where('day',$day)
-                          ->whereNull('deleted_at');
-                })
-                ->where('plan_id',$plan_id)
-                ->get();
+                            ->where('day',$day)
+                            ->where('plan_id',$plan_id)
+                            ->get();
         }else{
             $plan_details =  PlanDetail::with('recipe')
-                                        ->has('planDetailsDays')
                                         ->where('plan_id',$plan_id)
-                                        ->whereNull('deleted_at')
                                         ->get();
         }
-
 
         $total['total_energia_kcal']            = 0;
         $total['total_proteina']                = 0;
@@ -402,31 +396,30 @@ class PlanController extends Controller
         $total['total_fibra']                        = 0;
 
         foreach ($plan_details as $detail){
-            $quantity_by_day =  $detail->planDetailsDays->count();
             $recipe = $detail->recipe;
 
-            $total['total_energia_kcal']            += $recipe->total_energia_kcal * $quantity_by_day;
-            $total['total_proteina']                += $recipe->total_proteina * $quantity_by_day;
-            $total['total_grasa_total']             += $recipe->total_grasa_total * $quantity_by_day;
-            $total['total_carbohidratos_totales']   += $recipe->total_carbohidratos_totales * $quantity_by_day;
-            $total['total_colesterol']              += $recipe->total_colesterol * $quantity_by_day;
-            $total['total_agua']                    += $recipe->total_agua * $quantity_by_day;
-            $total['total_cenizas']                 += $recipe->total_cenizas * $quantity_by_day;
-            $total['total_sodio']                   += $recipe->total_sodio * $quantity_by_day;
-            $total['total_potasio']                 += $recipe->total_potasio * $quantity_by_day;
-            $total['total_calcio']                  += $recipe->total_calcio * $quantity_by_day;
-            $total['total_fosforo']                 += $recipe->total_fosforo * $quantity_by_day;
-            $total['total_hierro']                  += $recipe->total_hierro * $quantity_by_day;
-            $total['total_zinc']                    += $recipe->total_zinc * $quantity_by_day;
-            $total['total_tiamina']                 += $recipe->total_tiamina * $quantity_by_day;
-            $total['total_rivoflavina']             += $recipe->total_rivoflavina * $quantity_by_day;
-            $total['total_niacina']                 += $recipe->total_niacina * $quantity_by_day;
-            $total['total_vitamina_c']              += $recipe->tota_vitamina_c * $quantity_by_day;
-            $total['total_carbohidratos_disponibles']  += $recipe->total_carbohidratos_disponibles * $quantity_by_day;
-            $total['total_ac_grasos_saturados']        += $recipe->total_ac_grasos_saturados * $quantity_by_day;
-            $total['total_ac_grasos_monoinsaturados']  += $recipe->total_ac_grasos_monoinsaturados * $quantity_by_day;
-            $total['total_ac_grasos_poliinsaturados']  += $recipe->total_ac_grasos_poliinsaturados * $quantity_by_day;
-            $total['total_fibra']                      += $recipe->total_fibra * $quantity_by_day;
+            $total['total_energia_kcal']            += $recipe->total_energia_kcal;
+            $total['total_proteina']                += $recipe->total_proteina;
+            $total['total_grasa_total']             += $recipe->total_grasa_total;
+            $total['total_carbohidratos_totales']   += $recipe->total_carbohidratos_totales;
+            $total['total_colesterol']              += $recipe->total_colesterol;
+            $total['total_agua']                    += $recipe->total_agua;
+            $total['total_cenizas']                 += $recipe->total_cenizas;
+            $total['total_sodio']                   += $recipe->total_sodio;
+            $total['total_potasio']                 += $recipe->total_potasio;
+            $total['total_calcio']                  += $recipe->total_calcio;
+            $total['total_fosforo']                 += $recipe->total_fosforo;
+            $total['total_hierro']                  += $recipe->total_hierro;
+            $total['total_zinc']                    += $recipe->total_zinc;
+            $total['total_tiamina']                 += $recipe->total_tiamina;
+            $total['total_rivoflavina']             += $recipe->total_rivoflavina;
+            $total['total_niacina']                 += $recipe->total_niacina;
+            $total['total_vitamina_c']              += $recipe->total_vitamina_c;
+            $total['total_carbohidratos_disponibles']  += $recipe->total_carbohidratos_disponibles;
+            $total['total_ac_grasos_saturados']        += $recipe->total_ac_grasos_saturados;
+            $total['total_ac_grasos_monoinsaturados']  += $recipe->total_ac_grasos_monoinsaturados;
+            $total['total_ac_grasos_poliinsaturados']  += $recipe->total_ac_grasos_poliinsaturados;
+            $total['total_fibra']                      += $recipe->total_fibra;
         }
     }
 
