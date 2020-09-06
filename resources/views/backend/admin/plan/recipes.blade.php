@@ -125,7 +125,8 @@
                     ],
                 });
 
-                getTotalesPorDia("{{$day}}")
+            $(".th-btn-order").find("[rel=tooltip]").tooltip();
+            getTotalesPorDia("{{$day}}")
             @endfor
         }
 
@@ -713,12 +714,31 @@
             });
         }
 
-        function storeOrder(e,plan_detail_day_id,day){
+        function storeOrder(e,day){
             e.preventDefault();
-            var order = $(`#order_${plan_detail_day_id}`).val();
-            if(order === null || order === 0 || order === undefined || order === ""){
-                return Lobibox.notify('error',{msg: 'Ingrese el valor del orden.'});
+            var orders = $(`input[id^="order_${day}"]`);
+
+            if(orders.length === 0){
+                return Lobibox.notify('error',{msg: 'No hay recetas agregadas para ordenar'});
             }
+
+            var values = [];
+
+            $.each(orders,function (i,input){
+                let split_id = input.id.split('_');
+                if(input.value === "" || input.value === 0){
+                    return false;
+                }
+                values.push({
+                   'id': split_id[2],
+                   'order': input.value,
+                });
+            });
+
+            if(values.length === 0){
+                return Lobibox.notify('error',{msg: 'Ingrese los valores para ordenar las recetas'});
+            }
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -726,8 +746,7 @@
                 url:      '{{ route('admin.plan.storeOrderPlanDetailDay') }}',
                 type:     'POST',
                 data:    {
-                    'id':plan_detail_day_id,
-                    'order':order,
+                    'values':values,
                 },
                 success: function(data) {
                     var datos = data;

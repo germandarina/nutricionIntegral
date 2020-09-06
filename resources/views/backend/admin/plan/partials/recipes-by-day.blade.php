@@ -6,7 +6,6 @@
                     <th>Orden</th>
                     <th class="center;">Nombre</th>
                     <th>Tipo</th>
-{{--                    <th>Clasificación</th>--}}
                     <th>Energia</th>
                     <th>Proteinas</th>
                     <th>Grasa</th>
@@ -15,6 +14,15 @@
                     <th class="not-export-col">Acciones</th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th class="th-btn-order">
+                        <a onclick="storeOrder(event,{{$i}})" rel="tooltip" title="Guardar Orden" href="" class="btn btn-sm btn-success ml-2">
+                            <i class="fas fa-check-circle"></i>
+                        </a>
+                    </th>
+                </tr>
+            </tfoot>
         </table>
     </div><!--col-->
 </div><!--row-->

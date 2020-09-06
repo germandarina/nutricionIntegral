@@ -470,11 +470,13 @@ class PlanController extends Controller
     }
 
     public function storeOrderPlanDetailDay(){
-       if(request('order') && request('id')){
-          $plan_detail_day = PlanDetailDay::find(request('id'));
-          $plan_detail_day->order = request('order');
-          $plan_detail_day->save();
-          return response()->json(['mensaje'=>"Orden guardado con éxito"],200);
+       if(request('values')){
+          foreach (request('values') as $value) {
+              $plan_detail = PlanDetail::find($value['id']);
+              $plan_detail->order = $value['order'];
+              $plan_detail->save();
+          }
+          return response()->json(['mensaje'=>"Orden de recetas guardada con éxito"],200);
        }
        return App::abort(402);
     }
