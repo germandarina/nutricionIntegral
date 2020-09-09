@@ -44,7 +44,7 @@
         }}
     </div>
 </div>
-<div class="row"  style="background-color: #d8e6f1; padding: 10px;">
+<div class="row"  style="background-color: #d8e6f1; padding-top: 10px;">
     <div class="col">
         <div class="form-group row">
             <div class="col-md-6">
@@ -79,7 +79,11 @@
         </div><!--form-group-->
     </div><!--col-->
 </div><!--row-->
-<hr>
+<div class="row">
+    <div class="col-sm-6">
+        <p style="font-size: 12px;"><span class="badge rounded-pill" style="background-color: #ff8d7e">&nbsp;&nbsp;</span><strong>&nbsp;Recetas utilizadas anteriormente</strong></p>
+    </div>
+</div>
 <div class="row" id="divRecipes"></div>
 @section('modal-yield')
     <div class="modal fade" id="modalRecipe" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false"></div>

@@ -1,7 +1,7 @@
 @foreach($recipes as $recipe)
     <div class="col-sm-4 mb-3" style="max-height: 30%;">
         <div class="card" style="margin-bottom: 0px !important;">
-            <div class="accordion" id="accordion" role="tablist">
+            <div class="accordion @if(in_array($recipe->id,$ids_recipes_already_used)) recipe_used @endif" id="accordion" role="tablist" )>
                 <div class="card-header" id="header_{{$recipe->id}}" role="tab" style="font-size: 11px; padding: 7px;">
                     <a rel="tooltip" title="{{strtoupper($recipe->name)}}"
                        data-toggle="collapse"

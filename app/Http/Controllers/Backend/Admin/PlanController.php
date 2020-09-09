@@ -184,6 +184,8 @@ class PlanController extends Controller
     }
 
     public function getRecipesForPlan(){
+        $plan_id            = request('plan_id');
+        $patient_id         = request('patient_id');
         $foods              = request('foods');
         $food_groups        = request('food_groups');
         $classifications    = request('classifications');
@@ -191,6 +193,17 @@ class PlanController extends Controller
         $recipe_name        = request('recipe_name');
         $min_calorias       = request('min_calorias');
         $max_calorias       = request('max_calorias');
+
+        $recipes_already_used = PlanDetail::whereHas('plan',function ($query) use($patient_id,$plan_id){
+                                            $query->where('patient_id',$patient_id)
+                                                ->where('id','<>',$plan_id);
+                                        })->groupBy('recipe_id')
+                                        ->get(['recipe_id'])->toArray();
+
+        $ids_recipes_already_used = array_map(function ($plan_detail){
+            return $plan_detail['recipe_id'];
+        },$recipes_already_used);
+
         $query_recipes      = Recipe::with(['ingredients.food','classifications','recipeType'])
                                         ->has('ingredients')
                                         ->where('edit',false);
@@ -225,7 +238,7 @@ class PlanController extends Controller
         }
         $recipes = $query_recipes->get();
         $cantidad = count($recipes);
-        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes'));
+        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes','ids_recipes_already_used'));
 
         return compact('html','cantidad');
     }
@@ -423,15 +436,15 @@ class PlanController extends Controller
         }
     }
 
-    public function getTotalComposionPorPlan(){
-        if(request('id')){
-            $total = [];
-            $plan_id = request('id');
-            $this->getValuesForDay($plan_id,null,$total);
-            return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
-        }
-        return App::abort(402);
-    }
+//    public function getTotalComposionPorPlan(){
+//        if(request('id')){
+//            $total = [];
+//            $plan_id = request('id');
+//            $this->getValuesForDay($plan_id,null,$total);
+//            return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
+//        }
+//        return App::abort(402);
+//    }
 
     public function sendPlan(Plan $plan){
         $patient = $plan->patient;

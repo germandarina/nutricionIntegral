@@ -38,6 +38,11 @@
     .select2-selection__choice{
      font-size: 11px;
     }
+
+    .recipe_used{
+        border: 2px solid #ff8d7e;
+        background-color: #ff8d7e;
+    }
 </style>
 @push('after-scripts')
     @include('datatables.includes')
@@ -61,6 +66,8 @@
                 url:      '{{ route('admin.plan.getRecipesForPlan') }}',
                 type:     'POST',
                 data: {
+                    'patient_id' : "{{ $plan->patient_id }}",
+                    'plan_id'    : "{{ $plan->id }}",
                     'foods': $("#food_id").val(),
                     'food_groups': $("#food_group_id").val(),
                     'classifications': $("#classification_id").val(),
