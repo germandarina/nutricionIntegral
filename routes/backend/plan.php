@@ -27,5 +27,5 @@ Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('recipes', [PlanController::class, 'getRecipes'])->name('plan.getRecipes');
     Route::get('recipes-by-day', [PlanController::class, 'getRecipesByDay'])->name('plan.getRecipesByDay');
     Route::post('total-recipes-by-day',[PlanController::class,'getTotalRecipesByDay'])->name('plan.getTotalRecipesByDay');
-    Route::get('send-plan',[PlanController::class,'sendPlan'])->name('plan.sendPlan');
+    Route::get('download-plan',[PlanController::class,'downloadPlan'])->name('plan.downloadPlan');
 });

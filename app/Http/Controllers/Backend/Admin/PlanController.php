@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend\Admin;
 use App;
 use App\Http\Controllers\Controller;
 use App\Models\PlanDetail;
-use App\Models\PlanDetailDay;
 use App\Models\RecipeType;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
@@ -446,24 +445,26 @@ class PlanController extends Controller
 //        return App::abort(402);
 //    }
 
-    public function sendPlan(Plan $plan){
+    public function downloadPlan(Plan $plan){
         $patient = $plan->patient;
         $recipes_types = RecipeType::all();
         $view_by_day = "";
         for ($day=1;$day<=$plan->days;$day++){
-            $details_days = PlanDetailDay::with(['planDetail.recipe.ingredients.food','planDetail.recipe.recipeType'])
+            $details = PlanDetail::with(['recipe'=>function($query){
+                                                $query->with(['ingredients.food','recipeType']);
+                                            }])
                                             ->where('plan_id',$plan->id)
                                             ->where('day',$day)
                                             ->orderBy('order')
                                             ->get();
-            if($details_days->isEmpty()){
-                return redirect()->route('admin.plan.index')->with(['error'=>'Plan Sin Recetas']);
+            if($details->isEmpty()){
+                return redirect()->route('admin.plan.index')->with(['error'=>'Debe terminar el plan para descargarlo']);
             }
-            if($details_days->isNotEmpty() && !$details_days->first()->order){
+            if($details->isNotEmpty() && !$details->first()->order){
                 $array_details_by_day = [];
                 foreach ($recipes_types as $type){
-                    $recipes = $details_days->filter(function ($detail) use ($day,$type){
-                        return $detail->planDetail->recipe->recipe_type_id == $type->id;
+                    $recipes = $details->filter(function ($detail) use ($day,$type){
+                        return $detail->recipe->recipe_type_id == $type->id;
                     });
                     if($recipes->isNotEmpty()){
                         $array_details_by_day[] = $recipes->values()->all();
@@ -471,7 +472,7 @@ class PlanController extends Controller
                 }
                 $view_by_day .= view('backend.admin.plan.table_by_day',compact('day','array_details_by_day'));
             }else{
-                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_days'));
+                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details'));
             }
         }
         $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));

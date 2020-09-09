@@ -4,30 +4,30 @@
         @foreach($array_details_by_day as $detail_by_day)
             @if(isset($detail_by_day[$i]))
                     @switch(true)
-                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))
+                        @case($i == 0 and $detail_by_day[$i]->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))
                             <h3>DESAYUNO</h3>
                         @break
 
-                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))
+                        @case($i == 1 and $detail_by_day[$i]->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))
                             <h3>MERIENDA</h3>
                         @break
 
-                        @case($detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Colacion'))
+                        @case($detail_by_day[$i]->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Colacion'))
                             <h3>COLACIÓN</h3>
                         @break
 
-                        @case($i == 0 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Almuerzo/Cena'))
+                        @case($i == 0 and $detail_by_day[$i]->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Almuerzo/Cena'))
                             <h3>ALMUERZO</h3>
                         @break
 
-                        @case($i == 1 and $detail_by_day[$i]->planDetail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Almuerzo/Cena'))
+                        @case($i == 1 and $detail_by_day[$i]->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Almuerzo/Cena'))
                             <h3>CENA</h3>
                         @break
                     @endswitch
                     <table>
                         <thead>
                             <tr>
-                                <th colspan="2">{{ strtoupper($detail_by_day[$i]->planDetail->recipe->name) }}</th>
+                                <th colspan="2">{{ strtoupper($detail_by_day[$i]->recipe->name) }}</th>
                             </tr>
                             <tr>
                                 <th>INGREDIENTES</th>
@@ -35,18 +35,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($detail_by_day[$i]->planDetail->recipe->ingredients as $ingredient)
+                        @foreach($detail_by_day[$i]->recipe->ingredients as $ingredient)
                             <tr>
                                 <td style="text-align: left;">{{$ingredient->food->name}}</td>
                                 <td style="text-align: left;">{{$ingredient->quantity_description}} ({{$ingredient->quantity_grs}} grs)</td>
                             </tr>
                         @endforeach
                         </tbody>
-                        @if(!empty($detail_by_day[$i]->planDetail->recipe->observation))
+                        @if(!empty($detail_by_day[$i]->recipe->observation))
                             <tfoot>
                             <tr>
                                 <td style="text-align: left;background-color: #b7f55b;"><strong>Observaciones</strong></td>
-                                <td style="text-align: left;background-color: #b7f55b;"><strong>{{$detail_by_day[$i]->planDetail->recipe->observation}}</strong></td>
+                                <td style="text-align: left;background-color: #b7f55b;"><strong>{{$detail_by_day[$i]->recipe->observation}}</strong></td>
                             </tr>
                             </tfoot>
                         @endif
