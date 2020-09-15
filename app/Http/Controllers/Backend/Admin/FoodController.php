@@ -184,14 +184,12 @@ class FoodController extends Controller
                                     ->where('food_group_id',$fila->grupo_alimento)
                                     ->first();
                     if($existe){
-                        $alimento = $existe;
+                        continue;
                     }else{
                         $alimento = new Food();
-
                     }
                     $alimento->name = trim($fila->nombre);
                     $alimento->food_group_id = $fila->grupo_alimento;
-                    $alimento->energia_kj = empty($fila->energia_kj) || $fila->energia_kj == '...' ? 0 : (float) str_replace(',','.',$fila->energia_kj);
                     $alimento->energia_kcal = empty($fila->energia_kcal) || $fila->energia_kcal == '...' ? 0: (float) str_replace(',','.',$fila->energia_kcal);
                     $alimento->agua = empty($fila->agua) || $fila->agua == '...' ? 0: (float) str_replace(',','.',$fila->agua);
                     $alimento->proteina = is_null($fila->proteina) || empty($fila->proteina) || $fila->proteina == '...' ? 0 : (float) str_replace(',','.', $fila->proteina);
@@ -213,6 +211,8 @@ class FoodController extends Controller
                     $alimento->ac_grasos_monoinsaturados = empty($fila->ac_grasos_monoinsaturados) || $fila->ac_grasos_monoinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_monoinsaturados);
                     $alimento->ac_grasos_poliinsaturados = empty($fila->ac_grasos_poliinsaturados) || $fila->ac_grasos_poliinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_poliinsaturados);
                     $alimento->colesterol = empty($fila->colesterol) || $fila->colesterol == '...' ? 0: (float) str_replace(',','.',$fila->colesterol);
+                    $alimento->fibra = empty($fila->fibra) || $fila->fibra == '...' ? 0: (float) str_replace(',','.',$fila->fibra);
+
                     if(!$alimento->save()){
                         throw new \Exception("Error al importar alimento".$fila->nombre);
                     }

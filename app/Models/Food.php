@@ -96,7 +96,6 @@ class Food extends BaseModel
     protected $fillable = [
         'name',
         'food_group_id',
-        'energia_kj',
         'energia_kcal',
         'agua',
         'proteina',

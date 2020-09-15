@@ -3,7 +3,6 @@
         <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
             <thead>
                 <tr>
-                    <th>Energia (Kj)</th>
                     <th>Energia (Kcal)</th>
                     <th>Proteínas (g)</th>
                     <th>Grasa (g)</th>
@@ -13,7 +12,6 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align: center;" >{{$food->energia_kj}}</td>
                     <td style="text-align: center;">{{$food->energia_kcal}}</td>
                     <td style="text-align: center;">{{$food->proteina}}</td>
                     <td style="text-align: center;">{{$food->grasa_total}}</td>

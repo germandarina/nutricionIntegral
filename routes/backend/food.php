@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Backend\Admin\FoodController;
 
-//Route::get('food/importarAlimentos', [FoodController::class, 'importarAlimentos'])->name('food.importarAlimentos');
+Route::get('food/importarAlimentos', [FoodController::class, 'importarAlimentos'])->name('food.importarAlimentos');
 //Route::get('food/actualizarAlimentosParaCalculosReceta', [FoodController::class, 'actualizarAlimentosParaCalculosReceta'])->name('food.actualizarAlimentosParaCalculosReceta');
 
 Route::get('food/deleted', [FoodController::class, 'getDeleted'])->name('food.deleted');
