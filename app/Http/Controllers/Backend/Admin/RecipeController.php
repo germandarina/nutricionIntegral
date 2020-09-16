@@ -41,7 +41,7 @@ class RecipeController extends Controller
     public function index(ManageRecipeRequest $request)
     {
         if ($request->ajax()) {
-            $data = Recipe::with('recipeType','classifications')->orderBy('name')->get();
+            $data = Recipe::with('recipeType','classifications')->where('edit',false)->orderBy('name')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     return view('backend.admin.recipe.includes.datatable-buttons',compact('row'));
@@ -134,17 +134,31 @@ class RecipeController extends Controller
      */
     public function destroy(ManageRecipeRequest $request, Recipe $recipe)
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->isAdmin())
+        {
             return response()->json(['error'=>"No tiene permiso para eliminar"],422);
         }
 
-        $recipe->load('planDetails');
+        $recipe->load('planDetails.plan');
 
-        if($recipe->planDetails->isNotEmpty()){
-            return response()->json(['error'=>"La receta forma parte de planes"],422);
+        if($recipe->planDetails->isNotEmpty())
+        {
+            $details = $recipe->planDetails;
+            foreach ($details as $detail){
+                $plan = $detail->plan;
+                if($plan && is_null($plan->deleted_at))
+                {
+                    return response()->json(['error'=>"La receta forma parte del plan {$plan->name} que esta habilitado."],422);
+                }
+            }
+            $this->recipeRepository->deleteById($recipe->id);
+        }
+        else
+        {
+            $this->recipeRepository->deleteById($recipe->id);
         }
 
-        $this->recipeRepository->deleteById($recipe->id);
+
         return response()->json(['mensaje'=>"Receta eliminada"],200);
     }
 

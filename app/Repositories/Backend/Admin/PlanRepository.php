@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Backend\Admin;
 
+use App\Models\Classification;
 use App\Models\Ingredient;
 use App\Models\Plan;
 use App\Models\PlanDetail;
@@ -149,6 +150,10 @@ class PlanRepository extends BaseRepository
                   $ingredient->id           = null;
                   $ingredient->save();
               }
+
+              $classifications_ids = $recipe_original->classifications->pluck('id');
+
+              $recipe->classifications()->attach($classifications_ids);
 
               return $recipe;
         });

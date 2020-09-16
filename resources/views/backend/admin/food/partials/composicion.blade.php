@@ -344,15 +344,15 @@
                 </tr>
                 <tr>
                     <td>
-                        {{ html()->label('Rivoflavina (mg)')
+                        {{ html()->label('Riboflavina (mg)')
                             ->class('col-md-12 form-control-label')
-                            ->for('rivoflavina') }}
+                            ->for('riboflavina') }}
 
                     </td>
                     <td>
-                        {{ html()->text('rivoflavina')
+                        {{ html()->text('riboflavina')
                                 ->class('form-control numeric3Digits')
-                                ->placeholder('Rivoflavina')
+                                ->placeholder('Riboflavina')
                                 ->attribute('maxlength', 191)
                                 ->required()
                                 ->autofocus() }}

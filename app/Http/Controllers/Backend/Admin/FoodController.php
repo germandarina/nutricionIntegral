@@ -203,7 +203,7 @@ class FoodController extends Controller
                     $alimento->hierro = empty($fila->hierro) || $fila->hierro == '...' ? 0: (float) str_replace(',','.',$fila->hierro);
                     $alimento->zinc = empty($fila->zinc) || $fila->zinc == '...' ? 0: (float) str_replace(',','.',$fila->zinc);
                     $alimento->tiamina = empty($fila->tiamina) || $fila->tiamina == '...' ? 0: (float) str_replace(',','.',$fila->tiamina);
-                    $alimento->rivoflavina = empty($fila->rivoflavina) || $fila->rivoflavina == '...' ? 0: (float) str_replace(',','.',$fila->rivoflavina);
+                    $alimento->riboflavina = empty($fila->riboflavina) || $fila->riboflavina == '...' ? 0: (float) str_replace(',','.',$fila->riboflavina);
                     $alimento->niacina = empty($fila->niacina) || $fila->niacina == '...' ? 0: (float) str_replace(',','.',$fila->niacina);
                     $alimento->vitamina_c = empty($fila->vitamina_c) || $fila->vitamina_c == '...' ? 0: (float) str_replace(',','.',$fila->vitamina_c);
                     $alimento->carbohidratos_disponibles = empty($fila->carbohidratos_disponibles) || $fila->carbohidratos_disponibles == '...' ? 0: (float) str_replace(',','.',$fila->carbohidratos_disponibles);

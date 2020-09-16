@@ -55,7 +55,7 @@
             <tr>
                 <th>Zinc (mg)</th>
                 <th>Tiamina (mg)</th>
-                <th>Rivoflavina (mg)</th>
+                <th>Riboflavina (mg)</th>
                 <th>Niacina (mg)</th>
                 <th>Vitamina C (mg)</th>
                 <th>Carbohidratos Disp (g)</th>
@@ -65,7 +65,7 @@
             <tr>
                 <td style="text-align: center;" >{{$food->zinc}}</td>
                 <td style="text-align: center;">{{$food->tiamina}}</td>
-                <td style="text-align: center;">{{$food->rivoflavina}}</td>
+                <td style="text-align: center;">{{$food->riboflavina}}</td>
                 <td style="text-align: center;">{{$food->niacina}}</td>
                 <td style="text-align: center;">{{$food->vitamina_c}}</td>
                 <td style="text-align: center;">{{$food->carbohidratos_disponibles}}</td>

@@ -70,7 +70,7 @@ class Recipe extends BaseModel
         'total_hierro',
         'total_zinc',
         'total_tiamina',
-        'total_rivoflavina',
+        'total_riboflavina',
         'total_niacina',
         'total_vitamina_c',
         'total_carbohidratos_disponibles',

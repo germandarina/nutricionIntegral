@@ -398,7 +398,7 @@ class PlanController extends Controller
         $total['total_hierro']                  = 0;
         $total['total_zinc']                    = 0;
         $total['total_tiamina']                 = 0;
-        $total['total_rivoflavina']             = 0;
+        $total['total_riboflavina']             = 0;
         $total['total_niacina']                 = 0;
         $total['total_vitamina_c']              = 0;
         $total['total_carbohidratos_disponibles']    = 0;
@@ -424,7 +424,7 @@ class PlanController extends Controller
             $total['total_hierro']                  += $recipe->total_hierro;
             $total['total_zinc']                    += $recipe->total_zinc;
             $total['total_tiamina']                 += $recipe->total_tiamina;
-            $total['total_rivoflavina']             += $recipe->total_rivoflavina;
+            $total['total_riboflavina']             += $recipe->total_riboflavina;
             $total['total_niacina']                 += $recipe->total_niacina;
             $total['total_vitamina_c']              += $recipe->total_vitamina_c;
             $total['total_carbohidratos_disponibles']  += $recipe->total_carbohidratos_disponibles;

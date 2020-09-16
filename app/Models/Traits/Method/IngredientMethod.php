@@ -54,7 +54,7 @@ trait IngredientMethod
         $recipe->total_hierro = 0;
         $recipe->total_zinc = 0;
         $recipe->total_tiamina = 0;
-        $recipe->total_rivoflavina = 0;
+        $recipe->total_riboflavina = 0;
         $recipe->total_niacina = 0;
         $recipe->total_vitamina_c = 0;
         $recipe->total_carbohidratos_disponibles = 0;
@@ -80,7 +80,7 @@ trait IngredientMethod
         $recipe->total_hierro += $food->hierro >0 ? round((( $ingredient->quantity_grs * $food->hierro)/100),3)  : 0;
         $recipe->total_zinc += $food->zinc >0 ? round((( $ingredient->quantity_grs * $food->zinc)/100),3)  : 0;
         $recipe->total_tiamina += $food->tiamina >0 ? round((( $ingredient->quantity_grs * $food->tiamina)/100),3)  : 0;
-        $recipe->total_rivoflavina += $food->rivoflavina >0 ? round((( $ingredient->quantity_grs * $food->rivoflavina)/100),3)  : 0;
+        $recipe->total_riboflavina += $food->riboflavina >0 ? round((( $ingredient->quantity_grs * $food->riboflavina)/100),3)  : 0;
         $recipe->total_niacina += $food->niacina >0 ? round((( $ingredient->quantity_grs * $food->niacina)/100),3)  : 0;
         $recipe->total_vitamina_c += $food->vitamina_c >0 ? round((( $ingredient->quantity_grs * $food->vitamina_c)/100),3)  : 0;
         $recipe->total_carbohidratos_disponibles += $food->carbohidratos_disponibles >0 ? round((( $ingredient->quantity_grs * $food->carbohidratos_disponibles)/100),3)  : 0;

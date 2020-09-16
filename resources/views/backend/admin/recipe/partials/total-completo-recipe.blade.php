@@ -55,7 +55,7 @@
             <tr>
                 <th> Total Zinc (mg)</th>
                 <th> Total Tiamina (mg)</th>
-                <th> Total Rivoflavina (mg)</th>
+                <th> Total Riboflavina (mg)</th>
                 <th> Total Niacina (mg)</th>
                 <th> Total Vitamina C (mg)</th>
                 <th> Total Carbohidratos Disp (g)</th>
@@ -65,7 +65,7 @@
             <tr>
                 <td style="text-align: center;">{{$recipe->total_zinc}}</td>
                 <td style="text-align: center;">{{$recipe->total_tiamina}}</td>
-                <td style="text-align: center;">{{$recipe->total_rivoflavina}}</td>
+                <td style="text-align: center;">{{$recipe->total_riboflavina}}</td>
                 <td style="text-align: center;">{{$recipe->total_niacina}}</td>
                 <td style="text-align: center;">{{$recipe->total_vitamina_c}}</td>
                 <td style="text-align: center;">{{$recipe->total_carbohidratos_disponibles}}</td>

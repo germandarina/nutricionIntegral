@@ -109,7 +109,7 @@ class Food extends BaseModel
         'hierro',
         'zinc',
         'tiamina',
-        'rivoflavina',
+        'riboflavina',
         'niacina',
         'vitamina_c',
         'carbohidratos_disponibles',
