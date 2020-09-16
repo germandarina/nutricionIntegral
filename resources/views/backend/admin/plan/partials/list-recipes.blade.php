@@ -24,7 +24,7 @@
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Grasa (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_grasa_total}}</span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Colesterol (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_colesterol}}</span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm">
-                                <a href="#" class="btn btn-sm btn-success btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})"><strong>Composicíon Total</strong></a>
+                                <a href="#" class="btn btn-sm btn-info btn-block" onclick="getTotalCompleto(event,{{$recipe->id}})"><strong>Composicíon Total</strong></a>
                             </li>
                         </ul>
                     </div>

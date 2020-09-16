@@ -18,7 +18,7 @@
                 <td style="text-align: center;"><strong>{{$recipe->total_grasa_total}}</strong></td>
                 <td style="text-align: center;"><strong>{{$recipe->total_carbohidratos_totales}}</strong></td>
                 <td style="text-align: center;"><strong>{{$recipe->total_colesterol}}</strong></td>
-                <td style="text-align: center;"><a href="#" class="btn btn-sm btn-success" onclick="getTotalCompleto(event,{{$recipe->id}})"><i class="fas fa-eye"></i></a></td>
+                <td style="text-align: center;"><a href="#" class="btn btn-sm btn-info" onclick="getTotalCompleto(event,{{$recipe->id}})"><i class="fas fa-eye"></i></a></td>
             </tr>
         </tbody>
     </table>

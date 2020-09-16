@@ -52,6 +52,10 @@
         $(function () {
             getRecipes();
             iniciarDataTablesPordia();
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
         });
 
         function getRecipes() {
@@ -178,13 +182,14 @@
                     procesando.remove();
 
                     Swal.fire({
-                        title: '<strong>Total Composicion Receta</strong>',
+                        title: '<strong>Total Composición Receta</strong>',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,
+                        showConfirmButton: false,
                         focusConfirm: false,
-                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
-                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        //confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        //confirmButtonAriaLabel: 'Thumbs up, great!',
                         cancelButtonText: '',
                         cancelButtonAriaLabel: 'Thumbs down'
                     })
@@ -705,11 +710,12 @@
                     Swal.fire({
                         title: '<strong>Total Completo Por Día</strong>',
                         html: datos,
+                        showConfirmButton: false,
                         showCloseButton: true,
                         showCancelButton: false,
                         focusConfirm: false,
-                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
-                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        // confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        // confirmButtonAriaLabel: 'Thumbs up, great!',
                         cancelButtonText: '',
                         cancelButtonAriaLabel: 'Thumbs down'
                     })
