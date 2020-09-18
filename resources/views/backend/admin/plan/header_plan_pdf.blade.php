@@ -23,7 +23,9 @@
     </table>
     <hr>
     <div id="logo_grande">
-        <img src="{{ asset('img/ndf.png') }}" alt="">
+{{--        <img src="{{ asset('img/ndf.png') }}" alt="">--}}
+        <img src="{{url('/img/ndf.png')}}" alt="Image"/>
+
     </div>
 </div>
 <div style="page-break-after: always;"></div>

@@ -457,9 +457,9 @@ class PlanController extends Controller
                                             ->where('day',$day)
                                             ->orderBy('order')
                                             ->get();
-            if($details->isEmpty()){
-                return redirect()->route('admin.plan.index')->with(['error'=>'Debe terminar el plan para descargarlo']);
-            }
+//            if($details->isEmpty()){
+//                return redirect()->route('admin.plan.index')->with(['error'=>'Debe terminar el plan para descargarlo']);
+//            }
             if($details->isNotEmpty() && !$details->first()->order){
                 $array_details_by_day = [];
                 foreach ($recipes_types as $type){
