@@ -5,6 +5,7 @@ namespace App\Models\Traits\Method;
 use App\Models\Food;
 use App\Models\Ingredient;
 use App\Models\Recipe;
+use Illuminate\Validation\Rules\In;
 
 /**
  * Trait IngredientMethod.
@@ -14,20 +15,37 @@ trait IngredientMethod
     public static function boot(){
         parent::boot();
 
-        static::created(function ($model) {
-            self::updateRecipe($model->recipe,$model,$model->food);
+        static::created(function (Ingredient $model) {
+            $model->load('recipe');
+            if(!$model->recipe)
+            {
+                $recipe = Recipe::withTrashed()->where('id',$model->recipe_id)->first();
+            }
+            else
+            {
+                $recipe = $model->recipe;
+            }
+            self::updateRecipe($recipe,$model,$model->food);
         });
 
         static::updated(function ($model){
+            $model->load('recipe');
             $recipe = $model->recipe;
+            if(!$recipe)
+            {
+                $recipe = Recipe::withTrashed()->where('id',$model->recipe_id)->first();
+            }
+            $recipe->load('ingredients');
+
             self::defaultTotalValuesForRecipe($recipe);
-            $ingredients = $recipe->ingredients;
-            foreach ($ingredients as $ingredient){
+
+            foreach ($recipe->ingredients as $ingredient){
                 self::updateRecipe($recipe,$ingredient,$ingredient->food);
             }
         });
 
         static::deleted(function ($model){
+            $model->load('recipe');
             $recipe = $model->recipe;
             self::defaultTotalValuesForRecipe($recipe);
             $ingredients =  Ingredient::where('recipe_id',$recipe->id)

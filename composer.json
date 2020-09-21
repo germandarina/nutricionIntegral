@@ -16,7 +16,7 @@
         "divineomega/laravel-password-exposed-validation-rule": "^2.0.1",
         "hieu-le/active": "^3.5",
         "laravel/framework": "5.8.*",
-        "proengsoft/laravel-jsvalidation": "2.4.0",
+        "proengsoft/laravel-jsvalidation": "4.3.0",
         "spatie/laravel-html": "^2.4",
         "spatie/laravel-permission": "^2.36",
         "yajra/laravel-datatables-buttons": "^4.6",

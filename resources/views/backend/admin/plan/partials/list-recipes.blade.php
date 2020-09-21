@@ -11,7 +11,7 @@
                        class=""><strong>{{substr(strtoupper($recipe->name),0,40)}}</strong></a>
                     <div class="card-header-actions">
                         <a class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}},null)">
-                            <icon class="fas fa-plus-square"></icon>
+                            <i class="fas fa-plus-square"></i>
                         </a>
                     </div>
                 </div>
