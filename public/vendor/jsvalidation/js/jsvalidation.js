@@ -1824,7 +1824,7 @@ function is_numeric (mixed_var) {
  *
  * Date formatter utility library that allows formatting date/time variables or Date objects using PHP DateTime format.
  * This library is a standalone javascript library and does not depend on other libraries or plugins like jQuery.
- * 
+ *
  * @see http://php.net/manual/en/function.date.php
  *
  * For more JQuery plugins visit http://plugins.krajee.com
@@ -2944,11 +2944,11 @@ $.extend(true, laravelValidation, {
             if (! $.isArray(arr1) || ! $.isArray(arr2)) {
                 return false;
             }
-            
+
             if (arr1.length !== arr2.length) {
                 return false;
             }
-            
+
             return $.isEmptyObject(this.arrayDiff(arr1, arr2));
         },
 

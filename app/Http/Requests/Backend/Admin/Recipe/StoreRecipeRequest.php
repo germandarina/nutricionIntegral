@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend\Admin\Recipe;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class StoreRoleRequest.
@@ -44,5 +46,17 @@ class StoreRecipeRequest extends FormRequest
             'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
             'classifications.required' => 'La clasificacion es obligatoria',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

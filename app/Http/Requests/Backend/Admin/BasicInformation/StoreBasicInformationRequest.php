@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend\Admin\BasicInformation;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class StoreBasicInformationRequest.
@@ -52,5 +54,17 @@ class StoreBasicInformationRequest extends FormRequest
             'm_professional.required' => "La matricula profesional es obligatoria.",
             'company_name.required' => "El nombre de la empresa es obligatorio.",
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

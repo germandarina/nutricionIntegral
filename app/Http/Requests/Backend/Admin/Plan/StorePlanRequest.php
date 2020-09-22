@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend\Admin\Plan;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class StoreRoleRequest.
@@ -59,5 +61,17 @@ class StorePlanRequest extends FormRequest
             'grasa_total_por_dia.required' =>'La cantidad de grasa es requerida',
             'grasa_total_por_dia.numeric' => 'Debe ingresar la cantidad en números de grasa',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

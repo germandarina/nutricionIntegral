@@ -3,8 +3,10 @@
 namespace App\Http\Requests\Backend\Admin\Patient;
 
 use App\Rules\MultiSelect;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Session;
 
 /**
  * Class UpdateRoleRequest.
@@ -74,5 +76,17 @@ class UpdatePatientRequest extends FormRequest
             'number_of_children' =>'La cantidad de hijos es obligatoria',
             'classification_id.required'=>'La clasificación es obligatoria',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

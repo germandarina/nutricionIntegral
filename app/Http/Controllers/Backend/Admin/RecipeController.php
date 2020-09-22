@@ -119,7 +119,7 @@ class RecipeController extends Controller
             $this->recipeRepository->update($request->all(), $recipe);
         }catch (\Exception $exception){
             Session::flash('error', $exception->getMessage());
-            return redirect()->route('admin.recipe.create')->withInput($request->all());
+            return redirect()->route('admin.recipe.edit',compact('recipe'))->withErrors($request)->withInput($request->all());
         }
         Session::flash('success','Receta Actualizada');
         return redirect()->route('admin.recipe.index');

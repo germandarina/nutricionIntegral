@@ -6,14 +6,14 @@
             {{ html()->text('name')
                 ->class('form-control')
                 ->placeholder('Nombre')
-                ->attribute('maxlength', 191)
+                ->attribute('maxlength', 200)
+                ->attribute('minlength', 6)
                 ->required()
                 ->autofocus() }}
         </div><!--col-->
 
     </div>
-    <br>
-    <div class="row">
+    <div class="row mt-2">
         {{ html()->label('Tipo de Receta')
                    ->class('col-md-2 form-control-label')
                    ->for('name') }}
@@ -34,7 +34,7 @@
                 }}
         </div><!--col-->
     </div>
-    <div class="row">
+    <div class="row mt-1">
         {{ html()->label('Observaciones')
                     ->class('col-md-2 form-control-label')
                     ->for('observation') }}
@@ -43,7 +43,6 @@
                 ->class('form-control')
                 ->placeholder('Observaciones')
                 ->attribute('maxlength', 255)
-                ->required()
                 ->autofocus() }}
         </div><!--col-->
     </div>

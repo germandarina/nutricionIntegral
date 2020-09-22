@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend\Admin\FoodGroup;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class StoreRoleRequest.
@@ -38,5 +40,17 @@ class StoreFoodGroupRequest extends FormRequest
             'name.min' => "El nombre debe tener, al menos, 6 caracteres.",
             'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

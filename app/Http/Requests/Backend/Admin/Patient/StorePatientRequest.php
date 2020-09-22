@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend\Admin\Patient;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class StoreRoleRequest.
@@ -65,5 +67,17 @@ class StorePatientRequest extends FormRequest
             'motive.required'=>'El motivo es obligatorio',
             'number_of_children' =>'La cantidad de hijos es obligatoria',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

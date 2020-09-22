@@ -3,7 +3,8 @@
 namespace App\Http\Requests\Backend\Admin\Recipe;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
+use Session;
 
 /**
  * Class UpdateRoleRequest.
@@ -41,9 +42,22 @@ class UpdateRecipeRequest extends FormRequest
             'name.required' => "El nombre es obligatorio.",
             'name.min' => "El nombre debe tener, al menos, 6 caracteres.",
             'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
-            'recipe_type_id.required' => "El tipo de receta es obligatorio.",
+            'recipe_type_id.required' => "Seleccione un tipo de receta.",
             'observation.min' => "La observacion debe tener, al menos, 6 caracteres.",
             'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
+            'classifications.required' => 'Seleccione al menos 1 clasificación',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }
