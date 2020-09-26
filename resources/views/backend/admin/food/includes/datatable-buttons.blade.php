@@ -1,6 +1,7 @@
 @if(!$row->trashed())
 <div class="btn-group btn-group-sm" role="group" >
     <a title="Modificar" href='{{ route("admin.food.edit",['id'=>$row]) }}' class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>
+    <a title="Copiar" href='#' data-name="{{ $row->name }}" data-url="{{ route('admin.food.copyFood',['id'=>$row]) }}" onclick="modalCopyFood(event,$(this))" class="btn btn-dark"><i class="fas fa-copy" data-toggle="tooltip" data-placement="top" title="Copiar Alimento"></i></a>
     <a title="Eliminar" href="#" data-url="{{ route("admin.food.destroy",['id'=>$row]) }}" onclick="eliminarItem(event,$(this))" class="btn btn-danger btn-xs delete-item" ><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
 </div>
 @else

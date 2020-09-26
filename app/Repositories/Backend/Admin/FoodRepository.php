@@ -122,4 +122,18 @@ class FoodRepository extends BaseRepository
         }
         throw new GeneralException('Error al restaurar alimento. Intente nuevamente');
     }
+
+    public function copyFood(Food $food,$name)
+    {
+        return DB::transaction(function () use ($food,$name)
+        {
+            $copy_food = new Food();
+            $copy_food->fill($food->toArray());
+            $copy_food->id = null;
+            $copy_food->name = $name;
+            if(!$copy_food->save()){
+                throw new GeneralException('Error al copiar alimento alimento. Intente nuevamente');
+            }
+        });
+    }
 }

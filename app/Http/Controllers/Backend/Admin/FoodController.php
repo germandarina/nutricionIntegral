@@ -174,57 +174,57 @@ class FoodController extends Controller
         return response()->json(['mensaje'=>"Alimento restaurado"],200);
     }
 
-    public function importarAlimentos(){
-        try{
-            DB::beginTransaction();
-            $alimentos_importar = DB::select("select * from importacion_alimentos");
-            if(!empty($alimentos_importar)){
-                foreach ($alimentos_importar as $fila){
-                    $existe = Food::where('name',trim($fila->nombre))
-                                    ->where('food_group_id',$fila->grupo_alimento)
-                                    ->first();
-                    if($existe){
-                        continue;
-                    }else{
-                        $alimento = new Food();
-                    }
-                    $alimento->name = trim($fila->nombre);
-                    $alimento->food_group_id = $fila->grupo_alimento;
-                    $alimento->energia_kcal = empty($fila->energia_kcal) || $fila->energia_kcal == '...' ? 0: (float) str_replace(',','.',$fila->energia_kcal);
-                    $alimento->agua = empty($fila->agua) || $fila->agua == '...' ? 0: (float) str_replace(',','.',$fila->agua);
-                    $alimento->proteina = is_null($fila->proteina) || empty($fila->proteina) || $fila->proteina == '...' ? 0 : (float) str_replace(',','.', $fila->proteina);
-                    $alimento->grasa_total = empty($fila->grasa_total) || $fila->grasa_total == '...' ? 0: (float) str_replace(',','.',$fila->grasa_total);
-                    $alimento->carbohidratos_totales = empty($fila->carbohidratos_totales) || $fila->carbohidratos_totales == '...' ? 0: (float) str_replace(',','.',$fila->carbohidratos_totales);
-                    $alimento->cenizas = empty($fila->cenizas) || $fila->cenizas == '...' ? 0: (float) str_replace(',','.',$fila->cenizas);
-                    $alimento->sodio = empty($fila->sodio) || $fila->sodio == '...' ? 0: (float) str_replace(',','.',$fila->sodio);
-                    $alimento->potasio = empty($fila->potasio) || $fila->potasio == '...' ? 0: (float) str_replace(',','.',$fila->potasio);
-                    $alimento->calcio = empty($fila->calcio) || $fila->calcio == '...' ? 0: (float) str_replace(',','.',$fila->calcio);
-                    $alimento->fosforo = empty($fila->fosforo) || $fila->fosforo == '...' ? 0: (float) str_replace(',','.',$fila->fosforo);
-                    $alimento->hierro = empty($fila->hierro) || $fila->hierro == '...' ? 0: (float) str_replace(',','.',$fila->hierro);
-                    $alimento->zinc = empty($fila->zinc) || $fila->zinc == '...' ? 0: (float) str_replace(',','.',$fila->zinc);
-                    $alimento->tiamina = empty($fila->tiamina) || $fila->tiamina == '...' ? 0: (float) str_replace(',','.',$fila->tiamina);
-                    $alimento->riboflavina = empty($fila->riboflavina) || $fila->riboflavina == '...' ? 0: (float) str_replace(',','.',$fila->riboflavina);
-                    $alimento->niacina = empty($fila->niacina) || $fila->niacina == '...' ? 0: (float) str_replace(',','.',$fila->niacina);
-                    $alimento->vitamina_c = empty($fila->vitamina_c) || $fila->vitamina_c == '...' ? 0: (float) str_replace(',','.',$fila->vitamina_c);
-                    $alimento->carbohidratos_disponibles = empty($fila->carbohidratos_disponibles) || $fila->carbohidratos_disponibles == '...' ? 0: (float) str_replace(',','.',$fila->carbohidratos_disponibles);
-                    $alimento->ac_grasos_saturados = empty($fila->ac_grasos_saturados) || $fila->ac_grasos_saturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_saturados);
-                    $alimento->ac_grasos_monoinsaturados = empty($fila->ac_grasos_monoinsaturados) || $fila->ac_grasos_monoinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_monoinsaturados);
-                    $alimento->ac_grasos_poliinsaturados = empty($fila->ac_grasos_poliinsaturados) || $fila->ac_grasos_poliinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_poliinsaturados);
-                    $alimento->colesterol = empty($fila->colesterol) || $fila->colesterol == '...' ? 0: (float) str_replace(',','.',$fila->colesterol);
-                    $alimento->fibra = empty($fila->fibra) || $fila->fibra == '...' ? 0: (float) str_replace(',','.',$fila->fibra);
-
-                    if(!$alimento->save()){
-                        throw new \Exception("Error al importar alimento".$fila->nombre);
-                    }
-                }
-            }
-            DB::commit();
-            echo "termine bien la importacion";
-        }catch (\Exception $exception){
-            DB::rollBack();
-            echo $exception->getMessage();
-        }
-    }
+//    public function importarAlimentos(){
+//        try{
+//            DB::beginTransaction();
+//            $alimentos_importar = DB::select("select * from importacion_alimentos");
+//            if(!empty($alimentos_importar)){
+//                foreach ($alimentos_importar as $fila){
+//                    $existe = Food::where('name',trim($fila->nombre))
+//                                    ->where('food_group_id',$fila->grupo_alimento)
+//                                    ->first();
+//                    if($existe){
+//                        continue;
+//                    }else{
+//                        $alimento = new Food();
+//                    }
+//                    $alimento->name = trim($fila->nombre);
+//                    $alimento->food_group_id = $fila->grupo_alimento;
+//                    $alimento->energia_kcal = empty($fila->energia_kcal) || $fila->energia_kcal == '...' ? 0: (float) str_replace(',','.',$fila->energia_kcal);
+//                    $alimento->agua = empty($fila->agua) || $fila->agua == '...' ? 0: (float) str_replace(',','.',$fila->agua);
+//                    $alimento->proteina = is_null($fila->proteina) || empty($fila->proteina) || $fila->proteina == '...' ? 0 : (float) str_replace(',','.', $fila->proteina);
+//                    $alimento->grasa_total = empty($fila->grasa_total) || $fila->grasa_total == '...' ? 0: (float) str_replace(',','.',$fila->grasa_total);
+//                    $alimento->carbohidratos_totales = empty($fila->carbohidratos_totales) || $fila->carbohidratos_totales == '...' ? 0: (float) str_replace(',','.',$fila->carbohidratos_totales);
+//                    $alimento->cenizas = empty($fila->cenizas) || $fila->cenizas == '...' ? 0: (float) str_replace(',','.',$fila->cenizas);
+//                    $alimento->sodio = empty($fila->sodio) || $fila->sodio == '...' ? 0: (float) str_replace(',','.',$fila->sodio);
+//                    $alimento->potasio = empty($fila->potasio) || $fila->potasio == '...' ? 0: (float) str_replace(',','.',$fila->potasio);
+//                    $alimento->calcio = empty($fila->calcio) || $fila->calcio == '...' ? 0: (float) str_replace(',','.',$fila->calcio);
+//                    $alimento->fosforo = empty($fila->fosforo) || $fila->fosforo == '...' ? 0: (float) str_replace(',','.',$fila->fosforo);
+//                    $alimento->hierro = empty($fila->hierro) || $fila->hierro == '...' ? 0: (float) str_replace(',','.',$fila->hierro);
+//                    $alimento->zinc = empty($fila->zinc) || $fila->zinc == '...' ? 0: (float) str_replace(',','.',$fila->zinc);
+//                    $alimento->tiamina = empty($fila->tiamina) || $fila->tiamina == '...' ? 0: (float) str_replace(',','.',$fila->tiamina);
+//                    $alimento->riboflavina = empty($fila->riboflavina) || $fila->riboflavina == '...' ? 0: (float) str_replace(',','.',$fila->riboflavina);
+//                    $alimento->niacina = empty($fila->niacina) || $fila->niacina == '...' ? 0: (float) str_replace(',','.',$fila->niacina);
+//                    $alimento->vitamina_c = empty($fila->vitamina_c) || $fila->vitamina_c == '...' ? 0: (float) str_replace(',','.',$fila->vitamina_c);
+//                    $alimento->carbohidratos_disponibles = empty($fila->carbohidratos_disponibles) || $fila->carbohidratos_disponibles == '...' ? 0: (float) str_replace(',','.',$fila->carbohidratos_disponibles);
+//                    $alimento->ac_grasos_saturados = empty($fila->ac_grasos_saturados) || $fila->ac_grasos_saturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_saturados);
+//                    $alimento->ac_grasos_monoinsaturados = empty($fila->ac_grasos_monoinsaturados) || $fila->ac_grasos_monoinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_monoinsaturados);
+//                    $alimento->ac_grasos_poliinsaturados = empty($fila->ac_grasos_poliinsaturados) || $fila->ac_grasos_poliinsaturados == '...' ? 0: (float) str_replace(',','.',$fila->ac_grasos_poliinsaturados);
+//                    $alimento->colesterol = empty($fila->colesterol) || $fila->colesterol == '...' ? 0: (float) str_replace(',','.',$fila->colesterol);
+//                    $alimento->fibra = empty($fila->fibra) || $fila->fibra == '...' ? 0: (float) str_replace(',','.',$fila->fibra);
+//
+//                    if(!$alimento->save()){
+//                        throw new \Exception("Error al importar alimento".$fila->nombre);
+//                    }
+//                }
+//            }
+//            DB::commit();
+//            echo "termine bien la importacion";
+//        }catch (\Exception $exception){
+//            DB::rollBack();
+//            echo $exception->getMessage();
+//        }
+//    }
 
     public function getComposicion(){
         if(request('food_id')){
@@ -244,19 +244,33 @@ class FoodController extends Controller
         }
     }
 
-    public function actualizarAlimentosParaCalculosReceta(){
+//    public function actualizarAlimentosParaCalculosReceta(){
+//        try{
+//            DB::beginTransaction();
+//            $foods = Food::all();
+//            foreach ($foods as $food){
+//                $food->touch();
+//                $food->update();
+//            }
+//            DB::commit();
+//            echo "termine bien la actualizacion";
+//        }catch (\Exception $exception){
+//            DB::rollBack();
+//            echo $exception->getMessage();
+//        }
+//    }
+
+    public function copyFood(Food $food){
+
         try{
-            DB::beginTransaction();
-            $foods = Food::all();
-            foreach ($foods as $food){
-                $food->touch();
-                $food->update();
-            }
-            DB::commit();
-            echo "termine bien la actualizacion";
+            $name = request('name');
+            if(empty($name))
+                throw  new \Exception("Ingrese un nombre por favor");
+
+            $this->foodRepository->copyFood($food,$name);
+            return response()->json(['mensaje'=>"Alimento Copiado"],200);
         }catch (\Exception $exception){
-            DB::rollBack();
-            echo $exception->getMessage();
+            return response()->json(['error'=>$exception->getMessage()],422);
         }
     }
 }
