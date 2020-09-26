@@ -364,16 +364,17 @@
                     var datos = data;
                     procesando.remove();
                     Swal.fire({
-                        title: '<strong>Composicion Completa Alimento</strong>',
+                        title: '<strong>Composicion Completa</strong>',
                         // icon: 'info',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,
+                        showConfirmButton: false,
                         focusConfirm: false,
-                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
-                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        // confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        // confirmButtonAriaLabel: 'Thumbs up, great!',
                         cancelButtonText: '',
-                        cancelButtonAriaLabel: 'Thumbs down'
+                        // cancelButtonAriaLabel: 'Thumbs down'
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {

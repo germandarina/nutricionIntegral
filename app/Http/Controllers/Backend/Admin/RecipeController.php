@@ -290,4 +290,22 @@ class RecipeController extends Controller
             }
         }
     }
+
+    public function calculateGrs(){
+        if(request('quantity') && request('food_id'))
+        {
+            $quantity_grs = request('quantity');
+            $food         = Food::find(request('food_id'));
+
+            $total_energia_kcal = $food->energia_kcal >0 ? round((($quantity_grs *  $food->energia_kcal)/100),3) : 0;
+            $total_proteina = $food->proteina >0 ? round((( $quantity_grs * $food->proteina)/100),3)  : 0;
+            $total_grasa_total = $food->grasa_total >0 ? round((( $quantity_grs * $food->grasa_total)/100),3)  : 0;
+            $total_carbohidratos_totales = $food->carbohidratos_totales >0 ? round((( $quantity_grs * $food->carbohidratos_totales)/100),3)  : 0;
+            $total_colesterol = $food->colesterol >0 ? round((( $quantity_grs *$food->colesterol)/100),3)  : 0;
+
+            return view('backend.admin.recipe.partials.table-calculate-grs-modal',compact('total_energia_kcal','total_proteina',
+                'total_grasa_total','total_carbohidratos_totales','total_colesterol'));
+
+        }
+    }
 }

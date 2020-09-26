@@ -8,17 +8,15 @@
                     <th style="text-align: center;" >Grasa (g)</th>
                     <th style="text-align: center;" >Carbohidratos (g)</th>
                     <th style="text-align: center;" >Colesterol (mg)</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="bg-secondary">
-                    <td style="text-align: center;">{{$food->energia_kcal}}</td>
-                    <td style="text-align: center;">{{$food->proteina}}</td>
-                    <td style="text-align: center;">{{$food->grasa_total}}</td>
-                    <td style="text-align: center;">{{$food->carbohidratos_totales}}</td>
-                    <td style="text-align: center;">{{$food->colesterol}}</td>
-                    <td style="text-align: center;"><a href="#" class="btn btn-sm btn-success" onclick="getComposicionCompleta({{$food->id}})"><i class="fas fa-eye"></i></a></td>
+                    <td style="text-align: center;">{{$total_energia_kcal}}</td>
+                    <td style="text-align: center;">{{$total_proteina}}</td>
+                    <td style="text-align: center;">{{$total_grasa_total}}</td>
+                    <td style="text-align: center;">{{$total_carbohidratos_totales}}</td>
+                    <td style="text-align: center;">{{$total_colesterol}}</td>
                 </tr>
             </tbody>
         </table>

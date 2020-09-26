@@ -125,12 +125,13 @@
         });
 
         function limpiarModal() {
-            $("#food_group_id").select2("val",0);
+            // $("#food_group_id").select2("val",0);
             $("#food_id").select2("val",0);
             $("#quantity_description").val("");
             $("#quantity_grs").val("");
             $("#ingredient_id").val("");
             $("#divComposicion").empty();
+            $("#divCalculate").empty();
         }
 
         function modalIngredientes(event) {
@@ -142,10 +143,11 @@
         }
 
         function getComposicionBasica() {
-
             var food_id = $("#food_id").val();
 
             if(food_id !== "" && food_id !== null && food_id !== undefined){
+                procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -156,6 +158,7 @@
                         'food_id':food_id,
                     },
                     success: function(data) {
+                        procesando.remove();
                         var datos = data;
                         $("#divComposicion").empty().html(datos);
                     },
@@ -183,16 +186,17 @@
                     var datos = data;
                     procesando.remove();
                     Swal.fire({
-                        title: '<strong>Composicion Completa Alimento</strong>',
-                        icon: 'info',
+                        title: '<strong>Composición Completa</strong>',
+                       // icon: 'info',
                         html: datos,
                         showCloseButton: true,
                         showCancelButton: false,
+                        showConfirmButton: false,
                         focusConfirm: false,
-                        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
-                        confirmButtonAriaLabel: 'Thumbs up, great!',
+                        //confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                        //confirmButtonAriaLabel: 'Thumbs up, great!',
                         cancelButtonText: '',
-                        cancelButtonAriaLabel: 'Thumbs down'
+                        //cancelButtonAriaLabel: 'Thumbs down'
                     })
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -394,6 +398,32 @@
             });
         }
 
+        function calculateGrs(){
+            var food_id  = $("#food_id").val();
+            var quantity = $("#quantity_grs").val();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:   '{{ route('admin.recipe.calculateGrs') }}',
+                type:  'POST',
+                data:   {
+                    'food_id': food_id,
+                    'quantity': quantity
+                },
+                success: function(data) {
+                    procesando.remove();
+                    $('#divCalculate').empty().html(data);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
     </script>
+
     {!! $validator !!}
 @endpush

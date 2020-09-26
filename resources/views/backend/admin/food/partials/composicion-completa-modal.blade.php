@@ -4,97 +4,91 @@
             <thead>
                 <tr>
                     <th>Energia (Kcal)</th>
-                    <th>Proteínas (g)</th>
-                    <th>Grasa (g)</th>
-                    <th>Carbohidratos (g)</th>
-                    <th>Hierro (mg)</th>
+                    <th style="text-align: center;">{{$food->energia_kcal}}</th>
                 </tr>
-            </thead>
-            <tbody>
                 <tr>
-                    <td style="text-align: center;">{{$food->energia_kcal}}</td>
-                    <td style="text-align: center;">{{$food->proteina}}</td>
-                    <td style="text-align: center;">{{$food->grasa_total}}</td>
-                    <td style="text-align: center;">{{$food->carbohidratos_totales}}</td>
-                    <td style="text-align: center;">{{$food->hierro}}</td>
+                    <th>Proteínas (g)</th>
+                    <th style="text-align: center;">{{$food->proteina}}</th>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
-            <thead>
-            <tr>
-                <th>Agua (g)</th>
-                <th>Cenizas (g)</th>
-                <th>Sodio (mg)</th>
-                <th>Potasio (mg)</th>
-                <th>Calcio (mg)</th>
-                <th>Fosforo (mg)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="text-align: center;" >{{$food->agua}}</td>
-                <td style="text-align: center;">{{$food->cenizas}}</td>
-                <td style="text-align: center;">{{$food->sodio}}</td>
-                <td style="text-align: center;">{{$food->potasio}}</td>
-                <td style="text-align: center;">{{$food->calcio}}</td>
-                <td style="text-align: center;">{{$food->fosforo}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
-            <thead>
-            <tr>
-                <th>Zinc (mg)</th>
-                <th>Tiamina (mg)</th>
-                <th>Riboflavina (mg)</th>
-                <th>Niacina (mg)</th>
-                <th>Vitamina C (mg)</th>
-                <th>Carbohidratos Disp (g)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="text-align: center;" >{{$food->zinc}}</td>
-                <td style="text-align: center;">{{$food->tiamina}}</td>
-                <td style="text-align: center;">{{$food->riboflavina}}</td>
-                <td style="text-align: center;">{{$food->niacina}}</td>
-                <td style="text-align: center;">{{$food->vitamina_c}}</td>
-                <td style="text-align: center;">{{$food->carbohidratos_disponibles}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
-            <thead>
+                <tr>
+                    <th>Grasa (g)</th>
+                    <th style="text-align: center;">{{$food->grasa_total}}</th>
+                </tr>
+                <tr>
+                    <th>Carbohidratos (g)</th>
+                    <th style="text-align: center;">{{$food->carbohidratos_totales}}</th>
+                </tr>
+                <tr>
+                    <th>Hierro (mg)</th>
+                    <th style="text-align: center;">{{$food->hierro}}</th>
+                </tr>
+                <tr>
+                    <th>Agua (g)</th>
+                    <th style="text-align: center;" >{{$food->agua}}</th>
+                </tr>
+                <tr>
+                    <th>Cenizas (g)</th>
+                    <th style="text-align: center;">{{$food->cenizas}}</th>
+                </tr>
+                <tr>
+                    <th>Sodio (mg)</th>
+                    <th style="text-align: center;">{{$food->sodio}}</th>
+                </tr>
+                <tr>
+                    <th>Potasio (mg)</th>
+                    <th style="text-align: center;">{{$food->potasio}}</th>
+                </tr>
+                <tr>
+
+                    <th>Calcio (mg)</th>
+                    <th style="text-align: center;">{{$food->calcio}}</th>
+                </tr>
+                <tr>
+                    <th>Fosforo (mg)</th>
+                    <th style="text-align: center;">{{$food->fosforo}}</th>
+                </tr>
+
+                <tr>
+                    <th>Zinc (mg)</th>
+                    <th style="text-align: center;" >{{$food->zinc}}</th>
+                </tr>
+                <tr>
+                    <th>Tiamina (mg)</th>
+                    <th style="text-align: center;">{{$food->tiamina}}</th>
+                </tr>
+                <tr>
+                    <th>Riboflavina (mg)</th>
+                    <th style="text-align: center;">{{$food->riboflavina}}</th>
+                </tr>
+                <tr>
+                    <th>Niacina (mg)</th>
+                    <th style="text-align: center;">{{$food->niacina}}</th>
+                </tr>
+                <tr>
+                    <th>Vitamina C (mg)</th>
+                    <th style="text-align: center;">{{$food->vitamina_c}}</th>
+                </tr>
+                <tr>
+                    <th>Carbohidratos Disp (g)</th>
+                    <th style="text-align: center;">{{$food->carbohidratos_disponibles}}</th>
+                </tr>
                 <tr>
                     <th>Ac Grasos Satu (g)</th>
+                    <th style="text-align: center;" >{{$food->ac_grasos_saturados}}</th>
+                </tr>
+                <tr>
                     <th>Ac Grasos Mono (g)</th>
+                    <th style="text-align: center;">{{$food->ac_grasos_monoinsaturados}}</th>
+                </tr>
+                <tr>
                     <th>Ac Grasos Poli (g)</th>
+                    <th style="text-align: center;">{{$food->ac_grasos_poliinsaturados}}</th>
+                </tr>
+                <tr>
                     <th>Colesterol (mg)</th>
+                    <th style="text-align: center;">{{$food->colesterol}}</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;" >{{$food->ac_grasos_saturados}}</td>
-                    <td style="text-align: center;">{{$food->ac_grasos_monoinsaturados}}</td>
-                    <td style="text-align: center;">{{$food->ac_grasos_poliinsaturados}}</td>
-                    <td style="text-align: center;">{{$food->colesterol}}</td>
-                </tr>
-            </tbody>
         </table>
     </div>
 </div>
-
-

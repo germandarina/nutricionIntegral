@@ -14,6 +14,8 @@ Route::post('recipe/get-total', [RecipeController::class, 'getTotal'])->name('re
 Route::post('recipe/get-total-completo', [RecipeController::class, 'getTotalCompleto'])->name('recipe.getTotalCompleto');
 Route::get('recipe/get-ingredients', [RecipeController::class, 'getIngredients'])->name('recipe.getIngredients');
 Route::post('recipe/add-ingredients', [RecipeController::class, 'addIngredients'])->name('recipe.addIngredients');
+Route::post('recipe/calculate-grs', [RecipeController::class, 'calculateGrs'])->name('recipe.calculateGrs');
+
 
 Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::get('edit', [RecipeController::class, 'edit'])->name('recipe.edit');
