@@ -446,6 +446,7 @@ class PlanController extends Controller
 //    }
 
     public function downloadPlan(Plan $plan){
+        ob_start();
         $patient = $plan->patient;
         $recipes_types = RecipeType::all();
         $view_by_day = "";

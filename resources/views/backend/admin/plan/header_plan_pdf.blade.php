@@ -26,7 +26,9 @@
         <img src="{{ asset('img/ndf.png') }}" alt="">
         <img src="{{ url('img/ndf.png') }}" alt="Image"/>
         <img src="./img/ndf.png" />
-        <img src="public/img/ndf.png" />
+        <img src="/public/img/ndf.png" />
+        <img src="{{ public_path('img/ndf.png') }}" >
+
     </div>
 </div>
 <div style="page-break-after: always;"></div>
