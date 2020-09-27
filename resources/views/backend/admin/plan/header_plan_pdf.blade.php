@@ -24,7 +24,7 @@
     <hr>
     <div id="logo_grande">
         <p>{{ asset('img/ndf.png') }}</p>
-        <p>{{ url('img/ndf.png') }} }}</p>
+        <p>{{ url('img/ndf.png') }}</p>
 
         <img src="{{ asset('img/ndf.png') }}" alt="">
         <img src="{{ url('img/ndf.png') }}" alt="">
