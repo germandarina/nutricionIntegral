@@ -23,26 +23,26 @@
     </table>
     <hr>
     <div id="logo_grande">
-        <p>{{ asset('img/ndf.png') }}</p>
-        <p>{{ url('img/ndf.png') }}</p>
-        <p>{{ public_path('img/ndf.png') }}</p>
-        <p>"../img/ndf.png"</p>
-        <p>"/public/img/ndf.png"</p>
-        <p>"public/img/ndf.png"</p>
-        <p>"assets/img/ndf.png"</p>
-        <p>../../../../../public/img/ndf.png</p>
+{{--        <p>{{ asset('img/ndf.png') }}</p>--}}
+{{--        <p>{{ url('img/ndf.png') }}</p>--}}
+{{--        <p>{{ public_path('img/ndf.png') }}</p>--}}
+{{--        <p>"../img/ndf.png"</p>--}}
+{{--        <p>"/public/img/ndf.png"</p>--}}
+{{--        <p>"public/img/ndf.png"</p>--}}
+{{--        <p>"assets/img/ndf.png"</p>--}}
+{{--        <p>../../../../../public/img/ndf.png</p>--}}
 
         <img src="../../../../../public/img/ndf.png" >
         <img src="../../../../../public/img/fondo.jpg" >
 
-{{--        <img src="{{ asset('img/ndf.png') }}" >--}}
-{{--        <img src="{{ url('img/ndf.png') }}" >--}}
-{{--        <img src="../img/ndf.png" >--}}
-{{--        <img src="/public/img/ndf.png" >--}}
-{{--        <img src="public/img/ndf.png" >--}}
-{{--        <img src="assets/img/ndf.png" >--}}
-{{--        <img src="{{ public_path('img/ndf.png') }}" >--}}
-{{--        <img src="{{ public_path() .'img/ndf.png' }}">--}}
+        <img src="{{ asset('img/ndf.png') }}" >
+        <img src="{{ url('img/ndf.png') }}" >
+        <img src="../img/ndf.png" >
+        <img src="/public/img/ndf.png" >
+        <img src="public/img/ndf.png" >
+        <img src="assets/img/ndf.png" >
+        <img src="{{ public_path('img/ndf.png') }}" >
+        <img src="{{ public_path() .'img/ndf.png' }}">
 
     </div>
 </div>

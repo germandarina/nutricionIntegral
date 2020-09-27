@@ -10,6 +10,8 @@ use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\UpdatePlanRequest;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -447,6 +449,8 @@ class PlanController extends Controller
 
     public function downloadPlan(Plan $plan){
         ob_start();
+        header_remove();
+
         $patient = $plan->patient;
         $recipes_types = RecipeType::all();
         $view_by_day = "";
@@ -479,12 +483,25 @@ class PlanController extends Controller
         $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
         $final_data = view('backend.admin.plan.final_data_plan_pdf');
        // return view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header'));
-        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,'tempDir' => public_path(),
-            'chroot'  => public_path()])
-                    ->loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
 
-        $nombre_archivo = snake_case("{$plan->name}_{$patient->full_name}");
-        return $pdf->download("{$nombre_archivo}.pdf");
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $options->setIsHtml5ParserEnabled(true);
+        $options->setTempDir(public_path());
+        $options->setChroot(public_path());
+        $domPdf = new Dompdf($options);
+        $html   = view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+        $domPdf->loadHtml($html,'utf-8');
+
+//        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,'tempDir' => public_path(),
+//            'chroot'  => public_path()])
+//                    ->loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+         $domPdf->render();
+         $nombre_plan = trim($plan->name);
+         $nombre_paciente = trim($patient->full_name);
+         $nombre_archivo = snake_case("{$nombre_plan}_{$nombre_paciente}");
+         return $domPdf->stream($nombre_archivo);
+         //return $pdf->download("{$nombre_archivo}.pdf");
     }
 
     public function storeOrderPlanDetailDay(){
