@@ -33,6 +33,7 @@
         <p>../../../../../public/img/ndf.png</p>
 
         <img src="../../../../../public/img/ndf.png" >
+        <img src="../../../../../public/img/fondo.jpg" >
 
 {{--        <img src="{{ asset('img/ndf.png') }}" >--}}
 {{--        <img src="{{ url('img/ndf.png') }}" >--}}
