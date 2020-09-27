@@ -72,6 +72,7 @@
                 "draw":         true,
                 'paging':       false,
                 "info":         false,
+                "orderable"  : false,
                 "buttons": [],
                 ajax: {
                     url: "{{ route('admin.recipe.getIngredients',$recipe->id) }}",
@@ -80,9 +81,9 @@
                     },
                 },
                 columns: [
-                    {data: 'food.name', name: 'food.name',width:'40%'},
-                    {data: 'quantity_description', name: 'quantity_description',width:'30%'},
-                    {data: 'quantity_grs', name: 'quantity_grs',width:'20%'},
+                    {data: 'food.name', name: 'food.name',width:'40%',orderable:false},
+                    {data: 'quantity_description', name: 'quantity_description',width:'30%',orderable:false},
+                    {data: 'quantity_grs', name: 'quantity_grs',width:'20%',orderable:false},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,width:'10%'},
                 ],
                 "footerCallback": function( tfoot, data, start, end, display ) {

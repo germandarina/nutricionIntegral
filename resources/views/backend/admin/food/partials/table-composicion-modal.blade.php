@@ -18,7 +18,7 @@
                     <td style="text-align: center;">{{$food->grasa_total}}</td>
                     <td style="text-align: center;">{{$food->carbohidratos_totales}}</td>
                     <td style="text-align: center;">{{$food->colesterol}}</td>
-                    <td style="text-align: center;"><a href="#" class="btn btn-sm btn-success" onclick="getComposicionCompleta({{$food->id}})"><i class="fas fa-eye"></i></a></td>
+                    <td style="text-align: center;"><a href="#" class="btn btn-sm btn-info" onclick="getComposicionCompleta({{$food->id}})"><i class="fas fa-eye"></i></a></td>
                 </tr>
             </tbody>
         </table>

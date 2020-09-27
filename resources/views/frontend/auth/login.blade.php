@@ -13,7 +13,7 @@
     <title>Nutricion Integral - Login</title>
     <style>
         body {
-            background-image:url('img/fondo.jpg');
+            background-image:url('img/ndf.png');
             background-color: #FFFFFF;
         }
         .login-sidebar:after {
@@ -21,10 +21,17 @@
             background: -webkit-linear-gradient(-135deg,white,whitesmoke);
         }
         .login-button, .bar:before, .bar:after{
-            background:#dd4b39;
+            background: #e9dd58;
+            color: black;
+            font-weight: bold;
         }
-        .signin{
-            font-size: 14px;
+        /*.signin{*/
+        /*    font-size: 14px;*/
+        /*}*/
+
+        .login-button:hover, .login-button:focus {
+            color: #000;
+            opacity: 1;
         }
     </style>
 
@@ -35,7 +42,7 @@
             ]); ?>
         </script>
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+{{--    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>--}}
 </head>
 <body>
 <div class="container-fluid">
@@ -46,8 +53,8 @@
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
                     <div class="logo-title-container">
                         <div class="copy animated fadeIn">
-                            <h1>Nutricion Integral</h1>
-                            <p>Administración</p>
+{{--                            <h1>Nutricion Integral</h1>--}}
+{{--                            <p>Administración</p>--}}
                         </div>
                     </div> <!-- .logo-title-container -->
                 </div>
@@ -59,8 +66,10 @@
             <div class="login-container animated fadeInRightBig">
 
                 <h2>Inicio de Sesión</h2>
+
                 {{ html()->form('POST', route('frontend.auth.login.post'))->class('form-horizontal')->open() }}
-                 {{ csrf_field() }}
+
+                {{ csrf_field() }}
                 <div class="form-group row">
                         {{ html()->email('email')
                                    ->class('form-control')
@@ -73,30 +82,35 @@
                     </div>
 
                 <div class="form-group row">
-                        {{ html()->password('password')
+                    {{ html()->password('password')
                        ->class('form-control')
                        ->placeholder('Contraseña')
                        ->attribute('maxlength', 191)
                        ->required()
                        ->autofocus() }}
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                    </div>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                </div>
 
+                <div class="form-group row">
                     <button type="submit" class="btn btn-block login-button">
-                        <span class="signingin hidden"><span class="glyphicon glyphicon-refresh">
-                        <span class="signin">Acceder</span>
+                        <span class="signingin hidden"></span>
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        <span class="signin"><strong>Ingresar</strong></span>
                     </button>
+                </div>
 
                 {{ html()->form()->close() }}
 
                 @if(!$errors->isEmpty())
-                    <div class="alert alert-black">
-                        <ul class="list-unstyled">
-                            @foreach($errors->all() as $err)
-                                <li>{{ $err }}</li>
-                            @endforeach
-                        </ul>
+                    <div class="form-group row">
+                        <div class="alert alert-danger" style="width: 100% !important;">
+                            <ul class="list-unstyled">
+                                @foreach($errors->all() as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 @endif
 

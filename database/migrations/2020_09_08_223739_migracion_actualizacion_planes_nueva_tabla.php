@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\PlanDetailDay;
+//use App\Models\PlanDetailDay;
 use App\Models\PlanDetail;
 class MigracionActualizacionPlanesNuevaTabla extends Migration
 {
@@ -14,8 +14,9 @@ class MigracionActualizacionPlanesNuevaTabla extends Migration
      */
     public function up()
     {
+        return;
         DB::beginTransaction();
-            $plan_detail_days = PlanDetailDay::all();
+            $plan_detail_days = [];//PlanDetailDay::all();
             foreach ($plan_detail_days as $plan_detail_day){
                 $plan_details = PlanDetail::where('id',$plan_detail_day->plan_detail_id)->get();
                 foreach ($plan_details as $plan_detail){

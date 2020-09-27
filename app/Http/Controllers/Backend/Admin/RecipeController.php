@@ -197,7 +197,10 @@ class RecipeController extends Controller
     public function getIngredients(){
         if(request('recipe_id')){
             $recipe = Recipe::find(request('recipe_id'));
-            $data =  Ingredient::with(['food','recipe'])->where('recipe_id',$recipe->id)->get();
+            $data =  Ingredient::with(['food'])
+                                ->where('recipe_id',$recipe->id)
+                                ->orderBy('quantity_grs','asc')
+                                ->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     return view('backend.admin.recipe.includes.datatable-ingredients-buttons',compact('row'));

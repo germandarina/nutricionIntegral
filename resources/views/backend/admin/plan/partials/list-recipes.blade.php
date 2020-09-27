@@ -1,5 +1,5 @@
 @foreach($recipes as $recipe)
-    <div class="col-sm-4 mb-3" style="max-height: 30%;">
+    <div class="col-sm-4 mb-3" style="max-height: 40%;">
         <div class="card" style="margin-bottom: 0px !important;">
             <div class="accordion @if(in_array($recipe->id,$ids_recipes_already_used)) recipe_used @endif" id="accordion" role="tablist" )>
                 <div class="card-header" id="header_{{$recipe->id}}" role="tab" style="font-size: 11px; padding: 7px;">
@@ -8,7 +8,7 @@
                        href="#collapse_{{$recipe->id}}"
                        aria-expanded="true"
                        aria-controls="collapse_{{$recipe->id}}"
-                       class=""><strong>{{substr(strtoupper($recipe->name),0,40)}}</strong></a>
+                       class=""><strong>{{substr(strtoupper($recipe->name),0,36)}}</strong></a>
                     <div class="card-header-actions">
                         <a class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}},null)">
                             <i class="fas fa-plus-square"></i>
