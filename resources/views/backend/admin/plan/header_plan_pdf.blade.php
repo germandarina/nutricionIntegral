@@ -35,17 +35,17 @@
 {{--        <img src="{{ base_path() }}/public/img/ndf.png" />--}}
 
 
-{{--        <img src="../../../../../public/img/ndf.png" >--}}
-{{--        <img src="../../../../../public/img/fondo.jpg" >--}}
+        <img src="../../../../../public/img/ndf.png" >
+        <img src="../../../../../public/img/fondo.jpg" >
 
-{{--        <img src="{{ asset('img/ndf.png') }}" >--}}
-{{--        <img src="{{ url('img/ndf.png') }}" >--}}
-{{--        <img src="../img/ndf.png" >--}}
-{{--        <img src="/public/img/ndf.png" >--}}
-{{--        <img src="public/img/ndf.png" >--}}
-{{--        <img src="assets/img/ndf.png" >--}}
-{{--        <img src="{{ public_path('img/ndf.png') }}" >--}}
-{{--        <img src="{{ public_path() .'img/ndf.png' }}">--}}
+        <img src="{{ asset('img/ndf.png') }}" >
+        <img src="{{ url('img/ndf.png') }}" >
+        <img src="../img/ndf.png" >
+        <img src="/public/img/ndf.png" >
+        <img src="public/img/ndf.png" >
+        <img src="assets/img/ndf.png" >
+        <img src="{{ public_path('img/ndf.png') }}" >
+        <img src="{{ public_path() .'img/ndf.png' }}">
         <img src="data:image/png;base64,{{$base_64}}" />
 
 
