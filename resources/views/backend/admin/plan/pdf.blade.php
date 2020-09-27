@@ -46,7 +46,7 @@
         #logo_grande {
             text-align: center;
             margin-bottom: 10px;
-            background-image: {{ asset('img/ndf.png') }};
+            {{--background-image: {{ asset('img/ndf.png') }};--}}
         }
 
         #logo_grande img{
