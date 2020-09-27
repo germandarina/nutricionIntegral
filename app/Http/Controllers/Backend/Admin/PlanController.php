@@ -479,15 +479,12 @@ class PlanController extends Controller
 //                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details'));
 //            }
 //        }
-        $imagen = storage_path('images/ndt.png');
-        $data = \File::get($imagen);
-        $base_64 = base64_encode($data);
-        $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','base_64'));
+
+        $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
         $final_data = view('backend.admin.plan.final_data_plan_pdf');
 
         $options = new Options();
         $options->setIsRemoteEnabled(true);
-        $options->setIsHtml5ParserEnabled(true);
         $domPdf = new Dompdf($options);
         $html   = view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
         $domPdf->loadHtml($html,'utf-8');

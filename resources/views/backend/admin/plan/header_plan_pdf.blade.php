@@ -23,23 +23,7 @@
     </table>
     <hr>
     <div id="logo_grande">
-
-{{--        <img src="{{ base_path() }}/public/img/ndf.png" />--}}
-{{--        <img src="../../../../../public/img/ndf.png" >--}}
-{{--        <img src="../../../../../public/img/fondo.jpg" >--}}
-
-{{--        <img src="{{ asset('img/ndf.png') }}" >--}}
-{{--        <img src="{{ url('img/ndf.png') }}" >--}}
-{{--        <img src="../img/ndf.png" >--}}
-{{--        <img src="/public/img/ndf.png" >--}}
-{{--        <img src="public/img/ndf.png" >--}}
-{{--        <img src="assets/img/ndf.png" >--}}
-{{--        <img src="{{ storage_path('images/ndt.png') }}" >--}}
-        <img src="{{ storage_path() .'images/ndt.png' }}">
-        <img src="img/ndf.png" alt="">
-        <img src="data:image/png;base64,{{$base_64}}" />
-
-
+        <img src="{{ asset('img/ndf.png') }}" alt="">
     </div>
 </div>
 <div style="page-break-after: always;"></div>
