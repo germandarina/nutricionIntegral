@@ -23,11 +23,17 @@
     </table>
     <hr>
     <div id="logo_grande">
-        <img src="{{ asset('img/ndf.png') }}" alt="">
-        <img src="{{ url('img/ndf.png') }}" alt="Image"/>
-        <img src="./img/ndf.png" />
-        <img src="/public/img/ndf.png" />
-        <img src="{{ public_path('img/ndf.png') }}" >
+        @php  asset('img/ndf.png') @endphp
+        @php  url('img/ndf.png') @endphp
+        @php  public_path('img/ndf.png') @endphp
+        @php  "./img/ndf.png" @endphp
+        @php  "/public/img/ndf.png" @endphp
+
+{{--        <img src="{{ asset('img/ndf.png') }}" alt="">--}}
+{{--        <img src="{{ url('img/ndf.png') }}" alt="Image"/>--}}
+{{--        <img src="./img/ndf.png" />--}}
+{{--        <img src="/public/img/ndf.png" />--}}
+{{--        <img src="{{ public_path('img/ndf.png') }}" >--}}
 
     </div>
 </div>
