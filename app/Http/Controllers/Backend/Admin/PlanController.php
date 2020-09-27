@@ -449,32 +449,32 @@ class PlanController extends Controller
         $patient = $plan->patient;
         $recipes_types = RecipeType::all();
         $view_by_day = "";
-        for ($day=1;$day<=$plan->days;$day++){
-            $details = PlanDetail::with(['recipe'=>function($query){
-                                                $query->with(['ingredients.food','recipeType']);
-                                            }])
-                                            ->where('plan_id',$plan->id)
-                                            ->where('day',$day)
-                                            ->orderBy('order')
-                                            ->get();
-            if($details->isEmpty()){
-                return redirect()->route('admin.plan.index')->with(['error'=>'Debe terminar el plan para descargarlo']);
-            }
-            if($details->isNotEmpty() && !$details->first()->order){
-                $array_details_by_day = [];
-                foreach ($recipes_types as $type){
-                    $recipes = $details->filter(function ($detail) use ($day,$type){
-                        return $detail->recipe->recipe_type_id == $type->id;
-                    });
-                    if($recipes->isNotEmpty()){
-                        $array_details_by_day[] = $recipes->values()->all();
-                    }
-                }
-                $view_by_day .= view('backend.admin.plan.table_by_day',compact('day','array_details_by_day'));
-            }else{
-                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details'));
-            }
-        }
+//        for ($day=1;$day<=$plan->days;$day++){
+//            $details = PlanDetail::with(['recipe'=>function($query){
+//                                                $query->with(['ingredients.food','recipeType']);
+//                                            }])
+//                                            ->where('plan_id',$plan->id)
+//                                            ->where('day',$day)
+//                                            ->orderBy('order')
+//                                            ->get();
+//            if($details->isEmpty()){
+//                return redirect()->route('admin.plan.index')->with(['error'=>'Debe terminar el plan para descargarlo']);
+//            }
+//            if($details->isNotEmpty() && !$details->first()->order){
+//                $array_details_by_day = [];
+//                foreach ($recipes_types as $type){
+//                    $recipes = $details->filter(function ($detail) use ($day,$type){
+//                        return $detail->recipe->recipe_type_id == $type->id;
+//                    });
+//                    if($recipes->isNotEmpty()){
+//                        $array_details_by_day[] = $recipes->values()->all();
+//                    }
+//                }
+//                $view_by_day .= view('backend.admin.plan.table_by_day',compact('day','array_details_by_day'));
+//            }else{
+//                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details'));
+//            }
+//        }
         $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
         $final_data = view('backend.admin.plan.final_data_plan_pdf');
        // return view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header'));
