@@ -23,12 +23,13 @@
     </table>
     <hr>
     <div id="logo_grande">
-        <p>{{ asset('img/ndf.png') }}</p>
-        <p>{{ url('img/ndf.png') }}</p>
+{{--        <p>{{ asset('img/ndf.png') }}</p>--}}
+{{--        <p>{{ url('img/ndf.png') }}</p>--}}
 
-        <img src="{{ asset('img/ndf.png') }}" alt="">
-        <img src="{{ url('img/ndf.png') }}" alt="">
-        <img src="/public/img/ndf.png" alt="">
+{{--        <img src="{{ asset('img/ndf.png') }}" alt="">--}}
+{{--        <img src="{{ url('img/ndf.png') }}" alt="">--}}
+{{--        <img src="/public/img/ndf.png" alt="">--}}
+        <img src="{{ $img_src }}" alt="">
     </div>
 </div>
 <div style="page-break-after: always;"></div>
