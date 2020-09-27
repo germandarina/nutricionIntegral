@@ -133,17 +133,17 @@ class ClassificationController extends Controller
     public function destroy(ManageClassificationRequest $request, Classification $classification)
     {
         if (!auth()->user()->isAdmin() || $classification->default_register) {
-            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
+            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
         }
 
         $classification->load('patients','recipes');
 
         if($classification->recipes->isNotEmpty()){
-            return response()->json(['mensaje'=>"Una receta tiene asignada esta clasificación"],422);
+            return response()->json(['error'=>"Una receta tiene asignada esta clasificación"],422);
         }
 
         if($classification->patients->isNotEmpty()){
-            return response()->json(['mensaje'=>"Un paciente tiene asignado esta clasificación"],422);
+            return response()->json(['error'=>"Un paciente tiene asignado esta clasificación"],422);
         }
 
         $this->classificationRepository->deleteById($classification->id);

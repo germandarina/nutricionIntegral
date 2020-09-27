@@ -151,13 +151,14 @@ class RecipeController extends Controller
                     return response()->json(['error'=>"La receta forma parte del plan {$plan->name} que esta habilitado."],422);
                 }
             }
-            $this->recipeRepository->deleteById($recipe->id);
-        }
-        else
-        {
-            $this->recipeRepository->deleteById($recipe->id);
         }
 
+        $ingredients = $recipe->ingredients;
+        foreach ($ingredients as $ingredient)
+        {
+            $ingredient->delete();
+        }
+        $this->recipeRepository->deleteById($recipe->id);
 
         return response()->json(['mensaje'=>"Receta eliminada"],200);
     }

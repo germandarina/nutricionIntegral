@@ -129,13 +129,13 @@ class FoodController extends Controller
     public function destroy(ManageFoodRequest $request, Food $food)
     {
         if (!auth()->user()->isAdmin()) {
-            return response()->json(['mensaje'=>"No tiene permiso para eliminar"],422);
+            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
         }
 
         $food->load('ingredients');
 
         if($food->ingredients->isNotEmpty()){
-            return response()->json(['mensaje'=>"El alimento ya forma parte de una receta"],422);
+            return response()->json(['error'=>"El alimento ya forma parte de una receta"],422);
         }
 
         $this->foodRepository->deleteById($food->id);
