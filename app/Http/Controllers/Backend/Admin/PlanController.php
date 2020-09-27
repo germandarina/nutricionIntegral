@@ -479,7 +479,7 @@ class PlanController extends Controller
 //                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details'));
 //            }
 //        }
-        $imagen = public_path('img/ndf.png');
+        $imagen = storage_path('images/ndt.png');
         $data = \File::get($imagen);
         $base_64 = base64_encode($data);
         $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','base_64'));
