@@ -34,9 +34,10 @@
 {{--        <img src="/public/img/ndf.png" >--}}
 {{--        <img src="public/img/ndf.png" >--}}
 {{--        <img src="assets/img/ndf.png" >--}}
-        <img src="{{ storage_path('images/ndt.png') }}" >
-        <img src="{{ storage_path() .'images/ndt.png' }}">
-        <img src="data:image/png;base64,{{$base_64}}" />
+{{--        <img src="{{ storage_path('images/ndt.png') }}" >--}}
+{{--        <img src="{{ storage_path() .'images/ndt.png' }}">--}}
+        <img src="img/ndf.png" alt="">
+{{--        <img src="data:image/png;base64,{{$base_64}}" />--}}
 
 
     </div>
