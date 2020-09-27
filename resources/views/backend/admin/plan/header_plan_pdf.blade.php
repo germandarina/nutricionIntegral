@@ -31,6 +31,9 @@
 {{--        <p>"public/img/ndf.png"</p>--}}
 {{--        <p>"assets/img/ndf.png"</p>--}}
 {{--        <p>../../../../../public/img/ndf.png</p>--}}
+            <p>{{ base_path() }}/location/to/image/image.png"</p>
+        <img src="{{ base_path() }}/public/img/ndf.png" />
+
 
         <img src="../../../../../public/img/ndf.png" >
         <img src="../../../../../public/img/fondo.jpg" >

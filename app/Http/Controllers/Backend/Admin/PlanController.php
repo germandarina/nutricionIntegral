@@ -487,8 +487,6 @@ class PlanController extends Controller
         $options = new Options();
         $options->setIsRemoteEnabled(true);
         $options->setIsHtml5ParserEnabled(true);
-        $options->setTempDir(public_path());
-        $options->setChroot(public_path());
         $domPdf = new Dompdf($options);
         $html   = view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
         $domPdf->loadHtml($html,'utf-8');
