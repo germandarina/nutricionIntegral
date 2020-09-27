@@ -36,7 +36,7 @@
         stateSave: true,
         fixedHeader: true,
         language: {
-            "url": "/datatables/Spanish.json"
+            "url": " {{ asset('/datatables/Spanish.json') }}"
         }
     });
 </script>
