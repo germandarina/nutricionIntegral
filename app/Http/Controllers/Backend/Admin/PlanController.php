@@ -451,8 +451,6 @@ class PlanController extends Controller
         $patient = $plan->patient;
         $recipes_types = RecipeType::all();
         $view_by_day = "";
-        ob_start();
-        header_remove();
         for ($day=1;$day<=$plan->days;$day++){
             $details = PlanDetail::with(['recipe'=>function($query){
                                                 $query->with(['ingredients.food','recipeType']);
@@ -480,15 +478,7 @@ class PlanController extends Controller
             }
         }
 
-        $img_data = fopen ( public_path('img/ndf.png'), 'rb' );
-        $img_size = filesize ( public_path('img/ndf.png') );
-        $binary_image = fread ( $img_data, $img_size );
-        fclose ( $img_data );
-
-        //Build the src string to place inside your img tag
-        $img_src = "data:image/png;base64,".str_replace ("\n", "", base64_encode($binary_image));
-
-        $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','img_src'));
+        $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
         $final_data = view('backend.admin.plan.final_data_plan_pdf');
 
         $options = new Options();
