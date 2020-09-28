@@ -32,10 +32,10 @@ class StorePlanRequest extends FormRequest
             'name' => ['required', 'max:200','min:6'],
             'patient_id' => ['required'], // agregar validacion de si existe en la tabla food_group
             'days' =>['required','numeric'],
-            'energia_kcal_por_dia' =>['required','numeric'],
-            'proteina_por_dia' =>['required','numeric'],
-            'carbohidratos_por_dia' =>['required','numeric'],
-            'grasa_total_por_dia' =>['required','numeric'],
+            'energia_kcal_por_dia' =>['required'],
+            'proteina_por_dia' =>['required'],
+            'carbohidratos_por_dia' =>['required'],
+            'grasa_total_por_dia' =>['required'],
         ];
     }
 

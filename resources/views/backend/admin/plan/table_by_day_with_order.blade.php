@@ -1,6 +1,6 @@
 <h3 style="text-align: center; background-color: lightgrey; padding: 5px;">DÍA {{ $day }}</h3>
-@if(isset($details_days))
-    @foreach($details_days as $j => $detail)
+@if(isset($details))
+    @foreach($details as $j => $detail)
         <div>
             @switch(true)
                 @case($j == 0 and $detail->recipe->recipe_type_id == \App\Models\RecipeType::getIdByName('Desayuno/Merienda'))

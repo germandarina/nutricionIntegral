@@ -10,7 +10,7 @@
         </tr>
         <tr>
             <td style="text-align: left;"><span>EDAD</span> {{ $patient->birthdate->age }}</td>
-            <td style="text-align: right !important;">General Paz 555 - 3ro A</td>
+            <td style="text-align: right !important;">General Paz 576 - 1er Piso</td>
         </tr>
         <tr>
             <td style="text-align: left;"><span>DIRECCION</span>{{$patient->address}}</td>

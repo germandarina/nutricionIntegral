@@ -480,9 +480,7 @@ class PlanController extends Controller
 
         $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
         $final_data = view('backend.admin.plan.final_data_plan_pdf');
-        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,'tempDir' => public_path(),
-            'chroot'  => public_path()])
-            ->loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+        $pdf = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
 
         $nombre_plan = strtolower(trim($plan->name));
         $nombre_archivo = snake_case("{$nombre_plan}_{$patient->full_name}");
