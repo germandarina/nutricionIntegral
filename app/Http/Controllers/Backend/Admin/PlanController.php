@@ -480,17 +480,13 @@ class PlanController extends Controller
 
         $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
         $final_data = view('backend.admin.plan.final_data_plan_pdf');
+        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,'tempDir' => public_path(),
+            'chroot'  => public_path()])
+            ->loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
 
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-        $domPdf = new Dompdf($options);
-        $html   = view('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
-        $domPdf->loadHtml($html,'utf-8');
-        $domPdf->render();
-        $nombre_plan = trim($plan->name);
-        $nombre_paciente = trim($patient->full_name);
-        $nombre_archivo = snake_case("{$nombre_plan}_{$nombre_paciente}");
-        return $domPdf->stream($nombre_archivo);
+        $nombre_plan = strtolower(trim($plan->name));
+        $nombre_archivo = snake_case("{$nombre_plan}_{$patient->full_name}");
+        return $pdf->download("{$nombre_archivo}.pdf");
     }
 
     public function storeOrderPlanDetailDay(){
