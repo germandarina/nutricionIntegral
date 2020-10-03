@@ -39,6 +39,7 @@
     </div>
 
 @endsection
+
 @section('modal-yield')
     <div class="modal fade" id="modalIngredientes" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -126,13 +127,18 @@
         });
 
         function limpiarModal() {
-            // $("#food_group_id").select2("val",0);
             $("#food_id").select2("val",0);
             $("#quantity_description").val("");
             $("#quantity_grs").val("");
             $("#ingredient_id").val("");
             $("#divComposicion").empty();
             $("#divCalculate").empty();
+        }
+
+        function limpiarCantidades(){
+            $("#quantity_description").val("");
+            $("#quantity_grs").val("");
+            $('#divCalculate').empty();
         }
 
         function modalIngredientes(event) {
@@ -286,6 +292,7 @@
                     $("#quantity_description").val(datos.ingredient.quantity_description);
                     $("#quantity_grs").val(datos.ingredient.quantity_grs);
                     $("#ingredient_id").val(datos.ingredient.id);
+                    calculateGrs();
                     $("#modalIngredientes").modal("show");
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -402,7 +409,7 @@
         function calculateGrs(){
             var food_id  = $("#food_id").val();
             var quantity = $("#quantity_grs").val();
-
+            procesando.remove();
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
             $.ajax({

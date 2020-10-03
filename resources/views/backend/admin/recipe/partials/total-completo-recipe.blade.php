@@ -88,6 +88,10 @@
                     <th style="text-align: left;"> Total Colesterol (mg)</th>
                     <th style="text-align: right;">{{$recipe->total_colesterol}}</th>
                 </tr>
+                <tr>
+                    <th style="text-align: left;"> Total Fibra (g)</th>
+                    <th style="text-align: right;">{{$recipe->total_fibra}}</th>
+                </tr>
             </thead>
         </table>
     </div>

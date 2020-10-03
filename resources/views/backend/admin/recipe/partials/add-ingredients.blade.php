@@ -1,18 +1,3 @@
-{{--<div class="row">--}}
-{{--    {{ html()->label('Grupo de Alimento')--}}
-{{--               ->class('col-md-3 form-control-label')--}}
-{{--               ->for('food_group_id') }}--}}
-{{--    <div class="col-md-9">--}}
-{{--        {{ html()->select('food_group_id',\App\Models\FoodGroup::pluck('name','id'))--}}
-{{--            ->class('form-control')--}}
-{{--            ->placeholder('Seleccione...')--}}
-{{--            ->attribute("id","food_group_id")--}}
-{{--            ->required()--}}
-{{--            }}--}}
-{{--    </div><!--col-->--}}
-{{--</div>--}}
-{{--<br>--}}
-
 <div class="row">
     {{ html()->label('Alimento')
                ->class('col-md-2 form-control-label')
@@ -22,7 +7,7 @@
             ->class('form-control')
             ->placeholder('Buscar alimento...')
             ->attribute("id","food_id")
-            ->attributes(['onchange'=>'getComposicionBasica()'])
+            ->attributes(['onchange'=>'getComposicionBasica(),limpiarCantidades()'])
             ->required()
             }}
     </div><!--col-->
@@ -32,7 +17,7 @@
 
 </div>
 <div class="row">
-    {{ html()->label('Cantidad (Descripcion)')
+    {{ html()->label('Desc. de Cant.')
                 ->class('col-md-2 form-control-label')
                 ->for('quantity_description') }}
     <div class="col-md-9">
@@ -47,7 +32,7 @@
 </div>
 <br>
 <div class="row">
-    {{ html()->label('Cantidad (Grs)')
+    {{ html()->label('Cant. en Grs')
                 ->class('col-md-2 form-control-label')
                 ->for('quantity_grs') }}
     <div class="col-md-9">
