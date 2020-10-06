@@ -43,6 +43,11 @@
         border: 2px solid #ff8d7e;
         background-color: #ff8d7e;
     }
+
+    .recipe_used_in_plan{
+        border: 2px solid #7e80ff;
+        background-color: #7e80ff;
+    }
 </style>
 @push('after-scripts')
     @include('datatables.includes')
@@ -278,8 +283,7 @@
                         $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
                         getTotalesPorDia(day);
                     })
-
-                    $("#recipes-datatable").DataTable().ajax.reload();
+                    getRecipes();
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();
@@ -612,44 +616,6 @@
             modalAgregarReceta(event,recipe_id,"ver");
         }
 
-        function eliminarReceta(event,plan_detail_id) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Esta seguro de realizar esta accion?',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si',
-                cancelButtonText : 'No',
-            }).then((result) => {
-                if (result.value) {
-
-                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
-
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url:      '{{ route('admin.plan.deleteDetail') }}',
-                        type:     'DELETE',
-                        data:    {
-                            'id':plan_detail_id,
-                        },
-                        success: function(data) {
-                            var datos = data;
-                            procesando.remove();
-                            Lobibox.notify('success',{msg:datos.mensaje});
-                            $('#recipes-datatable').DataTable().ajax.reload();
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            procesando.remove();
-                            Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
-                        }
-                    });
-                }
-            });
-        }
-
         function eliminarRecetaPorDia(event,plan_detail_id) {
             event.preventDefault();
             Swal.fire({
@@ -680,6 +646,7 @@
                             Lobibox.notify('success',{msg:datos.mensaje});
                             $(`#recipes-by-day-datatable-${datos.day}`).DataTable().ajax.reload();
                             getTotalesPorDia(datos.day);
+                            getRecipes();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             procesando.remove();

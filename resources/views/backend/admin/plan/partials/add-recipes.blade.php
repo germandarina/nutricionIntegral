@@ -81,7 +81,10 @@
 </div><!--row-->
 <div class="row">
     <div class="col-sm-6">
-        <p style="font-size: 12px;"><span class="badge rounded-pill" style="background-color: #ff8d7e">&nbsp;&nbsp;</span><strong>&nbsp;Recetas utilizadas en planes anteriores</strong></p>
+        <p style="font-size: 12px;"><span class="badge rounded-pill" style="background-color: #ff8d7e;">&nbsp;&nbsp;</span><strong>&nbsp;Recetas utilizadas en planes anteriores</strong></p>
+    </div>
+    <div class="col-sm-6">
+        <p style="font-size: 12px;"><span class="badge rounded-pill" style="background-color: #7e80ff;">&nbsp;&nbsp;</span><strong>&nbsp;Recetas utilizadas en este plan</strong></p>
     </div>
 </div>
 <div class="row" id="divRecipes"></div>

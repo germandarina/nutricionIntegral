@@ -201,6 +201,15 @@ class PlanController extends Controller
                                         })->groupBy('recipe_id')
                                         ->get(['recipe_id'])->toArray();
 
+        $recipes_already_used_in_plan = PlanDetail::where('plan_id',$plan_id)
+                                            ->groupBy('recipe_id')
+                                            ->get(['recipe_id'])->toArray();
+
+
+        $recipes_already_used_in_plan = array_map(function ($plan_detail){
+            return $plan_detail['recipe_id'];
+        },$recipes_already_used_in_plan);
+
         $ids_recipes_already_used = array_map(function ($plan_detail){
             return $plan_detail['recipe_id'];
         },$recipes_already_used);
@@ -239,7 +248,7 @@ class PlanController extends Controller
         }
         $recipes = $query_recipes->get();
         $cantidad = count($recipes);
-        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes','ids_recipes_already_used'));
+        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes','ids_recipes_already_used','recipes_already_used_in_plan'));
 
         return compact('html','cantidad');
     }
