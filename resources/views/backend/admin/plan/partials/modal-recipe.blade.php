@@ -26,6 +26,8 @@
                 </table>
             </div>
             <hr>
+            @include('backend.admin.recipe.partials.table-total-recipe')
+            <hr>
             <div id="divAgregarReceta" style="border: 1px solid #1abc9c; padding: 5px;">
                 <div class="row">
                     <div class="col-md-4">

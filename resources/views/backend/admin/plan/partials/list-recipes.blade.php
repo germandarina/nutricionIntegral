@@ -10,7 +10,7 @@
                        aria-controls="collapse_{{$recipe->id}}"
                        class=""><strong>{{substr(strtoupper($recipe->name),0,36)}}</strong></a>
                     <div class="card-header-actions">
-                        <a class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}},null)">
+                        <a title="Agregar Receta" rel="tooltip" class="btn btn-sm btn-success" href="#" onclick="modalAgregarReceta(event,{{$recipe->id}},null)">
                             <i class="fas fa-plus-square"></i>
                         </a>
                     </div>
