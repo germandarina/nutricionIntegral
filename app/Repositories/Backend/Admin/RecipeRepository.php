@@ -145,4 +145,35 @@ class RecipeRepository extends BaseRepository
             return $ingredient;
         });
     }
+
+    public function copyRecipe(Recipe $recipe_original,$name){
+
+        if (!auth()->user()->isAdmin()) {
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
+
+        return DB::transaction(function () use ($recipe_original,$name) {
+            $recipe                 = new Recipe();
+            $recipe->id             = null;
+            $recipe->edit           = false;
+            $recipe->name           = $name;
+            $recipe->recipe_type_id = $recipe_original->recipe_type_id;
+            $recipe->observation    = $recipe_original->observation;
+            $recipe->save();
+
+            foreach ($recipe_original->ingredients as $ingredient_original){
+                $ingredient = new Ingredient();
+                $ingredient->fill($ingredient_original->toArray());
+                $ingredient->recipe_id    = $recipe->id;
+                $ingredient->id           = null;
+                $ingredient->save();
+            }
+
+            $classifications_ids = $recipe_original->classifications->pluck('id');
+
+            $recipe->classifications()->attach($classifications_ids);
+
+            return $recipe;
+        });
+    }
 }

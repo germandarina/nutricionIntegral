@@ -22,4 +22,5 @@ Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::patch('/', [RecipeController::class, 'update'])->name('recipe.update');
     Route::post('destroy', [RecipeController::class, 'destroy'])->name('recipe.destroy');
     Route::post('restore', [RecipeController::class, 'restore'])->name('recipe.restore');
+    Route::post('copy-recipe', [RecipeController::class, 'copyRecipe'])->name('recipe.copyRecipe');
 });

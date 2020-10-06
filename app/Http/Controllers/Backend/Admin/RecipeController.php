@@ -315,4 +315,18 @@ class RecipeController extends Controller
 
         }
     }
+
+    public function copyRecipe(Recipe $recipe)
+    {
+        try{
+            $name = request('name');
+            if(empty($name))
+                throw  new \Exception("Ingrese un nombre por favor");
+
+            $this->recipeRepository->copyRecipe($recipe,$name);
+            return response()->json(['mensaje'=>"Receta Copiada"],200);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
+    }
 }
