@@ -14,7 +14,7 @@ class AlterTablePlansAddStatus extends Migration
     public function up()
     {
         Schema::table('plans',function (Blueprint  $table){
-            $table->boolean('open')->default(false);
+            $table->boolean('open')->default(false)->after('grasa_total_por_dia');
         });
     }
 
