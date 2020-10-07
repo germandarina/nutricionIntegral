@@ -457,42 +457,42 @@ class PlanController extends Controller
 //    }
 
     public function downloadPlan(Plan $plan){
+        if($plan->open)
+            return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
+
+        $details_without_order = $plan->details()->where(function ($query_where){
+            $query_where->whereNull('order')
+                    ->orWhereNull('order_type');
+        })->first();
+
+        if($details_without_order)
+            return redirect()->route('admin.plan.index')->with(['error'=>'Debe ordenar el plan para descargarlo']);
+
+        $plan->load(['patient','details']);
+
         $patient = $plan->patient;
-        $recipes_types = RecipeType::all();
+        $details = PlanDetail::with(['recipe.ingredients.food'])
+                                    ->where('plan_id',$plan->id)
+                                    ->orderBy('day','asc')
+                                    ->orderBy('order','asc')
+                                    ->get();
+
         $view_by_day = "";
         for ($day=1;$day<=$plan->days;$day++){
-            $details = PlanDetail::with(['recipe'=>function($query){
-                                                $query->with(['ingredients.food','recipeType']);
-                                            }])
-                                            ->where('plan_id',$plan->id)
-                                            ->where('day',$day)
-                                            ->orderBy('order')
-                                            ->get();
-            if($details->isEmpty()){
-                return redirect()->route('admin.plan.index')->with(['error'=>'Debe terminar el plan para descargarlo']);
-            }
-            if($details->isNotEmpty() && !$details->first()->order){
-                $array_details_by_day = [];
-                foreach ($recipes_types as $type){
-                    $recipes = $details->filter(function ($detail) use ($day,$type){
-                        return $detail->recipe->recipe_type_id == $type->id;
-                    });
-                    if($recipes->isNotEmpty()){
-                        $array_details_by_day[] = $recipes->values()->all();
-                    }
-                }
-                $view_by_day .= view('backend.admin.plan.table_by_day',compact('day','array_details_by_day'));
-            }else{
-                $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details'));
-            }
+            $details_by_day = $details->filter(function ($detail) use($day){
+                    return $detail->day == $day;
+            });
+
+            $view_by_day    .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day'));
         }
 
-        $header = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
-        $final_data = view('backend.admin.plan.final_data_plan_pdf');
-        $pdf = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+        $header         = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
+        $final_data     = view('backend.admin.plan.final_data_plan_pdf');
 
-        $nombre_plan = strtolower(trim($plan->name));
+        $nombre_plan    = strtolower(trim($plan->name));
         $nombre_archivo = snake_case("{$nombre_plan}_{$patient->full_name}");
+        $pdf            = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+
         return $pdf->download("{$nombre_archivo}.pdf");
     }
 
@@ -501,6 +501,7 @@ class PlanController extends Controller
           foreach (request('values') as $value) {
               $plan_detail = PlanDetail::find($value['id']);
               $plan_detail->order = $value['order'];
+              $plan_detail->order_type = $value['order_type'];
               $plan_detail->save();
           }
           return response()->json(['mensaje'=>"Orden de recetas guardada con éxito"],200);

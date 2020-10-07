@@ -129,14 +129,13 @@
                         },
                     },
                     columns: [
-                        {data: 'order', name: 'order', width: "10%" },
+                        {data: 'order', name: 'order', width: "15%" },
                         {data: 'recipe.name', name: 'recipe.name', width: "30%"},
                         {data: 'recipeType', name: 'recipeType',width: "10%"},
                         {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
                         {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
                         {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
                         {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},
-                        {data: 'recipe.total_colesterol', name: 'recipe.total_colesterol',},
                         {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                     ],
                 });
@@ -225,11 +224,10 @@
                     var datos = data;
                     procesando.remove();
                     $("#modalRecipe").empty().html(datos);
-                    $("select").select2({
+                    $("#days").select2({
                         minimumResultsForSearch: 5,
                         width: '100%',
                     });
-                    $("span.select2.select2-container.select2-container--default").css("width","100%");
                     $("#modalRecipe").modal('show');
                     if(parametro === "ver"){
                         $("#divAgregarReceta").hide();
@@ -368,7 +366,7 @@
                     var datos = data;
                     procesando.remove();
                     Swal.fire({
-                        title: '<strong>Composicion Completa</strong>',
+                        title: '<strong>Composición Completa</strong>',
                         // icon: 'info',
                         html: datos,
                         showCloseButton: true,
@@ -422,9 +420,6 @@
                 }
             });
 
-            $("span.select2.select2-container.select2-container--default").css("width","100%");
-
-
             $('#table-ingredients').DataTable({
                 "dom" : "",
                 "processing": false,
@@ -450,7 +445,7 @@
                 }
             });
 
-            $("select").select2({
+            $("#days").select2({
                 minimumResultsForSearch: 5,
                 width: '100%',
             });
@@ -700,21 +695,32 @@
             var orders = $(`input[id^="order_${day}"]`);
 
             if(orders.length === 0){
-                return Lobibox.notify('error',{msg: 'No hay recetas agregadas para ordenar'});
+                return Lobibox.notify('error',{msg: 'Agregue recetas al día para continuar'});
             }
 
             var values = [];
+            var empty_values = false;
 
             $.each(orders,function (i,input){
-                let split_id = input.id.split('_');
-                if(input.value === "" || input.value === 0){
+                let split_id        = input.id.split('_');
+                let plan_detail_id  = split_id[2];
+                let order_type      = $(`#order-type_${day}_${plan_detail_id}`).val();
+
+                if(input.value === "" || input.value === 0 || order_type === "" || order_type === 0){
+                    empty_values = true;
                     return false;
                 }
+
                 values.push({
                    'id': split_id[2],
                    'order': input.value,
+                   'order_type' : order_type,
                 });
             });
+
+            if(empty_values){
+                return Lobibox.notify('error',{msg: 'Para guardar el orden debe ingresar todos los valores'});
+            }
 
             if(values.length === 0){
                 return Lobibox.notify('error',{msg: 'Ingrese los valores para ordenar las recetas'});

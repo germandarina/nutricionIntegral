@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTablePlansAddStatus extends Migration
+class AlterTablePlanDetailsAddColumnRecipeType extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterTablePlansAddStatus extends Migration
      */
     public function up()
     {
-        Schema::table('plans',function (Blueprint  $table){
-            $table->boolean('open')->default(true)->after('grasa_total_por_dia');
+        Schema::table('plan_details',function (Blueprint  $table){
+            $table->unsignedTinyInteger('order_type')->nullable()->default(null)->after('order');
         });
     }
 
@@ -25,8 +25,8 @@ class AlterTablePlansAddStatus extends Migration
      */
     public function down()
     {
-        Schema::table('plans',function (Blueprint  $table){
-            $table->dropColumn('open');
+        Schema::table('plan_details',function (Blueprint  $table){
+            $table->dropColumn('order_type');
         });
     }
 }

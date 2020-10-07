@@ -3,14 +3,13 @@
         <table class="table data-table font-xs recipes_by_day" id="recipes-by-day-datatable-{{$i}}" style="width: 100% !important; ">
             <thead>
                 <tr>
-                    <th>Orden</th>
+                    <th>Orden PDF</th>
                     <th class="center;">Nombre</th>
                     <th>Tipo</th>
                     <th>Energia</th>
                     <th>Proteinas</th>
                     <th>Grasa</th>
                     <th>Carbohidratos</th>
-                    <th>Colesterol</th>
                     <th class="not-export-col">Acciones</th>
                 </tr>
             </thead>

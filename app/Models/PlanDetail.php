@@ -55,8 +55,23 @@ class PlanDetail extends BaseModel
         'recipe_id',
         'day',
         'order',
+        'order_type',
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    const tipo_desayuno = 1;
+    const tipo_almuerzo = 2;
+    const tipo_merienda = 3;
+    const tipo_cena     = 4;
+    const tipo_colacion = 5;
+
+    public static $types = [
+        self::tipo_desayuno => 'Desayuno',
+        self::tipo_almuerzo => 'Almuerzo',
+        self::tipo_merienda => 'Merienda',
+        self::tipo_cena     => 'Cena',
+        self::tipo_colacion => 'Colación',
     ];
 }

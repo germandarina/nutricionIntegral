@@ -11,7 +11,7 @@
         }}
     </div><!--col-->
     <div class="col-md-4">
-        {{ html()->label('Grupo de alimento no consumidos')
+        {{ html()->label('Grupos de alimentos no consumidos')
                  ->class('col-md-12 form-control-label')
                  ->for('food_group_id')
                  ->style(['font-size'=>'13px'])}}
@@ -33,7 +33,7 @@
         }}
     </div><!--col-->
     <div class="col-md-2">
-        {{ html()->label('Tipos de Recetas')
+        {{ html()->label('Tipos de recetas')
                 ->class('col-md-12 form-control-label')
                 ->for('recipe_type_id')
                 ->style(['font-size'=>'13px'])}}
