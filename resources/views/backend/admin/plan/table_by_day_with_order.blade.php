@@ -1,14 +1,9 @@
-<h3 style="text-align: center; background-color: lightgrey; padding: 5px;">DÍA {{ $day }}</h3>
+<h3 style="text-align: center; background-color: lightgrey; padding: 3px;">DÍA {{ $day }}</h3>
 @foreach($details_by_day as $j => $detail)
-    <div>
-        <h3>{{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }}</h3>
-    </div>
+    <h3>{{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }} - {{ strtoupper($detail->recipe->name) }}</h3>
     <div>
         <table>
             <thead>
-            <tr>
-                <th colspan="2">{{ strtoupper($detail->recipe->name) }}</th>
-            </tr>
             <tr>
                 <th>INGREDIENTES</th>
                 <th>CANTIDAD</th>
@@ -17,16 +12,15 @@
             <tbody>
             @foreach($detail->recipe->ingredients as $ingredient)
                 <tr>
-                    <td style="text-align: left;">{{$ingredient->food->name}}</td>
-                    <td style="text-align: left;">{{$ingredient->quantity_description}} ({{$ingredient->quantity_grs}} grs)</td>
+                    <td style="text-align: left; padding: 1px; border-bottom: 1px solid black;">{{$ingredient->food->name}}</td>
+                    <td style="text-align: left; padding: 1px; border-bottom: 1px solid black;">{{$ingredient->quantity_description}} ({{$ingredient->quantity_grs}} grs)</td>
                 </tr>
             @endforeach
             </tbody>
             @if(!empty($detail->recipe->observation))
                 <tfoot>
                     <tr>
-                        <td style="text-align: left;background-color: #b7f55b;"><strong>Observaciones</strong></td>
-                        <td style="text-align: left;background-color: #b7f55b;"><strong>{{$detail->recipe->observation}}</strong></td>
+                        <td style="text-align: left;background-color: #b7f55b; padding: 1px;" colspan="2"><strong>OBSERVACIONES: {{$detail->recipe->observation}}</strong></td>
                     </tr>
                 </tfoot>
             @endif

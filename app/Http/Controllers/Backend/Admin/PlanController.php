@@ -446,16 +446,6 @@ class PlanController extends Controller
         }
     }
 
-//    public function getTotalComposionPorPlan(){
-//        if(request('id')){
-//            $total = [];
-//            $plan_id = request('id');
-//            $this->getValuesForDay($plan_id,null,$total);
-//            return view('backend.admin.plan.partials.total-completo-plan-por-dia',compact('total'));
-//        }
-//        return App::abort(402);
-//    }
-
     public function downloadPlan(Plan $plan){
         if($plan->open)
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
@@ -482,6 +472,9 @@ class PlanController extends Controller
             $details_by_day = $details->filter(function ($detail) use($day){
                     return $detail->day == $day;
             });
+
+            if($details_by_day->isEmpty())
+                return redirect()->route('admin.plan.index')->with(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"]);
 
             $view_by_day    .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day'));
         }
