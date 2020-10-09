@@ -28,8 +28,9 @@
                         </tr>
                         <tr>
                             <th>Paciente</th>
-                            <th>Nombre Plan</th>
-                            <th>Cant. Días</th>
+                            <th>Plan</th>
+                            <th>Días</th>
+                            <th>Estado</th>
                             <th>Energia (kcal)</th>
                             <th>Proteina (g)</th>
                             <th>Carbohidratos (g)</th>
@@ -60,6 +61,7 @@
                     {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
                     {data: 'days', name: 'days'},
+                    {data: 'status', name: 'status'},
                     {data: 'energia_kcal_por_dia', name: 'energia_kcal_por_dia'},
                     {data: 'proteina_por_dia', name: 'proteina_por_dia'},
                     {data: 'carbohidratos_por_dia', name: 'carbohidratos_por_dia'},

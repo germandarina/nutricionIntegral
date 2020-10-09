@@ -28,4 +28,6 @@ Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('recipes-by-day', [PlanController::class, 'getRecipesByDay'])->name('plan.getRecipesByDay');
     Route::post('total-recipes-by-day',[PlanController::class,'getTotalRecipesByDay'])->name('plan.getTotalRecipesByDay');
     Route::get('download-plan',[PlanController::class,'downloadPlan'])->name('plan.downloadPlan');
+    Route::post('close-plan',[PlanController::class,'closePlan'])->name('plan.closePlan');
+    Route::post('re-open-plan',[PlanController::class,'openPlan'])->name('plan.openPlan');
 });

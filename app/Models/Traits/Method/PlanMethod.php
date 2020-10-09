@@ -7,4 +7,7 @@ namespace App\Models\Traits\Method;
  */
 trait PlanMethod
 {
+    public function getStatusAttribute(){
+        return $this->open ? 'Abierto' : 'Cerrado';
+    }
 }

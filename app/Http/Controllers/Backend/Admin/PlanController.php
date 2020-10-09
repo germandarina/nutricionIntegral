@@ -46,6 +46,9 @@ class PlanController extends Controller
         if ($request->ajax()) {
             $data = $this->planRepository->with('patient')->orderBy('id')->get();
             return Datatables::of($data)
+                ->editColumn('status',function ($row){
+                    return $row->status;
+                })
                 ->addColumn('actions', function($row){
                     return view('backend.admin.plan.includes.datatable-buttons',compact('row'));
                 })
@@ -500,5 +503,43 @@ class PlanController extends Controller
           return response()->json(['mensaje'=>"Orden de recetas guardada con éxito"],200);
        }
        return App::abort(402);
+    }
+
+    public function closePlan(Plan $plan){
+
+        if (!auth()->user()->isAdmin()) {
+            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
+        }
+
+        $details_without_order = $plan->details()->where(function ($query_where){
+            $query_where->whereNull('order')
+                ->orWhereNull('order_type');
+        })->first();
+
+        if($details_without_order)
+            return response()->json(['error'=>"Debe ordenar el plan para cerrarlo"],422);
+
+        $plan->load('details');
+        $details = $plan->details;
+        for ($day=1;$day<=$plan->days;$day++){
+            $details_by_day = $details->filter(function ($detail) use($day){
+                return $detail->day == $day;
+            });
+
+            if($details_by_day->isEmpty())
+                return response()->json(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"],422);
+        }
+
+        $plan->open = false;
+        $plan->save();
+
+        return response()->json(['mensaje'=>"Plan Cerrado"],200);
+
+    }
+
+    public function openPlan(Plan $plan){
+        $plan->open = true;
+        $plan->save();
+        return response()->json(['mensaje'=>"Plan Re Abierto"],200);
     }
 }

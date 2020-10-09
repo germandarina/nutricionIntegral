@@ -10,18 +10,22 @@
                     <th>Proteinas</th>
                     <th>Grasa</th>
                     <th>Carbohidratos</th>
-                    <th class="not-export-col">Acciones</th>
+                    @if ($plan->open)
+                        <th class="not-export-col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th class="th-btn-order">
-                        <a onclick="storeOrder(event,{{$i}})" rel="tooltip" title="Guardar Orden" href="" class="btn btn-sm btn-success ml-2">
-                            <i class="fas fa-check-circle"></i>
-                        </a>
-                    </th>
-                </tr>
-            </tfoot>
+            @if ($plan->open)
+                <tfoot>
+                    <tr>
+                        <th class="th-btn-order">
+                            <a onclick="storeOrder(event,{{$i}})" rel="tooltip" title="Guardar Orden" href="" class="btn btn-sm btn-success ml-2">
+                                <i class="fas fa-check-circle"></i>
+                            </a>
+                        </th>
+                    </tr>
+                </tfoot>
+            @endif
         </table>
     </div><!--col-->
 </div><!--row-->

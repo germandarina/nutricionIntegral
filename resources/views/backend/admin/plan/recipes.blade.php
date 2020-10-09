@@ -14,7 +14,7 @@
                             <th style="text-align: center;">Paciente</th>
                             <th style="text-align: center;">Plan</th>
                             <th style="text-align: center;" >Cant Días</th>
-                            <th></th>
+                            <th colspan="2"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +23,11 @@
                             <td style="text-align: center;"><strong>{{$plan->name}}</strong></td>
                             <td style="text-align: center;"><strong>{{$plan->days}}</strong></td>
                             <th>{{ form_cancel(route('admin.plan.index'), __('buttons.general.cancel')) }}</th>
+                            @if($plan->open)
+                                <th><a href="#" class="btn btn-sm btn-warning" onclick="closePlan(event)">Cerrar Plan</a></th>
+                            @else
+                                <th><a href="#" class="btn btn-sm btn-warning" onclick="openPlan(event)">Re Abrir Plan</a></th>
+                            @endif
                         </tr>
                     </tbody>
                 </table>
@@ -136,7 +141,9 @@
                         {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
                         {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
                         {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},
-                        {data: 'actions', name: 'actions', orderable: false, searchable: false,},
+                        @if ($plan->open)
+                            {data: 'actions', name: 'actions', orderable: false, searchable: false,},
+                        @endif
                     ],
                 });
 
@@ -742,6 +749,93 @@
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function closePlan(event){
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Esta seguro de realizar esta accion?',
+                // icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText : 'No',
+            }).then((result) => {
+                if (result.value) {
+
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:      '{{ route('admin.plan.closePlan',$plan->id) }}',
+                        type:     'POST',
+                        data: {},
+                        success: function(data) {
+                            var datos = data;
+                            procesando.remove();
+                            Lobibox.notify('success',{msg:datos.mensaje});
+                            setTimeout(function (){
+                                window.location.reload();
+                            },2000);
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
+                            if(xhr.status === 422){
+                                Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                            }else{
+                                Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function openPlan(event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Esta seguro de realizar esta accion?',
+                // icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText : 'No',
+            }).then((result) => {
+                if (result.value) {
+
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:      '{{ route('admin.plan.openPlan',$plan->id) }}',
+                        type:     'POST',
+                        data: {},
+                        success: function(data) {
+                            var datos = data;
+                            procesando.remove();
+                            Lobibox.notify('success',{msg:datos.mensaje});
+                            setTimeout(function (){
+                                window.location.reload();
+                            },2000);
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
+                            if(jqXHR.status === 422)
+                                return Lobibox.notify('error',{msg: jqXHR.responseJSON.error });
+
+                            Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                        }
+                    });
                 }
             });
         }
