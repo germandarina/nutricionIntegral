@@ -339,8 +339,8 @@ class PlanController extends Controller
                             ->get();
 
         return Datatables::of($data)
-            ->addColumn('order',function ($row) use ($day){
-                return view('backend.admin.plan.includes.plan-detail-day-order',compact('row','day'));
+            ->addColumn('order',function ($row) use ($day,$plan){
+                return view('backend.admin.plan.includes.plan-detail-day-order',compact('row','day','plan'));
             })
             ->editColumn('recipeType',function ($row){
                 return $row->recipe->recipeType->name;
