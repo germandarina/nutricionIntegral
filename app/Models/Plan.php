@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\Method\PlanMethod;
 use App\Models\Traits\Relationship\PlanRelationship;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\Plan

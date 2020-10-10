@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\Method\PatientMethod;
 use App\Models\Traits\Relationship\PatientRelationship;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\Patient

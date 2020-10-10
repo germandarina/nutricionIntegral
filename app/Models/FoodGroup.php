@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\Method\FoodGroupMethod;
 use App\Models\Traits\Relationship\FoodGroupRelationship;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\FoodGroup

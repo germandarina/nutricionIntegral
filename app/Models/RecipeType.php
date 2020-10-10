@@ -4,8 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\Method\RecipeTypeMethod;
 use App\Models\Traits\Relationship\RecipeTypeRelationship;
-use Illuminate\Database\Eloquent\Model;
-
 
 /**
  * App\Models\RecipeType

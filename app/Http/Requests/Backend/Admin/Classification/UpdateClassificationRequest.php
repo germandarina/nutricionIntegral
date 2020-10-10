@@ -29,7 +29,6 @@ class UpdateClassificationRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->request->get("id");
         return [
             'name' => ['required', 'max:200','min:6'],
         ];

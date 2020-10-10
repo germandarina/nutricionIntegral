@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Backend\Admin\Classification;
+namespace App\Http\Requests\Backend\Admin\Observation;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Session;
 
 /**
- * Class StoreClassificationRequest.
+ * Class UpdateObservationRequest.
  */
-class StoreClassificationRequest extends FormRequest
+class UpdateObservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +29,7 @@ class StoreClassificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:200','min:3'],
+            'name' => ['required', 'max:255','min:3'],
         ];
     }
 
@@ -38,7 +38,7 @@ class StoreClassificationRequest extends FormRequest
         return [
             'name.required' => "El nombre es obligatorio.",
             'name.min' => "El nombre debe tener, al menos, 3 caracteres.",
-            'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
+            'name.max' => "El nombre debe tener, maximo, 255 caracteres.",
         ];
     }
 

@@ -78,7 +78,7 @@ class ClassificationController extends Controller
             Session::flash('error',$exception->getMessage());
             return redirect()->route('admin.classification.create')->withInput($request->all());
         }
-        Session::flash('success','Clasificacion Creada');
+        Session::flash('success','Clasificación Creada');
         return redirect()->route('admin.classification.index');
     }
 
@@ -119,7 +119,7 @@ class ClassificationController extends Controller
             Session::flash('error',$exception->getMessage());
             return redirect()->route('admin.classification.edit',compact('classification'))->withInput($request->all());
         }
-        Session::flash('success','Clasificacion Actualizada');
+        Session::flash('success','Clasificación Actualizada');
         return redirect()->route('admin.classification.index');
     }
 

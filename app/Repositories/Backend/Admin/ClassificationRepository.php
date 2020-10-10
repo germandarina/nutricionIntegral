@@ -32,7 +32,7 @@ class ClassificationRepository extends BaseRepository
     {
         // Make sure it doesn't already exist
         if ($this->classificationExists($data['name'])) {
-            throw new GeneralException('Ya existe un clasificacion con el nombre '.$data['name']);
+            throw new GeneralException('Ya existe una clasificacion con el nombre '.$data['name']);
         }
         return DB::transaction(function () use ($data) {
             $data['default_register'] = 0;
@@ -62,7 +62,7 @@ class ClassificationRepository extends BaseRepository
         // If the name is changing make sure it doesn't already exist
         if (strtolower($clasification->name) !== strtolower($data['name'])) {
             if ($this->classificationExists($data['name'])) {
-                throw new GeneralException('Ya existe un clasificacion con el nombre '.$data['name']);
+                throw new GeneralException('Ya existe una clasificacion con el nombre '.$data['name']);
             }
         }
 
@@ -111,7 +111,7 @@ class ClassificationRepository extends BaseRepository
     public function restore(Classification $clasification) : Classification
     {
         if ($clasification->deleted_at === null) {
-            throw new GeneralException('El clasificacion no esta eliminado');
+            throw new GeneralException('La clasificacion no esta eliminado');
         }
         if ($clasification->restore()) {
             return $clasification;
