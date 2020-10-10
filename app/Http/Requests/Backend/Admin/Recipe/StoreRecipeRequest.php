@@ -31,7 +31,7 @@ class StoreRecipeRequest extends FormRequest
         return [
             'name' => ['required', 'max:200','min:6'],
             'recipe_type_id' => ['required',],
-            'observation'=>['max:200'],
+//            'observation'=>['max:200'],
             'classifications'=> ['required']
         ];
     }
@@ -43,7 +43,7 @@ class StoreRecipeRequest extends FormRequest
             'name.min' => "El nombre debe tener, al menos, 6 caracteres.",
             'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
             'recipe_type_id.required' => "El tipo de receta es obligatorio.",
-            'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
+//            'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
             'classifications.required' => 'La clasificacion es obligatoria',
         ];
     }

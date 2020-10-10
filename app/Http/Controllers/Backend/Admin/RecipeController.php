@@ -104,7 +104,9 @@ class RecipeController extends Controller
         }
         $validator = JsValidator::formRequest(UpdateRecipeRequest::class);
         $classifications = $recipe->classifications->pluck('id');
-        return view('backend.admin.recipe.edit',compact('recipe','validator','classifications'));
+        $observations    = $recipe->observations->pluck('id');
+
+        return view('backend.admin.recipe.edit',compact('recipe','validator','classifications','observations'));
     }
 
     /**

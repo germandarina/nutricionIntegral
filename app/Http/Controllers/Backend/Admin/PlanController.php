@@ -461,10 +461,13 @@ class PlanController extends Controller
         if($details_without_order)
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe ordenar el plan para descargarlo']);
 
-        $plan->load(['patient','details']);
+        $plan->load('patient');
 
         $patient = $plan->patient;
-        $details = PlanDetail::with(['recipe.ingredients.food'])
+        $details = PlanDetail::with(['recipe'=>function($query){
+                                        $query->with('ingredients.food')
+                                              ->with('observations');
+                                    }])
                                     ->where('plan_id',$plan->id)
                                     ->orderBy('day','asc')
                                     ->orderBy('order','asc')

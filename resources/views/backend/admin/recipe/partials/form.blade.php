@@ -39,10 +39,8 @@
                     ->class('col-md-2 form-control-label')
                     ->for('observation') }}
         <div class="col-md-10">
-            {{ html()->text('observation')
+            {{ html()->multiselect('observations',\App\Models\Observation::all()->pluck('name','id'),isset($observations) ? $observations : null)
                 ->class('form-control')
-                ->placeholder('Observaciones')
-                ->attribute('maxlength', 255)
-                ->autofocus() }}
+            }}
         </div><!--col-->
     </div>

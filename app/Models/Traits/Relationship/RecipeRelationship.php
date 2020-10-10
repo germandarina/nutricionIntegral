@@ -6,6 +6,7 @@ namespace App\Models\Traits\Relationship;
 
 use App\Models\Classification;
 use App\Models\Ingredient;
+use App\Models\Observation;
 use App\Models\PlanDetail;
 use App\Models\RecipeType;
 
@@ -29,5 +30,9 @@ trait RecipeRelationship
 
     public function planDetails(){
         return $this->hasMany(PlanDetail::class,'recipe_id');
+    }
+
+    public function observations(){
+        return $this->belongsToMany(Observation::class,'observation_recipe','recipe_id');
     }
 }

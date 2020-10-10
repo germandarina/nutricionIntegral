@@ -40,6 +40,11 @@ class RecipeRepository extends BaseRepository
 
             if ($recipe) {
                 $recipe->classifications()->attach($data['classifications']);
+
+                if(isset($data['observations']) && !empty($data['observations'])){
+                    $recipe->observations()->attach($data['observations']);
+                }
+
                 return $recipe;
             }
             throw new GeneralException('Error al crear receta. Intente nuevamente');
@@ -65,7 +70,13 @@ class RecipeRepository extends BaseRepository
             if (!$recipe->update($data)) {
                 throw new GeneralException('Error al actualizar receta. Intente nuevamente');
             }
+
             $recipe->classifications()->sync($data['classifications']);
+
+            if(isset($data['observations']) && !empty($data['observations'])){
+                $recipe->observations()->sync($data['observations']);
+            }
+
             return $recipe;
         });
     }
