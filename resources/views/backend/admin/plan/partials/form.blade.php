@@ -55,13 +55,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>Nombres</th>
-                    <th>Valores</th>
+                    <th>Necesidades Diarias</th>
+                    <th style="text-align: right;">Valores</th>
                 </tr>
             </thead>
             <tbody>
             <tr>
-                <td>Energía (kcal) necesaria por día</td>
+                <td>Energía (kcal)</td>
                 <td>
                     {{ html()->text('energia_kcal_por_dia')
                                ->class('form-control numeric3Digits')
@@ -71,7 +71,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Proteína (g) necesaria por día</td>
+                <td>Proteína (g)</td>
                 <td>
                     {{ html()->text('proteina_por_dia')
                                ->class('form-control numeric3Digits')
@@ -81,7 +81,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Carbohidratos (g) necesarios por día</td>
+                <td>Carbohidratos (g)</td>
                 <td>
                     {{ html()->text('carbohidratos_por_dia')
                                ->class('form-control numeric3Digits')
@@ -91,7 +91,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Grasa (g) necesaria por día</td>
+                <td>Grasa (g)</td>
                 <td>
                     {{ html()->text('grasa_total_por_dia')
                                ->class('form-control numeric3Digits')

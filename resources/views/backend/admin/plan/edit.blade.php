@@ -21,10 +21,11 @@
                 <div class="col">
                     {{ form_cancel(route('admin.plan.index'), __('buttons.general.cancel')) }}
                 </div><!--col-->
-
-                <div class="col text-right">
-                    {{ form_submit(__('buttons.general.crud.update')) }}
-                </div><!--col-->
+                @if($plan->open)
+                    <div class="col text-right">
+                        {{ form_submit(__('buttons.general.crud.update')) }}
+                    </div><!--col-->
+                @endif
             </div><!--row-->
         </div><!--card-footer-->
     </div><!--card-->

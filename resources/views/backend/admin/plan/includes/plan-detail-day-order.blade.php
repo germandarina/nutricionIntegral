@@ -8,7 +8,7 @@
             ->attribute('id',"order-type_{$day}_{$row->id}")
         }}
     @else
-        <input style="width: 100px;"  value="{{ \App\Models\PlanDetail::$types[$row->order_type] }}"  readonly >
+        <input style="width: 80px;"  value="{{ \App\Models\PlanDetail::$types[$row->order_type] }}"  readonly >
     @endif
 
 @endif
