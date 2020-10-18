@@ -23,7 +23,7 @@
                     <table class="table data-table">
                         <thead>
                         <tr >
-                            <th colspan="3"></th>
+                            <th colspan="4"></th>
                             <th colspan="4" style="text-align: center;background: #4dbd74; color: white;">Necesidades Diarias</th>
                         </tr>
                         <tr>
@@ -56,6 +56,7 @@
                 "serverSide": true,
                 "draw": true,
                 "buttons": [],
+                "orderable": false,
                 ajax: "{{ route('admin.plan.index') }}",
                 columns: [
                     {data: 'patient.full_name', name: 'patient.full_name'},

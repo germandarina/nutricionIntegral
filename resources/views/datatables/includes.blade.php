@@ -35,6 +35,7 @@
         lengthMenu:[[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
         stateSave: true,
         fixedHeader: true,
+        ordering: false,
         language: {
             "url": " {{ asset('/datatables/Spanish.json') }}"
         }

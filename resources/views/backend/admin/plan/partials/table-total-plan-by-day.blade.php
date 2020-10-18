@@ -10,19 +10,19 @@
                 <th></th>
             </tr>
             <tr>
-                <th style="text-align: center; ">Nec. por día </th>
+                <th style="text-align: center; ">Nec. por Día </th>
                 <th style="text-align: center; ">Cargada</th>
                 <th style="text-align: center; border-right: 2px solid white;">Faltante</th>
 
-                <th style="text-align: center; ">Nec. por día </th>
+                <th style="text-align: center; ">Nec. por Día </th>
                 <th style="text-align: center; ">Cargada</th>
                 <th style="text-align: center; border-right: 2px solid white;">Faltante</th>
 
-                <th style="text-align: center; ">Nec. por día </th>
+                <th style="text-align: center; ">Nec. por Día </th>
                 <th style="text-align: center; ">Cargada</th>
                 <th style="text-align: center; border-right: 2px solid white;">Faltante</th>
 
-                <th style="text-align: center;">Nec. por día </th>
+                <th style="text-align: center;">Nec. por Día </th>
                 <th style="text-align: center;">Cargada</th>
                 <th style="text-align: center; border-right: 2px solid white;">Faltante</th>
 
@@ -31,21 +31,21 @@
         </thead>
         <tbody>
             <tr class="bg-secondary">
-                <td style="text-align: center;" ><strong>{{ $plan->energia_kcal_por_dia }}</strong></td>
-                <td style="text-align: center;"><strong>{{ $total['total_energia_kcal'] }}</strong></td>
-                <td style="text-align: center; border-right: 2px solid white; background-color: #fd8584;" ><strong>{{ $plan->energia_kcal_por_dia -  $total['total_energia_kcal'] }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($plan->energia_kcal_por_dia,3,',','.') }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($total['total_energia_kcal'],3,',','.') }}</strong></td>
+                <td style="text-align: center; border-right: 2px solid white; background-color: #fd8584;" ><strong>{{ number_format($plan->energia_kcal_por_dia -  $total['total_energia_kcal'],3,',','.') }}</strong></td>
 
-                <td style="text-align: center;" ><strong>{{ $plan->proteina_por_dia }}</strong></td>
-                <td style="text-align: center;"><strong>{{ $total['total_proteina'] }}</strong></td>
-                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->proteina_por_dia -  $total['total_proteina'] }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($plan->proteina_por_dia,3,',','.') }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($total['total_proteina'],3,',','.') }}</strong></td>
+                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;"><strong>{{ number_format($plan->proteina_por_dia -  $total['total_proteina'],3,',','.') }}</strong></td>
 
-                <td style="text-align: center;" ><strong>{{ $plan->grasa_total_por_dia }}</strong></td>
-                <td style="text-align: center;"><strong>{{ $total['total_grasa_total'] }}</strong></td>
-                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->grasa_total_por_dia -  $total['total_grasa_total'] }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($plan->grasa_total_por_dia,3,',','.') }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($total['total_grasa_total'],3,',','.') }}</strong></td>
+                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;"><strong>{{ number_format($plan->grasa_total_por_dia -  $total['total_grasa_total'],3,',','.') }}</strong></td>
 
-                <td style="text-align: center;" ><strong>{{ $plan->carbohidratos_por_dia }}</strong></td>
-                <td style="text-align: center;"><strong>{{ $total['total_carbohidratos_totales'] }}</strong></td>
-                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;" ><strong>{{ $plan->carbohidratos_por_dia -  $total['total_carbohidratos_totales'] }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($plan->carbohidratos_por_dia,3,',','.') }}</strong></td>
+                <td style="text-align: center;"><strong>{{ number_format($total['total_carbohidratos_totales'],3,',','.') }}</strong></td>
+                <td style="text-align: center; border-right: 2px solid white;  background-color: #fd8584;"><strong>{{ number_format($plan->carbohidratos_por_dia -  $total['total_carbohidratos_totales'],3,',','.') }}</strong></td>
                 <td style="text-align: center;"><a title="Total Completo" href="#" class="btn btn-sm btn-primary" onclick="getTotalCompletoPlanPorDia(event,{{$plan->id}},{{$day}})"><i class="fas fa-eye"></i></a></td>
             </tr>
         </tbody>
