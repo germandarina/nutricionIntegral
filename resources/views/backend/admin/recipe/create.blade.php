@@ -30,6 +30,53 @@
     </div><!--card-->
 {{ html()->form()->close() }}
 @endsection
+
+
+
 @push('after-scripts')
     {!! $validator !!}
+
+    <script>
+
+        function modalObservation(event)
+        {
+            event.preventDefault();
+            $("#modalObservation").modal('show');
+        }
+
+        function storeObservation(event)
+        {
+            event.preventDefault();
+            var observation = $("#name_observation").val();
+            if(observation.trim() === ""){
+                return Lobibox.notify('error',{msg: 'Ingrese el nombre'});
+            }
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:   '{{ route('admin.recipe.storeObservation') }}',
+                type:  'POST',
+                data:   {
+                    'observation': observation,
+                },
+                success: function(data) {
+                    procesando.remove();
+                    $("#name_observation").val("");
+                    Lobibox.notify('success',{msg:data.mensaje});
+                    var nueva_observation = new Option(data.observation.name, data.observation.id, false, false);
+                    $('#observations').append(nueva_observation).trigger('change');
+                    var observations = $('#observations').val();
+                    observations.push(data.observation.id);
+                    $("#observations").val(observations).trigger('change');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+    </script>
 @endpush

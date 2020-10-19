@@ -15,6 +15,7 @@ Route::post('recipe/get-total-completo', [RecipeController::class, 'getTotalComp
 Route::get('recipe/get-ingredients', [RecipeController::class, 'getIngredients'])->name('recipe.getIngredients');
 Route::post('recipe/add-ingredients', [RecipeController::class, 'addIngredients'])->name('recipe.addIngredients');
 Route::post('recipe/calculate-grs', [RecipeController::class, 'calculateGrs'])->name('recipe.calculateGrs');
+Route::post('recipe/store-observation', [RecipeController::class, 'storeObservation'])->name('recipe.storeObservation');
 
 
 Route::group(['prefix' => 'recipe/{recipe}'], function () {
