@@ -40,9 +40,9 @@
 
         <main class="main">
             @include('includes.partials.logged-in-as')
-            @if(Breadcrumbs::exists())
-                {!! Breadcrumbs::render() !!}
-            @endif
+{{--            @if(Breadcrumbs::exists())--}}
+{{--                {!! Breadcrumbs::render() !!}--}}
+{{--            @endif--}}
 
             <div class="container-fluid">
                 <div class="animated fadeIn">
