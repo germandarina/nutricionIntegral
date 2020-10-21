@@ -23,7 +23,7 @@
     </table>
     <hr>
     <div id="logo_grande">
-        <img src="{{ asset('img/ndf.png') }}" >
+        <img src="{{ public_path('img/ndf.png') }}" >
     </div>
 </div>
 <div style="page-break-after: always;"></div>

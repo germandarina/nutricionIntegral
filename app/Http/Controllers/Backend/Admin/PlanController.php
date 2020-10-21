@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Backend\Admin;
 use App;
 use App\Http\Controllers\Controller;
 use App\Models\PlanDetail;
-use App\Models\RecipeType;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\UpdatePlanRequest;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use JsValidator;
+use PDF;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
@@ -490,9 +488,14 @@ class PlanController extends Controller
 
         $nombre_plan    = strtolower(trim($plan->name));
         $nombre_archivo = snake_case("{$nombre_plan}_{$patient->full_name}");
-        $pdf            = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+
+        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
 
         return $pdf->download("{$nombre_archivo}.pdf");
+//
+//        $pdf            = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+//
+//        return $pdf->download("{$nombre_archivo}.pdf");
     }
 
     public function storeOrderPlanDetailDay(){
