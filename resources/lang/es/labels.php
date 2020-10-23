@@ -80,6 +80,7 @@ return [
                     'roles' => 'Roles',
                     'social' => 'Cuenta Social',
                     'total' => 'Todos los Usuarios',
+                    'abilities' => 'Habilidades',
                 ],
 
                 'tabs' => [

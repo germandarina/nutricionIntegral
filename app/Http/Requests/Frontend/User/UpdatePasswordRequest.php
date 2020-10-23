@@ -4,8 +4,10 @@ namespace App\Http\Requests\Frontend\User;
 
 use App\Rules\Auth\ChangePassword;
 use App\Rules\Auth\UnusedPassword;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use DivineOmega\LaravelPasswordExposedValidationRule\PasswordExposed;
+use Session;
 
 /**
  * Class UpdatePasswordRequest.
@@ -39,5 +41,17 @@ class UpdatePasswordRequest extends FormRequest
                 new UnusedPassword($this->user()),
             ],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

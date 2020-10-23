@@ -2,9 +2,9 @@
 
 @section('title', __('labels.backend.access.users.management') . ' | ' . __('labels.backend.access.users.view'))
 
-@section('breadcrumb-links')
-    @include('backend.auth.user.includes.breadcrumb-links')
-@endsection
+{{--@section('breadcrumb-links')--}}
+{{--    @include('backend.auth.user.includes.breadcrumb-links')--}}
+{{--@endsection--}}
 
 @section('content')
 <div class="card">

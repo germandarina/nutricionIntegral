@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend\Auth\User;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class UpdateUserRequest.
@@ -30,7 +32,19 @@ class UpdateUserRequest extends FormRequest
             'email' => ['required', 'email', 'max:191'],
             'first_name' => ['required', 'max:191'],
             'last_name' => ['required', 'max:191'],
-            'roles' => ['required', 'array'],
+//            'roles' => ['required', 'array'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

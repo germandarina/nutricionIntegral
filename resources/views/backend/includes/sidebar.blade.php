@@ -78,44 +78,27 @@
                     </ul>
                 </li>
 
-{{--                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">--}}
-{{--                    <a class="nav-link nav-dropdown-toggle {{--}}
-{{--                        active_class(Active::checkUriPattern('admin/auth*'))--}}
-{{--                    }}" href="#">--}}
-{{--                        <i class="nav-icon far fa-user"></i>--}}
-{{--                        Gestion de Acceso--}}
-{{--                        @lang('menus.backend.access.title')--}}
+                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">
+                    <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/auth*')) }}" href="#">
+                        <i class="nav-icon far fa-user"></i>
+                        Accesos
+                    </a>
 
-{{--                        @if ($pending_approval > 0)--}}
-{{--                            <span class="badge badge-danger">{{ $pending_approval }}</span>--}}
-{{--                        @endif--}}
-{{--                    </a>--}}
-
-{{--                    <ul class="nav-dropdown-items">--}}
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/auth/user*')) }}" href="{{ route('admin.auth.user.index') }}">
+                                Usuarios
+                            </a>
+                        </li>
 {{--                        <li class="nav-item">--}}
-{{--                            <a class="nav-link {{--}}
-{{--                                active_class(Active::checkUriPattern('admin/auth/user*'))--}}
-{{--                            }}" href="{{ route('admin.auth.user.index') }}">--}}
-{{--                                Usuarios--}}
-{{--                                @lang('labels.backend.access.users.management')--}}
-
-{{--                                @if ($pending_approval > 0)--}}
-{{--                                    <span class="badge badge-danger">{{ $pending_approval }}</span>--}}
-{{--                                @endif--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a class="nav-link {{--}}
-{{--                                active_class(Active::checkUriPattern('admin/auth/role*'))--}}
-{{--                            }}" href="{{ route('admin.auth.role.index') }}">--}}
+{{--                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/auth/role*')) }}" href="{{ route('admin.auth.role.index') }}">--}}
 {{--                                Roles--}}
-{{--                                @lang('labels.backend.access.roles.management')--}}
 {{--                            </a>--}}
 {{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
+                    </ul>
+                </li>
 
-                <li class="divider"></li>
+{{--                <li class="divider"></li>--}}
 
 {{--                <li class="nav-item nav-dropdown {{--}}
 {{--                    active_class(Active::checkUriPattern('admin/log-viewer*'), 'open')--}}

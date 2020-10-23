@@ -3,6 +3,7 @@
 namespace App\Rules\Auth;
 
 use Illuminate\Contracts\Validation\Rule;
+use Session;
 
 /**
  * Class ChangePassword.
@@ -32,6 +33,7 @@ class ChangePassword implements Rule
      */
     public function message()
     {
+        Session::flash('validator',  __('auth.password_used'));
         return __('auth.password_rules');
     }
 }

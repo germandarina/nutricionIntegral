@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Backend\Auth\User;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 /**
  * Class StoreUserRequest.
@@ -32,7 +34,19 @@ class StoreUserRequest extends FormRequest
             'last_name' => ['required', 'max:191'],
             'email' => ['required', 'email', 'max:191', Rule::unique('users')],
             'password' => ['required', 'min:6', 'confirmed'],
-            'roles' => ['required', 'array'],
+//            'roles' => ['required', 'array'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->messages();
+        $stringError = '';
+        foreach ($errors as $error){
+            $stringError .= "$error[0] ,";
+        }
+
+        Session::flash('validator', $stringError);
+        parent::failedValidation($validator);
     }
 }

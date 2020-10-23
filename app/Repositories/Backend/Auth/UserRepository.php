@@ -108,31 +108,31 @@ class UserRepository extends BaseRepository
                 'password' => $data['password'],
                 'active' => isset($data['active']) && $data['active'] === '1',
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed' => isset($data['confirmed']) && $data['confirmed'] === '1',
+                'confirmed' => '1',
             ]);
 
             // See if adding any additional permissions
-            if (! isset($data['permissions']) || ! count($data['permissions'])) {
-                $data['permissions'] = [];
-            }
+//            if (! isset($data['permissions']) || ! count($data['permissions'])) {
+//                $data['permissions'] = [];
+//            }
 
             if ($user) {
                 // User must have at least one role
-                if (! count($data['roles'])) {
-                    Session::flash('error',__('exceptions.backend.access.users.role_needed_create'));
-                    throw new GeneralException(__('exceptions.backend.access.users.role_needed_create'));
-                }
+//                if (! count($data['roles'])) {
+//                    Session::flash('error',__('exceptions.backend.access.users.role_needed_create'));
+//                    throw new GeneralException(__('exceptions.backend.access.users.role_needed_create'));
+//                }
 
                 // Add selected roles/permissions
-                $user->syncRoles($data['roles']);
-                $user->syncPermissions($data['permissions']);
+                $user->syncRoles([1]);
+                $user->syncPermissions([1]);
 
                 //Send confirmation email if requested and account approval is off
-                if ($user->confirmed === false && isset($data['confirmation_email']) && ! config('access.users.requires_approval')) {
-                    $user->notify(new UserNeedsConfirmation($user->confirmation_code));
-                }
+//                if ($user->confirmed === false && isset($data['confirmation_email']) && ! config('access.users.requires_approval')) {
+//                    $user->notify(new UserNeedsConfirmation($user->confirmation_code));
+//                }
 
-                event(new UserCreated($user));
+//                event(new UserCreated($user));
 
                 return $user;
             }
@@ -155,9 +155,9 @@ class UserRepository extends BaseRepository
         $this->checkUserByEmail($user, $data['email']);
 
         // See if adding any additional permissions
-        if (! isset($data['permissions']) || ! count($data['permissions'])) {
-            $data['permissions'] = [];
-        }
+//        if (! isset($data['permissions']) || ! count($data['permissions'])) {
+//            $data['permissions'] = [];
+//        }
 
         return DB::transaction(function () use ($user, $data) {
             if ($user->update([
@@ -166,10 +166,10 @@ class UserRepository extends BaseRepository
                 'email' => $data['email'],
             ])) {
                 // Add selected roles/permissions
-                $user->syncRoles($data['roles']);
-                $user->syncPermissions($data['permissions']);
-
-                event(new UserUpdated($user));
+//                $user->syncRoles($data['roles']);
+//                $user->syncPermissions($data['permissions']);
+//
+//                event(new UserUpdated($user));
 
                 return $user;
             }
