@@ -7,6 +7,7 @@ use App\Repositories\Backend\Admin\PatientRepository;
 use App\Http\Requests\Backend\Admin\Patient\StorePatientRequest;
 use App\Http\Requests\Backend\Admin\Patient\ManagePatientRequest;
 use App\Http\Requests\Backend\Admin\Patient\UpdatePatientRequest;
+use Carbon\Carbon;
 use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -179,4 +180,15 @@ class PatientController extends Controller
                       }, $patients);
         return \Response::json($patients);
     }
+
+    public function getAge()
+    {
+        if(request('birthdate'))
+        {
+            $birthdate = Carbon::createFromFormat('d/m/Y',request('birthdate'));
+            $age  = $birthdate->age;
+            return response()->json(['age'=>$age],200);
+        }
+    }
+
 }

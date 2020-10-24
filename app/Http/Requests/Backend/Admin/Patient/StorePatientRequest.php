@@ -29,15 +29,15 @@ class StorePatientRequest extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => ['required', 'max:200','min:6'],
-            'birthdate' => ['required', 'date','before:tomorrow'],
-            'age'=>['required','integer'],
-            'motive'=>['required'],
-            'number_of_children'=>['required','integer'],
-            'document' => ['required','between:7,11','unique:patients'],
-            'phone' => ['required', 'max:15','min:7'],
-            'email' => ['max:100','email','unique:patients','min:10'],
-            'address' => ['required', 'max:200','min:10'],
+            'full_name'          => ['required', 'max:200','min:6'],
+            'birthdate'          => ['required', 'date_format:d/m/Y','before:tomorrow'],
+            'age'                => ['required','integer'],
+            'motive'             => ['required'],
+            'number_of_children' => ['integer'],
+            'document'           => ['required','between:7,11','unique:patients'],
+            'phone'              => ['required', 'max:15','min:7'],
+            'email'              => ['required','max:100','email','unique:patients'],
+            'address'            => ['required', 'max:200'],
         ];
     }
 
@@ -54,18 +54,15 @@ class StorePatientRequest extends FormRequest
             'phone.max' => "El telefono debe tener, maximo, 15 caracteres.",
             'email.required' => "El email es obligatorio.",
             'email.max' => "El email debe tener, maximo, 100 caracteres.",
-            'email.min' => "El email debe tener, al menos, 10 caracteres.",
             'email.email' => "El email debe tener el formato de un correo electronico.",
             'email.unique' => "El email debe tener unico.",
             'address.required' => "La direccion es obligatorio.",
             'address.max' => "La direccion debe tener, maximo, 200 caracteres.",
-            'address.min' => "La direccion debe tener, al menos , 10 caracteres.",
             'birthdate.required'=>'La fecha de nacimiento es obligatoria',
             'birthdate.before'=>'La fecha de nacimiento no puede ser mayor a hoy',
             'age.required'=>'La edad es obligatoria',
             'age.integer'=>'La edad debe ser un numero entero',
             'motive.required'=>'El motivo es obligatorio',
-            'number_of_children' =>'La cantidad de hijos es obligatoria',
         ];
     }
 

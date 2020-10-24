@@ -32,4 +32,34 @@
 @endsection
 @push('after-scripts')
     {!! $validator !!}
+    <script>
+        $('#birthdate').datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'es',
+            endDate : '0d',
+            autoclose: true,
+            orientation: "bottom right"
+        });
+
+        function getAge(){
+            var birthdate = $("#birthdate").val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:  '{{ route('admin.patient.getAge') }}',
+                type: 'POST',
+                data: {
+                    'birthdate': birthdate,
+                },
+                success: function(data) {
+                    var datos = data;
+                    $("#age").val(datos.age);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+    </script>
 @endpush

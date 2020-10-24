@@ -22,6 +22,7 @@
     {{ style('lobibox/css/lobibox.css') }}
     {{ style('select2/select2.min.css') }}
     {{ style('kartik-fileinput/fileinput.min.css') }}
+    {{ style('datepicker/bootstrap-datepicker.min.css') }}
 
     @stack('after-styles')
     <script>
@@ -70,6 +71,8 @@
     {{ script('inputmask/inputmask.js')}}
     {{ script('inputmask/jquery.inputmask.js')}}
     {{ script('inputmask/inputmask.numeric.extensions.js')}}
+    {{ script('datepicker/bootstrap-datepicker.min.js') }}
+    {{ script('datepicker/bootstrap-datepicker.es.min.js') }}
 
     @include('backend.notification')
 
@@ -262,7 +265,6 @@
     {{ script('kartik-fileinput/piexif.min.js')}}
     {{ script('kartik-fileinput/sortable.min.js')}}
     {{ script('kartik-fileinput/purify.min.js')}}
-{{--    {{ script("datatables/popper.min.js") }}--}}
     {{ script('kartik-fileinput/fileinput.min.js')}}
     {{ script('kartik-fileinput/theme-fontawesome5.js') }}
     {{ script('vendor/jsvalidation/js/jsvalidation.js') }}

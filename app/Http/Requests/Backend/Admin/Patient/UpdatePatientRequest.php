@@ -32,18 +32,18 @@ class UpdatePatientRequest extends FormRequest
     {
         $id = $this->request->get("id");
         return [
-            'full_name' => ['required', 'max:200','min:6'],
-            'birthdate' => ['required', 'date','before:tomorrow'],
-            'age'=>['required','integer'],
-            'motive'=>['required'],
-            'number_of_children'=>['required','integer'],
-            'document' => ['required','between:7,11',Rule::unique('patients')->ignore($id,'id')],
-            'phone' => ['required', 'max:15','min:7'],
-            'email' => ['max:100','email',Rule::unique('patients')->ignore($id,'id'),'min:10'],
-            'address' => ['required', 'max:200','min:10'],
-            'classification_id'=>['array','min:1'],
-            'food_group_id'=>['array'],
-            'food_id'=>['array'],
+            'full_name'             => ['required', 'max:200','min:6'],
+            'birthdate'             => ['required', 'date_format:d/m/Y','before:tomorrow'],
+            'age'                   => ['required','integer'],
+            'motive'                => ['required'],
+            'number_of_children'    => ['integer'],
+            'document'              => ['required','between:7,11',Rule::unique('patients')->ignore($id,'id')],
+            'phone'                 => ['required', 'max:15','min:7'],
+            'email'                 => ['max:100','email',Rule::unique('patients')->ignore($id,'id')],
+            'address'               => ['required', 'max:200'],
+            'classification_id'     => ['array','min:1'],
+            'food_group_id'         => ['array'],
+            'food_id'               => ['array'],
         ];
     }
 

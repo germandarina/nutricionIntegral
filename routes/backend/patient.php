@@ -7,6 +7,7 @@ Route::get('patient', [PatientController::class, 'index'])->name('patient.index'
 Route::get('patient/create', [PatientController::class, 'create'])->name('patient.create');
 Route::post('patient', [PatientController::class, 'store'])->name('patient.store');
 Route::get('patient/search-patients', [PatientController::class, 'searchPatients'])->name('patient.searchPatients');
+Route::post('patient/age', [PatientController::class, 'getAge'])->name('patient.getAge');
 
 Route::group(['prefix' => 'patient/{patient}'], function () {
     Route::get('edit', [PatientController::class, 'edit'])->name('patient.edit');

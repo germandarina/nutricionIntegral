@@ -3,6 +3,7 @@
 namespace App\Repositories\Backend\Admin;
 
 use App\Models\Patient;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
@@ -34,6 +35,8 @@ class PatientRepository extends BaseRepository
             throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
         }
         return DB::transaction(function () use ($data) {
+            $data['birthdate'] = Carbon::createFromFormat('d/m/Y',$data['birthdate'])->format('Y-m-d');
+
             $patient = parent::create($data);
             if ($patient) {
                 return $patient;
@@ -62,6 +65,8 @@ class PatientRepository extends BaseRepository
                 throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
             }
         }
+
+        $data['birthdate'] = Carbon::createFromFormat('d/m/Y',$data['birthdate'])->format('Y-m-d');
 
         return DB::transaction(function () use ($patient, $data) {
 
