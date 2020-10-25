@@ -9,7 +9,7 @@ use Session;
 /**
  * Class StoreBasicInformationRequest.
  */
-class StoreBasicInformationRequest extends FormRequest
+class UpdateBasicInformationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +32,7 @@ class StoreBasicInformationRequest extends FormRequest
             'full_name'         => ['required'],
             'email'             => ['required'],
             'address'           => ['required'],
-            'image'       => ['required','image','mimes:jpeg,jpg,png'],
+            'image'             => ['image','mimes:jpeg,jpg,png'],
             'm_professional'    => ['required'],
             'company_name'      => ['required'],
         ];
@@ -44,7 +44,6 @@ class StoreBasicInformationRequest extends FormRequest
             'full_name.required'    => "El nombre es obligatorio.",
             'email.required'        => "El email es obligatorio.",
             'address.required'      => "La dirección es obligatoria.",
-            'image.required'  => "La imagen es obligatoria.",
             'image.mimes'     => "El formato de la imagen debe ser: jpeg,jpg o png.",
             'm_professional.required' => "La matricula profesional es obligatoria.",
             'company_name.required'   => "El nombre de la empresa es obligatorio.",

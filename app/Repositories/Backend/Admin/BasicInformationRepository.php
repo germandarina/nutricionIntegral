@@ -3,10 +3,10 @@
 namespace App\Repositories\Backend\Admin;
 
 use App\Models\BasicInformation ;
+use App\Models\Phone;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
-use Session;
 
 /**
  * Class BasicInformation Repository.
@@ -30,8 +30,8 @@ class BasicInformationRepository extends BaseRepository
      */
     public function create(array $data) : BasicInformation
     {
+
         return DB::transaction(function () use ($data) {
-            $data['default_register'] = 0;
             $basic_information = parent::create($data);
 
             if ($basic_information) {
@@ -61,5 +61,26 @@ class BasicInformationRepository extends BaseRepository
             }
             throw new GeneralException('Error al actualizar informacion basica. Intente nuevamente');
         });
+    }
+
+    public function storePhone(array $data, BasicInformation $basic_information)
+    {
+        if (!auth()->user()->isAdmin()) {
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
+
+        return DB::transaction(function () use ($basic_information, $data) {
+            $phone = new Phone();
+            $phone->fill($data);
+            $phone->basic_information_id = $basic_information->id;
+            if(!$phone->save()){
+                throw new GeneralException('Error al actualizar informacion basica. Intente nuevamente');
+            }
+        });
+    }
+
+    public function deletePhone()
+    {
+
     }
 }

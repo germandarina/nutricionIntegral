@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | Administración de Clasificaciones')
+@section('title', app_name() . ' | Administración de Información Personal')
 
 @section('content')
 <div class="card">
@@ -8,12 +8,12 @@
         <div class="row">
             <div class="col-sm-5">
                 <h5 class="card-title mb-0">
-                    Administración de Clasificaciones <small class="text-muted">Clasificaciones Activas</small>
+                    Administración de Información Personal
                 </h5>
             </div><!--col-->
 
             <div class="col-sm-7 pull-right">
-                @include('backend.admin.classification.includes.header-buttons')
+                @include('backend.admin.basic-information.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->
 
@@ -24,6 +24,11 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Matricula</th>
+                            <th>Empresa</th>
+                            <th>Dirección</th>
+                            <th>E-mail</th>
+                            <th>Teléfonos</th>
                             <th class="not-export-col">Acciones</th>
                         </tr>
                         </thead>
@@ -45,9 +50,14 @@
                 "serverSide": true,
                 "draw": true,
                 "buttons": [],
-                ajax: "{{ route('admin.classification.index') }}",
+                ajax: "{{ route('admin.basic-information.index') }}",
                 columns: [
-                    {data: 'name', name: 'name'},
+                    {data: 'full_name', name: 'full_name'},
+                    {data: 'm_professional', name: 'm_professional'},
+                    {data: 'company_name', name: 'company_name'},
+                    {data: 'address', name: 'address'},
+                    {data: 'email', name: 'email'},
+                    {data: 'phones', name: 'phones'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                 ]
             });

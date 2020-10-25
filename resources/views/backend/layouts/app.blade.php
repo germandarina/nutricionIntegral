@@ -21,7 +21,6 @@
     {{ style(mix('css/backend.css')) }}
     {{ style('lobibox/css/lobibox.css') }}
     {{ style('select2/select2.min.css') }}
-    {{ style('kartik-fileinput/fileinput.min.css') }}
     {{ style('datepicker/bootstrap-datepicker.min.css') }}
 
     @stack('after-styles')
@@ -262,11 +261,6 @@
 
     @stack('after-scripts')
     {{ script('select2/select2.min.js')}}
-    {{ script('kartik-fileinput/piexif.min.js')}}
-    {{ script('kartik-fileinput/sortable.min.js')}}
-    {{ script('kartik-fileinput/purify.min.js')}}
-    {{ script('kartik-fileinput/fileinput.min.js')}}
-    {{ script('kartik-fileinput/theme-fontawesome5.js') }}
     {{ script('vendor/jsvalidation/js/jsvalidation.js') }}
     {{ script('loading/loadingoverlay.min.js') }}
 
