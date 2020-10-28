@@ -169,7 +169,6 @@ class RecipeRepository extends BaseRepository
             $recipe->edit           = false;
             $recipe->name           = $name;
             $recipe->recipe_type_id = $recipe_original->recipe_type_id;
-            $recipe->observation    = $recipe_original->observation;
             $recipe->save();
 
             foreach ($recipe_original->ingredients as $ingredient_original){
@@ -180,9 +179,16 @@ class RecipeRepository extends BaseRepository
                 $ingredient->save();
             }
 
+            $recipe_original->load('classifications','observations');
+
             $classifications_ids = $recipe_original->classifications->pluck('id');
 
             $recipe->classifications()->attach($classifications_ids);
+
+            $observations = $recipe_original->observations;
+
+            if($observations)
+                $recipe->observations()->attach($observations);
 
             return $recipe;
         });

@@ -158,9 +158,16 @@ class PlanRepository extends BaseRepository
                   $ingredient->save();
               }
 
+              $recipe_original->load('classifications','observations');
+
               $classifications_ids = $recipe_original->classifications->pluck('id');
 
               $recipe->classifications()->attach($classifications_ids);
+
+              $observations = $recipe_original->observations;
+
+              if($observations)
+                  $recipe->observations()->attach($observations);
 
               return $recipe;
         });
