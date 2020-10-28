@@ -678,7 +678,7 @@
                     var datos = data;
                     procesando.remove();
                     Swal.fire({
-                        title: '<strong>Total Completo Por Día</strong>',
+                        title: '<strong>Composición Por Día</strong>',
                         html: datos,
                         showConfirmButton: false,
                         showCloseButton: true,

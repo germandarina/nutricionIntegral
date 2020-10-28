@@ -142,18 +142,19 @@ class PlanRepository extends BaseRepository
         if (!auth()->user()->isAdmin()) {
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
-        return DB::transaction(function () use ($recipe_original) {
-              $recipe = new Recipe();
-              $recipe->fill($recipe_original->toArray());
-              $recipe->id   = null;
-              $recipe->edit = true;
+        return DB::transaction(function () use ($recipe_original)
+        {
+              $recipe                 = new Recipe();
+              $recipe->name           = $recipe_original->name;
+              $recipe->recipe_type_id = $recipe_original->recipe_type_id;
+              $recipe->edit           = true;
               $recipe->save();
 
               foreach ($recipe_original->ingredients as $ingredient_original){
                   $ingredient = new Ingredient();
                   $ingredient->fill($ingredient_original->toArray());
-                  $ingredient->recipe_id    = $recipe->id;
-                  $ingredient->id           = null;
+                  $ingredient->recipe_id = $recipe->id;
+                  $ingredient->id        = null;
                   $ingredient->save();
               }
 

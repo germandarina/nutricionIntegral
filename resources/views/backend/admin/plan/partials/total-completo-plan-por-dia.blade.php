@@ -87,6 +87,10 @@
                     <th> Total Colesterol (mg)</th>
                     <th>{{$total['total_colesterol'] }}</th>
                 </tr>
+                <tr>
+                    <th> Total Fibra (g)</th>
+                    <th>{{$total['total_fibra'] }}</th>
+                </tr>
             </thead>
         </table>
     </div>
