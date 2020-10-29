@@ -15,8 +15,8 @@ trait BasicInformationRelationship
         return $this->hasMany(Phone::class,'basic_information_id');
     }
 
-//    public function plans(){
-//        return $this->hasMany(Plan::class,'basic_information_id');
-//    }
+    public function recomendations(){
+        return $this->hasMany(Phone::class,'basic_information_id');
+    }
 
 }

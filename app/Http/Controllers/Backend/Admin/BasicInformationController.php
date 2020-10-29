@@ -43,13 +43,13 @@ class BasicInformationController extends Controller
         $basic_information =  BasicInformation::first();
 
         if ($request->ajax()) {
-            $data = $this->basicInformation->orderBy('id')->get();
+            $data = $this->basicInformation->with('phones')->orderBy('id')->get();
             return Datatables::of($data)
+                ->addColumn('phones',function ($row){
+                    return $row->phones_front;
+                })
                 ->addColumn('actions', function($row){
-                    if(!$row->default_register){
-                        return view('backend.admin.basic-information.includes.datatable-buttons',compact('row'));
-                    }
-                    return "";
+                    return view('backend.admin.basic-information.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);

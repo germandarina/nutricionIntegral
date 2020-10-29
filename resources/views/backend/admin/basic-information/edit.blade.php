@@ -14,16 +14,34 @@
                 </div><!--col-->
             </div><!--row-->
             <hr>
-            @include('backend.admin.basic-information.partials.form')
+
+            <div class="row">
+                <div class="col-md-12 mb-12">
+                    <div class="nav-tabs-boxed">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home-1" role="tab" aria-controls="home">Datos Personales</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile">Teléfonos de Contacto</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-2" role="tab" aria-controls="profile">Recomendaciones Para Planes</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home-1" role="tabpanel">
+                                @include('backend.admin.basic-information.partials.form')
+                            </div>
+                            <div class="tab-pane" id="profile-1" role="tabpanel">
+                                @include('backend.admin.basic-information.partials.phones')
+                            </div>
+                            <div class="tab-pane" id="profile-2" role="tabpanel">
+                                @include('backend.admin.basic-information.partials.recomendations')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <div class="row">
                 <div class="col">
                     {{ form_cancel(route('admin.basic-information.index'), __('buttons.general.cancel')) }}
-                </div><!--col-->
-
-                <div class="col text-right">
-                    {{ form_submit(__('buttons.general.crud.update')) }}
                 </div><!--col-->
             </div><!--row-->
         </div><!--card-footer-->
@@ -36,7 +54,7 @@
     @include('datatables.includes')
     <script>
         $(function () {
-            $('.data-table').DataTable({
+            $('.phones-datatable').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
@@ -49,6 +67,8 @@
                     {data: 'actions', name: 'actions'},
                 ]
             });
+
+            showRecommendationByType();
         });
 
         function storePhone(event)
@@ -92,6 +112,23 @@
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
+        }
+
+        function showRecommendationByType()
+        {
+            var type = $("#type").val();
+            if(type === '0')
+            {
+                $("#divTxt").show();
+                $("#recommendation_img").val("");
+                $("#divImg").hide();
+            }
+            else
+            {
+                $("#divTxt").hide();
+                $("#recommendation_text").val("");
+                $("#divImg").show();
+            }
         }
     </script>
 @endpush

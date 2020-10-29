@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Method\BasicInformationMethod;
 use App\Models\Traits\Relationship\BasicInformationRelationship;
 
 class BasicInformation extends BaseModel
 {
-    use BasicInformationRelationship;
+    use BasicInformationRelationship,
+        BasicInformationMethod;
 
     public $table = 'basic_information';
 
@@ -27,4 +29,5 @@ class BasicInformation extends BaseModel
         'updated_at',
         'deleted_at',
     ];
+
 }
