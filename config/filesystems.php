@@ -55,7 +55,7 @@ return [
 
         'client' => [
             'driver' => 'local',
-            'root' => public_path('img'),
+            'root' => public_path('img/backend/client'),
             'url' => env('APP_URL').'/public',
             'visibility' => 'public',
         ],

@@ -96,6 +96,8 @@
                 cancelButtonText : 'No',
             }).then((result) => {
                 if (result.value) {
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -104,9 +106,12 @@
                         type:     'POST',
                         data: {_method: 'POST'},
                         success: (function (data){
+                            procesando.remove();
                             Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
                         }),
                         error: (function (jqXHR, exception) {
+                            procesando.remove();
+
                             if (jqXHR.status === 422){
                                 let mensaje = jqXHR.responseJSON.error
                                 Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
@@ -133,6 +138,8 @@
                 cancelButtonText : 'No',
             }).then((result) => {
                 if (result.value) {
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -141,9 +148,11 @@
                         type:     'POST',
                         data: {_method: 'POST'},
                         success: (function (data){
+                            procesando.remove();
                             Lobibox.notify("success",{msg: data.mensaje,'position': 'top right','title':'Éxito'});
                         }),
                         error: (function (jqXHR, exception) {
+                            procesando.remove();
                             if (jqXHR.status === 422){
                                 let mensaje = jqXHR.responseJSON.error
                                 Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});

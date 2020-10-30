@@ -4,6 +4,7 @@ namespace App\Repositories\Backend\Admin;
 
 use App\Models\BasicInformation ;
 use App\Models\Phone;
+use App\Models\Recommendation;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
@@ -74,13 +75,24 @@ class BasicInformationRepository extends BaseRepository
             $phone->fill($data);
             $phone->basic_information_id = $basic_information->id;
             if(!$phone->save()){
-                throw new GeneralException('Error al actualizar informacion basica. Intente nuevamente');
+                throw new GeneralException('Error al guardar teléfono. Intente nuevamente');
             }
         });
     }
 
-    public function deletePhone()
+    public function storeRecommendation(array $data, BasicInformation $basic_information)
     {
+        if (!auth()->user()->isAdmin()) {
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
 
+        return DB::transaction(function () use ($basic_information, $data) {
+            $recommendation = new Recommendation();
+            $recommendation->fill($data);
+            $recommendation->basic_information_id = $basic_information->id;
+            if(!$recommendation->save()){
+                throw new GeneralException('Error al guardar recomendación. Intente nuevamente');
+            }
+        });
     }
 }

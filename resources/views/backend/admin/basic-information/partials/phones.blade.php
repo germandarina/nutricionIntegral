@@ -32,8 +32,8 @@
     </div>
 </div>
 <div class="row mt-4">
-    <div class="table-responsive">
-        <table class="table data-table font-xs " id="phones-datatable">
+    <div class="col">
+        <table class="table data-table font-xs " id="phones-datatable" style="width: 100%;">
             <thead>
             <tr>
                 <th>Código Área</th>

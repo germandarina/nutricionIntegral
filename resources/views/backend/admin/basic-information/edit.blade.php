@@ -19,18 +19,18 @@
                 <div class="col-md-12 mb-12">
                     <div class="nav-tabs-boxed">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home-1" role="tab" aria-controls="home">Datos Personales</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile">Teléfonos de Contacto</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-2" role="tab" aria-controls="profile">Recomendaciones Para Planes</a></li>
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#data" role="tab" aria-controls="home">Datos Personales</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#phones-data" role="tab" aria-controls="profile">Teléfonos de Contacto</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#recommendations-data" role="tab" aria-controls="profile">Recomendaciones Para Planes</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="home-1" role="tabpanel">
+                            <div class="tab-pane active" id="data" role="tabpanel">
                                 @include('backend.admin.basic-information.partials.form')
                             </div>
-                            <div class="tab-pane" id="profile-1" role="tabpanel">
+                            <div class="tab-pane" id="phones-data" role="tabpanel">
                                 @include('backend.admin.basic-information.partials.phones')
                             </div>
-                            <div class="tab-pane" id="profile-2" role="tabpanel">
+                            <div class="tab-pane" id="recommendations-data" role="tabpanel">
                                 @include('backend.admin.basic-information.partials.recomendations')
                             </div>
                         </div>
@@ -54,7 +54,8 @@
     @include('datatables.includes')
     <script>
         $(function () {
-            $('.phones-datatable').DataTable({
+
+            $('#phones-datatable').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
@@ -66,6 +67,25 @@
                     {data: 'phone', name: 'phone',width:'30%'},
                     {data: 'actions', name: 'actions'},
                 ]
+            });
+
+            $('#recommendation-datatable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "draw": true,
+                "buttons": [],
+                dom: '',
+                ajax: "{{ route('admin.basic-information.getRecommendations',$basic_information->id) }}",
+                columns: [
+                    {data: 'type', name: 'type',width:'30%'},
+                    {data: 'recommendation', name: 'recommendation',width:'30%'},
+                    {data: 'actions', name: 'actions'},
+                ]
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
             });
 
             showRecommendationByType();
@@ -105,7 +125,7 @@
                     procesando.remove();
                     $("#code_area").val("");
                     $("#phone").val("");
-                    $('.data-table').DataTable().ajax.reload();
+                    $('#phones-datatable').DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();
@@ -128,6 +148,79 @@
                 $("#divTxt").hide();
                 $("#recommendation_text").val("");
                 $("#divImg").show();
+            }
+        }
+
+        function storeRecommendation(event)
+        {
+            event.preventDefault();
+            var type = $("#type").val();
+
+            if(type === '0')
+            {
+                var recommendation = $("#recommendation_text").val();
+
+                if(recommendation.trim() === '')
+                {
+                    return Lobibox.notify("error",{msg:"Ingrese la recomendación"});
+                }
+
+                procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('admin.basic-information.storeRecommendation',$basic_information->id) }}",
+                    type: 'POST',
+                    data: {
+                        recommendation:recommendation
+                    },
+                    success: function(data) {
+                        var datos = data;
+                        Lobibox.notify('success',{ msg: datos.mensaje });
+                        $("#recommendation_text").val("");
+                        $('#recommendation-datatable').DataTable().ajax.reload();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        procesando.remove();
+                        Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                    }
+                });
+            }
+            else
+            {
+                var fd = new FormData();
+                var files = $('#recommendation_img')[0].files;
+                if(files.length > 0 ){
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+                    fd.append('recommendation_img',files[0]);
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "{{ route('admin.basic-information.storeRecommendation',$basic_information->id) }}",
+                        type: 'post',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+                            var datos = data;
+                            Lobibox.notify('success',{ msg: datos.mensaje });
+                            $("#recommendation_img").val("");
+                            $('#recommendation-datatable').DataTable().ajax.reload();
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            procesando.remove();
+                            Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                        }
+                    });
+                }
+                else
+                {
+                    return Lobibox.notify('error',{msg:'Cargue una imagen'});
+                }
             }
         }
     </script>

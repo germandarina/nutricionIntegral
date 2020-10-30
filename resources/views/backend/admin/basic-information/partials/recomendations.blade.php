@@ -26,7 +26,7 @@
                     ->autofocus() }}
             </div><!--col-->
 
-            <div class="col-md-5" style="display: none;" id="divImg">
+            <div class="col-md-6" style="display: none;" id="divImg">
                 <input type="file"
                    id="recommendation_img" name="recommendation_img"
                    accept="image/png, image/jpeg, image/jpg"
@@ -39,15 +39,16 @@
         </div><!--form-group-->
     </div>
 </div>
+
 <div class="row mt-4">
-    <div class="table-responsive">
-        <table class="table data-table font-xs " id="recommendation-datatable">
+    <div class="col">
+        <table class="table data-table font-xs " id="recommendation-datatable" style="width: 100%;">
             <thead>
-            <tr>
-                <th>Tipo</th>
-                <th>Recomendación</th>
-                <th class="not-export-col">Acción</th>
-            </tr>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Recomendación</th>
+                    <th class="not-export-col">Acción</th>
+                </tr>
             </thead>
         </table>
     </div>

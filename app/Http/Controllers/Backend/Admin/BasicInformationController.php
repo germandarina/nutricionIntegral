@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Admin\BasicInformation\UpdateBasicInformationRequest;
 use App\Models\Phone;
+use App\Models\Recommendation;
 use App\Repositories\Backend\Admin\BasicInformationRepository;
 use App\Http\Requests\Backend\Admin\BasicInformation\StoreBasicInformationRequest;
 use App\Http\Requests\Backend\Admin\BasicInformation\ManageBasicInformationRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use JsValidator;
@@ -138,6 +140,9 @@ class BasicInformationController extends Controller
         try{
             if($request->hasFile('image'))
             {
+                if(Storage::exists(public_path("img/backend/client/{$basic_information->path_image}")))
+                    unlink(public_path("img/backend/client/{$basic_information->path_image}"));
+
                 $image   = request()->file('image');
                 $formato = explode('/',$image->getClientMimeType());
                 request()->file('image')->storeAs('',"pdf_client.{$formato[1]}",'client');
@@ -155,7 +160,8 @@ class BasicInformationController extends Controller
 
     public function getPhones(BasicInformation $basic_information)
     {
-        $data = $basic_information->phones();
+        $basic_information->load('phones');
+        $data = $basic_information->phones;
         return Datatables::of($data)
             ->addColumn('actions', function($row){
                 return view('backend.admin.basic-information.includes.datatable-buttons-phones',compact('row'));
@@ -186,5 +192,71 @@ class BasicInformationController extends Controller
         }catch (\Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 422);
         }
+    }
+
+    public function getRecommendations(BasicInformation $basic_information)
+    {
+        $basic_information->load('recomendations');
+        $data = $basic_information->recomendations;
+        return Datatables::of($data)
+            ->editColumn('type',function ($row){
+                return Recommendation::$types[$row->type];
+            })
+            ->editColumn('recommendation',function ($row){
+                if($row->type == Recommendation::type_img){
+                    return view('backend.admin.basic-information.includes.show-recommendation-img',compact('row'));
+                }
+                return $row->recommendation;
+            })
+            ->addColumn('actions', function($row){
+                return view('backend.admin.basic-information.includes.datatable-buttons-recommendations',compact('row'));
+            })
+            ->rawColumns(['actions','recommendation'])
+            ->make(true);
+    }
+
+
+    public function storeRecommendation(BasicInformation $basic_information)
+    {
+        if(request()->hasFile('recommendation_img'))
+        {
+            $image   = request()->file('recommendation_img');
+            $formato = explode('/',$image->getClientMimeType());
+            $now     = Carbon::now()->format('YmdHis');
+            request()->file('recommendation_img')->storeAs('',"recommendations_{$now}.{$formato[1]}",'client');
+            $request['recommendation'] = "recommendations_{$now}.{$formato[1]}";
+            $request['type']           = Recommendation::type_img;
+        }
+        else
+        {
+           $request['recommendation'] = request('recommendation');
+           $request['type']           = Recommendation::type_text;
+        }
+
+        try{
+            $this->basicInformation->storeRecommendation($request, $basic_information);
+            return response()->json(['mensaje' => "Recomendación Agregada"], 200);
+        }catch (\Exception $exception){
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
+    }
+
+    public function deleteRecommendation($id)
+    {
+        try{
+            $recommendation = Recommendation::find($id);
+            if($recommendation->type == Recommendation::type_img)
+                unlink(public_path("img/backend/client/{$recommendation->recommendation}"));
+
+            $recommendation->forceDelete();
+            return response()->json(['mensaje' => "Recomendación Eliminada"], 200);
+        }catch (\Exception $exception){
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
+    }
+
+    public function downloadRecommendation(Recommendation  $recommendation)
+    {
+        return \Response::download(public_path("img/backend/client/{$recommendation->recommendation}"));
     }
 }
