@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App;
 use App\Http\Controllers\Controller;
+use App\Models\BasicInformation;
 use App\Models\PlanDetail;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
@@ -413,11 +414,11 @@ class PlanController extends Controller
         $total['total_riboflavina']             = 0;
         $total['total_niacina']                 = 0;
         $total['total_vitamina_c']              = 0;
-        $total['total_carbohidratos_disponibles']    = 0;
-        $total['total_ac_grasos_saturados']          = 0;
-        $total['total_ac_grasos_monoinsaturados']    = 0;
-        $total['total_ac_grasos_poliinsaturados']    = 0;
-        $total['total_fibra']                        = 0;
+        $total['total_carbohidratos_disponibles'] = 0;
+        $total['total_ac_grasos_saturados']       = 0;
+        $total['total_ac_grasos_monoinsaturados'] = 0;
+        $total['total_ac_grasos_poliinsaturados'] = 0;
+        $total['total_fibra']                     = 0;
 
         foreach ($plan_details as $detail){
             $recipe = $detail->recipe;
@@ -452,9 +453,9 @@ class PlanController extends Controller
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
 
         $details_without_order = $plan->details()->where(function ($query_where){
-            $query_where->whereNull('order')
-                    ->orWhereNull('order_type');
-        })->first();
+                                        $query_where->whereNull('order')
+                                                ->orWhereNull('order_type');
+                                    })->first();
 
         if($details_without_order)
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe ordenar el plan para descargarlo']);
@@ -472,35 +473,34 @@ class PlanController extends Controller
                                     ->get();
 
         $view_by_day = "";
-        for ($day=1;$day<=$plan->days;$day++){
+        for ($day=1;$day<=$plan->days;$day++)
+        {
             $details_by_day = $details->filter(function ($detail) use($day){
-                    return $detail->day == $day;
-            });
+                                            return $detail->day == $day;
+                                    });
 
             if($details_by_day->isEmpty())
                 return redirect()->route('admin.plan.index')->with(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"]);
 
-            $view_by_day    .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day'));
+            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day'));
         }
 
-        $header         = view('backend.admin.plan.header_plan_pdf',compact('plan','patient'));
-        $final_data     = view('backend.admin.plan.final_data_plan_pdf');
+        $basic_information = BasicInformation::with(['ImageRecommendations','textRecommendations'])->first();
+        $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
+        $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information'));
+        $nombre_plan       = strtolower(trim($plan->name));
+        $nombre_archivo    = snake_case("{$nombre_plan}_{$patient->full_name}");
 
-        $nombre_plan    = strtolower(trim($plan->name));
-        $nombre_archivo = snake_case("{$nombre_plan}_{$patient->full_name}");
-
-        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
+        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data','basic_information'));
 
         return $pdf->download("{$nombre_archivo}.pdf");
-//
-//        $pdf            = \PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data'));
-//
-//        return $pdf->download("{$nombre_archivo}.pdf");
     }
 
     public function storeOrderPlanDetailDay(){
-       if(request('values')){
-          foreach (request('values') as $value) {
+       if(request('values'))
+       {
+          foreach (request('values') as $value)
+          {
               $plan_detail = PlanDetail::find($value['id']);
               $plan_detail->order = $value['order'];
               $plan_detail->order_type = $value['order_type'];
@@ -511,7 +511,8 @@ class PlanController extends Controller
        return App::abort(402);
     }
 
-    public function closePlan(Plan $plan){
+    public function closePlan(Plan $plan)
+    {
 
         if (!auth()->user()->isAdmin()) {
             return response()->json(['error'=>"No tiene permiso para eliminar"],422);

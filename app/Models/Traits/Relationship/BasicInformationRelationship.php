@@ -16,8 +16,18 @@ trait BasicInformationRelationship
         return $this->hasMany(Phone::class,'basic_information_id');
     }
 
-    public function recomendations(){
+    public function recommendations(){
         return $this->hasMany(Recommendation::class,'basic_information_id');
+    }
+
+    public function textRecommendations(){
+        return $this->hasMany(Recommendation::class,'basic_information_id')
+            ->where('type',Recommendation::type_text);
+    }
+
+    public function ImageRecommendations(){
+        return $this->hasMany(Recommendation::class,'basic_information_id')
+            ->where('type',Recommendation::type_img);
     }
 
 }

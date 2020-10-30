@@ -196,8 +196,8 @@ class BasicInformationController extends Controller
 
     public function getRecommendations(BasicInformation $basic_information)
     {
-        $basic_information->load('recomendations');
-        $data = $basic_information->recomendations;
+        $basic_information->load('recommendations');
+        $data = $basic_information->recommendations;
         return Datatables::of($data)
             ->editColumn('type',function ($row){
                 return Recommendation::$types[$row->type];
