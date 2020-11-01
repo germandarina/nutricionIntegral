@@ -33,7 +33,7 @@ class StoreBasicInformationRequest extends FormRequest
             'email'             => ['required'],
             'address'           => ['required'],
             'image'       => ['required','image','mimes:jpeg,jpg,png'],
-            'm_professional'    => ['required'],
+//            'm_professional'    => ['string'],
             'company_name'      => ['required'],
         ];
     }
@@ -46,7 +46,7 @@ class StoreBasicInformationRequest extends FormRequest
             'address.required'      => "La dirección es obligatoria.",
             'image.required'  => "La imagen es obligatoria.",
             'image.mimes'     => "El formato de la imagen debe ser: jpeg,jpg o png.",
-            'm_professional.required' => "La matricula profesional es obligatoria.",
+//            'm_professional.required' => "La matricula profesional es obligatoria.",
             'company_name.required'   => "El nombre de la empresa es obligatorio.",
         ];
     }

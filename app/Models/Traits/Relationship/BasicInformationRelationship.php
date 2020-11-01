@@ -25,7 +25,7 @@ trait BasicInformationRelationship
             ->where('type',Recommendation::type_text);
     }
 
-    public function ImageRecommendations(){
+    public function imageRecommendations(){
         return $this->hasMany(Recommendation::class,'basic_information_id')
             ->where('type',Recommendation::type_img);
     }

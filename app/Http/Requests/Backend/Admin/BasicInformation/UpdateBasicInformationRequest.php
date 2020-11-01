@@ -33,7 +33,7 @@ class UpdateBasicInformationRequest extends FormRequest
             'email'             => ['required'],
             'address'           => ['required'],
             'image'             => ['image','mimes:jpeg,jpg,png'],
-            'm_professional'    => ['required'],
+//            'm_professional'    => ['string'],
             'company_name'      => ['required'],
         ];
     }
@@ -45,7 +45,7 @@ class UpdateBasicInformationRequest extends FormRequest
             'email.required'        => "El email es obligatorio.",
             'address.required'      => "La dirección es obligatoria.",
             'image.mimes'     => "El formato de la imagen debe ser: jpeg,jpg o png.",
-            'm_professional.required' => "La matricula profesional es obligatoria.",
+//            'm_professional.required' => "La matricula profesional es obligatoria.",
             'company_name.required'   => "El nombre de la empresa es obligatorio.",
         ];
     }

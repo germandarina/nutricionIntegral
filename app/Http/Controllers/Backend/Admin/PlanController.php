@@ -452,9 +452,14 @@ class PlanController extends Controller
         }
     }
 
-    public function downloadPlan(Plan $plan){
+    public function downloadPlan(Plan $plan)
+    {
         if($plan->open)
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
+
+        $basic_information = BasicInformation::with(['imageRecommendations','textRecommendations'])->first();
+        if(!$basic_information)
+            return redirect()->route('admin.plan.index')->with(['error'=>'Configure su información personal para descargar el plan']);
 
         $details_without_order = $plan->details()->where(function ($query_where){
                                         $query_where->whereNull('order')
@@ -489,7 +494,6 @@ class PlanController extends Controller
             $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day'));
         }
 
-        $basic_information = BasicInformation::with(['ImageRecommendations','textRecommendations'])->first();
         $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
         $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information'));
         $nombre_plan       = strtolower(trim($plan->name));

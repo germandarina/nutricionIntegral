@@ -1,4 +1,4 @@
-@if($basic_information->textRecommendations->isNotEmpty() || $basic_information->imagetRecommendations->isNotEmpty())
+@if($basic_information->textRecommendations->isNotEmpty() || $basic_information->imageRecommendations->isNotEmpty())
     <div >
         <h3 style="text-align: center; background-color: lightgrey; padding: 3px;">RECOMENDACIONES</h3>
 

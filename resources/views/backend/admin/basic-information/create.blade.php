@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-sm-5">
                     <h5 class="card-title mb-0">
-                        <small class="text-muted">Crear Información Personal</small>
+                        <small class="text-muted">Cargar Información Personal</small>
                     </h5>
                 </div><!--col-->
             </div><!--row-->
@@ -20,10 +20,6 @@
             <div class="row">
                 <div class="col">
                     {{ form_cancel(route('admin.basic-information.index'), __('buttons.general.cancel')) }}
-                </div><!--col-->
-
-                <div class="col text-right">
-                    {{ form_submit(__('buttons.general.crud.create')) }}
                 </div><!--col-->
             </div><!--row-->
         </div><!--card-footer-->

@@ -1,5 +1,5 @@
 
-<h1>{{ strtoupper($plan->name) }} <br>{{ $basic_information->company_name }}</h1>
+<h1>{{ ucfirst(strtolower($plan->name)) }} <br>{{ $basic_information->company_name }}</h1>
 <div>
     <table id="owner" style="width: 100%;">
         <tr>

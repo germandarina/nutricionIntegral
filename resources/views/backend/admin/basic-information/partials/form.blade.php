@@ -119,9 +119,15 @@
             </div>
         </div>
     </div>
+
+    <div class="col text-right">
+        {{ form_submit(__('buttons.general.crud.update')) }}
+    </div>
+@else
+    <div class="col text-right">
+        {{ form_submit(__('buttons.general.crud.create')) }}
+    </div>
 @endif
 
 
-<div class="col text-right">
-    {{ form_submit(__('buttons.general.crud.update')) }}
-</div><!--col-->
+
