@@ -138,10 +138,12 @@ class PlanRepository extends BaseRepository
     }
 
 
-    public function copyRecipeToEdit($recipe_original){
+    public function copyRecipeToEdit($recipe_original)
+    {
         if (!auth()->user()->isAdmin()) {
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
+
         return DB::transaction(function () use ($recipe_original)
         {
               $recipe                 = new Recipe();
@@ -150,7 +152,8 @@ class PlanRepository extends BaseRepository
               $recipe->edit           = true;
               $recipe->save();
 
-              foreach ($recipe_original->ingredients as $ingredient_original){
+              foreach ($recipe_original->ingredients as $ingredient_original)
+              {
                   $ingredient = new Ingredient();
                   $ingredient->fill($ingredient_original->toArray());
                   $ingredient->recipe_id = $recipe->id;

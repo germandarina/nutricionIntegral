@@ -53,6 +53,10 @@
         border: 2px solid #7e80ff;
         background-color: #7e80ff;
     }
+
+    .recipe-edit{
+        background-color: #ffdd76;
+    }
 </style>
 @push('after-scripts')
     @include('datatables.includes')
@@ -120,13 +124,18 @@
                     dom: 'Brtp',
                     fixedHeader: true,
                     paging:false,
-                    "scrollY": "250px",
-                    "scrollCollapse": true,
-                    "processing": true,
-                    "serverSide": true,
-                    "draw": true,
-                    "buttons":[],
-                    "ordering": false,
+                    scrollY: "250px",
+                    scrollCollapse: true,
+                    processing: true,
+                    serverSide: true,
+                    draw: true,
+                    buttons:[],
+                    ordering: false,
+                createdRow: function( row, data, dataIndex){
+                    if(data.recipe.edit ===  1){
+                        $(row).addClass('recipe-edit');
+                    }
+                    },
                     ajax: {
                         url: "{{ route('admin.plan.getRecipesByDay',$plan->id) }}",
                         data: function ( d ) {
@@ -199,8 +208,6 @@
                         showCancelButton: false,
                         showConfirmButton: false,
                         focusConfirm: false,
-                        //confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
-                        //confirmButtonAriaLabel: 'Thumbs up, great!',
                         cancelButtonText: '',
                         cancelButtonAriaLabel: 'Thumbs down'
                     })
@@ -212,7 +219,7 @@
             });
         }
 
-        function modalAgregarReceta(event,recipe_id,parametro = null) {
+        function modalAgregarReceta(event,recipe_id,plan_detail_id = null) {
             event.preventDefault();
 
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
@@ -236,9 +243,12 @@
                         width: '100%',
                     });
                     $("#modalRecipe").modal('show');
-                    if(parametro === "ver"){
+
+                    if(plan_detail_id !== null){
+                        $("#modalRecipe #hidden_plan_detail_id").val(plan_detail_id);
                         $("#divAgregarReceta").hide();
-                        $("#modalRecipe .modal-footer").hide();
+                        $("#modalRecipe .btn-modal-create").hide();
+                        $("#modalRecipe .btn-modal-edit").show();
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -248,7 +258,7 @@
             });
         }
 
-        function agregarReceta(event,recipe_id) {
+        function storeRecipe(event,recipe_id) {
             event.preventDefault();
 
             var quantity_by_day = $("#quantity_by_day").val();
@@ -301,7 +311,7 @@
             });
         }
 
-        function editarReceta(event,recipe_id) {
+        function editRecipe(event,recipe_id) {
             event.preventDefault();
 
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
@@ -320,8 +330,8 @@
                     var datos = data;
                     procesando.remove();
                     $("#modalRecipe").empty().html(datos.html);
-                    iniciarJs();
-                    limpiarModal();
+                    initJs();
+                    cleanModal();
                     $("#modalRecipe").modal('show');
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -331,6 +341,49 @@
             });
 
 
+        }
+
+        function editRecipeAdded(event){
+            event.preventDefault();
+            var plan_detail_id =  $("#modalRecipe #hidden_plan_detail_id").val();
+
+            if(plan_detail_id === "" && plan_detail_id === null && plan_detail_id === undefined)
+                return Lobibox.notify('error',{msg:'Seleccione una receta'});
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.editRecipeAdded') }}',
+                type:     'POST',
+                data:    {
+                    'plan_detail_id': plan_detail_id
+                },
+                success: function(data) {
+                    var datos = data;
+
+                    $(`#recipes-by-day-datatable-${datos.day}`).DataTable().ajax.reload();
+
+                    procesando.remove();
+                    $("#modalRecipe").empty().html(datos.html);
+                    initJs();
+                    cleanModal();
+                    $("#modalRecipe").modal('show');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function actualizarDataTable(event,day,plan_id)
+        {
+            event.preventDefault();
+            $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
+            getTotalCompletoPlanPorDia(event,plan_id,day);
         }
 
         function getComposicionBasica() {
@@ -393,7 +446,7 @@
             });
         }
 
-        function iniciarJs() {
+        function initJs() {
 
             $('#edit_food_id').select2({
                 placeholder: "Buscar alimentos...",
@@ -460,7 +513,7 @@
             $("span.select2.select2-container.select2-container--default").css("width","100%");
         }
 
-        function limpiarModal() {
+        function cleanModal() {
             $("#edit_food_id").select2("val",0);
             $("#quantity_description").val("");
             $("#quantity_grs").val("");
@@ -600,7 +653,7 @@
                     var datos = data;
                     procesando.remove();
                     Lobibox.notify('success',{msg: datos.mensaje});
-                    limpiarModal();
+                    cleanModal();
                     $('#table-ingredients').DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -614,11 +667,11 @@
             });
         }
 
-        function verReceta(event,recipe_id) {
-            modalAgregarReceta(event,recipe_id,"ver");
+        function showRecipe(event,recipe_id,plan_detail_id) {
+            modalAgregarReceta(event,recipe_id,plan_detail_id);
         }
 
-        function eliminarRecetaPorDia(event,plan_detail_id) {
+        function deleteRecipeByDay(event,plan_detail_id) {
             event.preventDefault();
             Swal.fire({
                 title: 'Esta seguro de realizar esta accion?',

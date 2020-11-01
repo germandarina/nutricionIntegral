@@ -60,26 +60,26 @@ trait IngredientMethod
     }
     private static function defaultTotalValuesForRecipe(Recipe &$recipe){
         $recipe->total_energia_kcal = 0;
-        $recipe->total_agua = 0;
-        $recipe->total_proteina = 0;
-        $recipe->total_grasa_total = 0;
+        $recipe->total_agua         = 0;
+        $recipe->total_proteina     = 0;
+        $recipe->total_grasa_total  = 0;
         $recipe->total_carbohidratos_totales = 0;
         $recipe->total_cenizas = 0;
-        $recipe->total_sodio = 0;
+        $recipe->total_sodio   = 0;
         $recipe->total_potasio = 0;
-        $recipe->total_calcio = 0;
+        $recipe->total_calcio  = 0;
         $recipe->total_fosforo = 0;
-        $recipe->total_hierro = 0;
-        $recipe->total_zinc = 0;
+        $recipe->total_hierro  = 0;
+        $recipe->total_zinc    = 0;
         $recipe->total_tiamina = 0;
-        $recipe->total_riboflavina = 0;
-        $recipe->total_niacina = 0;
-        $recipe->total_vitamina_c = 0;
+        $recipe->total_riboflavina  = 0;
+        $recipe->total_niacina      = 0;
+        $recipe->total_vitamina_c   = 0;
         $recipe->total_carbohidratos_disponibles = 0;
-        $recipe->total_ac_grasos_saturados = 0;
+        $recipe->total_ac_grasos_saturados       = 0;
         $recipe->total_ac_grasos_monoinsaturados = 0;
         $recipe->total_ac_grasos_poliinsaturados = 0;
-        $recipe->total_fibra = 0;
+        $recipe->total_fibra      = 0;
         $recipe->total_colesterol = 0;
         $recipe->save();
     }

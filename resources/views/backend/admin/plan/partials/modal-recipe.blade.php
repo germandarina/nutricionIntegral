@@ -65,10 +65,14 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="hidden_plan_detail_id" id="hidden_plan_detail_id">
+
         <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-            <button id="btnGuardar" class="btn btn-primary" type="button" onclick="agregarReceta(event,{{$recipe->id}})">Agregar</button>
-            <button id="btnGuardar" class="btn btn-warning" type="button" onclick="editarReceta(event,{{$recipe->id}})">Editar</button>
+            <button class="btn btn-secondary btn-modal-create" type="button" data-dismiss="modal">Cerrar</button>
+            <button id="btnGuardar" class="btn btn-primary btn-modal-create" type="button" onclick="storeRecipe(event,{{$recipe->id}})">Agregar</button>
+            <button id="btnEditarEnCrear" class="btn btn-warning btn-modal-create" type="button" onclick="editRecipe(event,{{$recipe->id}})">Editar</button>
+
+            <button id="btnEditar" class="btn btn-warning btn-modal-edit" style="display: none;" type="button" onclick="editRecipeAdded(event)">Editar Receta Agregada</button>
         </div>
     </div>
 </div>

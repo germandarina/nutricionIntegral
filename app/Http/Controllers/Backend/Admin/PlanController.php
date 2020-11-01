@@ -365,20 +365,23 @@ class PlanController extends Controller
         return App::abort(402);
     }
 
-    public function getTotalRecipesByDay(Plan $plan){
-        if(request('day')){
+    public function getTotalRecipesByDay(Plan $plan)
+    {
+        if(request('day'))
+        {
             $day = request('day');
             $total = [];
             $this->getValuesForDay($plan->id,$day,$total);
             return view('backend.admin.plan.partials.table-total-plan-by-day',
                         compact('total','plan','day'));
-
         }
         return App::abort(402);
     }
 
-    public function getTotalCompletoPlanPorDia(){
-        if(request('plan_id') && request('day')){
+    public function getTotalCompletoPlanPorDia()
+    {
+        if(request('plan_id') && request('day'))
+        {
             $day        = request('day');
             $plan_id    = request('plan_id');
             $total = [];
@@ -388,8 +391,8 @@ class PlanController extends Controller
         return App::abort(402);
     }
 
-    private function getValuesForDay($plan_id,$day = null,&$total){
-
+    private function getValuesForDay($plan_id,$day = null,&$total)
+    {
         if(!is_null($day)){
             $plan_details =  PlanDetail::with('recipe')
                             ->where('day',$day)
@@ -424,7 +427,8 @@ class PlanController extends Controller
         $total['total_ac_grasos_poliinsaturados'] = 0;
         $total['total_fibra']                     = 0;
 
-        foreach ($plan_details as $detail){
+        foreach ($plan_details as $detail)
+        {
             $recipe = $detail->recipe;
 
             $total['total_energia_kcal']            += $recipe->total_energia_kcal;
@@ -504,7 +508,8 @@ class PlanController extends Controller
         return $pdf->download("{$nombre_archivo}.pdf");
     }
 
-    public function storeOrderPlanDetailDay(){
+    public function storeOrderPlanDetailDay()
+    {
        if(request('values'))
        {
           foreach (request('values') as $value)
@@ -522,9 +527,8 @@ class PlanController extends Controller
     public function closePlan(Plan $plan)
     {
 
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->isAdmin())
             return response()->json(['error'=>"No tiene permiso para eliminar"],422);
-        }
 
         $details_without_order = $plan->details()->where(function ($query_where){
             $query_where->whereNull('order')
@@ -536,7 +540,8 @@ class PlanController extends Controller
 
         $plan->load('details');
         $details = $plan->details;
-        for ($day=1;$day<=$plan->days;$day++){
+        for ($day=1;$day<=$plan->days;$day++)
+        {
             $details_by_day = $details->filter(function ($detail) use($day){
                 return $detail->day == $day;
             });
@@ -552,9 +557,30 @@ class PlanController extends Controller
 
     }
 
-    public function openPlan(Plan $plan){
+    public function openPlan(Plan $plan)
+    {
         $plan->open = true;
         $plan->save();
         return response()->json(['mensaje'=>"Plan Re Abierto"],200);
+    }
+
+    public function editRecipeAdded()
+    {
+        if(request('plan_detail_id'))
+        {
+            $detail = PlanDetail::find(request('plan_detail_id'));
+            $detail->load('recipe');
+            $recipe = $this->planRepository->copyRecipeToEdit($detail->recipe);
+
+            $detail->recipe_id = $recipe->id;
+            $detail->save();
+
+            $recipe->load('ingredients.food');
+            $day     = $detail->day;
+            $plan_id = $detail->plan_id;
+
+            $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe','day','plan_id'));
+            return response()->json(['html'=>$html,'day'=>$day],200);
+        }
     }
 }

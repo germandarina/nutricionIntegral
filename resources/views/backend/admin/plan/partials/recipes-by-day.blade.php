@@ -1,13 +1,18 @@
 <div class="row">
     <div class="col">
+        <p style="font-size: 12px; margin-bottom: 0px;"><span class="badge rounded-pill recipe-edit">&nbsp;&nbsp;</span><strong>&nbsp;Recetas editadas</strong></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
         <table class="table data-table font-xs recipes_by_day" id="recipes-by-day-datatable-{{$i}}" style="width: 100% !important; ">
             <thead>
                 <tr>
                     <th>Orden PDF</th>
                     <th class="center;">Nombre</th>
                     <th>Tipo</th>
-                    <th>Energia</th>
-                    <th>Proteinas</th>
+                    <th>Energía</th>
+                    <th>Proteínas</th>
                     <th>Grasa</th>
                     <th>Carbohidratos</th>
                     @if ($plan->open)

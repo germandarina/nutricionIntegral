@@ -20,7 +20,7 @@
         <div class="row mt-4">
             <div class="col">
                 <div class="table-responsive">
-                    <table class="table data-table">
+                    <table class="table data-table font-xs">
                         <thead>
                         <tr>
                             <th>@lang('labels.backend.access.roles.table.role')</th>
