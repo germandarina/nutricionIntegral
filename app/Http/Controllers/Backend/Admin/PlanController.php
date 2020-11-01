@@ -186,7 +186,8 @@ class PlanController extends Controller
         return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications','array_dias'));
     }
 
-    public function getRecipesForPlan(){
+    public function getRecipesForPlan()
+    {
         $plan_id            = request('plan_id');
         $patient_id         = request('patient_id');
         $foods              = request('foods');
@@ -196,61 +197,64 @@ class PlanController extends Controller
         $recipe_name        = request('recipe_name');
         $min_calorias       = request('min_calorias');
         $max_calorias       = request('max_calorias');
+        $recipes_in_this_plan = [];
+        $recipes_other_plans  = [];
 
-        $recipes_already_used = PlanDetail::whereHas('plan',function ($query) use($patient_id,$plan_id){
-                                            $query->where('patient_id',$patient_id)
-                                                ->where('id','<>',$plan_id);
-                                        })->groupBy('recipe_id')
-                                        ->get(['recipe_id'])->toArray();
+        $recipes_already_used = PlanDetail::whereHas('plan',function ($query) use($patient_id){
+                                                $query->where('patient_id',$patient_id);
+                                            })
+                                            ->whereHas('recipe',function ($query) use($patient_id){
+                                                $query->where('edit',false);
+                                            })
+                                            ->orderBY('plan_id','desc')
+                                            ->groupBy(['plan_id','recipe_id'])
+                                            ->get(['plan_id','recipe_id'])
+                                            ->toArray();
 
-        $recipes_already_used_in_plan = PlanDetail::where('plan_id',$plan_id)
-                                            ->groupBy('recipe_id')
-                                            ->get(['recipe_id'])->toArray();
+        foreach ($recipes_already_used as $row){
+            if($row['plan_id'] == $plan_id)
+                $recipes_in_this_plan[] = $row['recipe_id'];
+            else
+                $recipes_other_plans[] = $row['recipe_id'];
+        }
 
-
-        $recipes_already_used_in_plan = array_map(function ($plan_detail){
-            return $plan_detail['recipe_id'];
-        },$recipes_already_used_in_plan);
-
-        $ids_recipes_already_used = array_map(function ($plan_detail){
-            return $plan_detail['recipe_id'];
-        },$recipes_already_used);
-
-        $query_recipes      = Recipe::with(['ingredients.food','classifications','recipeType'])
+        $query_recipes  = Recipe::with(['ingredients.food','classifications','recipeType'])
                                         ->has('ingredients')
                                         ->where('edit',false);
-        if($recipe_name){
-            $query_recipes->fullText($recipe_name);
-        }
-        if($min_calorias){
-            $query_recipes->where('total_energia_kcal','>=',$min_calorias);
-        }
-        if($max_calorias){
-            $query_recipes->where('total_energia_kcal','<=',$max_calorias);
-        }
-        if($foods || $food_groups){
-            $query_recipes->whereHas('ingredients.food',function ($query)use($foods,$food_groups){
-                if($foods){
-                    $query->whereNotIn('id',$foods);
-                }
-                if($food_groups){
-                    $query->whereNotIn('food_group_id',$food_groups);
-                }
-            });
-        }
-        if($classifications){
+
+        if($classifications)
             $query_recipes->whereHas('classifications',function ($query)use($classifications){
                 $query->whereIn('id',$classifications);
             });
-        }
-        if($recipe_types){
+
+        if($food_groups)
+            $query_recipes->whereDoesntHave('ingredients.food',function ($query_food)use($food_groups){
+                $query_food->whereIn('foods.food_group_id',$food_groups);
+            });
+
+        if($foods)
+            $query_recipes->whereDoesntHave('ingredients',function ($query)use($foods){
+                $query->whereIn('food_id',$foods);
+            });
+
+        if($recipe_types)
             $query_recipes->whereHas('recipeType',function ($query)use($recipe_types){
                 $query->whereIn('id',$recipe_types);
             });
-        }
-        $recipes = $query_recipes->get();
-        $cantidad = count($recipes);
-        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes','ids_recipes_already_used','recipes_already_used_in_plan'));
+
+        if($recipe_name)
+            $query_recipes->fullText($recipe_name);
+
+        if($min_calorias)
+            $query_recipes->where('total_energia_kcal','>=',$min_calorias);
+
+        if($max_calorias)
+            $query_recipes->where('total_energia_kcal','<=',$max_calorias);
+
+        $recipes  = $query_recipes->get();
+        $cantidad = $recipes->count();
+
+        $html = (string) view('backend.admin.plan.partials.list-recipes',compact('recipes','recipes_in_this_plan','recipes_other_plans'));
 
         return compact('html','cantidad');
     }
