@@ -57,7 +57,7 @@
         <div class="modal-footer">
             @if(isset($array_dias))
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-                <button id="btnGuardar" class="btn btn-primary" type="button" onclick="agregarReceta(event,{{$recipe->id}})">Agregar</button>
+                <button id="btnGuardar" class="btn btn-primary" type="button" onclick="storeRecipe(event,{{$recipe->id}})">Agregar</button>
             @else
                 <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="actualizarDataTable(event,{{$day}},{{$plan_id}})">Cerrar</button>
             @endif
