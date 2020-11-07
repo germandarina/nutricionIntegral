@@ -86,7 +86,7 @@
 <div class="row mt-4">
     <div class="col">
         <div class="form-group row">
-            {{ html()->label('Nuev Imagen para PDF')
+            {{ html()->label('Nueva Imagen para PDF')
                 ->class('col-md-2 form-control-label')
                 ->for('image') }}
 

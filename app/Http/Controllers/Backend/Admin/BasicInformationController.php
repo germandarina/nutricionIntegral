@@ -87,13 +87,15 @@ class BasicInformationController extends Controller
     {
         try{
 
-            if (!$request->hasFile('image'))
-                throw new \Exception("Debe cargar una imagen");
+            $request['path_image'] = null;
 
-            $image   = request()->file('image');
-            $formato = explode('/',$image->getClientMimeType());
-            request()->file('image')->storeAs('',"pdf_client.{$formato[1]}",'client');
-            $request['path_image'] = "pdf_client.{$formato[1]}";
+            if ($request->hasFile('image'))
+            {
+                $image   = request()->file('image');
+                $formato = explode('/',$image->getClientMimeType());
+                request()->file('image')->storeAs('',"pdf_client.{$formato[1]}",'client');
+                $request['path_image'] = "pdf_client.{$formato[1]}";
+            }
 
             $basic_information = $this->basicInformation->create($request->all());
 
@@ -140,7 +142,7 @@ class BasicInformationController extends Controller
         try{
             if($request->hasFile('image'))
             {
-                if(Storage::exists(public_path("img/backend/client/{$basic_information->path_image}")))
+                if(!is_null($basic_information->path_image) && Storage::exists(public_path("img/backend/client/{$basic_information->path_image}")))
                     unlink(public_path("img/backend/client/{$basic_information->path_image}"));
 
                 $image   = request()->file('image');
@@ -152,8 +154,9 @@ class BasicInformationController extends Controller
             $this->basicInformation->update($request->all(), $basic_information);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.basic-information.edit',compact('basic-information'))->withInput($request->all());
+            return redirect()->route('admin.basic-information.edit',compact('basic_information'))->withInput($request->all());
         }
+
         Session::flash('success','Información Personal Actualizada');
         return redirect()->route('admin.basic-information.index');
     }

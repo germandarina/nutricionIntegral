@@ -21,7 +21,11 @@
     </table>
     <hr>
     <div id="logo_grande">
-        <img src="{{ public_path("img/backend/client/{$basic_information->path_image}") }}" >
+        @if(!is_null($basic_information->path_image))
+            <img src="{{ public_path("img/backend/client/{$basic_information->path_image}") }}" >
+        @else
+            <img src="{{ public_path("img/backend/diaita/diaita-large.png") }}" >
+        @endif
     </div>
 </div>
 <div style="page-break-after: always;"></div>
