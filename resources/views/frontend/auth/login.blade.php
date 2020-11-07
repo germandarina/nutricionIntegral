@@ -7,14 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="admin login">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('img/backend/diaita/diaita-logo.png') }}" />
+
     {{ style(mix('css/backend.css')) }}
     {{ style('css/animate.min.css') }}
     {{ style('css/login.css') }}
     <title>Nutricion Integral - Login</title>
     <style>
         body {
-            background-image:url('img/ndf.png');
+            background-image:url('img/backend/diaita/diaita-large.png');
             background-color: #FFFFFF;
+            background-size: 62%, 100%;
         }
         .login-sidebar:after {
             background: linear-gradient(-135deg,white,white);
