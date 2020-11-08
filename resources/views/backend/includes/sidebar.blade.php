@@ -39,6 +39,13 @@
                     </ul>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/recipe'))}}" href="{{ route('admin.recipe.indexEdit') }}">
+                                Recetas Editadas en Planes
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
                             <a class="nav-link {{active_class(Active::checkUriPattern('admin/plan'))}}" href="{{ route('admin.plan.index') }}">
                                 Planes
                             </a>

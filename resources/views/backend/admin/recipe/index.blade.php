@@ -71,7 +71,6 @@
         </div>
     </div>
 @endsection
-
 @push('after-scripts')
     @include('datatables.includes')
     <script>

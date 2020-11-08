@@ -17,6 +17,10 @@ Route::post('recipe/add-ingredients', [RecipeController::class, 'addIngredients'
 Route::post('recipe/calculate-grs', [RecipeController::class, 'calculateGrs'])->name('recipe.calculateGrs');
 Route::post('recipe/store-observation', [RecipeController::class, 'storeObservation'])->name('recipe.storeObservation');
 
+Route::get('recipe/index-edit', [RecipeController::class, 'indexEdit'])->name('recipe.indexEdit');
+Route::post('recipe/view', [RecipeController::class, 'viewRecipe'])->name('recipe.viewRecipe');
+Route::post('recipe/update-recipe', [RecipeController::class, 'updateRecipe'])->name('recipe.updateRecipe');
+
 
 Route::group(['prefix' => 'recipe/{recipe}'], function () {
     Route::get('edit', [RecipeController::class, 'edit'])->name('recipe.edit');

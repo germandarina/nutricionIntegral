@@ -65,6 +65,62 @@ class RecipeController extends Controller
         return view('backend.admin.recipe.index');
     }
 
+
+    /**
+     * @param ManageRecipeRequest $request
+     *
+     * @return mixed
+     */
+    public function indexEdit(ManageRecipeRequest $request)
+    {
+        if ($request->ajax()) {
+            $data = Recipe::where('edit', true)
+                            ->has('planDetails')
+                            ->with('recipeType', 'classifications')
+                            ->orderBy('name')
+                            ->get();
+
+            return Datatables::of($data)
+                ->addColumn('actions', function ($row) {
+                    return view('backend.admin.recipe.includes.datatable-edit-buttons', compact('row'));
+                })
+                ->editColumn('recipeType', function ($row) {
+                    return $row->recipeType->name;
+                })
+                ->editColumn('classifications', function ($row) {
+                    $clasifications = $row->classifications->pluck('name')->toArray();
+                    return implode('/', $clasifications);
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+        return view('backend.admin.recipe.index-edit');
+    }
+
+    public function viewRecipe()
+    {
+        if(request('recipe_id'))
+        {
+            $recipe = Recipe::find(request('recipe_id'));
+            $recipe->load('ingredients.food');
+            return view('backend.admin.recipe.partials.modal-recipe',compact('recipe'));
+        }
+        return App::abort(402);
+    }
+
+    public function updateRecipe()
+    {
+        if(request('recipe_id'))
+        {
+            $recipe = Recipe::find(request('recipe_id'));
+            $recipe->edit = false;
+            $recipe->save();
+            return response()->json(['mensaje' => "Receta actualizada"], 200);
+        }
+        return App::abort(402);
+    }
+
     /**
      * @param ManageRecipeRequest $request
      *
