@@ -484,6 +484,9 @@ class PlanController extends Controller
                                     ->orderBy('day','asc')
                                     ->orderBy('order','asc')
                                     ->get();
+        $macros = false;
+        if(request('macros'))
+            $macros = true;
 
         $view_by_day = "";
         for ($day=1;$day<=$plan->days;$day++)
@@ -495,7 +498,7 @@ class PlanController extends Controller
             if($details_by_day->isEmpty())
                 return redirect()->route('admin.plan.index')->with(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"]);
 
-            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day'));
+            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day','macros'));
         }
 
         $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));

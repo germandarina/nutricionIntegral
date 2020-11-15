@@ -1,7 +1,15 @@
 <div class="page">
     <h3 style="text-align: center; background-color: lightgrey; padding: 3px;">DÍA {{ $day }}</h3>
     @foreach($details_by_day as $j => $detail)
-        <h3>{{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }} - {{ strtoupper($detail->recipe->name) }}</h3>
+        <h3>{{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }} - {{ strtoupper($detail->recipe->name) }}
+            @if($macros)
+                <br>
+                Energia (Kcal): {{ number_format($detail->recipe->total_energia_kcal,3,',','.')  }}
+                - Protéina (G): {{ number_format($detail->recipe->total_proteina,3,',','.') }}
+                - Carbohidratos (G): {{ number_format($detail->recipe->total_carbohidratos_totales,3,',','.') }}
+                - Grasa (G): {{ number_format($detail->recipe->total_grasa_total,3,',','.') }}
+            @endif
+        </h3>
         <div>
             <table>
                 <thead>
@@ -14,7 +22,7 @@
                 @foreach($detail->recipe->ingredients as $ingredient)
                     <tr>
                         <td style="text-align: left; padding: 1px; border-bottom: 1px solid black;">{{$ingredient->food->name}}</td>
-                        <td style="text-align: left; padding: 1px; border-bottom: 1px solid black;">{{$ingredient->quantity_description}} ({{$ingredient->quantity_grs}} grs)</td>
+                        <td style="text-align: left; padding: 1px; border-bottom: 1px solid black;">{{$ingredient->quantity_description}} ({{ number_format($ingredient->quantity_grs,3,',','.') }} grs)</td>
                     </tr>
                 @endforeach
                 </tbody>
