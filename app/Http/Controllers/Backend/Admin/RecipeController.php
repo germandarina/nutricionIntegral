@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Models\Food;
 use App\Models\Ingredient;
@@ -353,6 +354,7 @@ class RecipeController extends Controller
                 return view('backend.admin.recipe.partials.table-total-recipe', compact('recipe'));
             }
         }
+        return App::abort(402);
     }
 
     public function getTotalCompleto()
@@ -363,6 +365,7 @@ class RecipeController extends Controller
                 return view('backend.admin.recipe.partials.total-completo-recipe', compact('recipe'));
             }
         }
+        return App::abort(402);
     }
 
     public function calculateGrs()
@@ -372,8 +375,8 @@ class RecipeController extends Controller
             $food = Food::find(request('food_id'));
 
             $total_energia_kcal = $food->energia_kcal > 0 ? round((($quantity_grs * $food->energia_kcal) / 100), 3) : 0;
-            $total_proteina = $food->proteina > 0 ? round((($quantity_grs * $food->proteina) / 100), 3) : 0;
-            $total_grasa_total = $food->grasa_total > 0 ? round((($quantity_grs * $food->grasa_total) / 100), 3) : 0;
+            $total_proteina     = $food->proteina > 0 ? round((($quantity_grs * $food->proteina) / 100), 3) : 0;
+            $total_grasa_total  = $food->grasa_total > 0 ? round((($quantity_grs * $food->grasa_total) / 100), 3) : 0;
             $total_carbohidratos_totales = $food->carbohidratos_totales > 0 ? round((($quantity_grs * $food->carbohidratos_totales) / 100), 3) : 0;
             $total_colesterol = $food->colesterol > 0 ? round((($quantity_grs * $food->colesterol) / 100), 3) : 0;
 

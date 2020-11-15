@@ -4,7 +4,27 @@
             <h5 class="modal-title">Editar Receta</h5>
         </div>
         <div class="modal-body">
-
+            <div class="row">
+                <div class="col-md-2">
+                    {{ html()->label('Nuevo Nombre')
+                                     ->class('col-md-12 form-control-label')
+                                     ->for('new_name')
+                                     ->style(['font-size'=>'13px'])}}
+                </div>
+                <div class="col-md-7">
+                    {{ html()->text('new_name')
+                            ->class('form-control')
+                            ->placeholder('Nuevo Nombre')
+                            ->attributes(['id'=>'new_name'])
+                            ->required()
+                            ->autofocus()
+                    }}
+                </div>
+                <div class="col-md-3">
+                    <a href="#" class="btn btn-md btn-success" onclick="updateNameRecipe(event)"><i class="fas fa-save"></i> Act. Nombre</a>
+                </div>
+            </div>
+            <br>
             @include('backend.admin.recipe.partials.edit-ingredient')
             <p style="text-align: center; margin: 0;"><strong>Ingredientes</strong></p>
             @include('backend.admin.recipe.partials.datatable-ingredients')

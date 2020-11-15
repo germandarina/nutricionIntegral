@@ -586,4 +586,15 @@ class PlanController extends Controller
             return response()->json(['html'=>$html,'day'=>$day],200);
         }
     }
+
+    public function updateRecipeName()
+    {
+        if(request('new_name') && request('recipe_id'))
+        {
+            $recipe = Recipe::find(request('recipe_id'));
+            $recipe->name = request('new_name');
+            $recipe->save();
+            return response()->json(['mensaje'=>"Nombre actualizado"],200);
+        }
+    }
 }

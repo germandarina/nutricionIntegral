@@ -383,7 +383,7 @@
         {
             event.preventDefault();
             $(`#recipes-by-day-datatable-${day}`).DataTable().ajax.reload();
-            getTotalCompletoPlanPorDia(event,plan_id,day);
+            getTotalesPorDia(day)
         }
 
         function getComposicionBasica() {
@@ -891,6 +891,44 @@
                     });
                 }
             });
+        }
+
+        function updateNameRecipe(event)
+        {
+            event.preventDefault();
+            var new_name = $("#new_name").val();
+            var recipe_id = $("#hidden_recipe_id").val();
+
+            if(new_name === null || new_name === undefined || new_name === ""){
+                return Lobibox.notify('error',{msg:'Ingrese el nuevo nombre'});
+            }
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.updateRecipeName') }}',
+                type:     'POST',
+                data: {
+                    'new_name': new_name,
+                    'recipe_id': recipe_id
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    Lobibox.notify('success',{msg:datos.mensaje});
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(jqXHR.status === 422)
+                        return Lobibox.notify('error',{msg: jqXHR.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+
         }
     </script>
 @endpush
