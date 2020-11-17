@@ -82,4 +82,12 @@ class Patient extends BaseModel
         'updated_at',
         'deleted_at',
     ];
+
+    const gender_masc = 1;
+    const gender_fem  = 2;
+
+    public static $genders = [
+        self::gender_masc   => 'Masculino',
+        self::gender_fem    => 'Femenino',
+    ];
 }

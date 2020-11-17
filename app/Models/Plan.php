@@ -63,4 +63,38 @@ class Plan extends BaseModel
         'updated_at',
         'deleted_at',
     ];
+
+    const factorial_fao_homs = 1;
+    const harris_benedict    = 2;
+    const mifflin_st_jeor   = 3;
+
+    public static $methods = [
+        self::factorial_fao_homs => 'Factorial Fao / Oms',
+        self::harris_benedict    => 'Harris / Benedict',
+        self::mifflin_st_jeor    => 'Mifflin / St Jeor',
+    ];
+
+    const cama_o_reposo          = 1;
+    const act_minima_manutencion = 1.4;
+    const trabajo_ligero         = 1.7;
+    const trabajo_moderado_masc  = 2.7;
+    const trabajo_moderado_fem   = 2.2;
+    const trabajo_pesado_masc    = 3.8;
+    const trabajo_pesado_fem     = 2.8;
+    const entrenamiento_cardio   = 6;
+    const entrenamiento_pesas    = 5;
+    const act_discrecionales     = 3;
+
+    public static $activities = [
+        self::cama_o_reposo             => 'Cama o Reposo',
+        self::act_minima_manutencion    => 'Actividad Mínima Manutencion (AMM)',
+        self::trabajo_ligero            => 'Trabajo Ligero (TL)',
+        self::trabajo_moderado_masc     => 'Trabajo Moderado (Masc)',
+        self::trabajo_moderado_fem      => 'Trabajo Moderado (Fem)',
+        self::trabajo_pesado_masc       => 'Trabajo Pesado (Masc)',
+        self::trabajo_pesado_fem        => 'Trabajo Pesado (Fem)',
+        self::entrenamiento_cardio      => 'Entrenamiento Cardiovascular',
+        self::entrenamiento_pesas       => 'Entrenamiento con Pesas',
+        self::act_discrecionales        => 'Actividades Discrecionales',
+    ];
 }
