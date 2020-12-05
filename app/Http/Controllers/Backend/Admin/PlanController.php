@@ -78,14 +78,14 @@ class PlanController extends Controller
     public function store(StorePlanRequest $request)
     {
         try{
-            $this->planRepository->create($request->all());
+           $plan = $this->planRepository->create($request->all());
         }catch (\Exception $exception)
         {
             Session::flash('error', $exception->getMessage());
             return redirect()->route('admin.plan.create')->withInput($request->all());
         }
         Session::flash('success','Plan Creado');
-        return redirect()->route('admin.plan.index');
+        return redirect()->route('admin.plan.edit',compact('plan'));
     }
 
     /**
@@ -596,5 +596,28 @@ class PlanController extends Controller
             $recipe->save();
             return response()->json(['mensaje'=>"Nombre actualizado"],200);
         }
+    }
+
+    public function calculateEnergySpending()
+    {
+        $data = request()->all();
+        $data['weight'] = (double) str_replace(',','.',$data['weight']);
+        $data['height'] = (double) str_replace(',','.',$data['height']);
+        $result = 0;
+        switch($data['method'])
+        {
+            case Plan::harris_benedict:
+                $data['activity'] = (double) $data['activity'];
+                $result = Plan::calculateTMBHarrisBenedict($data);
+                break;
+            case Plan::mifflin_st_jeor:
+                $result = Plan::calculateTMBMifflin($data);
+                break;
+            case Plan::factorial_fao_homs:
+                $result = Plan::calculateTMBFactorial($data);
+                break;
+        }
+
+        return response()->json(['result'=>$result],200);
     }
 }

@@ -196,7 +196,11 @@
             'placeholder': '0',
             'removeMaskOnSubmit': true,
             'unmaskAsNumber': true,
-            'clearMaskOnLostFocus': false
+            'clearMaskOnLostFocus': false,
+            'negationSymbol': {
+                front: '',
+                back: ''
+            },
         };
 
         var currency3DecimalOptions = {
@@ -210,7 +214,11 @@
             'placeholder': '0',
             'removeMaskOnSubmit': true,
             'unmaskAsNumber': true,
-            'clearMaskOnLostFocus': false
+            'clearMaskOnLostFocus': false,
+            'negationSymbol': {
+                front: '',
+                back: ''
+            },
         };
 
         // var currencyInteger = {

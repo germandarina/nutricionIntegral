@@ -38,6 +38,17 @@
             $('#patient_id').select2({
                 placeholder: "Buscar paciente...",
                 minimumInputLength: 2,
+                language: {
+                    noResults: function () {
+                        return "No hay resultados";
+                    },
+                    searching: function () {
+                        return "Buscando...";
+                    },
+                    inputTooShort: function(a){
+                        return"Por favor ingrese "+(a.minimum-a.input.length)+" o más caracteres"
+                    }
+                },
                 ajax: {
                     url: "{{ route('admin.patient.searchPatients') }}",
                     dataType: 'json',

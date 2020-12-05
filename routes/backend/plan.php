@@ -18,6 +18,7 @@ Route::post('plan/store-order-plan-datail-day',[PlanController::class,'storeOrde
 
 Route::post('plan/edit-recipe-added',[PlanController::class,'editRecipeAdded'])->name('plan.editRecipeAdded');
 Route::post('plan/update-recipe-name',[PlanController::class,'updateRecipeName'])->name('plan.updateRecipeName');
+Route::post('plan/calculate-energy-spending',[PlanController::class,'calculateEnergySpending'])->name('plan.calculateEnergySpending');
 
 Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('edit', [PlanController::class, 'edit'])->name('plan.edit');
