@@ -38,6 +38,7 @@ class StorePatientRequest extends FormRequest
             'phone'              => ['required', 'max:15','min:7'],
             'email'              => ['required','max:100','email','unique:patients'],
             'address'            => ['required', 'max:200'],
+            'gender'             => ['required']
         ];
     }
 
@@ -63,6 +64,7 @@ class StorePatientRequest extends FormRequest
             'age.required'=>'La edad es obligatoria',
             'age.integer'=>'La edad debe ser un numero entero',
             'motive.required'=>'El motivo es obligatorio',
+            'gender.required' => 'El Sexo / Género es obligatorio',
         ];
     }
 

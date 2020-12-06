@@ -20,6 +20,8 @@ Route::post('plan/edit-recipe-added',[PlanController::class,'editRecipeAdded'])-
 Route::post('plan/update-recipe-name',[PlanController::class,'updateRecipeName'])->name('plan.updateRecipeName');
 Route::post('plan/calculate-energy-spending',[PlanController::class,'calculateEnergySpending'])->name('plan.calculateEnergySpending');
 
+Route::delete('delete-activity-fao',[PlanController::class,'deleteActivityFao'])->name('plan.deleteActivityFao');
+
 Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('edit', [PlanController::class, 'edit'])->name('plan.edit');
     Route::patch('/', [PlanController::class, 'update'])->name('plan.update');
@@ -32,4 +34,9 @@ Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::get('download-plan',[PlanController::class,'downloadPlan'])->name('plan.downloadPlan');
     Route::post('close-plan',[PlanController::class,'closePlan'])->name('plan.closePlan');
     Route::post('re-open-plan',[PlanController::class,'openPlan'])->name('plan.openPlan');
+
+    Route::post('store-spending-energy',[PlanController::class,'storeEnergySpending'])->name('plan.storeEnergySpending');
+    Route::post('store-activity-fao',[PlanController::class,'storeActivityFao'])->name('plan.storeActivityFao');
+    Route::get('get-energy-spending',[PlanController::class,'getEnergySpending'])->name('plan.getEnergySpending');
+
 });

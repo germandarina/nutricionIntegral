@@ -6,6 +6,7 @@ use App\Models\Classification;
 use App\Models\Ingredient;
 use App\Models\Plan;
 use App\Models\PlanDetail;
+use App\Models\PlanEnergySpending;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
@@ -173,6 +174,22 @@ class PlanRepository extends BaseRepository
                   $recipe->observations()->attach($observations);
 
               return $recipe;
+        });
+    }
+
+    public function addActivityFao(array $data, Plan $plan)
+    {
+        if (!auth()->user()->isAdmin()) {
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
+        $data['plan_id'] = $plan->id;
+        return DB::transaction(function () use ($data)
+        {
+            $spending_energy = PlanEnergySpending::create($data);
+            if ($spending_energy)
+                return $spending_energy;
+
+            throw new GeneralException('Error al agregar actividad. Intente nuevamente');
         });
     }
 }

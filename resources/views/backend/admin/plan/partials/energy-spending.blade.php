@@ -60,7 +60,7 @@
                 ->class('col-md-2 form-control-label')
                 ->for('age') }}
             <div class="col-md-6">
-                {{ html()->input('number','age')
+                {{ html()->input('number','age',is_null($plan->age) ? $plan->patient->birthdate->age : $plan->age)
                           ->class('form-control')
                           ->placeholder('Edad')
                           ->required()
@@ -79,7 +79,7 @@
                 ->class('col-md-2 form-control-label')
                 ->for('gender') }}
             <div class="col-md-6">
-                {{ html()->select('gender',\App\Models\Patient::$genders)
+                {{ html()->select('gender',\App\Models\Patient::$genders,$plan->patient->gender)
                           ->class('form-control')
                           ->placeholder('Seleccione')
                           ->required()
@@ -112,6 +112,24 @@
     </div><!--col-->
 </div><!--row-->
 
+<div class="row mt-4" id="divTMB">
+    <div class="col">
+        <div class="form-group row">
+            {{ html()->label('TMB')
+                ->class('col-md-2 form-control-label')
+                ->for('tmb') }}
+            <div class="col-md-6">
+                {{ html()->text('tmb')
+                          ->class('form-control numeric3Digits')
+                          ->placeholder('TMB')
+                          ->readonly()
+                          ->attribute('id','tmb_head')
+                          ->autofocus() }}
+            </div><!--col-->
+        </div><!--form-group-->
+    </div><!--col-->
+</div><!--row-->
+
 <div class="row mt-4">
     <div class="col">
         <div class="form-group row">
@@ -128,13 +146,13 @@
         </div><!--form-group-->
     </div><!--col-->
 </div><!--row-->
+<input type="hidden" id="is_stored" value="@if ($plan->tmb) 1 @else '' @endif">
 
 <div class="row mt-1" id="divStoreSpendingEnergy" style="display: none;">
     <div class="col col-sm-6 offset-2">
         <a href="#" class="btn btn-success btn-block" onclick="storeSpendingEnergy(event)"><i class="fas fa-save"></i> Guardar</a>
     </div><!--col-->
 </div><!--row-->
-
 <div id="divFaoOms" style="display: none;">
     <hr>
     <div class="row">

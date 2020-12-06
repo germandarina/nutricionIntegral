@@ -27,16 +27,16 @@ class PlanEnergySpending extends BaseModel
         'deleted_at',
     ];
 
-    const cama_o_reposo          = '1';
+    const cama_o_reposo          = '1.00';
     const act_minima_manutencion = '1.40';
     const trabajo_ligero         = '1.70';
     const trabajo_moderado_masc  = '2.70';
     const trabajo_moderado_fem   = '2.20';
     const trabajo_pesado_masc    = '3.80';
     const trabajo_pesado_fem     = '2.80';
-    const entrenamiento_cardio   = '6';
-    const entrenamiento_pesas    = '5';
-    const act_discrecionales     = '3';
+    const entrenamiento_cardio   = '6.00';
+    const entrenamiento_pesas    = '5.00';
+    const act_discrecionales     = '3.00';
 
     public static $activities_fao_oms = [
         self::cama_o_reposo             => 'Cama o Reposo - Valor: 1.00',

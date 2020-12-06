@@ -55,17 +55,21 @@
         {{ html()->text('hours')
             ->class('form-control numericDigits')
             ->required()
+            ->attribute('min',0)
+            ->attribute('max',24)
             ->autofocus() }}
     </div><!--col-->
 </div>
 <div class="row mt-4">
     {{ html()->label('Días por Semana')
                 ->class('col-md-2 form-control-label offset-1')
-                ->for('days') }}
+                ->for('days_activity') }}
     <div class="col-md-8">
-        {{ html()->input('number','days')
+        {{ html()->input('number','days_activity')
             ->class('form-control')
-            ->attributes(['onchange'=>'calculateAverageAndTotal(event)'])
+            ->attribute('min',0)
+            ->attribute('max',7)
+            ->attributes(['onblur'=>'calculateAverageAndTotal(event)'])
             ->autofocus() }}
     </div><!--col-->
 </div>

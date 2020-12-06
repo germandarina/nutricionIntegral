@@ -64,8 +64,26 @@
             </div><!--col-->
         </div><!--form-group-->
     </div>
-
 </div>
+<div class="row mt-1">
+    <div class="col">
+        <div class="form-group row">
+            {{ html()->label('Sexo / Género')
+                ->class('col-md-2 form-control-label')
+                ->for('gender') }}
+            <div class="col-md-10">
+                {{ html()->select('gender',\App\Models\Patient::$genders)
+                          ->class('form-control')
+                          ->placeholder('Seleccione')
+                          ->required()
+                           }}
+            </div><!--col-->
+        </div><!--form-group-->
+    </div><!--col-->
+    <div class="col">
+
+    </div>
+</div><!--row-->
 <div class="row mt-4">
     <div class="col">
         <div class="form-group row">

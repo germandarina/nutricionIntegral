@@ -6,6 +6,7 @@ use App;
 use App\Http\Controllers\Controller;
 use App\Models\BasicInformation;
 use App\Models\PlanDetail;
+use App\Models\PlanEnergySpending;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
@@ -619,5 +620,71 @@ class PlanController extends Controller
         }
 
         return response()->json(['result'=>$result],200);
+    }
+
+    public function storeEnergySpending(Plan $plan)
+    {
+        if(request('method_result')){
+
+            $plan->method = request('method');
+            $plan->weight = str_replace(',','.',request('weight'));
+            $plan->height = str_replace(',','.',request('height'));
+            $plan->age    = request('age');
+            $plan->activity = request('activity') ? request('activity') : null;
+
+            if(request('tmb'))
+            {
+                $tmb        = str_replace('.','',request('tmb'));
+                $tmb        = str_replace(',','.',$tmb);
+                $plan->tmb  = $tmb;
+            }
+
+            $method_result        = str_replace('.','',request('method_result'));
+            $method_result        = str_replace(',','.',$method_result);
+            $plan->method_result  = $method_result;
+
+            $plan->save();
+            return response()->json(['mensaje'=>'Valores Guardados Correctamente'],200);
+
+        }
+    }
+
+    public function storeActivityFao(Plan $plan)
+    {
+        if(request('total')){
+            try{
+                $this->planRepository->addActivityFao(request()->all(),$plan);
+                return response()->json(['mensaje'=>'Actividad agregada'],200);
+            }catch (\Exception $exception){
+                return response()->json(['error'=>$exception->getMessage()],422);
+            }
+        }
+        return App::abort(402);
+    }
+
+    public function getEnergySpending(Plan $plan)
+    {
+        $data =  PlanEnergySpending::where('plan_id',$plan->id)->get();
+
+        return Datatables::of($data)
+            ->editColumn('activity',function ($row){
+                return PlanEnergySpending::$activities_fao_oms[$row->activity];
+            })
+            ->addColumn('actions', function($row){
+                return view('backend.admin.plan.includes.datatable-plan-spending-energy-buttons',compact('row','day'));
+            })
+            ->rawColumns(['actions','order'])
+            ->make(true);
+    }
+
+    public function deleteActivityFao()
+    {
+        if(request('id'))
+        {
+            $plan_spending = PlanEnergySpending::find(request('id'));
+            $plan_spending->forceDelete();
+            return response()->json(['mensaje'=>'Actividad Eliminada'],200);
+        }
+        return App::abort(402);
     }
 }

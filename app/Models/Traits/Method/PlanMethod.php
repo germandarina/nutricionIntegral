@@ -9,7 +9,8 @@ use App\Models\Patient;
  */
 trait PlanMethod
 {
-    public function getStatusAttribute(){
+    public function getStatusAttribute()
+    {
         return $this->open ? 'Abierto' : 'Cerrado';
     }
 
@@ -118,7 +119,8 @@ trait PlanMethod
             $tmb = 477.593 + (9.247 * $data['weight']) + (3.098 * $data['height']) - (4.33 * $data['age']);
         }
 
-        $result = $tmb * $data['activity'];
+        $result['tmb']    = $tmb;
+        $result['result'] = $tmb * $data['activity'];
 
         return $result;
     }
@@ -136,6 +138,9 @@ trait PlanMethod
             $tmb = (10 * $data['weight']) + (6.25 * $data['height']) - (5 * $data['age']) - 161;
         }
 
-        return $tmb;
+        $result['tmb']    = $tmb;
+        $result['result'] = $tmb * $data['activity'];
+
+        return $result;
     }
 }
