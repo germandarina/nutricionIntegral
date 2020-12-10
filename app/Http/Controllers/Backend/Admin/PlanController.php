@@ -612,6 +612,7 @@ class PlanController extends Controller
                 $result = Plan::calculateTMBHarrisBenedict($data);
                 break;
             case Plan::mifflin_st_jeor:
+                $data['activity'] = (double) $data['activity'];
                 $result = Plan::calculateTMBMifflin($data);
                 break;
             case Plan::factorial_fao_homs:
@@ -624,7 +625,8 @@ class PlanController extends Controller
 
     public function storeEnergySpending(Plan $plan)
     {
-        if(request('method_result')){
+        if(request('method_result'))
+        {
 
             $plan->method = request('method');
             $plan->weight = str_replace(',','.',request('weight'));
