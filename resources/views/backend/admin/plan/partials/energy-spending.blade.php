@@ -168,12 +168,14 @@
 
 <hr>
 <div class="row mt-1">
-    <div class="col col-sm-6 offset-3">
+    <div class="col col-sm-12">
         <table>
             <thead>
             <tr>
-                <th>Necesidades Diarias</th>
-                <th style="text-align: right;">Valores</th>
+                <th style="width: 25%;"></th>
+                <th style="text-align: right;width: 25%;">Necesidades Diarias</th>
+                <th style="text-align: right;width: 25%;">Calorías</th>
+                <th style="text-align: right;width: 25%;">Porcentaje</th>
             </tr>
             </thead>
             <tbody>
@@ -194,6 +196,21 @@
                                ->class('form-control numeric3Digits')
                                ->placeholder('Proteína (g) necesaria por día')
                                ->required()
+                               ->attributes(['onblur'=>'calculoCaloriasPorProteina(event)'])
+                               ->autofocus() }}
+                </td>
+                <td>
+                    {{ html()->text('proteina_por_dia_caloria')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('')
+                               ->required()
+                               ->autofocus() }}
+                </td>
+                <td>
+                    {{ html()->text('proteina_por_dia_porcentaje')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('')
+                               ->required()
                                ->autofocus() }}
                 </td>
             </tr>
@@ -204,6 +221,21 @@
                                ->class('form-control numeric3Digits')
                                ->placeholder('Carbohidratos (g) necesarios por día')
                                ->required()
+                              ->attributes(['onblur'=>'calculoCalooriasPorCarbohidratos(event)'])
+                               ->autofocus() }}
+                </td>
+                <td>
+                    {{ html()->text('carbohidratos_por_dia_caloria')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('')
+                               ->required()
+                               ->autofocus() }}
+                </td>
+                <td>
+                    {{ html()->text('carbohidratos_por_dia_porcentaje')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('')
+                               ->required()
                                ->autofocus() }}
                 </td>
             </tr>
@@ -213,6 +245,21 @@
                     {{ html()->text('grasa_total_por_dia')
                                ->class('form-control numeric3Digits')
                                ->placeholder('Grasa Total Necesaria por día (g)')
+                               ->required()
+                               ->attributes(['onblur'=>'calculoCaloriasPorGrasa(event)'])
+                               ->autofocus() }}
+                </td>
+                <td>
+                    {{ html()->text('grasa_total_por_dia_caloria')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('')
+                               ->required()
+                               ->autofocus() }}
+                </td>
+                <td>
+                    {{ html()->text('grasa_total_por_dia_porcentaje')
+                               ->class('form-control numeric3Digits')
+                               ->placeholder('')
                                ->required()
                                ->autofocus() }}
                 </td>

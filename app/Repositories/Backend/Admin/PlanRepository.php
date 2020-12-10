@@ -183,13 +183,76 @@ class PlanRepository extends BaseRepository
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
         $data['plan_id'] = $plan->id;
-        return DB::transaction(function () use ($data)
+        return DB::transaction(function () use ($data,$plan)
         {
             $spending_energy = PlanEnergySpending::create($data);
             if ($spending_energy)
+            {
+//                if($spending_energy->activity != PlanEnergySpending::act_minima_manutencion)
+//                {
+//                    $spending_amm = PlanEnergySpending::where('plan_id',$plan->id)->where('activity',)
+//                }
+
                 return $spending_energy;
+            }
 
             throw new GeneralException('Error al agregar actividad. Intente nuevamente');
         });
+    }
+
+    /**
+     * @param Plan $plan
+     *
+     * @throws GeneralException
+     * @return double
+     */
+
+    public function calculateAMMValues(Plan $plan)
+    {
+        $plan->load('energySpendings');
+        $energySpendings =  $plan->energySpendings;
+
+        if($energySpendings->isEmpty())
+            return 0;
+
+        $hours = 0;
+        foreach ($energySpendings as $activity)
+        {
+            if($activity->factor_activity == PlanEnergySpending::act_minima_manutencion){
+                continue;
+            }
+            $hours += $activity->hours;
+        }
+
+        $amm_hours = 24 - $hours;
+
+        return $amm_hours == 24 ? 0 : $amm_hours;
+    }
+
+    /**
+     * @param Plan $plan
+     *
+     * @throws GeneralException
+     * @return array
+     */
+
+    public function calculateTotalFao(Plan $plan)
+    {
+        $plan->load('energySpendings');
+        $energySpendings =  $plan->energySpendings;
+
+        if($energySpendings->isEmpty())
+            return ['total_hours'=>0,'total_energy'=>0];
+
+        $hours = 0;
+        $total = 0;
+        foreach ($energySpendings as $activity)
+        {
+            $hours += $activity->hours;
+            $total += $activity->total;
+
+        }
+
+        return ['total_hours'=>round($hours,2),'total_energy'=>round($total,3)];
     }
 }

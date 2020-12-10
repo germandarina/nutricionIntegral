@@ -39,4 +39,8 @@ Route::group(['prefix' => 'plan/{plan}'], function () {
     Route::post('store-activity-fao',[PlanController::class,'storeActivityFao'])->name('plan.storeActivityFao');
     Route::get('get-energy-spending',[PlanController::class,'getEnergySpending'])->name('plan.getEnergySpending');
 
+    Route::post('get-amm-values',[PlanController::class,'getAMMValues'])->name('plan.getAMMValues');
+
+    Route::post('get-total-activities-fao',[PlanController::class,'getTotalActivitiesFao'])->name('plan.getTotalActivitiesFao');
+
 });

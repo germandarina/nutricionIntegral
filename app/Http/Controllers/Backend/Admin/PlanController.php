@@ -654,7 +654,9 @@ class PlanController extends Controller
         if(request('total')){
             try{
                 $this->planRepository->addActivityFao(request()->all(),$plan);
-                return response()->json(['mensaje'=>'Actividad agregada'],200);
+                $values = $this->planRepository->calculateTotalFao($plan);
+
+                return response()->json(['mensaje'=>'Actividad agregada','values'=>$values],200);
             }catch (\Exception $exception){
                 return response()->json(['error'=>$exception->getMessage()],422);
             }
@@ -664,7 +666,8 @@ class PlanController extends Controller
 
     public function getEnergySpending(Plan $plan)
     {
-        $data =  PlanEnergySpending::where('plan_id',$plan->id)->get();
+        $plan->load('energySpendings');
+        $data =  $plan->energySpendings;
 
         return Datatables::of($data)
             ->editColumn('activity',function ($row){
@@ -686,5 +689,26 @@ class PlanController extends Controller
             return response()->json(['mensaje'=>'Actividad Eliminada'],200);
         }
         return App::abort(402);
+    }
+
+    public function getAMMValues(Plan $plan)
+    {
+        $amm_hours = $this->planRepository->calculateAMMValues($plan);
+
+        if(!$amm_hours)
+            return response()->json(['error'=>'Debe agregar una actividad antes de calcular los valores de AMM'],422);
+
+        return response()->json(['amm_hours'=>$amm_hours],200);
+
+    }
+
+    public function getTotalActivitiesFao(Plan $plan)
+    {
+        try{
+            $values = $this->planRepository->calculateTotalFao($plan);
+            return response()->json(['values'=>$values],200);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
     }
 }

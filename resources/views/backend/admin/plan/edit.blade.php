@@ -117,7 +117,35 @@
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust();
             });
+
+            getTotalActivitiesFao();
+            calculoCaloriasPorGrasa();
+            calculoCaloriasPorProteina();
+            calculoCalooriasPorCarbohidratos();
         });
+
+        function getTotalActivitiesFao()
+        {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      "{{ route('admin.plan.getTotalActivitiesFao',$plan->id) }}",
+                type:     'POST',
+                data: {
+                },
+                success: (function (data){
+                    $(".th-total-hours").empty().html(data.values.total_hours);
+                    $(".th-total-energy").empty().html(data.values.total_energy);
+                }),
+                error: (function (jqXHR, exception) {
+                    if (jqXHR.status === 422){
+                        let mensaje = jqXHR.responseJSON.error
+                        Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                    }
+                })
+            });
+        }
 
         function useActivity(event)
         {
@@ -344,6 +372,49 @@
             event.preventDefault();
             var activity = $("#activity_fao").val();
             $("#factor_activity").val(activity);
+
+            if(activity === "1.40")
+            {
+                $("#days_activity").val(7).attr('readonly','readonly');
+                $("#tmb").attr('readonly','readonly');
+                $("#factor_activity").attr('readonly','readonly');
+                $("#weekly_average_activity").attr('readonly','readonly');
+                $("#hours").attr('readonly','readonly');
+
+                procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:      "{{ route('admin.plan.getAMMValues',$plan->id) }}",
+                    type:     'POST',
+                    data: {
+                    },
+                    success: (function (data){
+                        procesando.remove();
+                        var amm_hours = data.amm_hours;
+
+                        $("#hours").val(amm_hours);
+                        calculateAverageAndTotal(event);
+                    }),
+                    error: (function (jqXHR, exception) {
+                        procesando.remove();
+                        if (jqXHR.status === 422){
+                            let mensaje = jqXHR.responseJSON.error
+                            Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                        }
+                    })
+                });
+            }
+            else
+            {
+                $("#days_activity").val(0).removeAttr('readonly');
+                $("#factor_activity").removeAttr('readonly');
+                $("#hours").val(0).removeAttr('readonly');
+                calculateAverageAndTotal(event);
+
+            }
         }
 
         function calculateAverageAndTotal(event)
@@ -452,6 +523,9 @@
                     Lobibox.notify('success',{msg:data.mensaje});
                     limpiarModalFao();
                     $("#table-activities-fao").DataTable().ajax.reload();
+                    $(".th-total-hours").empty().html(data.values.total_hours);
+                    $(".th-total-energy").empty().html(data.values.total_energy);
+
                 }),
                 error: (function (jqXHR, exception) {
                     procesando.remove();
@@ -503,6 +577,7 @@
                             procesando.remove();
                             Lobibox.notify('success',{msg:data.mensaje});
                             $("#table-activities-fao").DataTable().ajax.reload();
+                            getTotalActivitiesFao();
                         }),
                         error: (function (jqXHR, exception) {
                             procesando.remove();
@@ -514,6 +589,77 @@
                     });
                 }
             });
+        }
+
+        function calculoCaloriasPorProteina()
+        {
+            var proteina_por_dia = $("#proteina_por_dia").val();
+
+            proteina_por_dia = proteina_por_dia.replace('.','');
+            proteina_por_dia = proteina_por_dia.replace(',','.');
+            proteina_por_dia = parseFloat(proteina_por_dia);
+
+            var proteina_por_dia_caloria = proteina_por_dia * 4;
+
+            $("#proteina_por_dia_caloria").val(proteina_por_dia_caloria);
+
+            var energia = $("#energia_kcal_por_dia").val();
+
+            energia = energia.replace('.','');
+            energia = energia.replace(',','.');
+            energia = parseFloat(energia);
+
+            var porcentaje = (proteina_por_dia_caloria * 100) / energia;
+
+            $("#proteina_por_dia_porcentaje").val(porcentaje);
+
+        }
+
+        function calculoCalooriasPorCarbohidratos()
+        {
+            var carbohidratos_por_dia = $("#carbohidratos_por_dia").val();
+
+            carbohidratos_por_dia = carbohidratos_por_dia.replace('.','');
+            carbohidratos_por_dia = carbohidratos_por_dia.replace(',','.');
+            carbohidratos_por_dia = parseFloat(carbohidratos_por_dia);
+
+            var carbohidratos_por_dia_caloria = carbohidratos_por_dia * 4;
+
+            $("#carbohidratos_por_dia_caloria").val(carbohidratos_por_dia_caloria);
+
+            var energia = $("#energia_kcal_por_dia").val();
+
+            energia = energia.replace('.','');
+            energia = energia.replace(',','.');
+            energia = parseFloat(energia);
+
+            var porcentaje = (carbohidratos_por_dia_caloria * 100) / energia;
+
+            $("#carbohidratos_por_dia_porcentaje").val(porcentaje);
+        }
+
+        function calculoCaloriasPorGrasa()
+        {
+            var grasa_total_por_dia = $("#grasa_total_por_dia").val();
+
+            grasa_total_por_dia = grasa_total_por_dia.replace('.','');
+            grasa_total_por_dia = grasa_total_por_dia.replace(',','.');
+            grasa_total_por_dia = parseFloat(grasa_total_por_dia);
+
+            var grasa_total_por_dia_caloria = grasa_total_por_dia * 9;
+
+            $("#grasa_total_por_dia_caloria").val(grasa_total_por_dia_caloria);
+
+
+            var energia = $("#energia_kcal_por_dia").val();
+
+            energia = energia.replace('.','');
+            energia = energia.replace(',','.');
+            energia = parseFloat(energia);
+
+            var porcentaje = (grasa_total_por_dia_caloria * 100) / energia;
+
+            $("#grasa_total_por_dia_porcentaje").val(porcentaje);
         }
     </script>
 @endpush

@@ -15,6 +15,15 @@
                         <th class="not-export-col">Acciones</th>
                     </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="th-total-hours">24</th>
+                    <th colspan="2"></th>
+                    <th class="th-total-energy">5000</th>
+                    <th></th>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div><!--col-->
