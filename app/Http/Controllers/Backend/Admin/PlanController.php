@@ -49,6 +49,9 @@ class PlanController extends Controller
                 ->editColumn('status',function ($row){
                     return $row->status;
                 })
+                ->editColumn('name',function ($row){
+                    return "{$row->name} - Días: {$row->days}";
+                })
                 ->addColumn('actions', function($row){
                     return view('backend.admin.plan.includes.datatable-buttons',compact('row'));
                 })

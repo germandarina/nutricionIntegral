@@ -23,15 +23,14 @@
                     <table class="table data-table font-xs">
                         <thead>
                         <tr >
-                            <th colspan="4"></th>
-                            <th colspan="4" style="text-align: center;background: #4dbd74; color: white;">Necesidades Diarias</th>
+                            <th colspan="3" style="border-top: none;"></th>
+                            <th colspan="4" style="text-align: center;background: black; color: white; border-top: none;">Necesidades Diarias</th>
                         </tr>
                         <tr>
                             <th>Paciente</th>
                             <th>Plan</th>
-                            <th>Días</th>
                             <th>Estado</th>
-                            <th>Energia (kcal)</th>
+                            <th>Energia (Kcal)</th>
                             <th>Proteina (g)</th>
                             <th>Carbohidratos (g)</th>
                             <th>Grasa (g)</th>
@@ -61,7 +60,6 @@
                 columns: [
                     {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
-                    {data: 'days', name: 'days'},
                     {data: 'status', name: 'status'},
                     {data: 'energia_kcal_por_dia', name: 'energia_kcal_por_dia'},
                     {data: 'proteina_por_dia', name: 'proteina_por_dia'},
