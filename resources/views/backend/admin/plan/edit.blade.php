@@ -111,7 +111,7 @@
             var $newOption = $("<option selected='selected'></option>").val({{$plan->patient->id}}).text("{{$plan->patient->full_name}}");
             $("#patient_id" ).append($newOption).trigger('change');
 
-            useActivity(event);
+            useActivity(0);
 
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
                 $($.fn.dataTable.tables(true)).DataTable()
@@ -147,8 +147,11 @@
             });
         }
 
-        function useActivity(event)
+        function useActivity(parametro)
         {
+            if(parametro === 1)
+                $("#method_result").val(0);
+
             var method = $("#method").val();
             switch (method)
             {
@@ -183,7 +186,7 @@
                  $(".label-result").empty().html('Cálculo de MB');
                  $("#divFaoOms").show();
                  $("#divTMB").hide();
-
+                 $("#divHeight").hide();
                  break;
 
              case "2":
@@ -192,6 +195,7 @@
                  $("#divActivity").show();
                  $(".label-result").empty().html('Calorías diarias necesarias');
                  $("#divTMB").show();
+                 $("#divHeight").show();
                  break;
             }
         }
@@ -202,19 +206,16 @@
 
             var method = $("#method").val();
             var weight = $("#weight").val();
-            var height = $("#height").val();
             var age    = $("#age").val();
             var gender = $("#gender").val();
             var activity = null;
+            var height   = null;
 
             if(method === null || method === "")
                 return Lobibox.notify('error',{msg: 'Seleccione el método'});
 
             if(weight === null || weight === "")
                 return Lobibox.notify('error',{msg: 'Ingrese el peso'});
-
-            if(height === null || height === "")
-                return Lobibox.notify('error',{msg: 'Ingrese la altura'});
 
             if(age === null || age === "")
                 return Lobibox.notify('error',{msg: 'Ingrese la edad'});
@@ -228,6 +229,11 @@
 
                 if(activity === null || activity === "")
                     return Lobibox.notify('error',{msg: 'Seleccione una actividad'});
+
+                height = $("#height").val();
+
+                if(height === null || height === "")
+                    return Lobibox.notify('error',{msg: 'Ingrese la altura'});
             }
 
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
@@ -615,6 +621,31 @@
 
         }
 
+        function calculoCaloriasPorProteinaInversa()
+        {
+            var proteina_por_dia_caloria = $("#proteina_por_dia_caloria").val();
+
+            proteina_por_dia_caloria = proteina_por_dia_caloria.replace('.','');
+            proteina_por_dia_caloria = proteina_por_dia_caloria.replace(',','.');
+            proteina_por_dia_caloria = parseFloat(proteina_por_dia_caloria);
+
+            var proteina_por_dia = proteina_por_dia_caloria / 4;
+
+            $("#proteina_por_dia").val(proteina_por_dia);
+
+            var energia = $("#energia_kcal_por_dia").val();
+
+            energia = energia.replace('.','');
+            energia = energia.replace(',','.');
+            energia = parseFloat(energia);
+
+            var porcentaje = (proteina_por_dia_caloria * 100) / energia;
+
+            $("#proteina_por_dia_porcentaje").val(porcentaje);
+
+        }
+
+
         function calculoCalooriasPorCarbohidratos()
         {
             var carbohidratos_por_dia = $("#carbohidratos_por_dia").val();
@@ -626,6 +657,29 @@
             var carbohidratos_por_dia_caloria = carbohidratos_por_dia * 4;
 
             $("#carbohidratos_por_dia_caloria").val(carbohidratos_por_dia_caloria);
+
+            var energia = $("#energia_kcal_por_dia").val();
+
+            energia = energia.replace('.','');
+            energia = energia.replace(',','.');
+            energia = parseFloat(energia);
+
+            var porcentaje = (carbohidratos_por_dia_caloria * 100) / energia;
+
+            $("#carbohidratos_por_dia_porcentaje").val(porcentaje);
+        }
+
+        function calculoCalooriasPorCarbohidratosInversa()
+        {
+            var carbohidratos_por_dia_caloria = $("#carbohidratos_por_dia_caloria").val();
+
+            carbohidratos_por_dia_caloria = carbohidratos_por_dia_caloria.replace('.','');
+            carbohidratos_por_dia_caloria = carbohidratos_por_dia_caloria.replace(',','.');
+            carbohidratos_por_dia_caloria = parseFloat(carbohidratos_por_dia_caloria);
+
+            var carbohidratos_por_dia = carbohidratos_por_dia_caloria / 4;
+
+            $("#carbohidratos_por_dia").val(carbohidratos_por_dia);
 
             var energia = $("#energia_kcal_por_dia").val();
 
@@ -650,6 +704,29 @@
 
             $("#grasa_total_por_dia_caloria").val(grasa_total_por_dia_caloria);
 
+
+            var energia = $("#energia_kcal_por_dia").val();
+
+            energia = energia.replace('.','');
+            energia = energia.replace(',','.');
+            energia = parseFloat(energia);
+
+            var porcentaje = (grasa_total_por_dia_caloria * 100) / energia;
+
+            $("#grasa_total_por_dia_porcentaje").val(porcentaje);
+        }
+
+        function calculoCaloriasPorGrasaInversa()
+        {
+            var grasa_total_por_dia_caloria = $("#grasa_total_por_dia_caloria").val();
+
+            grasa_total_por_dia_caloria = grasa_total_por_dia_caloria.replace('.','');
+            grasa_total_por_dia_caloria = grasa_total_por_dia_caloria.replace(',','.');
+            grasa_total_por_dia_caloria = parseFloat(grasa_total_por_dia_caloria);
+
+            var grasa_total_por_dia = grasa_total_por_dia_caloria / 9;
+
+            $("#grasa_total_por_dia").val(grasa_total_por_dia);
 
             var energia = $("#energia_kcal_por_dia").val();
 

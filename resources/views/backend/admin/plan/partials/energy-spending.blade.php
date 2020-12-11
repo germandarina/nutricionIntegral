@@ -8,7 +8,7 @@
                 {{ html()->select('method',\App\Models\Plan::$methods)
                     ->class('form-control')
                     ->placeholder('Seleccione')
-                    ->attributes(['onchange'=>'useActivity(event)'])
+                    ->attributes(['onchange'=>'useActivity(1)'])
                 }}
             </div><!--col-->
         </div><!--form-group-->
@@ -34,7 +34,7 @@
     </div><!--col-->
 </div><!--row-->
 
-<div class="row mt-1">
+<div class="row mt-1" id="divHeight" style="display: block;">
     <div class="col">
         <div class="form-group row">
             {{ html()->label('Altura (Cm)')
@@ -203,14 +203,14 @@
                     {{ html()->text('proteina_por_dia_caloria')
                                ->class('form-control numeric3Digits')
                                ->placeholder('')
-                               ->required()
+                               ->attributes(['onblur'=>'calculoCaloriasPorProteinaInversa(event)'])
                                ->autofocus() }}
                 </td>
                 <td>
                     {{ html()->text('proteina_por_dia_porcentaje')
                                ->class('form-control numeric3Digits')
                                ->placeholder('')
-                               ->required()
+                               ->readonly()
                                ->autofocus() }}
                 </td>
             </tr>
@@ -228,14 +228,14 @@
                     {{ html()->text('carbohidratos_por_dia_caloria')
                                ->class('form-control numeric3Digits')
                                ->placeholder('')
-                               ->required()
+                               ->attributes(['onblur'=>'calculoCalooriasPorCarbohidratosInversa(event)'])
                                ->autofocus() }}
                 </td>
                 <td>
                     {{ html()->text('carbohidratos_por_dia_porcentaje')
                                ->class('form-control numeric3Digits')
                                ->placeholder('')
-                               ->required()
+                               ->readonly()
                                ->autofocus() }}
                 </td>
             </tr>
@@ -253,14 +253,14 @@
                     {{ html()->text('grasa_total_por_dia_caloria')
                                ->class('form-control numeric3Digits')
                                ->placeholder('')
-                               ->required()
+                               ->attributes(['onblur'=>'calculoCaloriasPorGrasaInversa(event)'])
                                ->autofocus() }}
                 </td>
                 <td>
                     {{ html()->text('grasa_total_por_dia_porcentaje')
                                ->class('form-control numeric3Digits')
                                ->placeholder('')
-                               ->required()
+                               ->readonly()
                                ->autofocus() }}
                 </td>
             </tr>
