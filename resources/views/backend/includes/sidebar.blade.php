@@ -91,25 +91,25 @@
                 </a>
 
 
-{{--                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">--}}
-{{--                    <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/auth*')) }}" href="#">--}}
-{{--                        <i class="nav-icon far fa-user"></i>--}}
-{{--                        Accesos--}}
-{{--                    </a>--}}
+                <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('admin/auth*'), 'open')}}">
+                    <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/auth*')) }}" href="#">
+                        <i class="nav-icon far fa-user"></i>
+                        Accesos
+                    </a>
 
-{{--                    <ul class="nav-dropdown-items">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/auth/user*')) }}" href="{{ route('admin.auth.user.index') }}">--}}
-{{--                                Usuarios--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/auth/user*')) }}" href="{{ route('admin.auth.user.index') }}">
+                                Usuarios
+                            </a>
+                        </li>
 {{--                        <li class="nav-item">--}}
 {{--                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/auth/role*')) }}" href="{{ route('admin.auth.role.index') }}">--}}
 {{--                                Roles--}}
 {{--                            </a>--}}
 {{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
+                    </ul>
+                </li>
 
 {{--                <li class="divider"></li>--}}
 

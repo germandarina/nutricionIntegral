@@ -25,7 +25,7 @@ return [
 
         'dashboard' => [
             'title' => 'Panel de Administración',
-            'welcome' => 'Bienvenido',
+            'welcome' => 'Bienvenido/a',
         ],
 
         'general' => [
