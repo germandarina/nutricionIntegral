@@ -215,16 +215,16 @@ class PlanRepository extends BaseRepository
         if($energySpendings->isEmpty())
             return 0;
 
-        $hours = 0;
+        $weekly_average_activity = 0;
         foreach ($energySpendings as $activity)
         {
             if($activity->factor_activity == PlanEnergySpending::act_minima_manutencion){
                 continue;
             }
-            $hours += $activity->hours;
+            $weekly_average_activity += $activity->weekly_average_activity;
         }
 
-        $amm_hours = 24 - $hours;
+        $amm_hours = 24 - $weekly_average_activity;
 
         return $amm_hours == 24 ? 0 : $amm_hours;
     }
@@ -244,15 +244,15 @@ class PlanRepository extends BaseRepository
         if($energySpendings->isEmpty())
             return ['total_hours'=>0,'total_energy'=>0];
 
-        $hours = 0;
+        $weekly_average_activity = 0;
         $total = 0;
         foreach ($energySpendings as $activity)
         {
-            $hours += $activity->hours;
+            $weekly_average_activity += $activity->weekly_average_activity;
             $total += $activity->total;
 
         }
 
-        return ['total_hours'=>round($hours,2),'total_energy'=>round($total,3)];
+        return ['total_hours'=>round($weekly_average_activity,2),'total_energy'=>round($total,3)];
     }
 }

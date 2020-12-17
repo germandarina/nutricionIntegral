@@ -1,6 +1,6 @@
 <div class="row" >
     <div class="col">
-        <div class="table-responsive" style="overflow-x: hidden !important;">
+        <div class="table-responsive" >
             <table class="table data-table font-xs" id="table-activities-fao" style="width: 100% !important;">
                 <thead>
                     <tr>
@@ -17,10 +17,9 @@
                 </thead>
                 <tfoot>
                 <tr>
-                    <th colspan="4"></th>
-                    <th class="th-total-hours">24</th>
-                    <th colspan="2"></th>
-                    <th class="th-total-energy">5000</th>
+                    <th colspan="6"></th>
+                    <th class="th-total-hours"></th>
+                    <th class="th-total-energy"></th>
                     <th></th>
                 </tr>
                 </tfoot>

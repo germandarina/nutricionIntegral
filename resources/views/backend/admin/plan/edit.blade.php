@@ -294,9 +294,6 @@
             if(weight === null || weight === "")
                 return Lobibox.notify('error',{msg: 'Ingrese el peso'});
 
-            if(height === null || height === "")
-                return Lobibox.notify('error',{msg: 'Ingrese la altura'});
-
             if(age === null || age === "")
                 return Lobibox.notify('error',{msg: 'Ingrese la edad'});
 
@@ -314,6 +311,9 @@
 
                 if(tmb_head === null || tmb_head === "")
                     return Lobibox.notify('error',{msg: 'Seleccione una actividad'});
+
+                if(height === null || height === "")
+                    return Lobibox.notify('error',{msg: 'Ingrese la altura'});
             }
 
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
@@ -353,15 +353,13 @@
         function modalFao(event){
             event.preventDefault();
             var result = $("#method_result").val();
-            var is_stored = $("#is_stored").val();
+            var is_stored = parseInt($("#is_stored").val());
 
-            if(result === null || result.trim() === "" || result === 0)
+            if(result === null || result === "" || result === 0)
                 return Lobibox.notify('error',{msg:'Antes de agregar una actividad, realice el calculo de MB'});
 
-
-            if(is_stored === null || is_stored.trim() === "" || is_stored === 0)
+            if(is_stored === null || is_stored === "" || is_stored === 0)
                 return Lobibox.notify('error',{msg:'Antes de agregar una actividad, guarde el calculo de MB'});
-
 
             result  = result.replace('.','');
             result  = result.replace(',','.');
