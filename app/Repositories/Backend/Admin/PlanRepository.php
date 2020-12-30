@@ -61,7 +61,7 @@ class PlanRepository extends BaseRepository
         return DB::transaction(function () use ($plan, $data) {
             if($plan->days != $data['days']){
                 $plan->load('details');
-                if($plan->details)
+                if($plan->details->isNotEmpty())
                     throw new GeneralException('No puede cambiar la cantidad de días si ya tiene recetas cargadas.');
             }
 
