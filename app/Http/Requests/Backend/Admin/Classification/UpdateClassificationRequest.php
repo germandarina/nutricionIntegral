@@ -30,7 +30,7 @@ class UpdateClassificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:200','min:6'],
+            'name' => ['required', 'max:200','min:3'],
         ];
     }
 
@@ -38,7 +38,7 @@ class UpdateClassificationRequest extends FormRequest
     {
         return [
             'name.required' => "El nombre es obligatorio.",
-            'name.min' => "El nombre debe tener, al menos, 6 caracteres.",
+            'name.min' => "El nombre debe tener, al menos, 3 caracteres.",
             'name.max' => "El nombre debe tener, maximo, 200 caracteres.",
         ];
     }
