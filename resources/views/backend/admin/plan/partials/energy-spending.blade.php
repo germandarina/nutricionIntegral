@@ -170,96 +170,97 @@
 <div class="row mt-1">
     <div class="col">
         <div class="table-responsive">
-            <table class="font-xs" style="width: 100%;">
+            <table class="font-xs" style="width: 100%; border-bottom: 2px solid black; border-right: 2px solid black;">
                 <thead>
-                    <tr>
-                        <th></th>
-                        <th style="text-align: right;">Necesidades Diarias</th>
-                        <th style="text-align: right;">Calorías</th>
-                        <th style="text-align: right;">Porcentaje</th>
+                    <tr style="background-color: black; color: white;">
+                        <th style="padding: 1%;"></th>
+                        <th style="padding: 1%; text-align: center;">Necesidades Diarias</th>
+                        <th style="padding: 1%; text-align: center;">Calorías</th>
+                        <th style="padding: 1%; text-align: center;">Porcentaje</th>
                     </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>Energía (kcal)</td>
-                    <td>
+                    <td style="background-color: black; color: white; padding: 1%;" ><strong>Energía (kcal)</strong></td>
+                    <td style="text-align: center;">
                         {{ html()->text('energia_kcal_por_dia')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('Energia (kcal) necesarias por día')
                                    ->required()
                                    ->autofocus() }}
                     </td>
+                    <td colspan="2"></td>
                 </tr>
                 <tr>
-                    <td>Proteína (g)</td>
-                    <td>
+                    <td style="background-color: black; color: white; padding: 1%;"><strong>Proteína (g)</strong></td>
+                    <td style="text-align: center;">
                         {{ html()->text('proteina_por_dia')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('Proteína (g) necesaria por día')
                                    ->required()
                                    ->attributes(['onblur'=>'calculoCaloriasPorProteina(event)'])
                                    ->autofocus() }}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         {{ html()->text('proteina_por_dia_caloria')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('')
                                    ->attributes(['onblur'=>'calculoCaloriasPorProteinaInversa(event)'])
                                    ->autofocus() }}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         {{ html()->text('proteina_por_dia_porcentaje')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('')
                                    ->readonly()
                                    ->autofocus() }}
                     </td>
                 </tr>
                 <tr>
-                    <td>Carbohidratos (g)</td>
-                    <td>
+                    <td style="background-color: black; color: white; padding: 1%;"><strong>Carbohidratos (g)</strong></td>
+                    <td style="text-align: center;">
                         {{ html()->text('carbohidratos_por_dia')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('Carbohidratos (g) necesarios por día')
                                    ->required()
                                    ->attributes(['onblur'=>'calculoCalooriasPorCarbohidratos(event)'])
                                    ->autofocus() }}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         {{ html()->text('carbohidratos_por_dia_caloria')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('')
                                    ->attributes(['onblur'=>'calculoCalooriasPorCarbohidratosInversa(event)'])
                                    ->autofocus() }}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         {{ html()->text('carbohidratos_por_dia_porcentaje')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('')
                                    ->readonly()
                                    ->autofocus() }}
                     </td>
                 </tr>
                 <tr>
-                    <td>Grasa (g)</td>
-                    <td>
+                    <td style="background-color: black; color: white; padding: 1%;"><strong>Grasa (g)</strong></td>
+                    <td style="text-align: center;">
                         {{ html()->text('grasa_total_por_dia')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('Grasa Total Necesaria por día (g)')
                                    ->required()
                                    ->attributes(['onblur'=>'calculoCaloriasPorGrasa(event)'])
                                    ->autofocus() }}
                     </td>
-                    <td>
+                    <td style="text-align: center;" >
                         {{ html()->text('grasa_total_por_dia_caloria')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('')
                                    ->attributes(['onblur'=>'calculoCaloriasPorGrasaInversa(event)'])
                                    ->autofocus() }}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         {{ html()->text('grasa_total_por_dia_porcentaje')
-                                   ->class('form-control numericDigits')
+                                   ->class('numericDigits')
                                    ->placeholder('')
                                    ->readonly()
                                    ->autofocus() }}

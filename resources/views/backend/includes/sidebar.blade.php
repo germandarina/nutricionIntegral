@@ -111,6 +111,18 @@
                     </ul>
                 </li>
 
+                <a class="nav-link" href="{{ route('admin.downloadManual') }}">
+                    <i class="fas fa-file-word"></i> Descargar Manual
+                </a>
+
+                <a class="nav-link" target="_blank" href="https://www.youtube.com/watch?v=2ThPOm8MCcs&feature=youtu.be">
+                    <i style="color: white;" class="fab fa-youtube"></i> Como Crear Un Plan
+                </a>
+
+                <a class="nav-link" href="{{ route('frontend.auth.logout') }}">
+                    <i class="fas fa-lock"></i> Cerrar Sesión
+                </a>
+
 {{--                <li class="divider"></li>--}}
 
 {{--                <li class="nav-item nav-dropdown {{--}}
