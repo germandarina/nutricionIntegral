@@ -147,10 +147,11 @@ class PlanRepository extends BaseRepository
 
         return DB::transaction(function () use ($recipe_original)
         {
-              $recipe                 = new Recipe();
-              $recipe->name           = $recipe_original->name;
-              $recipe->recipe_type_id = $recipe_original->recipe_type_id;
-              $recipe->edit           = true;
+              $recipe                   = new Recipe();
+              $recipe->name             = $recipe_original->name;
+              $recipe->recipe_type_id   = $recipe_original->recipe_type_id;
+              $recipe->edit             = true;
+              $recipe->origin_recipe_id = $recipe_original->edit ? $recipe_original->origin_recipe_id : $recipe_original->id;
               $recipe->save();
 
               foreach ($recipe_original->ingredients as $ingredient_original)

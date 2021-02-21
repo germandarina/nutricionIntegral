@@ -207,19 +207,24 @@ class PlanController extends Controller
         $recipes_already_used = PlanDetail::whereHas('plan',function ($query) use($patient_id){
                                                 $query->where('patient_id',$patient_id);
                                             })
-                                            ->whereHas('recipe',function ($query) use($patient_id){
-                                                $query->where('edit',false);
-                                            })
+                                            ->with('recipe:id,origin_recipe_id')
                                             ->orderBY('plan_id','desc')
                                             ->groupBy(['plan_id','recipe_id'])
-                                            ->get(['plan_id','recipe_id'])
+                                            ->get()
                                             ->toArray();
 
-        foreach ($recipes_already_used as $row){
-            if($row['plan_id'] == $plan_id)
-                $recipes_in_this_plan[] = $row['recipe_id'];
+        foreach ($recipes_already_used as $row)
+        {
+            ## CHEQUEO QUE LA RECETA ESTE EDITADA PARA OBTENER EL ID DE LA RECETA PADRE O NO.
+            if(is_null($row['recipe']['origin_recipe_id']))
+                $recipe_id = $row['recipe_id'];
             else
-                $recipes_other_plans[] = $row['recipe_id'];
+                $recipe_id = $row['recipe']['origin_recipe_id'];
+
+            if($row['plan_id'] == $plan_id)
+                $recipes_in_this_plan[] = $recipe_id;
+            else
+                $recipes_other_plans[] = $recipe_id;
         }
 
         $query_recipes  = Recipe::with(['ingredients.food','classifications','recipeType'])
@@ -290,15 +295,17 @@ class PlanController extends Controller
     }
 
     public function getRecipe(){
-        if(request('recipe_id') && request('plan_id')){
+        if(request('recipe_id') && request('plan_id'))
+        {
             $recipe_original = Recipe::find(request('recipe_id'));
             $recipe          = $this->planRepository->copyRecipeToEdit($recipe_original);
             $recipe->load('ingredients.food');
 
-            $plan  = Plan::find(request('plan_id'));
+            $plan       = Plan::find(request('plan_id'));
             $array_dias = [];
-            for ($i=1;$i<=$plan->days;$i++){
-                $array_dias[$i] = "Día {$i}";
+
+            for ($day=1;$day<=$plan->days;$day++){
+                $array_dias[$day] = "Día {$day}";
             }
 
             $html = (string) view('backend.admin.plan.partials.modal-recipe-edit',compact('recipe','array_dias'));
@@ -360,10 +367,13 @@ class PlanController extends Controller
     }
 
     public function deleteDetailByDay(){
-        if(request('id')){
+        if(request('id'))
+        {
             $detail = PlanDetail::find(request('id'));
+
             $day    = $detail->day;
             $detail->forceDelete();
+
             return response()->json(['mensaje'=>"Receta eliminada del día $day",'day'=>$day],200);
         }
         return App::abort(402);
@@ -466,6 +476,7 @@ class PlanController extends Controller
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
 
         $basic_information = BasicInformation::with(['imageRecommendations','textRecommendations'])->first();
+
         if(!$basic_information)
             return redirect()->route('admin.plan.index')->with(['error'=>'Configure su información personal para descargar el plan']);
 
@@ -493,6 +504,7 @@ class PlanController extends Controller
             $macros = true;
 
         $view_by_day = "";
+
         for ($day=1;$day<=$plan->days;$day++)
         {
             $details_by_day = $details->filter(function ($detail) use($day){

@@ -79,6 +79,7 @@ class Recipe extends BaseModel
         'total_fibra',
         'total_colesterol',
         'edit',
+        'origin_recipe_id',
         'created_at',
         'updated_at',
         'deleted_at',
