@@ -20,10 +20,10 @@ class FixRecipesEditInPlans extends Migration
         {
             $recipe_edit->load('planDetails');
 
-            if($recipe_edit->planDetails->isEmpty())
-            {
-                $recipe_edit->forceDelete();
-            }
+//            if($recipe_edit->planDetails->isEmpty())
+//            {
+//                $recipe_edit->forceDelete();
+//            }
 
             $origin_recipe = Recipe::where('name',$recipe_edit->name)->first();
 
