@@ -691,7 +691,7 @@ class PlanController extends Controller
                 return PlanEnergySpending::$activities_fao_oms[$row->activity];
             })
             ->addColumn('actions', function($row){
-                return view('backend.admin.plan.includes.datatable-plan-spending-energy-buttons',compact('row','day'));
+                return view('backend.admin.plan.includes.datatable-plan-spending-energy-buttons',compact('row'));
             })
             ->rawColumns(['actions','order'])
             ->make(true);
