@@ -10,6 +10,10 @@
                     <strong>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</strong>
                 </div><!--card-header-->
                 <div class="card-body">
+
+                @if ($message)
+                     <div class="alert alert-warning" role="alert">{{ $message }}</div>
+                @endif
 {{--                    {!! __('strings.backend.welcome') !!}--}}
                 </div><!--card-body-->
             </div><!--card-->
