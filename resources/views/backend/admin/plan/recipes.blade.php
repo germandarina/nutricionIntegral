@@ -990,6 +990,7 @@
                     var datos = data;
                     procesando.remove();
                     Lobibox.notify('success',{msg: datos.mensaje });
+                    $(`#recipes-by-day-datatable-${datos.day}`).DataTable().ajax.reload();
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();

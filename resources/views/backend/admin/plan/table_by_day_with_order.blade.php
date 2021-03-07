@@ -26,10 +26,10 @@
                     </tr>
                 @endforeach
                 </tbody>
-                @if($detail->recipe->observations->isNotEmpty())
+                @if($detail->observations->isNotEmpty())
                     <tfoot>
                     <tr>
-                        <td style="text-align: left;background-color: #b7f55b; padding: 1px;" colspan="2"><strong>OBSERVACIONES: {{ implode('. ', $detail->recipe->observations->pluck('name')->toArray() ) }}</strong></td>
+                        <td style="text-align: left;background-color: #b7f55b; padding: 1px;" colspan="2"><strong>OBSERVACIONES: {{ implode('. ', $detail->observations->pluck('name')->toArray() ) }}</strong></td>
                     </tr>
                     </tfoot>
                 @endif

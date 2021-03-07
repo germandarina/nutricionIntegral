@@ -493,10 +493,7 @@ class PlanController extends Controller
         $plan->load('patient');
 
         $patient = $plan->patient;
-        $details = PlanDetail::with(['recipe'=>function($query){
-                                        $query->with('ingredients.food')
-                                              ->with('observations');
-                                    }])
+        $details = PlanDetail::with(['recipe.ingredients.food','observations'])
                                     ->where('plan_id',$plan->id)
                                     ->orderBy('day','asc')
                                     ->orderBy('order','asc')
@@ -758,7 +755,9 @@ class PlanController extends Controller
             else
                 $plan_detail->observations()->detach();
 
-            return response()->json(['mensaje'=>'Observación agregada correctamente'],200);
+            $day = $plan_detail->day;
+
+            return response()->json(['mensaje'=>'Observaciónes actualizadas','day'=>$day],200);
         }
 
         return App::abort(402);
