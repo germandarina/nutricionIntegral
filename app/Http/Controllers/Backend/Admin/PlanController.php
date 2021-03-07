@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App;
 use App\Http\Controllers\Controller;
 use App\Models\BasicInformation;
+use App\Models\Observation;
 use App\Models\PlanDetail;
 use App\Models\PlanEnergySpending;
 use App\Repositories\Backend\Admin\PlanRepository;
@@ -334,19 +335,12 @@ class PlanController extends Controller
             ->make(true);
     }
 
-    public function deleteDetail(){
-        if(request('id')){
-            $detail = PlanDetail::find(request('id'));
-            $detail->forceDelete();
-            return response()->json(['mensaje'=>'Receta eliminada'],200);
-        }
-        return App::abort(402);
-    }
-
     public function getRecipesByDay(Plan $plan){
         $day  = request('day');
 
-        $data =  PlanDetail::with(['recipe.recipeType'])
+        $data =  PlanDetail::with(['recipe'=>function($query_with){
+                                    $query_with->with(['recipeType','observations']);
+        }                       ,'observations'])
                             ->where('day',$day)
                             ->where('plan_id',$plan->id)
                             ->orderBy('order')
@@ -362,7 +356,15 @@ class PlanController extends Controller
             ->addColumn('actions', function($row) use ($day){
                 return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
             })
-            ->rawColumns(['actions','order'])
+            ->addColumn('recipe_name',function ($row){
+                if($row->observations->isNotEmpty())
+                    $observations = implode('. ', $row->observations->pluck('name')->toArray());
+                else
+                    $observations = implode('. ', $row->recipe->observations->pluck('name')->toArray());
+
+                return "<span rel='tooltip' title='{$observations}'>{$row->recipe->name}</span>";
+            })
+            ->rawColumns(['actions','order','recipe_name'])
             ->make(true);
     }
 
@@ -727,5 +729,54 @@ class PlanController extends Controller
         }catch (\Exception $exception){
             return response()->json(['error'=>$exception->getMessage()],422);
         }
+    }
+
+    public function modalObservations()
+    {
+        if(request('plan_detail_id'))
+        {
+            $plan_detail  = PlanDetail::find(request('plan_detail_id'));
+            $plan_detail->load('observations');
+
+            $observations             = Observation::pluck('name','id');
+            $observations_plan_detail = $plan_detail->observations->pluck('id');
+
+            return view('backend.admin.plan.partials.modal-observation',compact('plan_detail','observations','observations_plan_detail'));
+        }
+
+        return App::abort(402);
+    }
+
+    public function addObservation()
+    {
+        if(request('plan_detail_id'))
+        {
+            $plan_detail  = PlanDetail::find(request('plan_detail_id'));
+
+            if(request('observations'))
+                $plan_detail->observations()->sync(request('observations'));
+            else
+                $plan_detail->observations()->detach();
+
+            return response()->json(['mensaje'=>'Observación agregada correctamente'],200);
+        }
+
+        return App::abort(402);
+    }
+
+
+
+    public function addNewObservation()
+    {
+        if(request('plan_detail_id') && request('name'))
+        {
+            $observation = new Observation();
+            $observation->name = request('name');
+            $observation->save();
+
+            return response()->json(['observation'=>$observation],200);
+        }
+
+        return App::abort(402);
     }
 }

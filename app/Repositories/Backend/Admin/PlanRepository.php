@@ -117,22 +117,32 @@ class PlanRepository extends BaseRepository
         throw new GeneralException('Error al restaurar plan. Intente nuevamente');
     }
 
-    public function addRecipe(array $datos) {
+    public function addRecipe(array $datos)
+    {
         if (!auth()->user()->isAdmin()) {
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
-        return DB::transaction(function () use ($datos) {
+        $recipe = Recipe::find($datos['recipe_id']);
+        $recipe->load('observations');
 
-            foreach ($datos['days'] as $day){
-                for ($i=0;$i< $datos['quantity_by_day'];$i++){
-                    $plan_detail                    = new PlanDetail();
-                    $plan_detail->plan_id           = $datos['plan_id'];
-                    $plan_detail->recipe_id         = $datos['recipe_id'];
-                    $plan_detail->day               = $day;
-                    if(!$plan_detail->save()){
+        $observations = $recipe->observations;
+
+        return DB::transaction(function () use ($datos,$observations) {
+
+            foreach ($datos['days'] as $day)
+            {
+                for ($i=0;$i< $datos['quantity_by_day'];$i++)
+                {
+                    $plan_detail            = new PlanDetail();
+                    $plan_detail->plan_id   = $datos['plan_id'];
+                    $plan_detail->recipe_id = $datos['recipe_id'];
+                    $plan_detail->day       = $day;
+
+                    if(!$plan_detail->save())
                         throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
-                    }
+
+                    $plan_detail->observations()->attach($observations);
                 }
             }
         });

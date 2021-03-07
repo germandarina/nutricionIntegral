@@ -132,9 +132,9 @@
                     buttons:[],
                     ordering: false,
                 createdRow: function( row, data, dataIndex){
-                    if(data.recipe.edit ===  1){
+                    if(data.recipe.edit ===  1)
                         $(row).addClass('recipe-edit');
-                    }
+                        $(row).find("[rel=tooltip]").tooltip()
                     },
                     ajax: {
                         url: "{{ route('admin.plan.getRecipesByDay',$plan->id) }}",
@@ -144,7 +144,7 @@
                     },
                     columns: [
                         {data: 'order', name: 'order', width: "15%" },
-                        {data: 'recipe.name', name: 'recipe.name', width: "30%"},
+                        {data: 'recipe_name', name: 'recipe_name', width: "30%"},
                         {data: 'recipeType', name: 'recipeType',width: "10%"},
                         {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
                         {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
@@ -883,8 +883,8 @@
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             procesando.remove();
-                            if(jqXHR.status === 422)
-                                return Lobibox.notify('error',{msg: jqXHR.responseJSON.error });
+                            if(xhr.status === 422)
+                                return Lobibox.notify('error',{msg: xhr.responseJSON.error });
 
                             Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                         }
@@ -922,13 +922,123 @@
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();
-                    if(jqXHR.status === 422)
-                        return Lobibox.notify('error',{msg: jqXHR.responseJSON.error });
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
 
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
 
+        }
+
+        function showObservations(event,plan_detail_id)
+        {
+            event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.modalObservations') }}',
+                type:     'GET',
+                data: {
+                    'plan_detail_id': plan_detail_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    $("#modalRecipe").empty().html(datos);
+
+                    $("#observations").select2({
+                        width: '100%',
+                    });
+
+                    $("#modalRecipe").modal('show');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function addObservation(event)
+        {
+            event.preventDefault();
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            var observations    = $("#observations").val();
+            var plan_detail_id  = $("#hidden_plan_detail_id").val();
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.addObservation') }}',
+                type:     'POST',
+                data: {
+                    'plan_detail_id': plan_detail_id,
+                    'observations':observations
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    Lobibox.notify('success',{msg: datos.mensaje });
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function addNewObservation(event,plan_detail_id)
+        {
+            event.preventDefault();
+
+            var name = $("#observation").val();
+
+            if(name.trim() === "")
+                return Lobibox.notify('error',{msg: 'Ingrese el nombre de la observación'});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.addNewObservation') }}',
+                type:     'POST',
+                data: {
+                    'plan_detail_id': plan_detail_id,
+                    'name': name
+                },
+
+                success: function(data) {
+                    var datos = data;
+
+                    $("#observation").val("");
+
+                    var new_observation = new Option(data.observation.name, data.observation.id, false, false);
+                    $('#observations').append(new_observation);
+                    var observations = $('#observations').val();
+                    observations.push(data.observation.id);
+                    $("#observations").val(observations).trigger('change');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
         }
     </script>
 @endpush

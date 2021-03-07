@@ -9,7 +9,7 @@ Route::post('plan', [PlanController::class, 'store'])->name('plan.store');
 Route::post('plan/recipes-for-plan', [PlanController::class, 'getRecipesForPlan'])->name('plan.getRecipesForPlan');
 Route::post('plan/modal-recipe', [PlanController::class, 'getModalRecipe'])->name('plan.getModalRecipe');
 Route::post('plan/add-recipe-to-plan', [PlanController::class, 'addRecipeToPlan'])->name('plan.addRecipeToPlan');
-Route::delete('plan/delete-detail', [PlanController::class, 'deleteDetail'])->name('plan.deleteDetail');
+//Route::delete('plan/delete-detail', [PlanController::class, 'deleteDetail'])->name('plan.deleteDetail');
 Route::delete('plan/delete-detail-by-day', [PlanController::class, 'deleteDetailByDay'])->name('plan.deleteDetailByDay');
 Route::post('plan/total-completo-plan-por-dia', [PlanController::class, 'getTotalCompletoPlanPorDia'])->name('plan.getTotalCompletoPlanPorDia');
 Route::post('plan/recipe-to-edit', [PlanController::class, 'getRecipe'])->name('plan.getRecipe');
@@ -22,7 +22,14 @@ Route::post('plan/calculate-energy-spending',[PlanController::class,'calculateEn
 
 Route::delete('delete-activity-fao',[PlanController::class,'deleteActivityFao'])->name('plan.deleteActivityFao');
 
-Route::group(['prefix' => 'plan/{plan}'], function () {
+Route::get('plan/modal-observations', [PlanController::class, 'modalObservations'])->name('plan.modalObservations');
+Route::post('plan/add-observation', [PlanController::class, 'addObservation'])->name('plan.addObservation');
+Route::post('plan/add-new-observation', [PlanController::class, 'addNewObservation'])->name('plan.addNewObservation');
+
+Route::delete('plan/delete-observation', [PlanController::class, 'deleteObservation'])->name('plan.deleteObservation');
+
+Route::group(['prefix' => 'plan/{plan}'], function ()
+{
     Route::get('edit', [PlanController::class, 'edit'])->name('plan.edit');
     Route::patch('/', [PlanController::class, 'update'])->name('plan.update');
     Route::post('destroy', [PlanController::class, 'destroy'])->name('plan.destroy');

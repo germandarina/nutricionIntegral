@@ -487,8 +487,8 @@
                     procesando.remove();
                     $("#name_observation").val("");
                     Lobibox.notify('success',{msg:data.mensaje});
-                    var nueva_observation = new Option(data.observation.name, data.observation.id, false, false);
-                    $('#observations').append(nueva_observation).trigger('change');
+                    var new_observation = new Option(data.observation.name, data.observation.id, false, false);
+                    $('#observations').append(new_observation).trigger('change');
                     var observations = $('#observations').val();
                     observations.push(data.observation.id);
                     $("#observations").val(observations).trigger('change');
