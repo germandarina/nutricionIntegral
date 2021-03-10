@@ -374,6 +374,7 @@ class PlanController extends Controller
             $detail = PlanDetail::find(request('id'));
 
             $day    = $detail->day;
+            $detail->observations()->detach();
             $detail->forceDelete();
 
             return response()->json(['mensaje'=>"Receta eliminada del día $day",'day'=>$day],200);
