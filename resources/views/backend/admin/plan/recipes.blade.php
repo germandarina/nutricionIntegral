@@ -752,7 +752,7 @@
 
         function storeOrder(e,day){
             e.preventDefault();
-            var orders = $(`input[id^="order_${day}"]`);
+            var orders = $(`input[id^="order_${day}_"]`);
 
             if(orders.length === 0){
                 return Lobibox.notify('error',{msg: 'Agregue recetas al día para continuar'});
@@ -762,6 +762,7 @@
             var empty_values = false;
 
             $.each(orders,function (i,input){
+
                 let split_id        = input.id.split('_');
                 let plan_detail_id  = split_id[2];
                 let order_type      = $(`#order-type_${day}_${plan_detail_id}`).val();
