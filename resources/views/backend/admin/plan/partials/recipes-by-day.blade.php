@@ -10,7 +10,6 @@
                 <tr>
                     <th>Orden PDF</th>
                     <th class="center;">Nombre</th>
-                    <th>Tipo</th>
                     <th>Energía</th>
                     <th>Proteínas</th>
                     <th>Grasa</th>

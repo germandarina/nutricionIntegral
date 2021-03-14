@@ -45,7 +45,10 @@ class PlanController extends Controller
     public function index(ManagePlanRequest $request)
     {
         if ($request->ajax()) {
-            $data = $this->planRepository->with('patient')->orderBy('id')->get();
+            $data = $this->planRepository->with('patient')
+                         ->orderBy('id','desc')
+                         ->get();
+
             return Datatables::of($data)
                 ->editColumn('status',function ($row){
                     return $row->status;
@@ -338,9 +341,7 @@ class PlanController extends Controller
     public function getRecipesByDay(Plan $plan){
         $day  = request('day');
 
-        $data =  PlanDetail::with(['recipe'=>function($query_with){
-                                    $query_with->with(['recipeType','observations']);
-        }                       ,'observations'])
+        $data =  PlanDetail::with(['recipe.observations','observations'])
                             ->where('day',$day)
                             ->where('plan_id',$plan->id)
                             ->orderBy('order')
@@ -349,9 +350,6 @@ class PlanController extends Controller
         return Datatables::of($data)
             ->addColumn('order',function ($row) use ($day,$plan){
                 return view('backend.admin.plan.includes.plan-detail-day-order',compact('row','day','plan'));
-            })
-            ->editColumn('recipeType',function ($row){
-                return $row->recipe->recipeType->name;
             })
             ->addColumn('actions', function($row) use ($day){
                 return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
@@ -521,6 +519,8 @@ class PlanController extends Controller
         $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information'));
         $nombre_plan       = strtolower(trim($plan->name));
         $nombre_archivo    = snake_case("{$nombre_plan}_{$patient->full_name}");
+
+        PDF::setOption('header-font-name','Bebas Neue');
 
         $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data','basic_information'));
 

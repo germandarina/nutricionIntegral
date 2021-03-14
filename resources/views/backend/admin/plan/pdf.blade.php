@@ -71,13 +71,8 @@
             font-weight: normal;
             text-align: center;
             margin: 0 0 20px 0;
-            /*background: url(dimension.png);*/
         }
 
-        /*#owner {*/
-        /*    float: left;*/
-        /*    margin-right: 20% !important;*/
-        /*}*/
 
         #owner span {
             color: #5D6975;
@@ -87,11 +82,6 @@
             display: inline-block;
             font-size: 0.8em;
         }
-
-        /*#patient {*/
-        /*    float: right;*/
-        /*    text-align: right;*/
-        /*}*/
 
         #owner td {
             white-space: nowrap;
@@ -104,53 +94,23 @@
             margin-bottom: 20px;
         }
 
-        /*table tr:nth-child(2n-1) td {*/
-        /*    background: #F5F5F5;*/
-        /*}*/
-
         table th,
         table td {
             text-align: center;
         }
 
         table th {
-            /*padding: 5px 5px;*/
             color: black;
             background: #ff8d7e;
-            /*border-bottom: 1px solid #C1CED9;*/
             white-space: nowrap;
             font-weight: bold;
         }
-
-        /*table .service,*/
-        /*table .desc {*/
-        /*    text-align: left;*/
-        /*}*/
 
         table td {
             padding: 5px;
             text-align: right;
         }
 
-        /*table td.service,*/
-        /*table td.desc {*/
-        /*    vertical-align: top;*/
-        /*}*/
-
-        /*table td.unit,*/
-        /*table td.qty,*/
-        /*table td.total {*/
-        /*    font-size: 1.2em;*/
-        /*}*/
-
-        /*table td.grand {*/
-        /*    border-top: 1px solid #5D6975;;*/
-        /*}*/
-
-        /*#notices .notice {*/
-        /*    color: #5D6975;*/
-        /*    font-size: 1.2em;*/
-        /*}*/
 
         footer {
             color: #5D6975;

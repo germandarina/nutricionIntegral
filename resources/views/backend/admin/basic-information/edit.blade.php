@@ -22,6 +22,7 @@
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#data" role="tab" aria-controls="home">Datos Personales</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#phones-data" role="tab" aria-controls="profile">Teléfonos de Contacto</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#recommendations-data" role="tab" aria-controls="profile">Recomendaciones Para Planes</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#color-data" role="tab" aria-controls="profile">Personaliza tus Planes</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="data" role="tabpanel">
@@ -32,6 +33,9 @@
                             </div>
                             <div class="tab-pane" id="recommendations-data" role="tabpanel">
                                 @include('backend.admin.basic-information.partials.recomendations')
+                            </div>
+                            <div class="tab-pane" id="color-data" role="tabpanel">
+                                @include('backend.admin.basic-information.partials.colors')
                             </div>
                         </div>
                     </div>
@@ -48,7 +52,14 @@
     </div><!--card-->
 {{ html()->closeModelForm() }}
 @endsection
+{{--<style>--}}
+{{--    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Fjalla+One&family=Merriweather:wght@700&display=swap');--}}
+{{--</style>--}}
+
 @push('after-scripts')
+
+    {{ script('vanilla-picker/vanilla-picker.min.js')  }}
+
     {!! $validator !!}
 
     @include('datatables.includes')
@@ -223,5 +234,43 @@
                 }
             }
         }
+
+        // COLOR DAY
+        var color_day = document.querySelector('#color-day');
+        var picker_day = new Picker({
+            parent: color_day,
+            color: 'green',
+        });
+
+        picker_day.onChange = function(color) {
+            color_day.style.background = color.rgbaString;
+            $("#value_day").val($(".picker_editor>input").val());
+        };
+
+        // COLOR HEADER
+        var color_header = document.querySelector('#color-header');
+        var picker_header = new Picker({
+            parent: color_header,
+            color: 'green',
+        });
+
+        picker_header.onChange = function(color) {
+            color_header.style.background = color.rgbaString;
+            $("#value_header").val($(".picker_editor>input").val());
+        };
+
+        // COLOR OBSERVATIONS
+        var color_observations = document.querySelector('#color-observations');
+        var picker_observations = new Picker({
+            parent: color_observations,
+            color: 'green',
+        });
+
+        picker_observations.onChange = function(color) {
+            color_observations.style.background = color.rgbaString;
+            $("#value_observations").val($(".picker_editor>input").val());
+        };
+
+        $(".div_color").tooltip();
     </script>
 @endpush

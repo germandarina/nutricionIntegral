@@ -143,9 +143,8 @@
                         },
                     },
                     columns: [
-                        {data: 'order', name: 'order', width: "15%" },
-                        {data: 'recipe_name', name: 'recipe_name', width: "30%"},
-                        {data: 'recipeType', name: 'recipeType',width: "10%"},
+                        {data: 'order', name: 'order', width: "18%" },
+                        {data: 'recipe_name', name: 'recipe_name', width: "40%"},
                         {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
                         {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
                         {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
