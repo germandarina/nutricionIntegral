@@ -9,7 +9,6 @@ Route::post('plan', [PlanController::class, 'store'])->name('plan.store');
 Route::post('plan/recipes-for-plan', [PlanController::class, 'getRecipesForPlan'])->name('plan.getRecipesForPlan');
 Route::post('plan/modal-recipe', [PlanController::class, 'getModalRecipe'])->name('plan.getModalRecipe');
 Route::post('plan/add-recipe-to-plan', [PlanController::class, 'addRecipeToPlan'])->name('plan.addRecipeToPlan');
-//Route::delete('plan/delete-detail', [PlanController::class, 'deleteDetail'])->name('plan.deleteDetail');
 Route::delete('plan/delete-detail-by-day', [PlanController::class, 'deleteDetailByDay'])->name('plan.deleteDetailByDay');
 Route::post('plan/total-completo-plan-por-dia', [PlanController::class, 'getTotalCompletoPlanPorDia'])->name('plan.getTotalCompletoPlanPorDia');
 Route::post('plan/recipe-to-edit', [PlanController::class, 'getRecipe'])->name('plan.getRecipe');
@@ -39,6 +38,7 @@ Route::group(['prefix' => 'plan/{plan}'], function ()
     Route::get('recipes-by-day', [PlanController::class, 'getRecipesByDay'])->name('plan.getRecipesByDay');
     Route::post('total-recipes-by-day',[PlanController::class,'getTotalRecipesByDay'])->name('plan.getTotalRecipesByDay');
     Route::get('download-plan',[PlanController::class,'downloadPlan'])->name('plan.downloadPlan');
+    Route::get('download-plan-word',[PlanController::class,'downloadPlanWord'])->name('plan.downloadPlanWord');
     Route::post('close-plan',[PlanController::class,'closePlan'])->name('plan.closePlan');
     Route::post('re-open-plan',[PlanController::class,'openPlan'])->name('plan.openPlan');
 

@@ -14,7 +14,7 @@
             <table>
                 <thead>
                 <tr>
-                    <th>INGREDIENTES</th>
+                    <th>INGREDIENTE</th>
                     <th>CANTIDAD</th>
                 </tr>
                 </thead>
