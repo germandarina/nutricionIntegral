@@ -132,8 +132,8 @@
                 },
                 success: function(data) {
                     var datos = data;
-                    Lobibox.notify('success',{ msg: datos.mensaje });
                     procesando.remove();
+                    Lobibox.notify('success',{ msg: datos.mensaje });
                     $("#code_area").val("");
                     $("#phone").val("");
                     $('#phones-datatable').DataTable().ajax.reload();
@@ -189,6 +189,7 @@
                     },
                     success: function(data) {
                         var datos = data;
+                        procesando.remove();
                         Lobibox.notify('success',{ msg: datos.mensaje });
                         $("#recommendation_text").val("");
                         $('#recommendation-datatable').DataTable().ajax.reload();
@@ -237,40 +238,89 @@
 
         // COLOR DAY
         var color_day = document.querySelector('#color-day');
+        color_day.style.background = '{{ $basic_information->color_days }}';
         var picker_day = new Picker({
             parent: color_day,
-            color: 'green',
+            color: '{{ $basic_information->color_days }}',
         });
 
         picker_day.onChange = function(color) {
-            color_day.style.background = color.rgbaString;
-            $("#value_day").val($(".picker_editor>input").val());
+            color_day.style.background = color.rgbString;
+            $("#value_day").val($("#color-day .picker_wrapper .picker_editor>input").val());
         };
 
         // COLOR HEADER
         var color_header = document.querySelector('#color-header');
+        color_header.style.background     = '{{ $basic_information->color_headers }}';
         var picker_header = new Picker({
             parent: color_header,
-            color: 'green',
+            color: '{{ $basic_information->color_headers }}',
         });
 
         picker_header.onChange = function(color) {
-            color_header.style.background = color.rgbaString;
-            $("#value_header").val($(".picker_editor>input").val());
+            color_header.style.background = color.rgbString;
+            $("#value_header").val($("#color-header .picker_wrapper .picker_editor>input").val());
         };
 
         // COLOR OBSERVATIONS
         var color_observations = document.querySelector('#color-observations');
+        color_observations.style.background     = '{{ $basic_information->color_observations }}';
         var picker_observations = new Picker({
             parent: color_observations,
-            color: 'green',
+            color: '{{ $basic_information->color_observations }}',
         });
 
         picker_observations.onChange = function(color) {
-            color_observations.style.background = color.rgbaString;
-            $("#value_observations").val($(".picker_editor>input").val());
+            color_observations.style.background = color.rgbString;
+            $("#value_observations").val($("#color-observations .picker_wrapper .picker_editor>input").val());
         };
 
         $(".div_color").tooltip();
+
+
+        function storeColors(event)
+        {
+            event.preventDefault();
+            var color_days           = $("#value_day").val();
+            var color_headers        = $("#value_header").val();
+            var color_observations  = $("#value_observations").val();
+
+            if(color_days.trim() === '')
+                return Lobibox.notify("error",{msg:"Seleccione el color del día"});
+
+            if(color_headers.trim() === '')
+                return Lobibox.notify("error",{msg:"Seleccione el color de la cabecera"});
+
+            if(color_observations.trim() === '')
+                return Lobibox.notify("error",{msg:"Seleccione el color de las observaciones"});
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.basic-information.storeColors',$basic_information->id) }}',
+                type:     'POST',
+                data:    {
+                    'color_days'          : color_days,
+                    'color_headers'       : color_headers,
+                    'color_observations' : color_observations
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    Lobibox.notify('success',{ msg: datos.mensaje });
+                    $("#download-plan").show();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+
+
     </script>
 @endpush

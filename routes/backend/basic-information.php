@@ -21,4 +21,7 @@ Route::group(['prefix' => 'basic-information/{basic_information}'], function ()
     Route::get('get-recommendations', [BasicInformationController::class, 'getRecommendations'])->name('basic-information.getRecommendations');
     Route::post('store-recommendation', [BasicInformationController::class, 'storeRecommendation'])->name('basic-information.storeRecommendation');
 
+    Route::post('store-colors', [BasicInformationController::class, 'storeColors'])->name('basic-information.storeColors');
+    Route::get('download-plan-example', [BasicInformationController::class, 'downloadPlanExample'])->name('basic-information.downloadPlanExample');
+
 });

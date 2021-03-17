@@ -481,6 +481,10 @@ class PlanController extends Controller
         if(!$basic_information)
             return redirect()->route('admin.plan.index')->with(['error'=>'Configure su información personal para descargar el plan']);
 
+        $color_days         = $basic_information->color_days ? $basic_information->color_days : 'lightgrey';
+        $color_headers      = $basic_information->color_headers ? $basic_information->color_headers : 'lightgrey';
+        $color_observations = $basic_information->color_observations ? $basic_information->color_observations : 'lightgrey';
+
         $details_without_order = $plan->details()->where(function ($query_where){
                                         $query_where->whereNull('order')
                                                 ->orWhereNull('order_type');
@@ -512,17 +516,18 @@ class PlanController extends Controller
             if($details_by_day->isEmpty())
                 return redirect()->route('admin.plan.index')->with(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"]);
 
-            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day','details_by_day','macros'));
+            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day',
+                                                                    'details_by_day','macros','color_days',
+                                                                            'color_observations'));
         }
 
         $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
-        $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information'));
+        $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
         $nombre_plan       = strtolower(trim($plan->name));
         $nombre_archivo    = snake_case("{$nombre_plan}_{$patient->full_name}");
 
-        PDF::setOption('header-font-name','Bebas Neue');
-
-        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day','header','final_data','basic_information'));
+        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
+                                                            'header','final_data','basic_information','color_headers'));
 
         return $pdf->download("{$nombre_archivo}.pdf");
     }

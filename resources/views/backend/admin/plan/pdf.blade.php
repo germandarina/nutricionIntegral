@@ -10,6 +10,7 @@
             overflow: hidden;
             page-break-after: always;
         }
+
         .page:last-of-type {
             page-break-after: auto
         }
@@ -33,8 +34,7 @@
             color: #001028;
             background: #FFFFFF;
             font-family: Arial, sans-serif;
-            font-size: 12px;
-            font-family: Arial;
+            font-size: 15px;
         }
 
         header {
@@ -77,7 +77,7 @@
         #owner span {
             color: #5D6975;
             text-align: right;
-            width: 52px;
+            width: 85px;
             margin-right: 10px;
             display: inline-block;
             font-size: 0.8em;
@@ -85,6 +85,7 @@
 
         #owner td {
             white-space: nowrap;
+            font-size: 20px !important;
         }
 
         table {
@@ -101,9 +102,10 @@
 
         table th {
             color: black;
-            background: #ff8d7e;
+            background-color: {{ $color_headers }};
             white-space: nowrap;
             font-weight: bold;
+            text-align: left;
         }
 
         table td {

@@ -95,4 +95,22 @@ class BasicInformationRepository extends BaseRepository
             }
         });
     }
+
+    public function storeColors(array $data, BasicInformation $basic_information)
+    {
+        if (!auth()->user()->isAdmin()) {
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+        }
+
+        return DB::transaction(function () use ($basic_information, $data)
+        {
+            $basic_information->color_days          = substr($data['color_days'],0,7);
+            $basic_information->color_headers       = substr($data['color_headers'],0,7);
+            $basic_information->color_observations  = substr($data['color_observations'],0,7);
+
+            if(!$basic_information->save()){
+                throw new GeneralException('Error al guardar colores. Intente nuevamente');
+            }
+        });
+    }
 }

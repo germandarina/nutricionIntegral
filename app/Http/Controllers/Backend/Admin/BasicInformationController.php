@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use JsValidator;
+use PDF;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\BasicInformation;
@@ -261,5 +262,21 @@ class BasicInformationController extends Controller
     public function downloadRecommendation(Recommendation  $recommendation)
     {
         return \Response::download(public_path("img/backend/client/{$recommendation->recommendation}"));
+    }
+
+    public function storeColors(BasicInformation $basic_information)
+    {
+        try{
+            $this->basicInformation->storeColors(request()->all(), $basic_information);
+            return response()->json(['mensaje' => "Colores Guardados"], 200);
+        }catch (\Exception $exception){
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
+    }
+
+    public function downloadPlanExample(BasicInformation $basic_information)
+    {
+        $pdf = PDF::loadView('backend.admin.plan.pdf_example',compact('basic_information','color_header'));
+        return $pdf->download("plan_ejemplo.pdf");
     }
 }
