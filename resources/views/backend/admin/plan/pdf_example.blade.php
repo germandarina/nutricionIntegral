@@ -132,7 +132,7 @@
 <body>
 <header>
 
-    <h1>Plan de Prueba <br>Paciente de Prueba</h1>
+    <h1>Plan de Prueba <br>Paciente de Alimentación de Prueba</h1>
     <div>
         <table id="owner" style="width: 100%;">
             <tr>

@@ -3,7 +3,7 @@
         <table class="table table-responsive-sm table-sm font-xs">
             <thead class="bg-success">
                 <tr>
-                    <th style="text-align: center;" >Energia (Kcal)</th>
+                    <th style="text-align: center;" >Energia (kcal)</th>
                     <th style="text-align: center;" >Proteínas (g)</th>
                     <th style="text-align: center;" >Grasa (g)</th>
                     <th style="text-align: center;" >Carbohidratos (g)</th>

@@ -518,78 +518,39 @@ class PlanController extends Controller
 
             $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day',
                                                                     'details_by_day','macros','color_days',
-                                                                            'color_observations'));
+                                                                            'color_observations','color_headers'));
         }
 
-        $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
-        $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
         $nombre_plan       = strtolower(trim($plan->name));
         $nombre_archivo    = snake_case("{$nombre_plan}_{$patient->full_name}");
 
-        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
-                                                            'header','final_data','basic_information','color_headers'));
-
-        return $pdf->download("{$nombre_archivo}.pdf");
-    }
-
-    public function downloadPlanWord(Plan $plan)
-    {
-        if($plan->open)
-            return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
-
-        $basic_information = BasicInformation::with(['imageRecommendations','textRecommendations'])->first();
-
-        if(!$basic_information)
-            return redirect()->route('admin.plan.index')->with(['error'=>'Configure su información personal para descargar el plan']);
-
-        $details_without_order = $plan->details()->where(function ($query_where){
-                                            $query_where->whereNull('order')
-                                                ->orWhereNull('order_type');
-                                        })->first();
-
-        if($details_without_order)
-            return redirect()->route('admin.plan.index')->with(['error'=>'Debe ordenar el plan para descargarlo']);
-
-        $plan->load('patient');
-
-        $patient = $plan->patient;
-        $details = PlanDetail::with(['recipe.ingredients.food','observations'])
-                            ->where('plan_id',$plan->id)
-                            ->orderBy('day','asc')
-                            ->orderBy('order','asc')
-                            ->get();
-
-        $macros = false;
-        if(request('macros'))
-            $macros = true;
-
-        $view_by_day = "";
-
-        for ($day=1;$day<=$plan->days;$day++)
+        if(request('word'))
         {
-            $details_by_day = $details->filter(function ($detail) use($day){
-                return $detail->day == $day;
-            });
+            $headers = [
+                "Content-type"=>"text/html",
+                "Content-Disposition"=>"attachment;Filename={$nombre_archivo}.docx"
+            ];
 
-            if($details_by_day->isEmpty())
-                return redirect()->route('admin.plan.index')->with(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"]);
+            $header     = view('backend.admin.plan.header_plan_word',compact('plan', 'patient',
+                                                                            'basic_information','color_headers'));
+            $final_data = view('backend.admin.plan.final_data_plan_word',compact('basic_information','color_days'));
 
-            $view_by_day .= view('backend.admin.plan.table_by_day_with_order_word',compact('day','details_by_day','macros'));
+            $content = (string) view('backend.admin.plan.word',compact('plan','patient','view_by_day',
+                                                                    'header','final_data','basic_information'));
+
+            return \Response::make($content,200, $headers);
+        }
+        else
+        {
+            $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
+            $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
+
+            $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
+                'header','final_data','basic_information','color_headers'));
+
+            return $pdf->download("{$nombre_archivo}.pdf");
         }
 
-        $header            = view('backend.admin.plan.header_plan_word',compact('plan','patient','basic_information'));
-        $final_data        = view('backend.admin.plan.final_data_plan_word',compact('basic_information'));
-        $nombre_plan       = strtolower(trim($plan->name));
-        $nombre_archivo    = snake_case("{$nombre_plan}_{$patient->full_name}");
-
-        $headers = [
-            "Content-type"=>"text/html",
-            "Content-Disposition"=>"attachment;Filename={$nombre_archivo}.docx"
-        ];
-
-        $content = (string) view('backend.admin.plan.word',compact('plan','patient','view_by_day','header','final_data','basic_information'));
-
-        return \Response::make($content,200, $headers);
     }
 
     public function storeOrderPlanDetailDay()

@@ -18,7 +18,7 @@
                 <div class="collapse" id="collapse_{{$recipe->id}}" role="tabpanel" aria-labelledby="header_{{$recipe->id}}" data-parent="#accordion" style="">
                     <div class="card-body" style="padding: 3px;">
                         <ul class="list-group">
-                            <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Energía (Kcal)</strong><span class="badge badge-info badge-pill"><strong>{{$recipe->total_energia_kcal }}</strong></span></li>
+                            <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Energía (kcal)</strong><span class="badge badge-info badge-pill"><strong>{{$recipe->total_energia_kcal }}</strong></span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Proteína (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_proteina}}</span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Carbohidratos (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_carbohidratos_totales}}</span></li>
                             <li style="padding: 3px; border: none;" class="list-group-item d-flex list-group-item-action justify-content-between align-items-center font-sm"><strong>Grasa (g)</strong><span class="badge badge-info badge-pill">{{$recipe->total_grasa_total}}</span></li>

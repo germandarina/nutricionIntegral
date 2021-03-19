@@ -43,18 +43,18 @@
             /*width: 18cm !important;*/
         }
 
-        #logo {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+        /*#logo {*/
+        /*    text-align: center;*/
+        /*    margin-bottom: 10px;*/
+        /*}*/
 
-        #logo img {
-            width: 90px;
-        }
+        /*#logo img {*/
+        /*    width: 90px;*/
+        /*}*/
 
         #logo_grande {
             text-align: center;
-            margin-bottom: 10px;
+            /*margin-bottom: 10px;*/
             {{--background-image: {{ asset('img/ndf.png') }};--}}
         }
 
@@ -124,6 +124,7 @@
             padding: 8px 0;
             text-align: center;
         }
+
         h3{
             margin-bottom: 0px !important;
         }
@@ -142,6 +143,10 @@
             text-align:center;
             vertical-align:middle;
             z-index: 9999;
+        }
+
+        .macros {
+            font-size: 12px !important;
         }
     </style>
 </head>

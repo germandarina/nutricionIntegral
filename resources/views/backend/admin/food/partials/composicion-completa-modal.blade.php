@@ -3,7 +3,7 @@
         <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
             <thead>
                 <tr>
-                    <th>Energia (Kcal)</th>
+                    <th>Energia (kcal)</th>
                     <th style="text-align: center;">{{$food->energia_kcal}}</th>
                 </tr>
                 <tr>

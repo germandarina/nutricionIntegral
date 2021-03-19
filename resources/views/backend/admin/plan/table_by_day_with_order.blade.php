@@ -2,20 +2,22 @@
     <h3 style="text-align: center; background-color: {!! $color_days !!}; padding: 3px; font-size: 30px!important;">DÍA {{ $day }}</h3>
     @foreach($details_by_day as $j => $detail)
         <h3>{{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }} - {{ strtoupper($detail->recipe->name) }}
-            @if($macros)
+        @if($macros)
+            <span class="macros">
                 <br>
-                Energia (Kcal): {{ number_format($detail->recipe->total_energia_kcal,3,',','.')  }}
-                - Protéina (G): {{ number_format($detail->recipe->total_proteina,3,',','.') }}
-                - Carbohidratos (G): {{ number_format($detail->recipe->total_carbohidratos_totales,3,',','.') }}
-                - Grasa (G): {{ number_format($detail->recipe->total_grasa_total,3,',','.') }}
-            @endif
+                Energia (kcal): {{ number_format($detail->recipe->total_energia_kcal,3,',','.')  }}
+                - Protéina (g): {{ number_format($detail->recipe->total_proteina,3,',','.') }}
+                - Carbohidratos (g): {{ number_format($detail->recipe->total_carbohidratos_totales,3,',','.') }}
+                - Grasa (g): {{ number_format($detail->recipe->total_grasa_total,3,',','.') }}
+            </span>
+        @endif
         </h3>
         <div>
             <table>
                 <thead>
                 <tr>
-                    <th>INGREDIENTES</th>
-                    <th>CANTIDADES</th>
+                    <th style="background-color: {!! $color_headers !!}; padding: 3px;">INGREDIENTES</th>
+                    <th style="background-color: {!! $color_headers !!}; padding: 3px;">CANTIDADES</th>
                 </tr>
                 </thead>
                 <tbody>

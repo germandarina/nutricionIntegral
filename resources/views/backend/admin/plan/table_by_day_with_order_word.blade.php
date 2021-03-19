@@ -9,7 +9,7 @@
                             {{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }} - {{ strtoupper($detail->recipe->name) }}
                             @if($macros)
                                 <br>
-                                ( Energia (Kcal): {{ number_format($detail->recipe->total_energia_kcal,3,',','.')  }}
+                                ( Energia (kcal): {{ number_format($detail->recipe->total_energia_kcal,3,',','.')  }}
                                 - Protéina (G): {{ number_format($detail->recipe->total_proteina,3,',','.') }}
                                 - Carbohidratos (G): {{ number_format($detail->recipe->total_carbohidratos_totales,3,',','.') }}
                                 - Grasa (G): {{ number_format($detail->recipe->total_grasa_total,3,',','.') }} )

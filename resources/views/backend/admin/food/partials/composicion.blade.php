@@ -9,7 +9,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ html()->label('Energia (Kcal)')
+                    <td>{{ html()->label('Energia (kcal)')
                      ->class('col-md-12 form-control-label')
                      ->for('energia_kcal') }}
                     </td>

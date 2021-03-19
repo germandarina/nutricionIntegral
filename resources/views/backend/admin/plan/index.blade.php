@@ -30,7 +30,7 @@
                             <th>Paciente</th>
                             <th>Plan</th>
                             <th>Estado</th>
-                            <th>Energia (Kcal)</th>
+                            <th>Energia (kcal)</th>
                             <th>Proteina (g)</th>
                             <th>Carbohidratos (g)</th>
                             <th>Grasa (g)</th>

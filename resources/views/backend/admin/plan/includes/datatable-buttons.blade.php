@@ -12,8 +12,8 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2" x-placement="bottom-start" style="will-change: transform; margin: 0px;">
                 <a title="Descargar Plan PDF" href='{{route('admin.plan.downloadPlan',['id'=>$row->id])}}'  class="dropdown-item"><i class="fas fa-file-pdf" data-toggle="tooltip" data-placement="top" title="Descargar Plan PDF"></i> PDF Básico</a>
                 <a title="Descargar Plan PDF" href='{{route('admin.plan.downloadPlan',['id'=>$row->id,'macros'=>true])}}'  class="dropdown-item"><i class="fas fa-file-pdf" data-toggle="tooltip" data-placement="top" title="Descargar Plan PDF"></i> PDF con Macros</a>
-                <a title="Descargar Plan Word" href='{{route('admin.plan.downloadPlanWord',['id'=>$row->id])}}'  class="dropdown-item"><i class="fas fa-file-word" data-toggle="tooltip" data-placement="top" title="Descargar Plan Word"></i> Word Básico</a>
-                <a title="Descargar Plan Word" href='{{route('admin.plan.downloadPlanWord',['id'=>$row->id,'macros'=>true])}}'  class="dropdown-item"><i class="fas fa-file-word" data-toggle="tooltip" data-placement="top" title="Descargar Plan Word"></i> Word con Macros</a>
+                <a title="Descargar Plan Word" href='{{route('admin.plan.downloadPlan',['id'=>$row->id,'word'=>true])}}'  class="dropdown-item"><i class="fas fa-file-word" data-toggle="tooltip" data-placement="top" title="Descargar Plan Word"></i> Word Básico</a>
+                <a title="Descargar Plan Word" href='{{route('admin.plan.downloadPlan',['id'=>$row->id,'macros'=>true,'word'=>true])}}'  class="dropdown-item"><i class="fas fa-file-word" data-toggle="tooltip" data-placement="top" title="Descargar Plan Word"></i> Word con Macros</a>
             </div>
         </div>
     @endif

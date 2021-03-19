@@ -3,7 +3,7 @@
         <table class="table table-responsive-sm table-sm" style="font-size: 10px;">
             <thead>
                 <tr>
-                    <th> Total Energia (Kcal)</th>
+                    <th> Total Energia (kcal)</th>
                     <th>{{$total['total_energia_kcal'] }}</th>
                 </tr>
                 <tr>

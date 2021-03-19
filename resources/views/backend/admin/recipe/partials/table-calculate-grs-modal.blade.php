@@ -6,7 +6,7 @@
                     <th colspan="5" style="text-align: center;">Valores por cantidad gramos ingresados</th>
                 </tr>
                 <tr>
-                    <th style="text-align: center;" >Energia (Kcal)</th>
+                    <th style="text-align: center;" >Energia (kcal)</th>
                     <th style="text-align: center;" >Proteínas (g)</th>
                     <th style="text-align: center;" >Grasa (g)</th>
                     <th style="text-align: center;" >Carbohidratos (g)</th>
