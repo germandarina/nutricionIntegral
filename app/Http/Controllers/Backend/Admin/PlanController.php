@@ -521,8 +521,9 @@ class PlanController extends Controller
                                                                             'color_observations','color_headers'));
         }
 
-        $nombre_plan       = strtolower(trim($plan->name));
-        $nombre_archivo    = snake_case("{$nombre_plan}_{$patient->full_name}");
+        $nombre_plan       = str_replace(strtolower(trim($plan->name)),',','_') ;
+        $nombre_patient    = str_replace($patient->full_name,',','_');
+        $nombre_archivo    = snake_case("{$nombre_plan}_{$nombre_patient}");
 
         if(request('word'))
         {
