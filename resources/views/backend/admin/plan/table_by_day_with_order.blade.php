@@ -14,7 +14,7 @@
         </h3>
         <div>
             <table>
-                <thead>
+                <thead style="display: table-header-group;">
                 <tr>
                     <th style="background-color: {!! $color_headers !!}; padding: 3px;">INGREDIENTES</th>
                     <th style="background-color: {!! $color_headers !!}; padding: 3px;">CANTIDADES</th>
@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                 @foreach($detail->recipe->ingredients as $ingredient)
-                    <tr>
+                    <tr style="page-break-inside: avoid;">
                         <td style="text-align: left; padding: 3px;">{{$ingredient->food->name}}</td>
                         <td style="text-align: left; padding: 3px;">{{$ingredient->quantity_description}} ({{ number_format($ingredient->quantity_grs,3,',','.') }} grs)</td>
                     </tr>
@@ -30,9 +30,9 @@
                 </tbody>
                 @if($detail->observations->isNotEmpty())
                     <tfoot>
-                    <tr>
-                        <td style="text-align: left;background-color: {!! $color_observations !!}; padding: 3px;" colspan="2"><strong>OBSERVACIONES: {{ implode('. ', $detail->observations->pluck('name')->toArray() ) }}</strong></td>
-                    </tr>
+                        <tr>
+                            <td style="text-align: left;background-color: {!! $color_observations !!}; padding: 3px;" colspan="2"><strong>OBSERVACIONES: {{ implode('. ', $detail->observations->pluck('name')->toArray() ) }}</strong></td>
+                        </tr>
                     </tfoot>
                 @endif
             </table>

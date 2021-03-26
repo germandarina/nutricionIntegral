@@ -545,8 +545,15 @@ class PlanController extends Controller
             $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
             $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
 
+
+            $tex_footer = "$basic_information->company_name - $basic_information->phones_front - $basic_information->email ";
+
             $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
-                'header','final_data','basic_information','color_headers'));
+                'header','final_data','basic_information','color_headers'))
+                ->setOption('margin-top', 5)
+                ->setOption('footer-font-size',8)
+                ->setOption('footer-spacing',2)
+                ->setOption('footer-center',$tex_footer);
 
             return $pdf->download("{$nombre_archivo}.pdf");
         }
