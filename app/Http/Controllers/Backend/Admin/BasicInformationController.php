@@ -276,7 +276,7 @@ class BasicInformationController extends Controller
 
     public function downloadPlanExample(BasicInformation $basic_information)
     {
-        $pdf = PDF::loadView('backend.admin.plan.pdf_example',compact('basic_information','color_header'));
+        $pdf = PDF::loadView('backend.admin.plan.pdf_example',compact('basic_information'));
         return $pdf->download("plan_ejemplo.pdf");
     }
 }
