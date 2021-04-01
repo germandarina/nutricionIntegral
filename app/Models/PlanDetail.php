@@ -65,6 +65,8 @@ class PlanDetail extends BaseModel
     const tipo_merienda = 3;
     const tipo_cena     = 4;
     const tipo_colacion = 5;
+    const tipo_pre_entreno = 6;
+    const tipo_post_entreno = 7;
 
     public static $types = [
         self::tipo_desayuno => 'Desayuno',
@@ -72,5 +74,7 @@ class PlanDetail extends BaseModel
         self::tipo_merienda => 'Merienda',
         self::tipo_cena     => 'Cena',
         self::tipo_colacion => 'Colación',
+        self::tipo_pre_entreno => 'Pre Entreno',
+        self::tipo_post_entreno => 'Post Entreno',
     ];
 }
