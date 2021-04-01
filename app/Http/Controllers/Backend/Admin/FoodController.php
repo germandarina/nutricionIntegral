@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
-use App;
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Admin\FoodRepository;
 use App\Http\Requests\Backend\Admin\Food\StoreFoodRequest;
@@ -12,7 +11,6 @@ use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Food;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class FoodController.
@@ -43,7 +41,7 @@ class FoodController extends Controller
             $data = Food::with('foodGroup')->orderBy('name')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.food.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.food.includes.datatable-buttons',compact('row'));
                 })
                 ->editColumn('foodGroup',function ($row){
                     return $row->foodGroup->name;
@@ -52,7 +50,7 @@ class FoodController extends Controller
                 ->make(true);
         }
 
-        return view('backend.admin.food.index');
+        return view('backend.config.food.index');
     }
 
     /**
@@ -63,7 +61,7 @@ class FoodController extends Controller
     public function create(ManageFoodRequest $request)
     {
         $validator = JsValidator::formRequest(StoreFoodRequest::class);
-        return view('backend.admin.food.create',compact('validator'));
+        return view('backend.config.food.create',compact('validator'));
     }
 
     /**
@@ -78,10 +76,10 @@ class FoodController extends Controller
             $this->foodRepository->create($request->all());
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.food.create')->withInput($request->all());
+            return redirect()->route('config.food.create')->withInput($request->all());
         }
         Session::flash('success','Alimento Creado');
-        return redirect()->route('admin.food.index');
+        return redirect()->route('config.food.index');
     }
 
     /**
@@ -94,11 +92,11 @@ class FoodController extends Controller
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.food.index');
+            return redirect()->route('config.food.index');
         }
         $validator = JsValidator::formRequest(UpdateFoodRequest::class);
 
-        return view('backend.admin.food.edit',compact('food','validator'));
+        return view('backend.config.food.edit',compact('food','validator'));
     }
 
     /**
@@ -113,10 +111,10 @@ class FoodController extends Controller
             $this->foodRepository->update($request->all(), $food);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.food.edit',compact('food'))->withInput($request->all());
+            return redirect()->route('config.food.edit',compact('food'))->withInput($request->all());
         }
         Session::flash('success','Alimento Actualizado');
-        return redirect()->route('admin.food.index');
+        return redirect()->route('config.food.index');
     }
 
     /**
@@ -147,13 +145,13 @@ class FoodController extends Controller
             $data = $this->foodRepository->getDeletedPaginated(25, 'id', 'asc');
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.food.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.food.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.food.deleted');
+        return view('backend.config.food.deleted');
     }
 
     /**
@@ -230,7 +228,7 @@ class FoodController extends Controller
         if(request('food_id')){
             $food = Food::find(request('food_id'));
             if($food){
-                return view('backend.admin.food.partials.table-composicion-modal',compact('food'));
+                return view('backend.config.food.partials.table-composicion-modal',compact('food'));
             }
         }
     }
@@ -239,7 +237,7 @@ class FoodController extends Controller
         if(request('food_id')){
             $food = Food::find(request('food_id'));
             if($food){
-                return view('backend.admin.food.partials.composicion-completa-modal',compact('food'));
+                return view('backend.config.food.partials.composicion-completa-modal',compact('food'));
             }
         }
     }

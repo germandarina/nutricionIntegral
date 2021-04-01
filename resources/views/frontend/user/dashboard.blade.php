@@ -37,7 +37,7 @@
                                         </a>
 
                                         @can('view backend')
-                                            &nbsp;<a href="{{ route('admin.dashboard')}}" class="btn btn-danger btn-sm mb-1">
+                                            &nbsp;<a href="{{ route('home.dashboard')}}" class="btn btn-danger btn-sm mb-1">
                                                 <i class="fas fa-user-secret"></i> @lang('navs.frontend.user.administration')
                                             </a>
                                         @endcan

@@ -18,7 +18,7 @@ class HomeController extends Controller
         if (auth()->guest()){
             return redirect('/login');
         } else {
-            return redirect('/admin/dashboard');
+            return redirect('/home/dashboard');
         }
     }
 }

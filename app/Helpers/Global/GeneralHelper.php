@@ -32,7 +32,7 @@ if (! function_exists('home_route')) {
     {
         if (auth()->check()) {
             if (auth()->user()->can('view backend')) {
-                return 'admin.dashboard';
+                return 'home.dashboard';
             }
 
             return 'frontend.user.dashboard';

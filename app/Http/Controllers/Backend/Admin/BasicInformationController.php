@@ -10,7 +10,6 @@ use App\Repositories\Backend\Admin\BasicInformationRepository;
 use App\Http\Requests\Backend\Admin\BasicInformation\StoreBasicInformationRequest;
 use App\Http\Requests\Backend\Admin\BasicInformation\ManageBasicInformationRequest;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use JsValidator;
 use PDF;
@@ -52,13 +51,13 @@ class BasicInformationController extends Controller
                     return $row->phones_front;
                 })
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.basic-information.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.basic-information.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.basic-information.index',compact('basic_information'));
+        return view('backend.config.basic-information.index',compact('basic_information'));
     }
 
     /**
@@ -71,11 +70,11 @@ class BasicInformationController extends Controller
         $basic_information =  BasicInformation::first();
         if(!is_null($basic_information)){
             Session::flash('error','Acceso Denegado');
-            return redirect()->route('admin.basic-information.index');
+            return redirect()->route('config.basic-information.index');
         }
 
         $validator = JsValidator::formRequest(StoreBasicInformationRequest::class);
-        return view('backend.admin.basic-information.create',compact('validator'));
+        return view('backend.config.basic-information.create',compact('validator'));
     }
 
     /**
@@ -102,11 +101,11 @@ class BasicInformationController extends Controller
 
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.basic-information.create')->withInput($request->all());
+            return redirect()->route('config.basic-information.create')->withInput($request->all());
         }
 
         Session::flash('success','Información Personal Creada');
-        return redirect()->route('admin.basic-information.edit',compact('basic_information'));
+        return redirect()->route('config.basic-information.edit',compact('basic_information'));
     }
 
     /**
@@ -119,12 +118,12 @@ class BasicInformationController extends Controller
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.basic-information.index');
+            return redirect()->route('config.basic-information.index');
         }
 
         $validator = JsValidator::formRequest(UpdateBasicInformationRequest::class);
 
-        return view('backend.admin.basic-information.edit',compact('basic_information','validator'));
+        return view('backend.config.basic-information.edit',compact('basic_information','validator'));
     }
 
     /**
@@ -137,7 +136,7 @@ class BasicInformationController extends Controller
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.basic-information.index');
+            return redirect()->route('config.basic-information.index');
         }
 
         try{
@@ -155,11 +154,11 @@ class BasicInformationController extends Controller
             $this->basicInformation->update($request->all(), $basic_information);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.basic-information.edit',compact('basic_information'))->withInput($request->all());
+            return redirect()->route('config.basic-information.edit',compact('basic_information'))->withInput($request->all());
         }
 
         Session::flash('success','Información Personal Actualizada');
-        return redirect()->route('admin.basic-information.index');
+        return redirect()->route('config.basic-information.index');
     }
 
     public function getPhones(BasicInformation $basic_information)
@@ -168,7 +167,7 @@ class BasicInformationController extends Controller
         $data = $basic_information->phones;
         return Datatables::of($data)
             ->addColumn('actions', function($row){
-                return view('backend.admin.basic-information.includes.datatable-buttons-phones',compact('row'));
+                return view('backend.config.basic-information.includes.datatable-buttons-phones',compact('row'));
             })
             ->rawColumns(['actions'])
             ->make(true);
@@ -208,12 +207,12 @@ class BasicInformationController extends Controller
             })
             ->editColumn('recommendation',function ($row){
                 if($row->type == Recommendation::type_img){
-                    return view('backend.admin.basic-information.includes.show-recommendation-img',compact('row'));
+                    return view('backend.config.basic-information.includes.show-recommendation-img',compact('row'));
                 }
                 return $row->recommendation;
             })
             ->addColumn('actions', function($row){
-                return view('backend.admin.basic-information.includes.datatable-buttons-recommendations',compact('row'));
+                return view('backend.config.basic-information.includes.datatable-buttons-recommendations',compact('row'));
             })
             ->rawColumns(['actions','recommendation'])
             ->make(true);
@@ -280,7 +279,7 @@ class BasicInformationController extends Controller
 
     public function downloadPlanExample(BasicInformation $basic_information)
     {
-        $pdf = PDF::loadView('backend.admin.plan.pdf_example',compact('basic_information'));
+        $pdf = PDF::loadView('backend.config.plan.pdf_example',compact('basic_information'));
         return $pdf->download("plan_ejemplo.pdf");
     }
 }

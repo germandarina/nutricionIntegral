@@ -34,7 +34,7 @@ class UserPasswordController extends Controller
      */
     public function edit(ManageUserRequest $request, User $user)
     {
-        return view('backend.auth.user.change-password')
+        return view('backend.access.auth.user.change-password')
             ->withUser($user);
     }
 
@@ -49,6 +49,6 @@ class UserPasswordController extends Controller
     {
         $this->userRepository->updatePassword($user, $request->only('password'));
 
-        return redirect()->route('admin.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
+        return redirect()->route('access.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
     }
 }

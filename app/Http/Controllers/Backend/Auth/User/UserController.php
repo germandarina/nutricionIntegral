@@ -66,7 +66,7 @@ class UserController extends Controller
                 ->make(true);
         }
 
-        return view('backend.auth.user.index');//->withUsers($this->userRepository->getActivePaginated(25, 'id', 'asc'));
+        return view('backend.access.auth.user.index');//->withUsers($this->userRepository->getActivePaginated(25, 'id', 'asc'));
     }
 
     /**
@@ -78,13 +78,13 @@ class UserController extends Controller
      */
     public function create(ManageUserRequest $request, RoleRepository $roleRepository, PermissionRepository $permissionRepository)
     {
-        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@admin.com'))
+        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@com'))
         {
             Session::flash('error','No tiene permiso para realizar esta acción');
-            return redirect()->route('admin.auth.user.index');
+            return redirect()->route('access.auth.user.index');
         }
 
-        return view('backend.auth.user.create')
+        return view('backend.access.auth.user.create')
             ->withRoles($roleRepository->with('permissions')->get(['id', 'name']))
             ->withPermissions($permissionRepository->get(['id', 'name']));
     }
@@ -98,12 +98,12 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
 
-        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@admin.com'))
+        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@com'))
         {
             Session::flash('error','No tiene permiso para realizar esta acción');
-            return redirect()->route('admin.auth.user.index');
+            return redirect()->route('access.auth.user.index');
         }
-        
+
         $this->userRepository->create($request->only(
             'first_name',
             'last_name',
@@ -117,7 +117,7 @@ class UserController extends Controller
         ));
         Session::flash('success',__('alerts.backend.users.created'));
 
-        return redirect()->route('admin.auth.user.index');//->withFlashSuccess(__('alerts.backend.users.created'));
+        return redirect()->route('access.auth.user.index');//->withFlashSuccess(__('alerts.backend.users.created'));
     }
 
     /**
@@ -128,7 +128,7 @@ class UserController extends Controller
      */
     public function show(ManageUserRequest $request, User $user)
     {
-        return view('backend.auth.user.show')
+        return view('backend.access.auth.user.show')
             ->withUser($user);
     }
 
@@ -142,7 +142,7 @@ class UserController extends Controller
      */
     public function edit(ManageUserRequest $request, RoleRepository $roleRepository, PermissionRepository $permissionRepository, User $user)
     {
-        return view('backend.auth.user.edit')
+        return view('backend.access.auth.user.edit')
             ->withUser($user)
             ->withRoles($roleRepository->get())
             ->withUserRoles($user->roles->pluck('name')->all())
@@ -169,7 +169,7 @@ class UserController extends Controller
         ));
 
         Session::flash('success',__('alerts.backend.users.updated'));
-        return redirect()->route('admin.auth.user.index');//->withFlashSuccess(__('alerts.backend.users.updated'));
+        return redirect()->route('access.auth.user.index');//->withFlashSuccess(__('alerts.backend.users.updated'));
     }
 
     /**
@@ -185,6 +185,6 @@ class UserController extends Controller
 
         event(new UserDeleted($user));
         Session::flash('success',__('alerts.backend.users.deleted'));
-        return redirect()->route('admin.auth.user.deleted');//->withFlashSuccess(__('alerts.backend.users.deleted'));
+        return redirect()->route('access.auth.user.deleted');//->withFlashSuccess(__('alerts.backend.users.deleted'));
     }
 }

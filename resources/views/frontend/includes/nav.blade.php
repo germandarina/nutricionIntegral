@@ -33,7 +33,7 @@
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuUser">
                         @can('view backend')
-                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item">@lang('navs.frontend.user.administration')</a>
+                            <a href="{{ route('home.dashboard') }}" class="dropdown-item">@lang('navs.frontend.user.administration')</a>
                         @endcan
 
                         <a href="{{ route('frontend.user.account') }}" class="dropdown-item {{ active_class(Active::checkRoute('frontend.user.account')) }}">@lang('navs.frontend.user.account')</a>

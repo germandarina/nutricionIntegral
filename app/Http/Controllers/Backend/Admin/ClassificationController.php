@@ -42,7 +42,7 @@ class ClassificationController extends Controller
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
                     if(!$row->default_register){
-                        return view('backend.admin.classification.includes.datatable-buttons',compact('row'));
+                        return view('backend.config.classification.includes.datatable-buttons',compact('row'));
                     }
                     return "";
                 })
@@ -50,7 +50,7 @@ class ClassificationController extends Controller
                 ->make(true);
         }
 
-        return view('backend.admin.classification.index');
+        return view('backend.config.classification.index');
     }
 
     /**
@@ -61,7 +61,7 @@ class ClassificationController extends Controller
     public function create(ManageClassificationRequest $request)
     {
         $validator = JsValidator::formRequest(StoreClassificationRequest::class);
-        return view('backend.admin.classification.create',compact('validator'));
+        return view('backend.config.classification.create',compact('validator'));
     }
 
     /**
@@ -76,10 +76,10 @@ class ClassificationController extends Controller
             $this->classificationRepository->create($request->all());
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.classification.create')->withInput($request->all());
+            return redirect()->route('config.classification.create')->withInput($request->all());
         }
         Session::flash('success','Clasificación Creada');
-        return redirect()->route('admin.classification.index');
+        return redirect()->route('config.classification.index');
     }
 
     /**
@@ -92,12 +92,12 @@ class ClassificationController extends Controller
     {
         if (!auth()->user()->isAdmin() || $classification->default_register) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.classification.index');
+            return redirect()->route('config.classification.index');
         }
 
         $validator = JsValidator::formRequest(UpdateClassificationRequest::class);
 
-        return view('backend.admin.classification.edit',compact('classification','validator'));
+        return view('backend.config.classification.edit',compact('classification','validator'));
     }
 
     /**
@@ -110,17 +110,17 @@ class ClassificationController extends Controller
     {
         if (!auth()->user()->isAdmin() || $classification->default_register) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.classification.index');
+            return redirect()->route('config.classification.index');
         }
 
         try{
             $this->classificationRepository->update($request->all(), $classification);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.classification.edit',compact('classification'))->withInput($request->all());
+            return redirect()->route('config.classification.edit',compact('classification'))->withInput($request->all());
         }
         Session::flash('success','Clasificación Actualizada');
-        return redirect()->route('admin.classification.index');
+        return redirect()->route('config.classification.index');
     }
 
     /**
@@ -155,13 +155,13 @@ class ClassificationController extends Controller
             $data = $this->classificationRepository->getDeletedPaginated(25, 'id', 'asc');
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.classification.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.classification.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.classification.deleted');
+        return view('backend.config.classification.deleted');
     }
 
     /**

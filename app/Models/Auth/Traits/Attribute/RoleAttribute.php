@@ -12,7 +12,7 @@ trait RoleAttribute
      */
     public function getEditButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.role.edit', $this).'" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.edit').'"></i></a>';
+        return '<a href="'.route('access.auth.role.edit', $this).'" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.edit').'"></i></a>';
     }
     /**
      * @return string
@@ -20,7 +20,7 @@ trait RoleAttribute
     public function getConfirmedButtonAttribute()
     {
         if (! config('access.users.requires_approval')) {
-            return '<a href="'.route('admin.auth.user.account.confirm.resend', $this).'" class="dropdown-item">'.__('buttons.backend.access.users.resend_email').'</a> ';
+            return '<a href="'.route('access.auth.user.account.confirm.resend', $this).'" class="dropdown-item">'.__('buttons.backend.access.users.resend_email').'</a> ';
         }
 
         return '';
@@ -31,12 +31,12 @@ trait RoleAttribute
      */
     public function getDeleteButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.role.destroy', $this).'"
+        return '<a href="'.route('access.auth.role.destroy', $this).'"
 			 data-method="delete"
 			 data-trans-button-cancel="'.__('buttons.general.cancel').'"
 			 data-trans-button-confirm="'.__('buttons.general.crud.delete').'"
 			 data-trans-title="'.__('strings.backend.general.are_you_sure').'"
-			 name="confirm_item" 
+			 name="confirm_item"
 			 class="btn btn-danger"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="'.__('buttons.general.crud.delete').'"></i></a> ';
     }
 
@@ -45,7 +45,7 @@ trait RoleAttribute
      */
     public function getDeletePermanentlyButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.role.delete-permanently', $this).'" name="confirm_item" class="btn btn-danger btn-sm"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.delete_permanently').'"></i></a> ';
+        return '<a href="'.route('access.auth.role.delete-permanently', $this).'" name="confirm_item" class="btn btn-danger btn-sm"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.delete_permanently').'"></i></a> ';
     }
 
     /**
@@ -53,7 +53,7 @@ trait RoleAttribute
      */
     public function getRestoreButtonAttribute()
     {
-        return '<a href="'.route('admin.auth.role.restore', $this).'" name="confirm_item" class="btn btn-info btn-sm"><i class="fas fa-sync" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.restore_user').'"></i></a> ';
+        return '<a href="'.route('access.auth.role.restore', $this).'" name="confirm_item" class="btn btn-info btn-sm"><i class="fas fa-sync" data-toggle="tooltip" data-placement="top" title="'.__('buttons.backend.access.users.restore_user').'"></i></a> ';
     }
 
     /**
@@ -75,7 +75,7 @@ trait RoleAttribute
         }else{
             return '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
 			  '.$this->edit_button.'
-              '.$this->delete_button.' 			  
+              '.$this->delete_button.'
 			</div>';
         }
     }

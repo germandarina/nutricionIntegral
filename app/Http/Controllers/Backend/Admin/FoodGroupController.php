@@ -7,7 +7,6 @@ use App\Repositories\Backend\Admin\FoodGroupRepository;
 use App\Http\Requests\Backend\Admin\FoodGroup\StoreFoodGroupRequest;
 use App\Http\Requests\Backend\Admin\FoodGroup\ManageFoodGroupRequest;
 use App\Http\Requests\Backend\Admin\FoodGroup\UpdateFoodGroupRequest;
-use Egulias\EmailValidator\Exception\AtextAfterCFWS;
 use JsValidator;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -42,13 +41,13 @@ class FoodGroupController extends Controller
             $data = $this->foodGroupRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.food-group.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.food-group.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.food-group.index');
+        return view('backend.config.food-group.index');
     }
 
     /**
@@ -59,7 +58,7 @@ class FoodGroupController extends Controller
     public function create(ManageFoodGroupRequest $request)
     {
         $validator = JsValidator::formRequest(StoreFoodGroupRequest::class);
-        return view('backend.admin.food-group.create',compact('validator'));
+        return view('backend.config.food-group.create',compact('validator'));
     }
 
     /**
@@ -74,10 +73,10 @@ class FoodGroupController extends Controller
             $this->foodGroupRepository->create($request->all());
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.food-group.create')->withInput($request->all());
+            return redirect()->route('config.food-group.create')->withInput($request->all());
         }
         Session::flash('success','Grupo de Alimentos Creado');
-        return redirect()->route('admin.food-group.index');
+        return redirect()->route('config.food-group.index');
     }
 
     /**
@@ -90,11 +89,11 @@ class FoodGroupController extends Controller
     {
         if (!auth()->user()->isAdmin()) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.food-group.index');
+            return redirect()->route('config.food-group.index');
         }
         $validator = JsValidator::formRequest(UpdateFoodGroupRequest::class);
 
-        return view('backend.admin.food-group.edit',compact('food_group','validator'));
+        return view('backend.config.food-group.edit',compact('food_group','validator'));
     }
 
     /**
@@ -109,10 +108,10 @@ class FoodGroupController extends Controller
             $this->foodGroupRepository->update($request->all(), $food_group);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.food-group.edit',compact('food_group'))->withInput($request->all());
+            return redirect()->route('config.food-group.edit',compact('food_group'))->withInput($request->all());
         }
         Session::flash('success','Grupo de Alimentos Actualizado');
-        return redirect()->route('admin.food-group.index');
+        return redirect()->route('config.food-group.index');
     }
 
     /**
@@ -143,13 +142,13 @@ class FoodGroupController extends Controller
             $data = $this->foodGroupRepository->getDeletedPaginated(25, 'id', 'asc');
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.food-group.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.food-group.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.food-group.deleted');
+        return view('backend.config.food-group.deleted');
     }
 
     /**

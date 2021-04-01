@@ -59,7 +59,7 @@ class UserStatusController extends Controller
                 ->make(true);
         }
 
-        return view('backend.auth.user.deactivated');
+        return view('backend.access.auth.user.deactivated');
 //
 //
 //
@@ -100,7 +100,7 @@ class UserStatusController extends Controller
                 ->make(true);
         }
 
-        return view('backend.auth.user.deleted');
+        return view('backend.access.auth.user.deleted');
 //
 //
 //
@@ -125,8 +125,8 @@ class UserStatusController extends Controller
 
         return redirect()->route(
             (int) $status === 1 ?
-            'admin.auth.user.index' :
-            'admin.auth.user.deactivated'
+            'access.auth.user.index' :
+            'access.auth.user.deactivated'
         )->withFlashSuccess(__('alerts.backend.users.updated'));
     }
 
@@ -142,7 +142,7 @@ class UserStatusController extends Controller
     {
         $this->userRepository->forceDelete($deletedUser);
         Session::flash('success',__('alerts.backend.users.deleted_permanently'));
-        return redirect()->route('admin.auth.user.deleted');//->withFlashSuccess(__('alerts.backend.users.deleted_permanently'));
+        return redirect()->route('access.auth.user.deleted');//->withFlashSuccess(__('alerts.backend.users.deleted_permanently'));
     }
 
     /**
@@ -156,6 +156,6 @@ class UserStatusController extends Controller
     {
         $this->userRepository->restore($deletedUser);
         Session::flash('success',__('alerts.backend.users.restored'));
-        return redirect()->route('admin.auth.user.index');//->withFlashSuccess(__('alerts.backend.users.restored'));
+        return redirect()->route('access.auth.user.index');//->withFlashSuccess(__('alerts.backend.users.restored'));
     }
 }

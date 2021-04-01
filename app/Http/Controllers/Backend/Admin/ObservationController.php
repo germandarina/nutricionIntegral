@@ -41,13 +41,13 @@ class ObservationController extends Controller
             $data = $this->observationRepository->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                   return view('backend.admin.observation.includes.datatable-buttons',compact('row'));
+                   return view('backend.config.observation.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.observation.index');
+        return view('backend.config.observation.index');
     }
 
     /**
@@ -58,7 +58,7 @@ class ObservationController extends Controller
     public function create(ManageObservationRequest $request)
     {
         $validator = JsValidator::formRequest(StoreObservationRequest::class);
-        return view('backend.admin.observation.create',compact('validator'));
+        return view('backend.config.observation.create',compact('validator'));
     }
 
     /**
@@ -73,10 +73,10 @@ class ObservationController extends Controller
             $this->observationRepository->create($request->all());
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.observation.create')->withInput($request->all());
+            return redirect()->route('config.observation.create')->withInput($request->all());
         }
         Session::flash('success','Observación Creada');
-        return redirect()->route('admin.observation.index');
+        return redirect()->route('config.observation.index');
     }
 
     /**
@@ -89,12 +89,12 @@ class ObservationController extends Controller
     {
         if (!auth()->user()->isAdmin() || $observation->default_register) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.observation.index');
+            return redirect()->route('config.observation.index');
         }
 
         $validator = JsValidator::formRequest(UpdateObservationRequest::class);
 
-        return view('backend.admin.observation.edit',compact('observation','validator'));
+        return view('backend.config.observation.edit',compact('observation','validator'));
     }
 
     /**
@@ -107,17 +107,17 @@ class ObservationController extends Controller
     {
         if (!auth()->user()->isAdmin() || $observation->default_register) {
             Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.observation.index');
+            return redirect()->route('config.observation.index');
         }
 
         try{
             $this->observationRepository->update($request->all(), $observation);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
-            return redirect()->route('admin.observation.edit',compact('observation'))->withInput($request->all());
+            return redirect()->route('config.observation.edit',compact('observation'))->withInput($request->all());
         }
         Session::flash('success','Observación Actualizada');
-        return redirect()->route('admin.observation.index');
+        return redirect()->route('config.observation.index');
     }
 
     /**
@@ -148,13 +148,13 @@ class ObservationController extends Controller
             $data = $this->observationRepository->getDeletedPaginated(25, 'id', 'asc');
             return Datatables::of($data)
                 ->addColumn('actions', function($row){
-                    return view('backend.admin.observation.includes.datatable-buttons',compact('row'));
+                    return view('backend.config.observation.includes.datatable-buttons',compact('row'));
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        return view('backend.admin.observation.deleted');
+        return view('backend.config.observation.deleted');
     }
 
     /**

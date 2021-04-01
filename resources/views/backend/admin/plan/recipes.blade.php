@@ -392,7 +392,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:      '{{ route('admin.food.getComposicion') }}',
+                    url:      '{{ route('config.food.getComposicion') }}',
                     type:     'POST',
                     data:    {
                         'food_id':food_id,
@@ -416,7 +416,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:      '{{ route('admin.food.getComposicionCompleta') }}',
+                url:      '{{ route('config.food.getComposicionCompleta') }}',
                 type:     'POST',
                 data:    {
                     'food_id':food_id,

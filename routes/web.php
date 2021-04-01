@@ -31,5 +31,21 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.', '
      * Note: Administrator has all permissions so you do not have to specify the administrator role everywhere.
      * These routes can not be hit if the password is expired
      */
-    include_route_files(__DIR__.'/backend/');
+    include_route_files(__DIR__.'/backend/admin');
+});
+
+Route::group(['namespace' => 'Backend', 'prefix' => 'home', 'as' => 'home.', 'middleware' => 'admin'], function () {
+    include_route_files(__DIR__.'/backend/home');
+});
+
+Route::group(['namespace' => 'Backend', 'prefix' => 'access', 'as' => 'access.', 'middleware' => 'admin'], function () {
+    include_route_files(__DIR__.'/backend/access');
+});
+
+Route::group(['namespace' => 'Backend', 'prefix' => 'config', 'as' => 'config.', 'middleware' => 'admin'], function () {
+    include_route_files(__DIR__.'/backend/config');
+});
+
+Route::group(['namespace' => 'Backend', 'prefix' => 'info', 'as' => 'info.', 'middleware' => 'admin'], function () {
+    include_route_files(__DIR__.'/backend/info');
 });

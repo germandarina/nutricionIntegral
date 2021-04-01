@@ -135,7 +135,7 @@ class LoginController extends Controller
             auth()->loginUsingId((int) $admin_id);
 
             // Redirect to backend user page
-            return redirect()->route('admin.auth.user.index');
+            return redirect()->route('access.auth.user.index');
         }
 
         resolve(AuthHelper::class)->flushTempSession();

@@ -11,13 +11,18 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <ul class="nav navbar-nav d-md-down-none">
+    <ul class="nav navbar-nav">
 {{--        <li class="nav-item px-3">--}}
 {{--            <a class="nav-link" href="{{ route('frontend.index') }}"><i class="fas fa-home"></i></a>--}}
 {{--        </li>--}}
 
         <li class="nav-item px-3">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i></a>
+            <a rel="tooltip" title="Home" class="nav-link" href="{{ route('home.dashboard') }}"><i class="fas fa-home" rel="tooltip" title="Home"></i></a>
+        </li>
+        <li class="nav-item px-3">
+            <a rel="tooltip" title="Cerrar Sesión" class="nav-link" href="{{ route('frontend.auth.logout') }}">
+                <i class="fas fa-lock" rel="tooltip" title="Cerrar Sesión"></i>
+            </a>
         </li>
 
 {{--        @if(config('locale.status') && count(config('locale.languages')) > 1)--}}

@@ -77,11 +77,15 @@
     @include('backend.notification')
 
     <script type="text/javascript">
+
         $(function () {
             $('select').select2({
                 minimumResultsForSearch: 5,
                 width: '100%',
             });
+
+            $(".px-3>a").find("[rel=tooltip]").tooltip();
+            $(".px-3>a>i").find("[rel=tooltip]").tooltip();
         });
 
         function eliminarItem(e,input){
