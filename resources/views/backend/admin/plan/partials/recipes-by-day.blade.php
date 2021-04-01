@@ -1,5 +1,10 @@
 <div class="row">
-    <div class="col">
+    <div class="col-sm-10 col-xs-12">
+        @if ($plan->open)
+            <a href="#" class="btn btn-success btn-sm" onclick="modalDayDescription(event,{{$i}})"><i class="fas fa-plus-square"></i> Descripcion del Día {{ $i }}</a>
+        @endif
+    </div>
+    <div class="col-sm-2 col-xs-12">
         <p style="font-size: 12px; margin-bottom: 0px;"><span class="badge rounded-pill recipe-edit">&nbsp;&nbsp;</span><strong>&nbsp;Recetas editadas</strong></p>
     </div>
 </div>

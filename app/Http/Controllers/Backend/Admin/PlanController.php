@@ -183,14 +183,24 @@ class PlanController extends Controller
     }
 
     public function addRecipes(ManagePlanRequest $request, Plan $plan){
-        $paciente = $plan->patient;
-        $foods = $paciente->foods->pluck('id');
-        $food_groups = $paciente->foodGroups->pluck('id');
+
+        $plan->load(['patient']);
+
+        $paciente        = $plan->patient;
+        $paciente->load(['foods','foodGroups','classifications']);
+
+        $foods           = $paciente->foods->pluck('id');
+        $food_groups     = $paciente->foodGroups->pluck('id');
         $classifications = $paciente->classifications->pluck('id');
-        $array_dias = [];
+        $array_dias      = [];
+
+        $days_descriptions = $plan->days_descriptions;
+
         for ($i=1;$i<=$plan->days;$i++){
-            $array_dias[$i] = "Día {$i}";
+            $descriptions = isset($days_descriptions[$i]) ? $days_descriptions[$i] : '';
+            $array_dias[$i] = "Día {$i} {$descriptions}";
         }
+
         return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications','array_dias'));
     }
 
@@ -272,8 +282,10 @@ class PlanController extends Controller
         return compact('html','cantidad');
     }
 
-    public function getModalRecipe(){
-        if(request('recipe_id') && request('plan_id')){
+    public function getModalRecipe()
+    {
+        if(request('recipe_id') && request('plan_id'))
+        {
             $recipe = Recipe::find(request('recipe_id'));
             $recipe->load('ingredients.food');
             $plan  = Plan::find(request('plan_id'));
@@ -286,8 +298,10 @@ class PlanController extends Controller
         return App::abort(402);
     }
 
-    public function addRecipeToPlan(){
-        if(request('recipe_id') && request('plan_id')){
+    public function addRecipeToPlan()
+    {
+        if(request('recipe_id') && request('plan_id'))
+        {
             try{
                 $this->planRepository->addRecipe(request()->all());
                 return response()->json(['mensaje'=>'Receta agregada'],200);
@@ -298,7 +312,8 @@ class PlanController extends Controller
         return App::abort(402);
     }
 
-    public function getRecipe(){
+    public function getRecipe()
+    {
         if(request('recipe_id') && request('plan_id'))
         {
             $recipe_original = Recipe::find(request('recipe_id'));
@@ -318,7 +333,8 @@ class PlanController extends Controller
         return App::abort(402);
     }
 
-    public function getRecipes(Plan $plan){
+    public function getRecipes(Plan $plan)
+    {
         $data =  PlanDetail::with(['recipe.recipeType','recipe.classifications'])->where('plan_id',$plan->id)->get();
         return Datatables::of($data)
             ->editColumn('classifications',function ($row){
@@ -338,7 +354,8 @@ class PlanController extends Controller
             ->make(true);
     }
 
-    public function getRecipesByDay(Plan $plan){
+    public function getRecipesByDay(Plan $plan)
+    {
         $day  = request('day');
 
         $data =  PlanDetail::with(['recipe.observations','observations'])
@@ -516,7 +533,13 @@ class PlanController extends Controller
             if($details_by_day->isEmpty())
                 return redirect()->route('admin.plan.index')->with(['error'=>"Debe completar el plan. El día {$day} no tiene recetas"]);
 
-            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('day',
+            $detail_for_description = $details_by_day->filter(function ($detail) use($day){
+                                                        return  $detail->day_description != null;
+                                                    })->first();
+
+            $description_day        = $detail_for_description ? "Día {$day} - {$detail_for_description->day_description}" : "Día {$day}";
+
+            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('description_day',
                                                                     'details_by_day','macros','color_days',
                                                                             'color_observations','color_headers'));
         }
@@ -606,7 +629,7 @@ class PlanController extends Controller
         $plan->open = false;
         $plan->save();
 
-        return response()->json(['mensaje'=>"Plan Cerrado"],200);
+        return response()->json(['mensaje'=>"Plan Cerrado",'url'=>route('admin.plan.index')],200);
 
     }
 
@@ -811,6 +834,44 @@ class PlanController extends Controller
             return response()->json(['observation'=>$observation],200);
         }
 
+        return App::abort(402);
+    }
+
+    public function modalDayDescription(Plan $plan)
+    {
+        if(request('day'))
+        {
+             $day = request('day');
+             $plan_detail = PlanDetail::where('plan_id',$plan->id)
+                                        ->where('day',$day)
+                                        ->whereNotNull('day_description')
+                                        ->first();
+
+             return view('backend.admin.plan.partials.modal-day-description',compact('plan_detail','day'));
+        }
+        return App::abort(402);
+    }
+
+    public function addDayDescription(Plan $plan)
+    {
+        if(request('day'))
+        {
+            $day         = request('day');
+            $plan_detail = PlanDetail::where('plan_id',$plan->id)
+                                    ->where('day',$day)
+                                    ->get();
+
+            if($plan_detail->isEmpty())
+                return response()->json(['error'=>'Para guardar la descripción debe agregar recetas al dia '.$day],422);
+
+            foreach ($plan_detail as $detail)
+            {
+                $detail->day_description = request('description');
+                $detail->update();
+            }
+
+            return response()->json(['mensaje'=>'Descripción actualizada'],200);
+        }
         return App::abort(402);
     }
 }

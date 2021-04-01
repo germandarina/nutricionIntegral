@@ -22,19 +22,23 @@
                 <div class="table-responsive">
                     <table class="table data-table font-xs">
                         <thead>
-                        <tr >
-                            <th colspan="3" style="border-top: none;"></th>
+                        <tr>
+                            <th colspan="2" style="border-top: none;">
+                                <div class="col-lg-12 col-xs-12">
+                                    <span style="color:#60bd75;"><i class="fas fa-lock fa-2x" style="color:#60bd75;"></i> <strong>Planes Cerrados</strong></span>
+                                </div>
+                            </th>
                             <th colspan="4" style="text-align: center;background: black; color: white; border-top: none;">Necesidades Diarias</th>
                         </tr>
                         <tr>
                             <th>Paciente</th>
                             <th>Plan</th>
-                            <th>Estado</th>
+{{--                            <th>Estado</th>--}}
                             <th>Energia (kcal)</th>
                             <th>Proteina (g)</th>
                             <th>Carbohidratos (g)</th>
                             <th>Grasa (g)</th>
-                            <th class="not-export-col">Acciones</th>
+                            <th class="not-export-col" style="width: 5%;">Acciones</th>
                         </tr>
                         </thead>
                     </table>
@@ -45,7 +49,11 @@
 </div><!--card-->
 
 @endsection
-
+<style>
+    .planning-closed{
+        background-color: #60bd7596;
+    }
+</style>
 @push('after-scripts')
     @include('datatables.includes')
     <script>
@@ -56,16 +64,21 @@
                 "draw": true,
                 "buttons": [],
                 "orderable": false,
+                createdRow: function( row, data, dataIndex){
+                    if(data.open ===  0){
+                        $(row).addClass('planning-closed');
+                    }
+                },
                 ajax: "{{ route('admin.plan.index') }}",
                 columns: [
                     {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
-                    {data: 'status', name: 'status'},
+                    // {data: 'status', name: 'status'},
                     {data: 'energia_kcal_por_dia', name: 'energia_kcal_por_dia'},
                     {data: 'proteina_por_dia', name: 'proteina_por_dia'},
                     {data: 'carbohidratos_por_dia', name: 'carbohidratos_por_dia'},
                     {data: 'grasa_total_por_dia', name: 'grasa_total_por_dia'},
-                    {data: 'actions', name: 'actions', orderable: false, searchable: false,},
+                    {data: 'actions', name: 'actions', orderable: false, searchable: false},
                 ]
             });
         });

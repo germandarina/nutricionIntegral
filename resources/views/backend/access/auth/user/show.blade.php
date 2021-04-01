@@ -28,7 +28,7 @@
 
                 <div class="tab-content">
                     <div class="tab-pane active" id="overview" role="tabpanel" aria-expanded="true">
-                        @include('backend.auth.user.show.tabs.overview')
+                        @include('backend.access.auth.user.show.tabs.overview')
                     </div><!--tab-->
                 </div><!--tab-content-->
             </div><!--col-->

@@ -14,6 +14,22 @@ trait PlanMethod
         return $this->open ? 'Abierto' : 'Cerrado';
     }
 
+    public function getDaysDescriptionsAttribute()
+    {
+        $details_for_days = $this->details()
+            ->groupBy('day')
+            ->orderBy('day')
+            ->get();
+
+        $days_descriptions = [];
+        foreach ($details_for_days as $detail)
+        {
+            $days_descriptions[$detail->day] = $detail->day_description;
+        }
+
+        return $days_descriptions;
+    }
+
     public static function calculateTMBFactorial($data)
     {
         $tmb         = 0;

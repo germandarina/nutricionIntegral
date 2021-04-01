@@ -53,6 +53,7 @@ class PlanDetail extends BaseModel
         'plan_id',
         'recipe_id',
         'day',
+        'day_description',
         'order',
         'order_type',
         'created_at',

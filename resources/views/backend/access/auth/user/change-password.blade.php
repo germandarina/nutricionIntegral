@@ -2,9 +2,9 @@
 
 @section('title', __('labels.backend.access.users.management') . ' | ' . __('labels.backend.access.users.change_password'))
 
-@section('breadcrumb-links')
-    @include('backend.auth.user.includes.breadcrumb-links')
-@endsection
+{{--@section('breadcrumb-links')--}}
+{{--    @include('backend.auth.user.includes.breadcrumb-links')--}}
+{{--@endsection--}}
 
 @section('content')
 {{ html()->form('PATCH', route('access.auth.user.change-password.post', $user))->class('form-horizontal')->open() }}

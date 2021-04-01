@@ -49,4 +49,7 @@ Route::group(['prefix' => 'plan/{plan}'], function ()
 
     Route::post('get-total-activities-fao',[PlanController::class,'getTotalActivitiesFao'])->name('plan.getTotalActivitiesFao');
 
+
+    Route::get('get-modal-day-description',[PlanController::class,'modalDayDescription'])->name('plan.modalDayDescription');
+    Route::get('add-day-description',[PlanController::class,'addDayDescription'])->name('plan.addDayDescription');
 });

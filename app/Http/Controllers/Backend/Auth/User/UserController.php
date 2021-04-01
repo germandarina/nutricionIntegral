@@ -78,7 +78,7 @@ class UserController extends Controller
      */
     public function create(ManageUserRequest $request, RoleRepository $roleRepository, PermissionRepository $permissionRepository)
     {
-        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@com'))
+        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@admin.com'))
         {
             Session::flash('error','No tiene permiso para realizar esta acción');
             return redirect()->route('access.auth.user.index');
@@ -98,7 +98,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
 
-        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@com'))
+        if(!auth()->user()->isAdmin() || !(auth()->user()->email == 'benjaminkaramazov1991@gmail.com' || auth()->user()->email == 'admin@admin.com'))
         {
             Session::flash('error','No tiene permiso para realizar esta acción');
             return redirect()->route('access.auth.user.index');

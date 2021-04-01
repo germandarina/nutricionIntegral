@@ -834,7 +834,7 @@
                             procesando.remove();
                             Lobibox.notify('success',{msg:datos.mensaje});
                             setTimeout(function (){
-                                window.location.reload();
+                                window.location.replace(datos.url);
                             },2000);
                         },
                         error: function(xhr, textStatus, errorThrown) {
@@ -1034,6 +1034,76 @@
                     $("#observations").val(observations).trigger('change');
                 },
                 error: function(xhr, textStatus, errorThrown) {
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function modalDayDescription(event,day)
+        {
+            event.preventDefault();
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.modalDayDescription',$plan->id) }}',
+                type:     'GET',
+                data: {
+                    'day': day,
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    $("#modalRecipe").empty().html(datos);
+                    $("#modalRecipe").modal('show');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function addDayDescription(event,day)
+        {
+            event.preventDefault();
+
+            var description = $("#day_description").val();
+
+            if(description.trim() === "")
+                return Lobibox.notify('error',{ msg: 'Ingrese la descripción del día '+day });
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.addDayDescription',$plan->id) }}',
+                type:     'GET',
+                data: {
+                    'day': day,
+                    'description':description
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    Lobibox.notify('success',{msg: datos.mensaje });
+                    $("#modalRecipe").modal('hide');
+                    setTimeout(function (){
+                        window.location.reload();
+                    },2000);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
                     if(xhr.status === 422)
                         return Lobibox.notify('error',{msg: xhr.responseJSON.error });
 

@@ -2,9 +2,9 @@
 
 @section('title', __('labels.backend.access.users.management') . ' | ' . __('labels.backend.access.users.deleted'))
 
-@section('breadcrumb-links')
-    @include('backend.auth.user.includes.breadcrumb-links')
-@endsection
+{{--@section('breadcrumb-links')--}}
+{{--    @include('backend.auth.user.includes.breadcrumb-links')--}}
+{{--@endsection--}}
 
 @section('content')
 <div class="card">
@@ -17,7 +17,7 @@
             </div><!--col-->
 
             <div class="col-sm-7">
-                @include('backend.auth.user.includes.header-buttons')
+                @include('backend.access.auth.user.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->
 

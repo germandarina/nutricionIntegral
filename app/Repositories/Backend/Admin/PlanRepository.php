@@ -132,12 +132,18 @@ class PlanRepository extends BaseRepository
 
             foreach ($datos['days'] as $day)
             {
+                $plan_detail_description = PlanDetail::where('plan_id',$datos['plan_id'])
+                                            ->where('day',$day)
+                                            ->whereNotNull('day_description')
+                                            ->first();
+
                 for ($i=0;$i< $datos['quantity_by_day'];$i++)
                 {
                     $plan_detail            = new PlanDetail();
                     $plan_detail->plan_id   = $datos['plan_id'];
                     $plan_detail->recipe_id = $datos['recipe_id'];
                     $plan_detail->day       = $day;
+                    $plan_detail->day_description = $plan_detail_description ? $plan_detail_description->day_description : null;
 
                     if(!$plan_detail->save())
                         throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);

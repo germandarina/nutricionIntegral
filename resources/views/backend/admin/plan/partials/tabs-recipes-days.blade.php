@@ -5,9 +5,11 @@
             @if($plan->open)
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#add-recipes" role="tab" aria-controls="add-recipes"><strong>Agregar Recetas</strong></a></li>
             @endif
-            @for($i=1;$i<=$plan->days;$i++)
-                <li class="nav-item"><a class="nav-link  @if(!$plan->open && $i == 1) active @endif " data-toggle="tab" href="#day-{{$i}}" role="tab" aria-controls="day-{{$i}}">Día {{$i}}</a></li>
-            @endfor
+            @foreach($array_dias as $day => $description)
+                <li class="nav-item">
+                    <a class="nav-link  @if(!$plan->open && $day == 1) active @endif " data-toggle="tab" href="#day-{{$day}}" role="tab" aria-controls="day-{{$day}}">{{ $description }}</a>
+                </li>
+            @endforeach
             </ul>
             <div class="tab-content">
                 @if($plan->open)

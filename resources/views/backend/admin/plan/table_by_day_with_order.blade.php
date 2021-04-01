@@ -1,5 +1,5 @@
 <div class="page">
-    <h3 style="text-align: center; background-color: {!! $color_days !!}; padding: 3px; font-size: 30px!important;">DÍA {{ $day }}</h3>
+    <h3 style="text-align: center; background-color: {!! $color_days !!}; padding: 3px; font-size: 30px!important;">{{ $description_day }}</h3>
     @foreach($details_by_day as $j => $detail)
         <h3>{{ strtoupper(\App\Models\PlanDetail::$types[$detail->order_type]) }} - {{ strtoupper($detail->recipe->name) }}
         @if($macros)
