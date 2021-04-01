@@ -30,6 +30,7 @@
                 <input type="file"
                    id="recommendation_img" name="recommendation_img"
                    accept="image/png, image/jpeg, image/jpg"
+                   onchange="controlImage(event)"
                    class="form-control">
             </div><!--col-->
 

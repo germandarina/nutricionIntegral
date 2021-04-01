@@ -1,31 +1,23 @@
-<div>
-    <table>
+<div class="table-responsive">
+    <table class="table">
         <tbody>
         <tr>
             <td>
-                <div class="row">
-                    <div class="col-md-3 offset-3">
-                        <div  class="div_color" id="color-day" style="border: 1px solid darkgrey; width: 100%; height: 100%; cursor: pointer;" rel="tooltip" title="Seleccione un color"></div>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" id="value_day" class="form-control" value="{{ $basic_information->color_days }}" readonly>
-                    </div>
-                </div>
+                <div  class="div_color" id="color-day" style="border: 1px solid darkgrey; width: 35px; height: 35px; cursor: pointer;" rel="tooltip" title="Seleccione un color"></div>
             </td>
-            <td style="width: 75%;">
+            <td>
+                <input type="text" id="value_day" class="form-control" value="{{ $basic_information->color_days }}" readonly>
+            </td>
+            <td>
                 <p style="margin-left: 2%;">Seleccione el color de fondo de los días</p>
             </td>
         </tr>
         <tr>
             <td>
-                <div class="row">
-                    <div class="col-md-3 offset-3">
-                        <div class="div_color" id="color-header" style="border: 1px solid darkgrey; width: 100%; height: 100%; cursor: pointer;" rel="tooltip" title="Seleccione un color"></div>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" id="value_header" class="form-control" value="{{ $basic_information->color_headers }}" readonly>
-                    </div>
-                </div>
+                <div class="div_color" id="color-header" style="border: 1px solid darkgrey; width: 35px; height: 35px; cursor: pointer;" rel="tooltip" title="Seleccione un color"></div>
+            </td>
+            <td>
+                <input type="text" id="value_header" class="form-control" value="{{ $basic_information->color_headers }}" readonly>
             </td>
             <td>
                 <p style="margin-left: 2%;">Seleccione el color de fondo de la cabecera (Ingrediente y Cantidad)</p>
@@ -33,14 +25,10 @@
         </tr>
         <tr>
             <td>
-                <div class="row">
-                    <div class="col-md-3 offset-3">
-                        <div class="div_color" id="color-observations" style="border: 1px solid darkgrey; width: 100%; height: 100%; cursor: pointer;" rel="tooltip" title="Seleccione un color"></div>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" id="value_observations" class="form-control" value="{{ $basic_information->color_observations }}" readonly>
-                    </div>
-                </div>
+                <div class="div_color" id="color-observations" style="border: 1px solid darkgrey; width: 35px; height: 35px; cursor: pointer;" rel="tooltip" title="Seleccione un color"></div>
+            </td>
+            <td>
+                <input type="text" id="value_observations" class="form-control" value="{{ $basic_information->color_observations }}" readonly>
             </td>
             <td>
                 <p style="margin-left: 2%;">Seleccione el color de fondo de las observaciones</p>

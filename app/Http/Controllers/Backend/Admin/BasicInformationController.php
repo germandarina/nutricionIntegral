@@ -226,6 +226,10 @@ class BasicInformationController extends Controller
         {
             $image   = request()->file('recommendation_img');
             $formato = explode('/',$image->getClientMimeType());
+
+            if($formato[1] != 'jpg' && $formato[1] != 'jpeg' && $formato[1] != 'png')
+                return response()->json(['error' => 'Debe seleccionar una imagen jpg,jpeg o png'], 422);
+
             $now     = Carbon::now()->format('YmdHis');
             request()->file('recommendation_img')->storeAs('',"recommendations_{$now}.{$formato[1]}",'client');
             $request['recommendation'] = "recommendations_{$now}.{$formato[1]}";

@@ -140,7 +140,11 @@
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();
-                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                    if(xhr.status === 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
                 }
             });
         }
@@ -160,6 +164,22 @@
                 $("#recommendation_text").val("");
                 $("#divImg").show();
             }
+        }
+
+        function controlImage(event)
+        {
+            event.preventDefault();
+
+            var name_file  = $('#recommendation_img')[0].files[0].name;
+            var split_name = name_file.split('.');
+            var extension  = split_name[split_name.length-1];
+
+            if(extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png') {
+                $('#recommendation_img').val("");
+                return Lobibox.notify('error',{msg: 'Debe seleccionar una imagen jpeg, jpg o png'})
+            }
+
+
         }
 
         function storeRecommendation(event)
@@ -196,14 +216,29 @@
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         procesando.remove();
-                        Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                        if(xhr.status === 422){
+                            Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                        }else{
+                            Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                        }
                     }
                 });
             }
             else
             {
-                var fd = new FormData();
+                var fd    = new FormData();
                 var files = $('#recommendation_img')[0].files;
+
+                var name_file  = $('#recommendation_img')[0].files[0].name;
+                var split_name = name_file.split('.');
+                var extension  = split_name[split_name.length-1];
+
+                if(extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png')
+                {
+                    $('#recommendation_img').val("");
+                    return Lobibox.notify('error',{msg: 'Debe seleccionar una imagen jpeg, jpg o png'})
+                }
+
                 if(files.length > 0 ){
                     procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
@@ -225,7 +260,11 @@
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             procesando.remove();
-                            Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                            if(xhr.status === 422){
+                                Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                            }else{
+                                Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                            }
                         }
                     });
                 }
@@ -315,7 +354,11 @@
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();
-                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                    if(xhr.status === 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
                 }
             });
         }
