@@ -276,7 +276,6 @@
         }
 
         // COLOR DAY
-        document.querySelector('#color-day').style.width = "100px";
         var color_day = document.querySelector('#color-day');
         color_day.style.background = '{{ $basic_information->color_days }}';
         var picker_day = new Picker({
