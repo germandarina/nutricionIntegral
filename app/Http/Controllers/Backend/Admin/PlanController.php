@@ -874,4 +874,20 @@ class PlanController extends Controller
         }
         return App::abort(402);
     }
+
+    public function copyPlanning()
+    {
+        if(request('plan_id'))
+        {
+            try{
+                $plan = Plan::find(request('plan_id'));
+                $this->planRepository->copyPlanning($plan);
+                return response()->json(['mensaje'=>'Planificación Duplicada'],200);
+            }catch (\Exception $exception){
+                return response()->json(['error'=>$exception->getMessage()],422);
+            }
+        }
+        App::abort(402);
+    }
+
 }

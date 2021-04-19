@@ -272,4 +272,40 @@ class PlanRepository extends BaseRepository
 
         return ['total_hours'=>round($weekly_average_activity,2),'total_energy'=>round($total,3)];
     }
+
+    public function copyPlanning(Plan $plan)
+    {
+        if (!auth()->user()->isAdmin())
+            throw new GeneralException('No tiene permiso para realizar esta acción');
+
+        $datos            = $plan->toArray();
+        $datos['id']      = null;
+        $datos['open']    = true;
+        $datos['orign_plan_id'] = $plan->id;
+        $datos['duplicate']     = true;
+
+        $plan->load('details','energySpendings');
+
+        return DB::transaction(function () use ($datos,$plan)
+        {
+            $new_plan = Plan::create($datos);
+            if ($new_plan)
+            {
+                $new_plan->energySpendings()->attach($plan->energySpendings);
+
+                foreach ($plan->details as $detail)
+                {
+                    $new_detail = new PlanDetail();
+                    $new_detail->fill($detail->toArray());
+                    $new_detail->id = null;
+                    $new_detail->plan_id = $plan->id;
+                    $new_detail->save();
+                }
+
+                return $new_plan;
+            }
+
+            throw new GeneralException('Error al duplicar plan de alimentación. Intente nuevamente');
+        });
+    }
 }

@@ -34,6 +34,8 @@ class Plan extends BaseModel
         'activity',
         'tmb',
         'method_result',
+        'duplicate',
+        'origin_plan_id',
         'created_at',
         'updated_at',
         'deleted_at',

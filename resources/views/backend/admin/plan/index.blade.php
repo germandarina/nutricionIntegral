@@ -82,6 +82,46 @@
                 ]
             });
         });
+
+        function duplicatePlanning(event,plan_id)
+        {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Esta seguro de realizar esta accion?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText : 'No',
+            }).then((result) => {
+                if (result.value) {
+                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:  "{{ route('admin.plan.copyPlanning') }}",
+                        type: 'POST',
+                        data: {
+                            'plan_id' : plan_id,
+                        },
+                        success: (function (data){
+                            procesando.remove();
+                            Lobibox.notify('success',{msg:data.mensaje});
+                            $(".data-table").DataTable().ajax.reload();
+                        }),
+                        error: (function (jqXHR, exception) {
+                            procesando.remove();
+                            if (jqXHR.status === 422){
+                                let mensaje = jqXHR.responseJSON.error
+                                Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                            }
+                        })
+                    });
+                }
+            });
+        }
     </script>
 @endpush
 

@@ -126,7 +126,7 @@
     {!! script(mix('js/frontend.js')) !!}
     @yield('after-scripts')
 
-    @include('includes.partials.ga')
+{{--    @include('includes.partials.ga')--}}
 
 </div> <!-- .container-fluid -->
 <script>

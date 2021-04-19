@@ -35,8 +35,9 @@ return [
 
     'pdf' => [
         'enabled' => true,
-//        'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'),
-        'binary'  => '/usr/local/bin/wkhtmltopdf-amd64',
+//        'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'), // no se usa
+        'binary'  => '/usr/local/bin/wkhtmltopdf-amd64', // para vagrant/homestead
+//       'binary'        => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'), // para servidor
         'timeout' => false,
         'options' => [],
         'env'     => [],

@@ -24,8 +24,9 @@ Route::delete('delete-activity-fao',[PlanController::class,'deleteActivityFao'])
 Route::get('plan/modal-observations', [PlanController::class, 'modalObservations'])->name('plan.modalObservations');
 Route::post('plan/add-observation', [PlanController::class, 'addObservation'])->name('plan.addObservation');
 Route::post('plan/add-new-observation', [PlanController::class, 'addNewObservation'])->name('plan.addNewObservation');
-
 Route::delete('plan/delete-observation', [PlanController::class, 'deleteObservation'])->name('plan.deleteObservation');
+
+Route::post('plan/copy-planning',[PlanController::class,'copyPlanning'])->name('plan.copyPlanning');
 
 Route::group(['prefix' => 'plan/{plan}'], function ()
 {
@@ -38,15 +39,14 @@ Route::group(['prefix' => 'plan/{plan}'], function ()
     Route::get('recipes-by-day', [PlanController::class, 'getRecipesByDay'])->name('plan.getRecipesByDay');
     Route::post('total-recipes-by-day',[PlanController::class,'getTotalRecipesByDay'])->name('plan.getTotalRecipesByDay');
     Route::get('download-plan',[PlanController::class,'downloadPlan'])->name('plan.downloadPlan');
+
     Route::post('close-plan',[PlanController::class,'closePlan'])->name('plan.closePlan');
     Route::post('re-open-plan',[PlanController::class,'openPlan'])->name('plan.openPlan');
 
     Route::post('store-spending-energy',[PlanController::class,'storeEnergySpending'])->name('plan.storeEnergySpending');
     Route::post('store-activity-fao',[PlanController::class,'storeActivityFao'])->name('plan.storeActivityFao');
     Route::get('get-energy-spending',[PlanController::class,'getEnergySpending'])->name('plan.getEnergySpending');
-
     Route::post('get-amm-values',[PlanController::class,'getAMMValues'])->name('plan.getAMMValues');
-
     Route::post('get-total-activities-fao',[PlanController::class,'getTotalActivitiesFao'])->name('plan.getTotalActivitiesFao');
 
 
