@@ -3,7 +3,7 @@
         <button class="btn btn-dark btn-sm dropdown-toggle" id="dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2" x-placement="bottom-start" style="will-change: transform; margin: 0px;">
             @if ($row->open)
-                <a title="Agregar Recetas" href='{{ route("admin.plan.addRecipes",['id'=>$row->id]) }}' class="dropdown-item"><i style="color:green;" class="fas fa-plus-square" data-toggle="tooltip" data-placement="top" title="Agregar Recetas"></i> <strong>Agregar Receta</strong></a>
+                <a title="Agregar Recetas" href='{{ route("admin.plan.addRecipes",['id'=>$row->id]) }}' class="dropdown-item"><i style="color:green;" class="fas fa-plus-square" data-toggle="tooltip" data-placement="top" title="Agregar Recetas"></i> <strong>Agregar Recetas</strong></a>
                 <a title="Modificar" href='{{ route("admin.plan.edit",['id'=>$row->id]) }}' class="dropdown-item"><i style="color: darkblue;" class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modificar"></i> <strong>Modificar Info Plan</strong></a>
                 <a title="Eliminar" href="#" data-url="{{ route("admin.plan.destroy",['id'=>$row->id]) }}" onclick="eliminarItem(event,$(this))" class="dropdown-item delete-item" ><i style="color: red;" class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i> <strong>Eliminar</strong></a>
             @else

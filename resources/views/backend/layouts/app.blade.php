@@ -92,7 +92,7 @@
             e.preventDefault();
             var url = input.data('url');
             Swal.fire({
-                title: 'Esta seguro de realizar esta accion?',
+                title: 'Está seguro de realizar ésta acción?',
                 // icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -135,7 +135,7 @@
             e.preventDefault();
             var url = input.data('url');
             Swal.fire({
-                title: 'Esta seguro de realizar esta accion?',
+                title: 'Está seguro de realizar ésta acción?',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

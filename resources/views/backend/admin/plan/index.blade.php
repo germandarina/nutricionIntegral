@@ -23,9 +23,15 @@
                     <table class="table data-table font-xs">
                         <thead>
                         <tr>
-                            <th colspan="2" style="border-top: none;">
+                            <th style="border-top: none; background: black;">
                                 <div class="col-lg-12 col-xs-12">
-                                    <span style="color:#60bd75;"><i class="fas fa-lock fa-2x" style="color:#60bd75;"></i> <strong>Planes Cerrados</strong></span>
+                                    <span style="color:#60bd75;"><i class="fas fa-lock" style="color:#60bd75;"></i> <strong>Planes Cerrados</strong></span>
+
+                                </div>
+                            </th>
+                            <th style="border-top: none; background: black;">
+                                <div class="col-lg-12 col-xs-12">
+                                    <span style="color:#fdde08;"><i class="fas fa-unlock-alt" style="color:#fdde08;"></i> <strong>Planes Duplicados Abiertos</strong></span>
                                 </div>
                             </th>
                             <th colspan="4" style="text-align: center;background: black; color: white; border-top: none;">Necesidades Diarias</th>
@@ -33,7 +39,6 @@
                         <tr>
                             <th>Paciente</th>
                             <th>Plan</th>
-{{--                            <th>Estado</th>--}}
                             <th>Energia (kcal)</th>
                             <th>Proteina (g)</th>
                             <th>Carbohidratos (g)</th>
@@ -53,6 +58,10 @@
     .planning-closed{
         background-color: #60bd7596;
     }
+
+    .planning-duplicate-open{
+        background-color: #fdde087a;
+    }
 </style>
 @push('after-scripts')
     @include('datatables.includes')
@@ -67,6 +76,10 @@
                 createdRow: function( row, data, dataIndex){
                     if(data.open ===  0){
                         $(row).addClass('planning-closed');
+                    }
+
+                    if(data.open ===  1 && data.origin_plan_id !== null){
+                        $(row).addClass('planning-duplicate-open');
                     }
                 },
                 ajax: "{{ route('admin.plan.index') }}",
@@ -87,7 +100,7 @@
         {
             event.preventDefault();
             Swal.fire({
-                title: 'Esta seguro de realizar esta accion?',
+                title: 'Está seguro de realizar ésta acción?',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

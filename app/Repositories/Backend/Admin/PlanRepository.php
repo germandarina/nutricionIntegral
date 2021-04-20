@@ -58,8 +58,10 @@ class PlanRepository extends BaseRepository
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
 
-        return DB::transaction(function () use ($plan, $data) {
-            if($plan->days != $data['days']){
+        return DB::transaction(function () use ($plan, $data)
+        {
+            if($plan->days != $data['days'])
+            {
                 $plan->load('details');
                 if($plan->details->isNotEmpty())
                     throw new GeneralException('No puede cambiar la cantidad de días si ya tiene recetas cargadas.');
@@ -281,7 +283,8 @@ class PlanRepository extends BaseRepository
         $datos            = $plan->toArray();
         $datos['id']      = null;
         $datos['open']    = true;
-        $datos['orign_plan_id'] = $plan->id;
+        $datos['origin_plan_id'] = $plan->id;
+        $datos['name']          = "Duplicado de: {$plan->name}";
         $datos['duplicate']     = true;
 
         $plan->load('details','energySpendings');
@@ -291,14 +294,22 @@ class PlanRepository extends BaseRepository
             $new_plan = Plan::create($datos);
             if ($new_plan)
             {
-                $new_plan->energySpendings()->attach($plan->energySpendings);
+
+                foreach ($plan->energySpendings as $energy)
+                {
+                    $new_spending = new PlanEnergySpending();
+                    $new_spending->fill($energy->toArray());
+                    $new_spending->id = null;
+                    $new_spending->plan_id = $new_plan->id;
+                    $new_spending->save();
+                }
 
                 foreach ($plan->details as $detail)
                 {
                     $new_detail = new PlanDetail();
                     $new_detail->fill($detail->toArray());
                     $new_detail->id = null;
-                    $new_detail->plan_id = $plan->id;
+                    $new_detail->plan_id = $new_plan->id;
                     $new_detail->save();
                 }
 

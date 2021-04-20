@@ -335,7 +335,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: 'Esta seguro de realizar esta accion?',
+                title: 'Está seguro de realizar ésta acción?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

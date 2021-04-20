@@ -91,6 +91,7 @@
                     }
                 },
                 ajax: {
+                    delay: 250,
                     url: "{{ route('admin.patient.searchPatients') }}",
                     dataType: 'json',
                     data: function (params) {
@@ -558,7 +559,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: 'Esta seguro de realizar esta accion?',
+                title: 'Está seguro de realizar ésta acción?',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

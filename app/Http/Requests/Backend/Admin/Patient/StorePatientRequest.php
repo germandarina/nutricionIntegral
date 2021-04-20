@@ -34,10 +34,10 @@ class StorePatientRequest extends FormRequest
             'age'                => ['required','integer'],
             'motive'             => ['required'],
             'number_of_children' => ['integer'],
-            'document'           => ['required','between:7,11','unique:patients'],
-            'phone'              => ['required', 'max:15','min:7'],
-            'email'              => ['required','max:100','email','unique:patients'],
-            'address'            => ['required', 'max:200'],
+            'document'           => ['between:7,11','unique:patients'],
+            'phone'              => [ 'max:15','min:7'],
+            'email'              => ['max:100','email','unique:patients'],
+            'address'            => [ 'max:200'],
             'gender'             => ['required']
         ];
     }

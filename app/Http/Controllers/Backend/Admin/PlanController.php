@@ -128,7 +128,7 @@ class PlanController extends Controller
             return redirect()->route('admin.plan.edit',compact('plan'))->withInput($request->all());
         }
         Session::flash('success','Plan Actualizado');
-        return redirect()->route('admin.plan.index');
+        return redirect()->route('admin.plan.edit',compact('plan'));
     }
 
     /**

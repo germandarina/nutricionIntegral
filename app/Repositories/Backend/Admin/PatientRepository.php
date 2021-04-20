@@ -31,9 +31,9 @@ class PatientRepository extends BaseRepository
      */
     public function create(array $data) : Patient
     {
-        if ($this->patientExists($data['document'])) {
-            throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
-        }
+//        if ($this->patientExists($data['document'])) {
+//            throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
+//        }
         return DB::transaction(function () use ($data) {
             $data['birthdate'] = Carbon::createFromFormat('d/m/Y',$data['birthdate'])->format('Y-m-d');
 
@@ -60,11 +60,11 @@ class PatientRepository extends BaseRepository
         }
 
         // If the name is changing make sure it doesn't already exist
-        if ($patient->document !== strtolower($data['document'])) {
-            if ($this->patientExists($data['document'])) {
-                throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
-            }
-        }
+//        if ($patient->document !== strtolower($data['document'])) {
+//            if ($this->patientExists($data['document'])) {
+//                throw new GeneralException('Ya existe un paciente con el documento '.$data['document']);
+//            }
+//        }
 
         $data['birthdate'] = Carbon::createFromFormat('d/m/Y',$data['birthdate'])->format('Y-m-d');
 
@@ -96,12 +96,12 @@ class PatientRepository extends BaseRepository
      *
      * @return bool
      */
-    protected function patientExists($document) : bool
-    {
-        return $this->model
-            ->where('document', strtolower($document))
-            ->count() > 0;
-    }
+//    protected function patientExists($document) : bool
+//    {
+//        return $this->model
+//            ->where('document', strtolower($document))
+//            ->count() > 0;
+//    }
 
     /**
      * @param int $paged

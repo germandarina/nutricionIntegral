@@ -24,7 +24,6 @@
                 {{ html()->input('number','document')
                     ->class('form-control')
                     ->placeholder('Documento')
-                    ->required()
                     ->autofocus() }}
             </div><!--col-->
         </div><!--form-group-->
@@ -95,7 +94,6 @@
                     ->class('form-control')
                     ->placeholder('Direccion')
                     ->attribute('maxlength', 191)
-                    ->required()
                     ->autofocus() }}
             </div><!--col-->
         </div><!--form-group-->
@@ -111,7 +109,6 @@
                     ->class('form-control')
                     ->placeholder('Telefono')
                     ->attribute('maxlength', 191)
-                    ->required()
                     ->autofocus() }}
             </div><!--col-->
         </div><!--form-group-->
@@ -129,7 +126,6 @@
                     ->class('form-control')
                     ->placeholder('Email')
                     ->attribute('maxlength', 191)
-                    ->required()
                     ->autofocus() }}
             </div><!--col-->
         </div><!--form-group-->
@@ -169,4 +165,5 @@
     </div>
     </div>
 </div>
-    {{ html()->hidden('id',isset($patient) ? $patient->id : null) }}
+
+{{ html()->hidden('id',isset($patient) ? $patient->id : null) }}

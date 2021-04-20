@@ -9,7 +9,6 @@
                         ->class('form-control')
                         ->placeholder('Buscar paciente...')
                         ->attribute("id","patient_id")
-                        //->attributes(['onchange'=>'getComposicionBasica()'])
                         ->required()
                         }}
                 </div><!--col-->
@@ -40,7 +39,7 @@
                     ->class('col-md-2 form-control-label')
                     ->for('days') }}
                 <div class="col-md-6">
-                    {{ html()->input('number','days',7)
+                    {{ html()->input('number','days',isset($plan) ? $plan->days: 7)
                         ->class('form-control')
                         ->placeholder('Cant Días')
                         ->attribute('min',7)
