@@ -28,6 +28,7 @@ class BasicInformation extends BaseModel
         'color_days',
         'color_headers',
         'color_observations',
+        'frequency_days',
         'created_at',
         'updated_at',
         'deleted_at',

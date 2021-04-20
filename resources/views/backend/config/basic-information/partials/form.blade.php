@@ -51,13 +51,13 @@
 <div class="row mt-4">
     <div class="col">
         <div class="form-group row">
-            {{ html()->label('Direccion')
+            {{ html()->label('Dirección')
                 ->class('col-md-2 form-control-label')
                 ->for('name') }}
             <div class="col-md-6">
                 {{ html()->text('address')
                     ->class('form-control')
-                    ->placeholder('Direccion')
+                    ->placeholder('Dirección')
                     ->attribute('maxlength', 191)
                     ->required()
                     ->autofocus() }}
@@ -79,6 +79,26 @@
                     ->attribute('maxlength', 191)
                     ->required()
                     ->autofocus() }}
+            </div><!--col-->
+        </div><!--form-group-->
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <div class="form-group row">
+            {{ html()->label('Días Estimados de la Próxima Consulta del Paciente')
+                ->class('col-md-2 form-control-label')
+                ->for('frequency_days') }}
+
+            <div class="col-md-6">
+                {{ html()->input('number','frequency_days',isset($basic_information) ? $basic_information->frequency_days : 30)
+                    ->class('form-control')
+                    ->placeholder('Días Estimados de la Próxima Consulta del Paciente')
+                    ->attribute('max', 30)
+                    ->attribute('min',1)
+                    ->required()
+                    ->autofocus()
+                     }}
             </div><!--col-->
         </div><!--form-group-->
     </div>

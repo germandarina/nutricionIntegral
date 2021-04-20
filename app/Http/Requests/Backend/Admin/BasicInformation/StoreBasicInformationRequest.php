@@ -32,9 +32,10 @@ class StoreBasicInformationRequest extends FormRequest
             'full_name'         => ['required'],
             'email'             => ['required'],
             'address'           => ['required'],
-            'image'       => ['image','mimes:jpeg,jpg,png'],
+            'image'             => ['image','mimes:jpeg,jpg,png'],
 //            'm_professional'    => ['string'],
             'company_name'      => ['required'],
+            'frequency_days'    => ['required','integer']
         ];
     }
 
@@ -48,6 +49,9 @@ class StoreBasicInformationRequest extends FormRequest
             'image.mimes'     => "El formato de la imagen debe ser: jpeg,jpg o png.",
 //            'm_professional.required' => "La matricula profesional es obligatoria.",
             'company_name.required'   => "El nombre de la empresa es obligatorio.",
+            'frequency_days.required' => 'La cantidad de días para el próximo turno es obligatorio',
+            'frequency_days.integer'  => 'La cantidad de días para el próximo turno debe ser un numero'
+
         ];
     }
 

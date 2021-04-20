@@ -19,6 +19,20 @@
             <td style="text-align: right !important;"><a href="mailto:{{ $basic_information->email }}">{{ $basic_information->email }}</a></td>
         </tr>
     </table>
+    <div style="border: 2px solid {!! $basic_information->color_days !!} ;">
+        <table>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <strong>FECHA ESTIMADA DEL PRÓXIMO CONTROL: {{ \Carbon\Carbon::now()->addDays($basic_information->frequency_days)->format('d/m/Y') }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <strong>Recuerde solicitar el turno con anticipación.</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
     <hr>
     <div id="logo_grande">
         @if(!is_null($basic_information->path_image))
