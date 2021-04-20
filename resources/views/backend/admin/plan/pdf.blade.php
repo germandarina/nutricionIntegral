@@ -108,10 +108,10 @@
             text-align: left;
         }
 
-        table td {
-            padding: 5px;
-            text-align: right;
-        }
+        /*table td {*/
+        /*    padding: 3px;*/
+        /*    text-align: right;*/
+        /*}*/
 
 
         footer {
