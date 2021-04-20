@@ -7,7 +7,7 @@
             @endif
             @foreach($array_dias as $day => $description)
                 <li class="nav-item">
-                    <a class="nav-link  @if(!$plan->open && $day == 1) active @endif " data-toggle="tab" href="#day-{{$day}}" role="tab" aria-controls="day-{{$day}}">{{ $description }}</a>
+                    <a class="nav-link  @if(!$plan->open && $day == 1) active @endif " data-toggle="tab" href="#day-{{$day}}" role="tab" aria-controls="day-{{$day}}"><span id="span_day_{{$day}}" >{{ $description }}</span></a>
                 </li>
             @endforeach
             </ul>

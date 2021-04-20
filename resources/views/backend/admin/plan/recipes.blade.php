@@ -1098,9 +1098,7 @@
                     procesando.remove();
                     Lobibox.notify('success',{msg: datos.mensaje });
                     $("#modalRecipe").modal('hide');
-                    setTimeout(function (){
-                        window.location.reload();
-                    },2000);
+                    $(`#span_day_${day}`).empty().html(`Día ${day} - ${description}`);
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();

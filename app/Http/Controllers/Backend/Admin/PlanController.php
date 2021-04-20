@@ -197,8 +197,8 @@ class PlanController extends Controller
         $days_descriptions = $plan->days_descriptions;
 
         for ($i=1;$i<=$plan->days;$i++){
-            $descriptions = isset($days_descriptions[$i]) ? $days_descriptions[$i] : '';
-            $array_dias[$i] = "Día {$i} {$descriptions}";
+            $descriptions = isset($days_descriptions[$i]) ? " - {$days_descriptions[$i]}" : '';
+            $array_dias[$i] = "Día {$i}{$descriptions}";
         }
 
         return view('backend.admin.plan.recipes',compact('plan','paciente','foods','food_groups','classifications','array_dias'));
