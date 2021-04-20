@@ -137,7 +137,7 @@
                 ->for('number_of_children') }}
 
             <div class="col-md-10">
-                {{ html()->input('number','number_of_children')
+                {{ html()->input('number','number_of_children',isset($patient) ? $patient->number_of_children : 0)
                     ->class('form-control')
                     ->placeholder('Cantidad de Hijos')
                     ->attribute('min', 0)

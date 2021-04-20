@@ -68,7 +68,7 @@ class StorePlanRequest extends FormRequest
         $errors = $validator->errors()->messages();
         $stringError = '';
         foreach ($errors as $error){
-            $stringError .= "$error[0] ,";
+            $stringError .= "$error[0] | ";
         }
 
         Session::flash('validator', $stringError);

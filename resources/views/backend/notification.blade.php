@@ -18,7 +18,7 @@
 
     @if(Session::has('validator'))
         var errores = "{{ Session::get('validator') }}";
-        var split_errores = errores.split(',');
+        var split_errores = errores.split('|');
         var mensaje = '<ul>';
         $.each(split_errores,function (i,v){
             mensaje = `${mensaje} <li>${v}</li>`

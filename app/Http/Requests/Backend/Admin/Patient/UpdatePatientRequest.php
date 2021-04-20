@@ -36,10 +36,10 @@ class UpdatePatientRequest extends FormRequest
             'birthdate'             => ['required', 'date_format:d/m/Y','before:tomorrow'],
             'age'                   => ['required','integer'],
             'motive'                => ['required'],
-            'number_of_children'    => ['integer'],
-            'document'              => ['between:7,11',Rule::unique('patients')->ignore($id,'id')],
-            'phone'                 => [ 'max:15','min:7'],
-            'email'                 => ['max:100','email',Rule::unique('patients')->ignore($id,'id')],
+            'number_of_children'    => ['min:0'],
+//            'document'              => ['between:7,11',Rule::unique('patients')->ignore($id,'id')],
+            'phone'                 => ['max:15'],
+            'email'                 => ['required','max:100','email',Rule::unique('patients')->ignore($id,'id')],
             'address'               => ['max:200'],
             'classification_id'     => ['array','min:1'],
             'food_group_id'         => ['array'],
@@ -83,7 +83,7 @@ class UpdatePatientRequest extends FormRequest
         $errors = $validator->errors()->messages();
         $stringError = '';
         foreach ($errors as $error){
-            $stringError .= "$error[0] ,";
+            $stringError .= "$error[0] | ";
         }
 
         Session::flash('validator', $stringError);
