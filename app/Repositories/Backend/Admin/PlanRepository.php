@@ -144,6 +144,7 @@ class PlanRepository extends BaseRepository
                     $plan_detail            = new PlanDetail();
                     $plan_detail->plan_id   = $datos['plan_id'];
                     $plan_detail->recipe_id = $datos['recipe_id'];
+                    $plan_detail->portions  = $datos['portions'];
                     $plan_detail->day       = $day;
                     $plan_detail->day_description = $plan_detail_description ? $plan_detail_description->day_description : null;
 

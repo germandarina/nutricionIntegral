@@ -30,7 +30,9 @@ class StoreRecipeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:200','min:6'],
-            'recipe_type_id' => ['required',],
+            'recipe_type_id' => ['required'],
+            'portions' => ['required','integer','between:1,100'],
+
 //            'observation'=>['max:200'],
             'classifications'=> ['required']
         ];
@@ -45,6 +47,7 @@ class StoreRecipeRequest extends FormRequest
             'recipe_type_id.required' => "El tipo de receta es obligatorio.",
 //            'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
             'classifications.required' => 'La clasificacion es obligatoria',
+            'portions.required' => "La cantidad de porciones es obligatoria.",
         ];
     }
 

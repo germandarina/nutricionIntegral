@@ -33,6 +33,7 @@ class UpdateRecipeRequest extends FormRequest
             'recipe_type_id' => ['required'],
             'observation'=>['max:200'],
             'classifications' =>['required'],
+            'portions' => ['required','integer','between:1,100']
         ];
     }
 
@@ -46,6 +47,7 @@ class UpdateRecipeRequest extends FormRequest
             'observation.min' => "La observacion debe tener, al menos, 6 caracteres.",
             'observation.max' => "La observacion debe tener, maximo, 200 caracteres.",
             'classifications.required' => 'Seleccione al menos 1 clasificación',
+            'portions.required' => "La cantidad de porciones es obligatoria."
         ];
     }
 

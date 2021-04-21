@@ -281,7 +281,12 @@
         $("span.select2.select2-container.select2-container--default").css("width","100%");
         $(".form-control-label").css('font-size','12px').css('padding','1');
     </script>
-
+    <style>
+        .form-control{
+            border: 1px solid #97ACEE !important;
+            color: black;
+        }
+    </style>
     @stack('after-scripts')
     {{ script('select2/select2.min.js')}}
     {{ script('vendor/jsvalidation/js/jsvalidation.js') }}

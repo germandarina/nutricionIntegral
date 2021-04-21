@@ -56,6 +56,7 @@ class Recipe extends BaseModel
         'name',
         'observation',
         'recipe_type_id',
+        'portions',
         'total_energia_kcal',
         'total_agua',
         'total_proteina',

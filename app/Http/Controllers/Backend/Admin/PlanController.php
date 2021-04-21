@@ -358,9 +358,9 @@ class PlanController extends Controller
     {
         $day  = request('day');
 
-        $data =  PlanDetail::with(['recipe.observations','observations'])
+        $data =  PlanDetail::where('plan_id',$plan->id)
                             ->where('day',$day)
-                            ->where('plan_id',$plan->id)
+                            ->with(['recipe.observations','observations'])
                             ->orderBy('order')
                             ->get();
 
@@ -461,30 +461,32 @@ class PlanController extends Controller
 
         foreach ($plan_details as $detail)
         {
-            $recipe = $detail->recipe;
+            $recipe         = $detail->recipe;
+            $portion_plan   = $detail->portions;
+            $portion_recipe = $recipe->portions;
 
-            $total['total_energia_kcal']            += $recipe->total_energia_kcal;
-            $total['total_proteina']                += $recipe->total_proteina;
-            $total['total_grasa_total']             += $recipe->total_grasa_total;
-            $total['total_carbohidratos_totales']   += $recipe->total_carbohidratos_totales;
-            $total['total_colesterol']              += $recipe->total_colesterol;
-            $total['total_agua']                    += $recipe->total_agua;
-            $total['total_cenizas']                 += $recipe->total_cenizas;
-            $total['total_sodio']                   += $recipe->total_sodio;
-            $total['total_potasio']                 += $recipe->total_potasio;
-            $total['total_calcio']                  += $recipe->total_calcio;
-            $total['total_fosforo']                 += $recipe->total_fosforo;
-            $total['total_hierro']                  += $recipe->total_hierro;
-            $total['total_zinc']                    += $recipe->total_zinc;
-            $total['total_tiamina']                 += $recipe->total_tiamina;
-            $total['total_riboflavina']             += $recipe->total_riboflavina;
-            $total['total_niacina']                 += $recipe->total_niacina;
-            $total['total_vitamina_c']              += $recipe->total_vitamina_c;
-            $total['total_carbohidratos_disponibles']  += $recipe->total_carbohidratos_disponibles;
-            $total['total_ac_grasos_saturados']        += $recipe->total_ac_grasos_saturados;
-            $total['total_ac_grasos_monoinsaturados']  += $recipe->total_ac_grasos_monoinsaturados;
-            $total['total_ac_grasos_poliinsaturados']  += $recipe->total_ac_grasos_poliinsaturados;
-            $total['total_fibra']                      += $recipe->total_fibra;
+            $total['total_energia_kcal']            += round((($recipe->total_energia_kcal / $portion_recipe) * $portion_plan),3);
+            $total['total_proteina']                += round((($recipe->total_proteina / $portion_recipe) * $portion_plan),3);
+            $total['total_grasa_total']             += round((($recipe->total_grasa_total / $portion_recipe) * $portion_plan),3);
+            $total['total_carbohidratos_totales']   += round((($recipe->total_carbohidratos_totales / $portion_recipe) * $portion_plan),3);
+            $total['total_colesterol']              += round((($recipe->total_colesterol / $portion_recipe) * $portion_plan),3);
+            $total['total_agua']                    += round((($recipe->total_agua / $portion_recipe) * $portion_plan),3);
+            $total['total_cenizas']                 += round((($recipe->total_cenizas / $portion_recipe) * $portion_plan),3);
+            $total['total_sodio']                   += round((($recipe->total_sodio / $portion_recipe) * $portion_plan),3);
+            $total['total_potasio']                 += round((($recipe->total_potasio / $portion_recipe) * $portion_plan),3);
+            $total['total_calcio']                  += round((($recipe->total_calcio / $portion_recipe) * $portion_plan),3);
+            $total['total_fosforo']                 += round((($recipe->total_fosforo / $portion_recipe) * $portion_plan),3);
+            $total['total_hierro']                  += round((($recipe->total_hierro / $portion_recipe) * $portion_plan),3);
+            $total['total_zinc']                    += round((($recipe->total_zinc / $portion_recipe) * $portion_plan),3);
+            $total['total_tiamina']                 += round((($recipe->total_tiamina / $portion_recipe) * $portion_plan),3);
+            $total['total_riboflavina']             += round((($recipe->total_riboflavina / $portion_recipe) * $portion_plan),3);
+            $total['total_niacina']                 += round((($recipe->total_niacina / $portion_recipe) * $portion_plan),3);
+            $total['total_vitamina_c']              += round((($recipe->total_vitamina_c / $portion_recipe) * $portion_plan),3);
+            $total['total_carbohidratos_disponibles']  += round((($recipe->total_carbohidratos_disponibles / $portion_recipe) * $portion_plan),3);
+            $total['total_ac_grasos_saturados']        += round((($recipe->total_ac_grasos_saturados / $portion_recipe) * $portion_plan),3);
+            $total['total_ac_grasos_monoinsaturados']  += round((($recipe->total_ac_grasos_monoinsaturados / $portion_recipe) * $portion_plan),3);
+            $total['total_ac_grasos_poliinsaturados']  += round((($recipe->total_ac_grasos_poliinsaturados / $portion_recipe) * $portion_plan),3);
+            $total['total_fibra']                      += round((($recipe->total_fibra / $portion_recipe) * $portion_plan),3);
         }
     }
 

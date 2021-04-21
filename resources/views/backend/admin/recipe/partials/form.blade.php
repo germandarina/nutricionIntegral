@@ -47,3 +47,22 @@
             <a href="#" class="btn btn-success btn-xs btn-block" onclick="modalObservation(event)">Nueva Observación</a>
         </div>
     </div>
+    <div class="row mt-2">
+        {{ html()->label('Rinde')
+                    ->class('col-md-2 form-control-label')
+                    ->for('portions')
+        }}
+
+        <div class="col-md-3">
+            {{ html()->input('number','portions',isset($recipe) ? $recipe->portions : 1)
+                ->class('form-control')
+                ->placeholder('Porciones')
+                ->attribute('min', 1)
+                ->attribute('max', 100)
+                ->required()
+                ->autofocus() }}
+        </div><!--col-->
+        <div>
+            <label for="">Porcion/es</label>
+        </div>
+    </div>

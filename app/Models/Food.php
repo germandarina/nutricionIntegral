@@ -37,7 +37,7 @@ use App\Models\Traits\Relationship\FoodRelationship;
  * @property float $hierro
  * @property float $zinc
  * @property float $tiamina
- * @property float $rivoflavina
+ * @property float $riboflavina
  * @property float $niacina
  * @property float $vitamina_c
  * @property float $carbohidratos_disponibles
@@ -70,7 +70,7 @@ use App\Models\Traits\Relationship\FoodRelationship;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereNiacina($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food wherePotasio($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereProtenia($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereRivoflavina($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereRiboflavina($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereSodio($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereTiamina($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Food whereUpdatedAt($value)

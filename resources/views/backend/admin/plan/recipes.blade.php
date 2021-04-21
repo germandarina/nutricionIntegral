@@ -261,15 +261,17 @@
             event.preventDefault();
 
             var quantity_by_day = $("#quantity_by_day").val();
-            var days = $("#days").val();
+            var days            = $("#days").val();
+            var portions        = $("#portions").val();
 
-            if(quantity_by_day <= 0 || quantity_by_day === "" || quantity_by_day === null || quantity_by_day === undefined){
+            if(quantity_by_day <= 0 || quantity_by_day === "" || quantity_by_day === null || quantity_by_day === undefined)
                 return Lobibox.notify('error',{msg: "Ingrese la cantidad de veces por día"});
-            }
 
-            if(days.length === 0 || days === "" || days === null || days === undefined){
+            if(days.length === 0 || days === "" || days === null || days === undefined)
                 return Lobibox.notify('error',{msg: "Seleccione al menos un día"});
-            }
+
+            if(portions <= 0 || portions === "" || portions === null || portions === undefined)
+                return Lobibox.notify('error',{msg: "Ingrese la porción adecuada para el plan"});
 
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
@@ -283,7 +285,8 @@
                     'recipe_id': recipe_id,
                     'plan_id': "{{$plan->id}}",
                     'quantity_by_day': quantity_by_day,
-                    'days': days
+                    'days': days,
+                    'portions':portions
                 },
                 success: function(data) {
                     var datos = data;
