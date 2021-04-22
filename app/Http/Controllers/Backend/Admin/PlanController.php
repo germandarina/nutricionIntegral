@@ -548,24 +548,24 @@ class PlanController extends Controller
         $nombre_patient    = str_replace(',','_',$patient->full_name);
         $nombre_archivo    = snake_case("{$nombre_plan}_{$nombre_patient}");
 
-        if(request('word'))
-        {
-            $headers = [
-                "Content-type"=>"text/html",
-                "Content-Disposition"=>"attachment;Filename={$nombre_archivo}.docx"
-            ];
-
-            $header     = view('backend.admin.plan.header_plan_word',compact('plan', 'patient',
-                                                                            'basic_information','color_headers'));
-            $final_data = view('backend.admin.plan.final_data_plan_word',compact('basic_information','color_days'));
-
-            $content = (string) view('backend.admin.plan.word',compact('plan','patient','view_by_day',
-                                                                    'header','final_data','basic_information'));
-
-            return \Response::make($content,200, $headers);
-        }
-        else
-        {
+//        if(request('word'))
+//        {
+//            $headers = [
+//                "Content-type"=>"text/html",
+//                "Content-Disposition"=>"attachment;Filename={$nombre_archivo}.docx"
+//            ];
+//
+//            $header     = view('backend.admin.plan.header_plan_word',compact('plan', 'patient',
+//                                                                            'basic_information','color_headers'));
+//            $final_data = view('backend.admin.plan.final_data_plan_word',compact('basic_information','color_days'));
+//
+//            $content = (string) view('backend.admin.plan.word',compact('plan','patient','view_by_day',
+//                                                                    'header','final_data','basic_information'));
+//
+//            return \Response::make($content,200, $headers);
+//        }
+//        else
+//        {
             $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
             $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
 
@@ -580,7 +580,7 @@ class PlanController extends Controller
                 ->setOption('footer-center',$tex_footer);
 
             return $pdf->download("{$nombre_archivo}.pdf");
-        }
+//        }
 
     }
 

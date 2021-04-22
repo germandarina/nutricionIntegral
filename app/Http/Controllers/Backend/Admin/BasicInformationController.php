@@ -89,12 +89,17 @@ class BasicInformationController extends Controller
 
             $request['path_image'] = null;
 
+
             if ($request->hasFile('image'))
             {
-                $image   = request()->file('image');
-                $formato = explode('/',$image->getClientMimeType());
-                request()->file('image')->storeAs('',"pdf_client.{$formato[1]}",'client');
-                $request['path_image'] = "pdf_client.{$formato[1]}";
+                $image              = request()->file('image');
+                $name_without_space = str_replace(' ','',$request['company_name']);
+                $formato            = explode('/',$image->getClientMimeType());
+                $full_name_file     = "pdf_client_{$name_without_space}.{$formato[1]}";
+
+                request()->file('image')->storeAs('',$full_name_file,'client');
+
+                $request['path_image'] = $full_name_file;
             }
 
             $basic_information = $this->basicInformation->create($request->all());
@@ -145,10 +150,14 @@ class BasicInformationController extends Controller
                 if(!is_null($basic_information->path_image) && Storage::exists(public_path("img/backend/client/{$basic_information->path_image}")))
                     unlink(public_path("img/backend/client/{$basic_information->path_image}"));
 
-                $image   = request()->file('image');
-                $formato = explode('/',$image->getClientMimeType());
-                request()->file('image')->storeAs('',"pdf_client.{$formato[1]}",'client');
-                $request['path_image'] = "pdf_client.{$formato[1]}";
+                $image              = request()->file('image');
+                $name_without_space = str_replace(' ','',$request['company_name']);
+                $formato            = explode('/',$image->getClientMimeType());
+                $full_name_file     = "pdf_client_{$name_without_space}.{$formato[1]}";
+
+                request()->file('image')->storeAs('',$full_name_file,'client');
+
+                $request['path_image'] = $full_name_file;
             }
 
             $this->basicInformation->update($request->all(), $basic_information);

@@ -28,4 +28,4 @@ output.txt
 coverage.xml
 /coverage
 .phpunit.result.cache
-/public/img/backend/client
+/public/img/backend/client/*
