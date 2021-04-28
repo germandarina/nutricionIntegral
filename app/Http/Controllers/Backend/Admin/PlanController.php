@@ -377,7 +377,19 @@ class PlanController extends Controller
                 else
                     $observations = implode('. ', $row->recipe->observations->pluck('name')->toArray());
 
-                return "<span rel='tooltip' title='{$observations}'>{$row->recipe->name}</span>";
+                return "<span style='width: 100% !important; display: block; height: 22px !important;' rel='tooltip' title='{$observations}'>{$row->recipe->name}</span>";
+            })
+            ->addColumn('energy', function($row) use ($day){
+                return
+            })
+            ->addColumn('protein', function($row) use ($day){
+                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
+            })
+            ->addColumn('fat', function($row) use ($day){
+                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
+            })
+            ->addColumn('carbs', function($row) use ($day){
+                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
             })
             ->rawColumns(['actions','order','recipe_name'])
             ->make(true);
