@@ -15,6 +15,7 @@
                 <tr>
                     <th>Orden PDF</th>
                     <th class="center;">Nombre</th>
+                    <th>Porción</th>
                     <th>Energía</th>
                     <th>Proteínas</th>
                     <th>Grasa</th>
