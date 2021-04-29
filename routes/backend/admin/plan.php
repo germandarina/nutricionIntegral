@@ -28,6 +28,9 @@ Route::delete('plan/delete-observation', [PlanController::class, 'deleteObservat
 
 Route::post('plan/copy-planning',[PlanController::class,'copyPlanning'])->name('plan.copyPlanning');
 
+Route::get('plan/modal-portion', [PlanController::class, 'modalPortion'])->name('plan.modalPortion');
+Route::post('plan/edit-portion', [PlanController::class, 'editPortion'])->name('plan.editPortion');
+
 Route::group(['prefix' => 'plan/{plan}'], function ()
 {
     Route::get('edit', [PlanController::class, 'edit'])->name('plan.edit');

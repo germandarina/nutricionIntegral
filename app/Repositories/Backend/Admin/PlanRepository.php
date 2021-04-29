@@ -144,7 +144,7 @@ class PlanRepository extends BaseRepository
                     $plan_detail            = new PlanDetail();
                     $plan_detail->plan_id   = $datos['plan_id'];
                     $plan_detail->recipe_id = $datos['recipe_id'];
-                    $plan_detail->portions  = $datos['portions'];
+                    $plan_detail->portions  = (int) $datos['portions'];
                     $plan_detail->day       = $day;
                     $plan_detail->day_description = $plan_detail_description ? $plan_detail_description->day_description : null;
 
@@ -171,6 +171,7 @@ class PlanRepository extends BaseRepository
               $recipe->recipe_type_id   = $recipe_original->recipe_type_id;
               $recipe->edit             = true;
               $recipe->origin_recipe_id = $recipe_original->edit ? $recipe_original->origin_recipe_id : $recipe_original->id;
+              $recipe->portions         = $recipe_original->portions;
               $recipe->save();
 
               foreach ($recipe_original->ingredients as $ingredient_original)

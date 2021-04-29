@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Editar Receta</h5>
+            <h5 class="modal-title">Editar Receta - {{ $recipe->name }} - <span style="color: orangered;">Rinde {{ $recipe->portions }} Porcion/es</span></h5>
         </div>
         <div class="modal-body">
             <div class="row">
@@ -32,18 +32,21 @@
 
             <hr>
             @if(isset($array_dias))
-                <div id="divAgregarReceta" style="border: 1px solid #1abc9c; padding: 5px;">
+                <div id="divAgregarReceta" style="border: 2px solid black; padding: 5px;">
                     <div class="row">
                         <div class="col-md-4">
                             {{ html()->label('Cant. de veces por día')
                                              ->class('col-md-12 form-control-label')
-                                             ->for('classification_id')
+                                             ->style(['font-size'=>'13px'])}}
+                        </div>
+                        <div class="col-md-4">
+                            {{ html()->label('Días Disponibles')
+                                             ->class('col-md-12 form-control-label')
                                              ->style(['font-size'=>'13px'])}}
                         </div>
                         <div class="col-md-3                ">
-                            {{ html()->label('Días Disponibles')
+                            {{ html()->label('Porciones para el Plan')
                                              ->class('col-md-12 form-control-label')
-                                             ->for('classification_id')
                                              ->style(['font-size'=>'13px'])}}
                         </div>
                     </div>
@@ -65,6 +68,17 @@
                                             ->attributes(['id'=>'days'])
                                             ->required()
                             }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ html()->number('portions',$recipe->portions)
+                                                ->class('form-control')
+                                                ->placeholder('Porciones para el plan')
+                                                ->attribute('min', 1)
+                                                ->attribute('max',100)
+                                                ->attributes(['id'=>'portions'])
+                                                ->required()
+                                                ->autofocus()
+                             }}
                         </div>
                     </div>
                 </div>

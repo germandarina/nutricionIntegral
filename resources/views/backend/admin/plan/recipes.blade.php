@@ -146,10 +146,10 @@
                         {data: 'order', name: 'order', width: "18%" },
                         {data: 'recipe_name', name: 'recipe_name', width: "40%"},
                         {data: 'portions', name: 'portions'},
-                        {data: 'recipe.total_energia_kcal', name: 'recipe.total_energia_kcal',},
-                        {data: 'recipe.total_proteina', name: 'recipe.total_proteina',},
-                        {data: 'recipe.total_grasa_total', name: 'recipe.total_grasa_total',},
-                        {data: 'recipe.total_carbohidratos_totales', name: 'recipe.total_carbohidratos_totales',},
+                        {data: 'energy', name: 'energy',},
+                        {data: 'protein', name: 'protein',},
+                        {data: 'fat', name: 'fat',},
+                        {data: 'carbs', name: 'carbs',},
                         @if ($plan->open)
                             {data: 'actions', name: 'actions', orderable: false, searchable: false,},
                         @endif
@@ -242,7 +242,6 @@
                         minimumResultsForSearch: 5,
                         width: '100%',
                     });
-                    $("#modalRecipe").modal('show');
 
                     if(plan_detail_id !== null){
                         $("#modalRecipe #hidden_plan_detail_id").val(plan_detail_id);
@@ -250,6 +249,10 @@
                         $("#modalRecipe .btn-modal-create").hide();
                         $("#modalRecipe .btn-modal-edit").show();
                     }
+
+                    $("#modalRecipe").modal('show');
+
+
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     procesando.remove();
@@ -342,8 +345,6 @@
                     Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
                 }
             });
-
-
         }
 
         function editRecipeAdded(event){
@@ -1113,6 +1114,77 @@
                 }
             });
         }
+
+        function modalPortion(event,plan_detail_id)
+        {
+            event.preventDefault();
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.modalPortion') }}',
+                type:     'GET',
+                data: {
+                    'plan_detail_id': plan_detail_id,
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    $("#modalRecipe").empty().html(datos);
+                    $("#modalRecipe").modal('show');
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+        function editPortion(event,plan_detail_id)
+        {
+            event.preventDefault();
+
+            var portion = parseInt($("#portions").val());
+
+            if(portion === 0 || portion === null || portion === undefined || isNaN(portion))
+                return Lobibox.notify('error',{ msg: 'Ingrese la porción' });
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('admin.plan.editPortion') }}',
+                type:     'POST',
+                data: {
+                    'plan_detail_id': plan_detail_id,
+                    'portion':portion
+                },
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    Lobibox.notify('success',{msg: datos.mensaje });
+                    $("#modalRecipe").modal('hide');
+                    $(`#recipes-by-day-datatable-${datos.day}`).DataTable().ajax.reload();
+                    getTotalesPorDia(datos.day);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422)
+                        return Lobibox.notify('error',{msg: xhr.responseJSON.error });
+
+                    Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
+                }
+            });
+        }
+
+
     </script>
 @endpush
 

@@ -371,6 +371,12 @@ class PlanController extends Controller
             ->addColumn('actions', function($row) use ($day){
                 return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
             })
+            ->editColumn('portions',function ($row){
+                return "<strong>$row->portions</strong>
+                        <a class='btn btn-sm btn-outline-primary' href='#' onclick='modalPortion(event,$row->id)'>
+                        <i class='fas fa-edit'></i>
+                        </a>";
+            })
             ->addColumn('recipe_name',function ($row){
                 if($row->observations->isNotEmpty())
                     $observations = implode('. ', $row->observations->pluck('name')->toArray());
@@ -380,18 +386,18 @@ class PlanController extends Controller
                 return "<span style='width: 100% !important; display: block; height: 22px !important;' rel='tooltip' title='{$observations}'>{$row->recipe->name}</span>";
             })
             ->addColumn('energy', function($row) use ($day){
-                return
+                return round((($row->recipe->total_energia_kcal / $row->recipe->portions) * $row->portions),3);
             })
             ->addColumn('protein', function($row) use ($day){
-                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
+                return round((($row->recipe->total_proteina / $row->recipe->portions) * $row->portions),3);
             })
             ->addColumn('fat', function($row) use ($day){
-                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
+                return round((($row->recipe->total_grasa_total / $row->recipe->portions) * $row->portions),3);
             })
             ->addColumn('carbs', function($row) use ($day){
-                return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
+                return round((($row->recipe->total_carbohidratos_totales / $row->recipe->portions) * $row->portions),3);
             })
-            ->rawColumns(['actions','order','recipe_name'])
+            ->rawColumns(['actions','order','recipe_name','portions'])
             ->make(true);
     }
 
@@ -902,6 +908,30 @@ class PlanController extends Controller
             }
         }
         App::abort(402);
+    }
+
+    public function modalPortion()
+    {
+        if(request('plan_detail_id'))
+        {
+            $plan_detail = PlanDetail::with('recipe')->find(request('plan_detail_id'));
+
+            return view('backend.admin.plan.partials.modal-portion',compact('plan_detail'));
+        }
+        return App::abort(402);
+    }
+
+    public function editPortion()
+    {
+        if(request('portion') && request('plan_detail_id'))
+        {
+            $plan_detail = PlanDetail::find(request('plan_detail_id'));
+            $plan_detail->portions = request('portion');
+            $plan_detail->update();
+
+            return response()->json(['mensaje'=>'Porción actualizada','day'=>$plan_detail->day],200);
+        }
+        return App::abort(402);
     }
 
 }

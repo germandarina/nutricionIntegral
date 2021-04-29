@@ -5,10 +5,10 @@
         @if($macros)
             <span class="macros">
                 <br>
-                Energia (kcal): {{ number_format($detail->recipe->total_energia_kcal,3,',','.')  }}
-                - Protéina (g): {{ number_format($detail->recipe->total_proteina,3,',','.') }}
-                - Carbohidratos (g): {{ number_format($detail->recipe->total_carbohidratos_totales,3,',','.') }}
-                - Grasa (g): {{ number_format($detail->recipe->total_grasa_total,3,',','.') }}
+                Energia (kcal): {{ number_format((($detail->recipe->total_energia_kcal / $detail->recipe->portions) * $detail->portions),3,',','.')  }}
+                - Protéina (g): {{ number_format((($detail->recipe->total_proteina / $detail->recipe->portions) * $detail->portions),3,',','.') }}
+                - Carbohidratos (g): {{ number_format((($detail->recipe->total_carbohidratos_totales / $detail->recipe->portions) * $detail->portions),3,',','.') }}
+                - Grasa (g): {{ number_format((($detail->recipe->total_grasa_total / $detail->recipe->portions) * $detail->portions),3,',','.') }}
             </span>
         @endif
         </h3>

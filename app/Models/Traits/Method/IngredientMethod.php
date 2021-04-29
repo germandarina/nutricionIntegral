@@ -86,7 +86,7 @@ trait IngredientMethod
         $recipe->total_ac_grasos_poliinsaturados = 0;
         $recipe->total_fibra      = 0;
         $recipe->total_colesterol = 0;
-//        $recipe->save();
+        $recipe->save();
     }
     private static function updateRecipe(Recipe &$recipe,Ingredient &$ingredient,Food &$food){
 
@@ -134,6 +134,6 @@ trait IngredientMethod
 
         $recipe->total_colesterol += $food->colesterol >0 ? round((( $ingredient->quantity_grs *$food->colesterol)/100),3)  : 0;
 
-//        $recipe->save();
+        $recipe->save();
     }
 }
