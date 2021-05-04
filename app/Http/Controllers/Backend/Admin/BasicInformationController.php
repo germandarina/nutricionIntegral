@@ -96,6 +96,7 @@ class BasicInformationController extends Controller
                 $name_without_space = str_replace(' ','',$request['company_name']);
                 $formato            = explode('/',$image->getClientMimeType());
                 $full_name_file     = "pdf_client_{$name_without_space}.{$formato[1]}";
+                $full_name_file     = BasicInformation::_sanear_string($full_name_file);
 
                 request()->file('image')->storeAs('',$full_name_file,'client');
 
@@ -154,6 +155,7 @@ class BasicInformationController extends Controller
                 $name_without_space = str_replace(' ','',$request['company_name']);
                 $formato            = explode('/',$image->getClientMimeType());
                 $full_name_file     = "pdf_client_{$name_without_space}.{$formato[1]}";
+                $full_name_file     = BasicInformation::_sanear_string($full_name_file);
 
                 request()->file('image')->storeAs('',$full_name_file,'client');
 
