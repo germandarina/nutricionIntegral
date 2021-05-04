@@ -31,9 +31,9 @@ class BasicInformationRepository extends BaseRepository
      */
     public function create(array $data) : BasicInformation
     {
-        return DB::transaction(function () use ($data) {
-
-            $data = parent::_sanear_string($data['path_image']);
+        $data['path_image'] = $this->model->_sanear_string($data['path_image']);
+        return DB::transaction(function () use ($data)
+        {
             $basic_information = parent::create($data);
 
             if ($basic_information) {
@@ -56,9 +56,9 @@ class BasicInformationRepository extends BaseRepository
         if (!auth()->user()->isAdmin()) {
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
-
+        $data['path_image'] = $this->model->_sanear_string($data['path_image']);
         return DB::transaction(function () use ($basic_information, $data) {
-            $data = parent::_sanear_string($data['path_image']);
+
             if ($basic_information->update($data)) {
                 return $basic_information;
             }

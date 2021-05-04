@@ -25,14 +25,14 @@ class BasicInformationController extends Controller
     /**
      * @var BasicInformationRepository
      */
-    protected $basicInformation;
+    protected $basicInformationRepository;
 
     /**
-     * @param BasicInformationRepository       $basicInformation
+     * @param BasicInformationRepository       $basicInformationRepository
      */
-    public function __construct(BasicInformationRepository $basicInformation)
+    public function __construct(BasicInformationRepository $basicInformationRepository)
     {
-        $this->basicInformation = $basicInformation;
+        $this->basicInformationRepository = $basicInformationRepository;
     }
 
     /**
@@ -45,7 +45,7 @@ class BasicInformationController extends Controller
         $basic_information =  BasicInformation::first();
 
         if ($request->ajax()) {
-            $data = $this->basicInformation->with('phones')->orderBy('id')->get();
+            $data = $this->basicInformationRepository->with('phones')->orderBy('id')->get();
             return Datatables::of($data)
                 ->addColumn('phones',function ($row){
                     return $row->phones_front;
@@ -102,7 +102,7 @@ class BasicInformationController extends Controller
                 $request['path_image'] = $full_name_file;
             }
 
-            $basic_information = $this->basicInformation->create($request->all());
+            $basic_information = $this->basicInformationRepository->create($request->all());
 
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
@@ -160,7 +160,7 @@ class BasicInformationController extends Controller
                 $request['path_image'] = $full_name_file;
             }
 
-            $this->basicInformation->update($request->all(), $basic_information);
+            $this->basicInformationRepository->update($request->all(), $basic_information);
         }catch (\Exception $exception){
             Session::flash('error',$exception->getMessage());
             return redirect()->route('config.basic-information.edit',compact('basic_information'))->withInput($request->all());
@@ -187,7 +187,7 @@ class BasicInformationController extends Controller
         if(request('phone') && request('code_area'))
         {
             try{
-                $this->basicInformation->storePhone(request()->all(), $basic_information);
+                $this->basicInformationRepository->storePhone(request()->all(), $basic_information);
                 return response()->json(['mensaje' => "Teléfono Agregado"], 200);
             }catch (\Exception $exception){
                 return response()->json(['error' => $exception->getMessage()], 422);
@@ -250,7 +250,7 @@ class BasicInformationController extends Controller
         }
 
         try{
-            $this->basicInformation->storeRecommendation($request, $basic_information);
+            $this->basicInformationRepository->storeRecommendation($request, $basic_information);
             return response()->json(['mensaje' => "Recomendación Agregada"], 200);
         }catch (\Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 422);
@@ -279,7 +279,7 @@ class BasicInformationController extends Controller
     public function storeColors(BasicInformation $basic_information)
     {
         try{
-            $this->basicInformation->storeColors(request()->all(), $basic_information);
+            $this->basicInformationRepository->storeColors(request()->all(), $basic_information);
             return response()->json(['mensaje' => "Colores Guardados"], 200);
         }catch (\Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 422);
