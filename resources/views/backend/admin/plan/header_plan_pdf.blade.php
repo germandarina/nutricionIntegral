@@ -19,7 +19,7 @@
             <td style="text-align: right !important;"><a href="mailto:{{ $basic_information->email }}">{{ $basic_information->email }}</a></td>
         </tr>
     </table>
-    <div style="border: 2px solid {!! $basic_information->color_days !!} ;">
+    <div style="border: 2px dashed {!! $basic_information->color_days !!} ;">
         <table>
             <tr>
                 <td colspan="2" style="text-align: center">
@@ -33,7 +33,7 @@
             </tr>
         </table>
     </div>
-    <hr>
+    <br>
     <div id="logo_grande">
         @if(!is_null($basic_information->path_image))
             <img src="{{ public_path("img/backend/client/{$basic_information->path_image}") }}" >

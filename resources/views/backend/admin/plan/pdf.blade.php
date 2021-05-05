@@ -5,7 +5,11 @@
 
     <title>{{ strtoupper($plan->name)}} - {{ strtoupper($patient->full_name) }}</title>
     <style>
-
+        @media print {
+            .element-that-contains-table {
+                overflow: visible !important;
+            }
+        }
         .page {
             overflow: hidden;
             page-break-after: always;
@@ -28,7 +32,7 @@
 
         body {
             position: relative;
-            width: 21cm;
+            width: 23cm;
             height: 29.7cm;
             margin: 0 auto;
             color: #001028;
