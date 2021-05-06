@@ -67,8 +67,8 @@
         }
 
         h1 {
-            border-top: 1px solid  #5D6975;
-            border-bottom: 1px solid  #5D6975;
+            /*border-top: 1px solid  #5D6975;*/
+            /*border-bottom: 1px solid  #5D6975;*/
             color: #5D6975;
             font-size: 2.4em;
             line-height: 1.4em;
@@ -77,6 +77,14 @@
             margin: 0 0 20px 0;
         }
 
+        h3.patient{
+            color: #5D6975;
+            font-size: 2.4em;
+            line-height: 1.4em;
+            font-weight: normal;
+            text-align: center !important;
+            margin: 0 0 20px 0;
+        }
 
         #owner span {
             color: #5D6975;

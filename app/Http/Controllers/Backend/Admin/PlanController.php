@@ -12,6 +12,7 @@ use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\UpdatePlanRequest;
+use Carbon\Carbon;
 use JsValidator;
 use PDF;
 use Session;
@@ -568,40 +569,21 @@ class PlanController extends Controller
         $nombre_patient    = str_replace(',','_',$patient->full_name);
         $nombre_archivo    = snake_case("{$nombre_plan}_{$nombre_patient}");
 
-//        if(request('word'))
-//        {
-//            $headers = [
-//                "Content-type"=>"text/html",
-//                "Content-Disposition"=>"attachment;Filename={$nombre_archivo}.docx"
-//            ];
-//
-//            $header     = view('backend.admin.plan.header_plan_word',compact('plan', 'patient',
-//                                                                            'basic_information','color_headers'));
-//            $final_data = view('backend.admin.plan.final_data_plan_word',compact('basic_information','color_days'));
-//
-//            $content = (string) view('backend.admin.plan.word',compact('plan','patient','view_by_day',
-//                                                                    'header','final_data','basic_information'));
-//
-//            return \Response::make($content,200, $headers);
-//        }
-//        else
-//        {
-            $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
-            $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
+
+        $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
+        $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
 
 
-            $tex_footer = "$basic_information->company_name - $basic_information->phones_front - $basic_information->email ";
+        $text_footer = "$basic_information->company_name - Tel: $basic_information->phones_front - E-mail: $basic_information->email";
 
-            $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
-                'header','final_data','basic_information','color_headers'))
-                ->setOption('margin-top', 5)
-                ->setOption('footer-font-size',8)
-                ->setOption('footer-spacing',2)
-                ->setOption('footer-center',$tex_footer);
+        $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
+            'header','final_data','basic_information','color_headers'))
+            ->setOption('footer-font-size',10)
+            ->setOption('header-font-size',10)
+            ->setOption('footer-spacing',0)
+            ->setOption('footer-center',$text_footer);
 
-            return $pdf->download("{$nombre_archivo}.pdf");
-//        }
-
+        return $pdf->download("{$nombre_archivo}.pdf");
     }
 
     public function storeOrderPlanDetailDay()
