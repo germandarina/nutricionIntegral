@@ -57,6 +57,7 @@
             ->required()
             ->attribute('min',0)
             ->attribute('max',24)
+            ->attributes(['onblur'=>'calculateAverageAndTotal(event)'])
             ->autofocus() }}
     </div><!--col-->
 </div>
@@ -97,3 +98,5 @@
             ->autofocus() }}
     </div><!--col-->
 </div>
+
+<input type="hidden" name="spending_plan_id" id="spending_plan_id">

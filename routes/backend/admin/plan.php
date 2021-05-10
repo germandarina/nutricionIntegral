@@ -20,6 +20,7 @@ Route::post('plan/update-recipe-name',[PlanController::class,'updateRecipeName']
 Route::post('plan/calculate-energy-spending',[PlanController::class,'calculateEnergySpending'])->name('plan.calculateEnergySpending');
 
 Route::delete('delete-activity-fao',[PlanController::class,'deleteActivityFao'])->name('plan.deleteActivityFao');
+Route::get('get-activity-fao',[PlanController::class,'getActivityFao'])->name('plan.getActivityFao');
 
 Route::get('plan/modal-observations', [PlanController::class, 'modalObservations'])->name('plan.modalObservations');
 Route::post('plan/add-observation', [PlanController::class, 'addObservation'])->name('plan.addObservation');

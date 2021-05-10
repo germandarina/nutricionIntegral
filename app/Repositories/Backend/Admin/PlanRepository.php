@@ -198,21 +198,31 @@ class PlanRepository extends BaseRepository
         });
     }
 
-    public function addActivityFao(array $data, Plan $plan)
+    public function addOrEditActivityFao(array $data, Plan $plan)
     {
         if (!auth()->user()->isAdmin()) {
             throw new GeneralException('No tiene permiso para realizar esta acción');
         }
+
         $data['plan_id'] = $plan->id;
         return DB::transaction(function () use ($data,$plan)
         {
-            $spending_energy = PlanEnergySpending::create($data);
+            if(isset($data['id'])  && $data['id'])
+            {
+                $spending_energy = PlanEnergySpending::find($data['id']);
+                $spending_energy->fill($data);
+                if(!$spending_energy->update())
+                    throw new GeneralException('Error al agregar actividad. Intente nuevamente');
+            }
+            else
+            {
+                $spending_energy = PlanEnergySpending::create($data);
+            }
+
             if ($spending_energy)
             {
-//                if($spending_energy->activity != PlanEnergySpending::act_minima_manutencion)
-//                {
-//                    $spending_amm = PlanEnergySpending::where('plan_id',$plan->id)->where('activity',)
-//                }
+                if($spending_energy->activity != PlanEnergySpending::act_minima_manutencion)
+                    $this->updateAMMActivity($plan);
 
                 return $spending_energy;
             }
@@ -221,6 +231,42 @@ class PlanRepository extends BaseRepository
         });
     }
 
+    private function updateAMMActivity($plan)
+    {
+        $spending_amm = PlanEnergySpending::where('plan_id',$plan->id)
+            ->where('activity',PlanEnergySpending::act_minima_manutencion)
+            ->first();
+
+        if($spending_amm)
+        {
+            $amm_hours = $this->calculateAMMValues($plan);
+            $new_total = $amm_hours * $spending_amm->tmb * $spending_amm->activity;
+
+            $spending_amm->hours = $amm_hours;
+            $spending_amm->weekly_average_activity = $amm_hours;
+            $spending_amm->total = $new_total;
+            if(!$spending_amm->save())
+                return false;
+        }
+        return true;
+    }
+
+    public function deleteActivity(array $data)
+    {
+        $plan_spending  = PlanEnergySpending::find($data['id']);
+        $plan = Plan::find($plan_spending->plan_id);
+
+        return DB::transaction(function () use ($plan_spending,$plan)
+        {
+            if($plan_spending->forceDelete() && $this->updateAMMActivity($plan))
+                return;
+
+            throw new GeneralException('Error al eliminar actividad. Intente nuevamente');
+        });
+
+
+
+    }
     /**
      * @param Plan $plan
      *

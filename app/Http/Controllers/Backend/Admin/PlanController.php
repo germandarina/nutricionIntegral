@@ -729,13 +729,23 @@ class PlanController extends Controller
     {
         if(request('total')){
             try{
-                $this->planRepository->addActivityFao(request()->all(),$plan);
+                $this->planRepository->addorEditActivityFao(request()->all(),$plan);
                 $values = $this->planRepository->calculateTotalFao($plan);
 
                 return response()->json(['mensaje'=>'Actividad agregada','values'=>$values],200);
             }catch (\Exception $exception){
                 return response()->json(['error'=>$exception->getMessage()],422);
             }
+        }
+        return App::abort(402);
+    }
+
+    public function getActivityFao()
+    {
+        if(request('id'))
+        {
+            $activity_fao = PlanEnergySpending::find(request('id'));
+            return response()->json(['activity'=>$activity_fao],200);
         }
         return App::abort(402);
     }
@@ -760,9 +770,12 @@ class PlanController extends Controller
     {
         if(request('id'))
         {
-            $plan_spending = PlanEnergySpending::find(request('id'));
-            $plan_spending->forceDelete();
-            return response()->json(['mensaje'=>'Actividad Eliminada'],200);
+            try {
+                $this->planRepository->deleteActivity(request()->all());
+                return response()->json(['mensaje'=>'Actividad Eliminada'],200);
+            }catch (\Exception $exception){
+                return response()->json(['error'=>$exception->getMessage()],422);
+            }
         }
         return App::abort(402);
     }

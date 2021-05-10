@@ -61,7 +61,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-                    <button id="btnGuardar" class="btn btn-primary" type="button" onclick="addFaoActivity(event)">Agregar</button>
+                    <button id="btnGuardarFao" class="btn btn-primary" type="button" onclick="addFaoActivity(event)">Agregar</button>
                 </div>
             </div>
         </div>
@@ -280,50 +280,50 @@
         {
             event.preventDefault();
 
-            var method = $("#method").val();
-            var weight = $("#weight").val();
-            var height = $("#height").val();
-            var age    = $("#age").val();
-            var gender = $("#gender").val();
+            var method = $('#method').val();
+            var weight = $('#weight').val();
+            var height = $('#height').val();
+            var age    = $('#age').val();
+            var gender = $('#gender').val();
             var tmb_head    = null;
-            var result = $("#method_result").val();
+            var result = $('#method_result').val();
             var activity = null;
 
-            if(method === null || method === "")
+            if(method === null || method === '')
                 return Lobibox.notify('error',{msg: 'Seleccione el método'});
 
-            if(weight === null || weight === "")
+            if(weight === null || weight === '')
                 return Lobibox.notify('error',{msg: 'Ingrese el peso'});
 
-            if(age === null || age === "")
+            if(age === null || age === '')
                 return Lobibox.notify('error',{msg: 'Ingrese la edad'});
 
-            if(gender === null || gender === "")
+            if(gender === null || gender === '')
                 return Lobibox.notify('error',{msg: 'Seleccione el sexo / género'});
 
-            if(method !== "1")
+            if(method !== '1')
             {
-                activity = $("#activity").val();
+                activity = $('#activity').val();
 
-                if(activity === null || activity === "")
+                if(activity === null || activity === '')
                     return Lobibox.notify('error',{msg: 'Seleccione una actividad'});
 
-                tmb_head = $("#tmb_head").val();
+                tmb_head = $('#tmb_head').val();
 
-                if(tmb_head === null || tmb_head === "")
+                if(tmb_head === null || tmb_head === '')
                     return Lobibox.notify('error',{msg: 'Seleccione una actividad'});
 
-                if(height === null || height === "")
+                if(height === null || height === '')
                     return Lobibox.notify('error',{msg: 'Ingrese la altura'});
             }
 
-            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+            procesando = Lobibox.notify('warning',{msg:'Espere por favor...','position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
                 },
-                url:      "{{ route('admin.plan.storeEnergySpending',$plan->id) }}",
+                url:      '{{ route('admin.plan.storeEnergySpending',$plan->id) }}',
                 type:     'POST',
                 data: {
                     'method': method,
@@ -338,13 +338,13 @@
                 success: (function (data){
                     procesando.remove();
                     Lobibox.notify('success',{msg:data.mensaje});
-                    $("#is_stored").val(1);
+                    $('#is_stored').val(1);
                 }),
                 error: (function (jqXHR, exception) {
                     procesando.remove();
                     if (jqXHR.status === 422){
                         let mensaje = jqXHR.responseJSON.error
-                        Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                        Lobibox.notify('error',{msg: mensaje,'position': 'top right','title':'Error'});
                     }
                 })
             });
@@ -353,38 +353,38 @@
 
         function modalFao(event){
             event.preventDefault();
-            var result = $("#method_result").val();
-            var is_stored = parseInt($("#is_stored").val());
+            var result = $('#method_result').val();
+            var is_stored = parseInt($('#is_stored').val());
 
-            if(result === null || result === "" || result === 0)
+            if(result === null || result === '' || result === 0)
                 return Lobibox.notify('error',{msg:'Antes de agregar una actividad, realice el calculo de MB'});
 
-            if(is_stored === null || is_stored === "" || is_stored === 0)
+            if(is_stored === null || is_stored === '' || is_stored === 0)
                 return Lobibox.notify('error',{msg:'Antes de agregar una actividad, guarde el calculo de MB'});
 
             result  = result.replace('.','');
             result  = result.replace(',','.');
             let tmb = result / 24;
-            $("#tmb").val(tmb);
+            $('#tmb').val(tmb);
 
             limpiarModalFao();
 
-            $("#modalFao").modal('show');
+            $('#modalFao').modal('show');
         }
 
         function setActivityValue(event)
         {
             event.preventDefault();
-            var activity = $("#activity_fao").val();
-            $("#factor_activity").val(activity);
+            var activity = $('#activity_fao').val();
+            $('#factor_activity').val(activity);
 
             if(activity === "1.40")
             {
-                $("#days_activity").val(7).attr('readonly','readonly');
-                $("#tmb").attr('readonly','readonly');
-                $("#factor_activity").attr('readonly','readonly');
-                $("#weekly_average_activity").attr('readonly','readonly');
-                $("#hours").attr('readonly','readonly');
+                $('#days_activity').val(7).attr('readonly','readonly');
+                $('#tmb').attr('readonly','readonly');
+                $('#factor_activity').attr('readonly','readonly');
+                $('#weekly_average_activity').attr('readonly','readonly');
+                $('#hours').attr('readonly','readonly');
 
                 procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
@@ -414,9 +414,9 @@
             }
             else
             {
-                $("#days_activity").val(0).removeAttr('readonly');
-                $("#factor_activity").removeAttr('readonly');
-                $("#hours").val(0).removeAttr('readonly');
+                $('#days_activity').val(0).removeAttr('readonly');
+                $('#factor_activity').removeAttr('readonly');
+                $('#hours').val(0).removeAttr('readonly');
                 calculateAverageAndTotal(event);
 
             }
@@ -425,27 +425,30 @@
         function calculateAverageAndTotal(event)
         {
             event.preventDefault();
-            var hour = $("#hours").val();
+            var hour = $('#hours').val();
             hour     = hour.replace('.','');
             hour     = hour.replace(',','.');
 
-            var days            = $("#days_activity").val();
-            var total_by_day    = hour * days;
-            var weekly_average  = total_by_day / 7;
+            var days            = $('#days_activity').val();
+            if(days !== 0)
+            {
+                var total_by_day    = hour * days;
+                var weekly_average  = total_by_day / 7;
 
-            $("#weekly_average_activity").val(weekly_average);
+                $('#weekly_average_activity').val(weekly_average);
 
-            var tmb = $("#tmb").val();
-            tmb     = tmb.replace('.','');
-            tmb     = tmb.replace(',','.');
+                var tmb = $('#tmb').val();
+                tmb     = tmb.replace('.','');
+                tmb     = tmb.replace(',','.');
 
-            var factor_activity = $("#factor_activity").val();
-            factor_activity     = factor_activity.replace('.','');
-            factor_activity     = factor_activity.replace(',','.');
+                var factor_activity = $('#factor_activity').val();
+                factor_activity     = factor_activity.replace('.','');
+                factor_activity     = factor_activity.replace(',','.');
 
-            var total = weekly_average * tmb * factor_activity;
+                var total = weekly_average * tmb * factor_activity;
 
-            $("#total").val(total);
+                $('#total').val(total);
+            }
         }
 
         function addFaoActivity(event)
@@ -505,6 +508,8 @@
             if(total === "" || total === null || total === 0 || total < 0 || isNaN(total))
                 return Lobibox.notify('error',{msg:'Ingrese un valor correcto para el total'});
 
+            var id = $('#spending_plan_id').val();
+
             procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
 
             $.ajax({
@@ -521,15 +526,19 @@
                     'hours': hours,
                     'days' : days_activity,
                     'weekly_average_activity': weekly_average_activity,
-                    'total': total
+                    'total': total,
+                    'id':id
                 },
                 success: (function (data){
                     procesando.remove();
                     Lobibox.notify('success',{msg:data.mensaje});
                     limpiarModalFao();
-                    $("#table-activities-fao").DataTable().ajax.reload();
-                    $(".th-total-hours").empty().html(data.values.total_hours);
-                    $(".th-total-energy").empty().html(data.values.total_energy);
+                    $('#table-activities-fao').DataTable().ajax.reload();
+                    $('.th-total-hours').empty().html(data.values.total_hours);
+                    $('.th-total-energy').empty().html(data.values.total_energy);
+
+                    if(id)
+                        $('#modalFao').modal('hide');
 
                 }),
                 error: (function (jqXHR, exception) {
@@ -544,14 +553,17 @@
 
         function limpiarModalFao()
         {
-            $("#description").val("");
-            $("#activity_fao").select2("val",0);
-            $("#activity_fao").val(0).trigger('change');
-            $("#factor_activity").val(0);
-            $("#hours").val(0);
-            $("#days_activity").val(0);
-            $("#weekly_average_activity").val(0);
-            $("#total").val(0);
+            $('#description').val('');
+            $('#activity_fao').select2('val',0);
+            $('#activity_fao').val(0).trigger('change');
+            $('#factor_activity').val(0);
+            $('#hours').val(0);
+            $('#days_activity').val(0);
+            $('#weekly_average_activity').val(0);
+            $('#total').val(0);
+            $('#spending_plan_id').val(null);
+            $('#modalFao .modal-title').empty().html('Agregar Actividad');
+            $('#btnGuardarFao').empty().html('Agregar');
         }
 
         function deleteEnergySpending(event,id)
@@ -581,7 +593,7 @@
                         success: (function (data){
                             procesando.remove();
                             Lobibox.notify('success',{msg:data.mensaje});
-                            $("#table-activities-fao").DataTable().ajax.reload();
+                            $('#table-activities-fao').DataTable().ajax.reload();
                             getTotalActivitiesFao();
                         }),
                         error: (function (jqXHR, exception) {
@@ -593,6 +605,46 @@
                         })
                     });
                 }
+            });
+        }
+
+        function modalEditFao(event,id){
+            event.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      "{{ route('admin.plan.getActivityFao') }}",
+                type:     'GET',
+                data: {
+                    'id':id
+                },
+                success: (function (data){
+                    var activity = data.activity;
+
+                    $('#description').val(activity.description);
+                    $('#activity_fao').val(activity.activity).trigger('change',function (event){
+                        event.stopPropagation();
+                    });
+                    // $('#activity_fao').select2('val',activity.activity);
+                    $('#factor_activity').val(activity.factor_activity);
+                    $('#tmb').val(activity.tmb);
+                    $('#hours').val(activity.hours);
+                    $('#days_activity').val(activity.days);
+                    $('#weekly_average_activity').val(activity.weekly_average_activity);
+                    $('#total').val(activity.total);
+                    $('#spending_plan_id').val(activity.id);
+
+                    $('#modalFao .modal-title').empty().html('Editar Actividad');
+                    $('#btnGuardarFao').empty().html('Actualizar');
+                    $('#modalFao').modal('show');
+                }),
+                error: (function (jqXHR, exception) {
+                    if (jqXHR.status === 422){
+                        let mensaje = jqXHR.responseJSON.error
+                        Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
+                    }
+                })
             });
         }
 

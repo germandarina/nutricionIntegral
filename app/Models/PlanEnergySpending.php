@@ -17,6 +17,7 @@ class PlanEnergySpending extends BaseModel
         'description',
         'tmb',
         'hours',
+        'new_hors',
         'days',
         'weekly_average_activity',
         'activity',
