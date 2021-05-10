@@ -31,6 +31,7 @@ class Patient extends BaseModel
         'motive',
         'number_of_children',
         'gender',
+        'frequency_days',
         'created_at',
         'updated_at',
         'deleted_at',

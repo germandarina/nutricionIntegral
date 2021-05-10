@@ -5,7 +5,7 @@
         <table>
             <tr>
                 <td colspan="2" style="text-align: center">
-                    <strong>FECHA ESTIMADA DEL PRÓXIMO CONTROL: {{ \Carbon\Carbon::now()->addDays($basic_information->frequency_days)->format('d/m/Y') }}</strong>
+                    <strong>FECHA ESTIMADA DEL PRÓXIMO CONTROL: {{ $next_date }}</strong>
                 </td>
             </tr>
             <tr>

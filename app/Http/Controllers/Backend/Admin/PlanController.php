@@ -45,8 +45,14 @@ class PlanController extends Controller
      */
     public function index(ManagePlanRequest $request)
     {
-        if ($request->ajax()) {
+        if ($request->ajax())
+        {
+            $open       = (boolean) request('open');
+            $duplicate  = (boolean) request('duplicate');
+
             $data = $this->planRepository->with('patient')
+                         ->where('open',$open)
+                         ->where('duplicate',$duplicate)
                          ->orderBy('id','desc')
                          ->get();
 
@@ -519,10 +525,6 @@ class PlanController extends Controller
         if(!$basic_information)
             return redirect()->route('admin.plan.index')->with(['error'=>'Configure su información personal para descargar el plan']);
 
-        $color_days         = $basic_information->color_days ? $basic_information->color_days : 'lightgrey';
-        $color_headers      = $basic_information->color_headers ? $basic_information->color_headers : 'lightgrey';
-        $color_observations = $basic_information->color_observations ? $basic_information->color_observations : 'lightgrey';
-
         $details_without_order = $plan->details()->where(function ($query_where){
                                         $query_where->whereNull('order')
                                                 ->orWhereNull('order_type');
@@ -534,6 +536,12 @@ class PlanController extends Controller
         $plan->load('patient');
 
         $patient = $plan->patient;
+
+        $color_days         = $basic_information->color_days ? $basic_information->color_days : 'lightgrey';
+        $color_headers      = $basic_information->color_headers ? $basic_information->color_headers : 'lightgrey';
+        $color_observations = $basic_information->color_observations ? $basic_information->color_observations : 'lightgrey';
+        $frequency_days     = $patient->frequency_days ? $patient->frequency_days : $basic_information->frequency_days;
+
         $details = PlanDetail::with(['recipe.ingredients.food','observations'])
                                     ->where('plan_id',$plan->id)
                                     ->orderBy('day','asc')
@@ -543,7 +551,7 @@ class PlanController extends Controller
         if(request('macros'))
             $macros = true;
 
-        $view_by_day = "";
+        $view_by_day = '';
 
         for ($day=1;$day<=$plan->days;$day++)
         {
@@ -558,20 +566,20 @@ class PlanController extends Controller
                                                         return  $detail->day_description != null;
                                                     })->first();
 
-            $description_day        = $detail_for_description ? "Día {$day} - {$detail_for_description->day_description}" : "Día {$day}";
+            $description_day = $detail_for_description ? "Día {$day} - {$detail_for_description->day_description}" : "Día {$day}";
 
             $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('description_day',
                                                                     'details_by_day','macros','color_days',
                                                                             'color_observations','color_headers'));
         }
 
-        $nombre_plan       = str_replace(',','_',strtolower(trim($plan->name))) ;
-        $nombre_patient    = str_replace(',','_',$patient->full_name);
-        $nombre_archivo    = snake_case("{$nombre_plan}_{$nombre_patient}");
+        $nombre_plan    = str_replace(',','_',strtolower(trim($plan->name))) ;
+        $nombre_patient = str_replace(',','_',$patient->full_name);
+        $nombre_archivo = snake_case("{$nombre_plan}_{$nombre_patient}");
+        $next_date      = Carbon::now()->addDays($frequency_days)->format('d/m/Y');
 
-
-        $header            = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information'));
-        $final_data        = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
+        $header     = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information','next_date'));
+        $final_data = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
 
 
         $text_footer = "$basic_information->company_name - Tel: $basic_information->phones_front - E-mail: $basic_information->email";

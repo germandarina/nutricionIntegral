@@ -18,6 +18,8 @@
         </div><!--row-->
 
         <div class="row mt-4">
+            <input type="hidden" id="open" value="1">
+            <input type="hidden" id="duplicate" value="0">
             <div class="col">
                 <div class="table-responsive">
                     <table class="table data-table font-xs">
@@ -25,16 +27,20 @@
                         <tr>
                             <th style="border-top: none; background: black;">
                                 <div class="col-lg-12 col-xs-12">
-                                    <span style="color:#60bd75;"><i class="fas fa-lock" style="color:#60bd75;"></i> <strong>Planes Cerrados</strong></span>
-
+                                    <a href="#" onclick="filterClose(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#60bd75;"><i class="fas fa-lock" style="color:#60bd75;"></i> <strong>Cerrados</strong></span></a>
                                 </div>
                             </th>
                             <th style="border-top: none; background: black;">
-                                <div class="col-lg-12 col-xs-12">
-                                    <span style="color:#fdde08;"><i class="fas fa-unlock-alt" style="color:#fdde08;"></i> <strong>Planes Duplicados Abiertos</strong></span>
+                                <div class="row">
+                                    <div class="col-lg-6 col-xs-6">
+                                        <a href="#" onclick="filterOpen(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#FFFFFF;"><i class="fas fa-unlock-alt" style="color:#FFFFFF;"></i> <strong>Abiertos</strong></span></a>
+                                    </div>
+                                    <div class="col-lg-6 col-xs-6">
+                                        <a href="#" onclick="filterDuplicate(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#fdde08;"><i class="fas fa-unlock-alt" style="color:#fdde08;"></i> <strong>Duplicados Abiertos</strong></span></a>
+                                    </div>
                                 </div>
                             </th>
-                            <th colspan="4" style="text-align: center;background: black; color: white; border-top: none;">Necesidades Diarias</th>
+                            <th colspan="4" style="text-align: center;background: black; color: white; border-top: none; border-left: 2px white solid;">Necesidades Diarias</th>
                         </tr>
                         <tr>
                             <th>Paciente</th>
@@ -66,8 +72,10 @@
 @push('after-scripts')
     @include('datatables.includes')
     <script>
+        var datatable = $('.data-table');
+
         $(function () {
-            $('.data-table').DataTable({
+            datatable.DataTable({
                 "processing": true,
                 "serverSide": true,
                 "draw": true,
@@ -82,11 +90,16 @@
                         $(row).addClass('planning-duplicate-open');
                     }
                 },
-                ajax: "{{ route('admin.plan.index') }}",
+                ajax:{
+                    url: "{{ route('admin.plan.index') }}",
+                    data: function (d) {
+                        d.open = $('#open').val();
+                        d.duplicate = $('#duplicate').val();
+                    }
+                },
                 columns: [
                     {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
-                    // {data: 'status', name: 'status'},
                     {data: 'energia_kcal_por_dia', name: 'energia_kcal_por_dia'},
                     {data: 'proteina_por_dia', name: 'proteina_por_dia'},
                     {data: 'carbohidratos_por_dia', name: 'carbohidratos_por_dia'},
@@ -134,6 +147,30 @@
                     });
                 }
             });
+        }
+
+        function filterClose(e)
+        {
+            e.preventDefault();
+            $('#open').val(0);
+            $('#duplicate').val(0);
+            datatable.DataTable().ajax.reload();
+        }
+
+        function filterOpen(e)
+        {
+            e.preventDefault();
+            $('#open').val(1);
+            $('#duplicate').val(0);
+            datatable.DataTable().ajax.reload();
+        }
+
+        function filterDuplicate(e)
+        {
+            e.preventDefault();
+            $('#open').val(1);
+            $('#duplicate').val(1);
+            datatable.DataTable().ajax.reload();
         }
     </script>
 @endpush

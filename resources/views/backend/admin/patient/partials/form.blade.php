@@ -1,5 +1,5 @@
 
-<div class="row mt-4">
+<div class="row mt-2">
     <div class="col">
         <div class="form-group row">
             {{ html()->label('Nombre y Apellido')
@@ -29,7 +29,7 @@
         </div><!--form-group-->
     </div>
 </div>
-<div class="row mt-4">
+<div class="row mt-2">
     <div class="col">
         <div class="form-group row">
             {{ html()->label('Fecha de Nacimiento')
@@ -80,11 +80,6 @@
         </div><!--form-group-->
     </div><!--col-->
     <div class="col">
-
-    </div>
-</div><!--row-->
-<div class="row mt-4">
-    <div class="col">
         <div class="form-group row">
             {{ html()->label('Direccion')
                 ->class('col-md-2 form-control-label')
@@ -98,6 +93,8 @@
             </div><!--col-->
         </div><!--form-group-->
     </div>
+</div><!--row-->
+<div class="row mt-2">
     <div class="col">
         <div class="form-group row">
             {{ html()->label('Telefono')
@@ -113,8 +110,6 @@
             </div><!--col-->
         </div><!--form-group-->
     </div>
-</div>
-<div class="row mt-4">
     <div class="col">
         <div class="form-group row">
             {{ html()->label('Email')
@@ -130,6 +125,8 @@
             </div><!--col-->
         </div><!--form-group-->
     </div>
+</div>
+<div class="row mt-2">
     <div class="col">
         <div class="form-group row">
             {{ html()->label('Cant. de Hijos')
@@ -145,9 +142,25 @@
             </div><!--col-->
         </div><!--form-group-->
     </div>
+    <div class="col">
+        <div class="form-group row">
+            {{ html()->label('Días Estimados de la Próxima Consulta del Paciente')
+                ->class('col-md-2 form-control-label')
+                ->for('frequency_days') }}
+
+            <div class="col-md-10">
+                {{ html()->input('number','frequency_days',isset($patient) ? $patient->frequency_days : 0)
+                    ->class('form-control')
+                    ->placeholder('Días Estimados de la Próxima Consulta del Paciente')
+                    ->attribute('min', 1)
+                    ->attribute('max',100)
+                    ->autofocus() }}
+            </div><!--col-->
+        </div><!--form-group-->
+    </div>
 </div>
 
-<div class="row mt-4">
+<div class="row mt-2">
     <div class="col">
         <div class="form-group row">
         {{ html()->label('Motivo')
