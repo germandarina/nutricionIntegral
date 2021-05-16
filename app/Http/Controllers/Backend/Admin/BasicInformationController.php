@@ -290,7 +290,26 @@ class BasicInformationController extends Controller
 
     public function downloadPlanExample(BasicInformation $basic_information)
     {
-        $pdf = PDF::loadView('backend.config.basic-information.pdf_example',compact('basic_information'));
+        if($basic_information->template == BasicInformation::template_minimalism)
+        {
+            $pdf = PDF::loadView('backend.config.basic-information.pdf_example_minimalism',compact('basic_information'));
+        }
+        else
+        {
+            $pdf = PDF::loadView('backend.config.basic-information.pdf_example',compact('basic_information'));
+        }
+
         return $pdf->download("plan_ejemplo.pdf");
+    }
+
+    public function updateTemplate(BasicInformation $basic_information)
+    {
+        if(request('template'))
+        {
+            $basic_information->template = request('template');
+            $basic_information->save();
+            return response()->json(['mensaje' => "Template Actualizado"], 200);
+        }
+        return response()->json(['error' => 'Datos Incorrectos'], 422);
     }
 }

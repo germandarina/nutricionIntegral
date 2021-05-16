@@ -181,7 +181,7 @@
 
     <div class="page">
         <h3 style="text-align: center; background-color: {!! $basic_information->color_days !!} ; padding: 3px; font-size: 30px !important;">DÍA {{ 1 }}</h3>
-            <h3>DESAYUNO - OMELET DE JAMÓN Y QUESO</h3>
+        <h3>DESAYUNO - OMELET DE JAMÓN Y QUESO</h3>
             <div>
                 <table>
                     <thead>
@@ -248,7 +248,7 @@
 
 
     @if($basic_information->textRecommendations->isNotEmpty() || $basic_information->imageRecommendations->isNotEmpty())
-        <div >
+        <div>
             <h3 style="text-align: center; background-color: {!!  $basic_information->color_days !!}; padding: 3px; font-size: 30px !important;">RECOMENDACIONES</h3>
 
             @if($basic_information->textRecommendations->isNotEmpty())

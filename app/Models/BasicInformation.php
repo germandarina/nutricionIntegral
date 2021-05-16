@@ -28,10 +28,14 @@ class BasicInformation extends BaseModel
         'color_days',
         'color_headers',
         'color_observations',
+        'show_frequency_days',
         'frequency_days',
+        'template',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
+    const template_minimalism = 1;
+    const template_full_data  = 2;
 }

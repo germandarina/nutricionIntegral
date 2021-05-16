@@ -24,4 +24,5 @@ Route::group(['prefix' => 'basic-information/{basic_information}'], function ()
     Route::post('store-colors', [BasicInformationController::class, 'storeColors'])->name('basic-information.storeColors');
     Route::get('download-plan-example', [BasicInformationController::class, 'downloadPlanExample'])->name('basic-information.downloadPlanExample');
 
+    Route::patch('update-template', [BasicInformationController::class, 'updateTemplate'])->name('basic-information.updateTemplate');
 });

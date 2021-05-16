@@ -541,6 +541,7 @@ class PlanController extends Controller
         $color_headers      = $basic_information->color_headers ? $basic_information->color_headers : 'lightgrey';
         $color_observations = $basic_information->color_observations ? $basic_information->color_observations : 'lightgrey';
         $frequency_days     = $patient->frequency_days ? $patient->frequency_days : $basic_information->frequency_days;
+        $template           = $basic_information->template;
 
         $details = PlanDetail::with(['recipe.ingredients.food','observations'])
                                     ->where('plan_id',$plan->id)
@@ -568,9 +569,19 @@ class PlanController extends Controller
 
             $description_day = $detail_for_description ? "Día {$day} - {$detail_for_description->day_description}" : "Día {$day}";
 
-            $view_by_day .= view('backend.admin.plan.table_by_day_with_order',compact('description_day',
-                                                                    'details_by_day','macros','color_days',
-                                                                            'color_observations','color_headers'));
+            if($template == BasicInformation::template_minimalism)
+            {
+                $view_by_day .= view('backend.admin.plan.recipes_day_minimalism',compact('description_day',
+                    'details_by_day','macros','color_days',
+                    'color_observations','color_headers'));
+            }
+            else
+            {
+                $view_by_day .= view('backend.admin.plan.recipes_day',compact('description_day',
+                    'details_by_day','macros','color_days',
+                    'color_observations','color_headers'));
+            }
+
         }
 
         $nombre_plan    = str_replace(',','_',strtolower(trim($plan->name))) ;
@@ -578,18 +589,25 @@ class PlanController extends Controller
         $nombre_archivo = snake_case("{$nombre_plan}_{$nombre_patient}");
         $next_date      = Carbon::now()->addDays($frequency_days)->format('d/m/Y');
 
-        $header     = view('backend.admin.plan.header_plan_pdf',compact('plan','patient','basic_information','next_date'));
-        $final_data = view('backend.admin.plan.final_data_plan_pdf',compact('basic_information','color_days'));
-
+        if($template == BasicInformation::template_minimalism)
+        {
+            $header     = view('backend.admin.plan.header_pdf_minimalism',compact('plan','patient','basic_information','next_date'));
+            $final_data = view('backend.admin.plan.recommendations_pdf_minimalism',compact('basic_information','color_days'));
+        }
+        else
+        {
+            $header     = view('backend.admin.plan.header_pdf',compact('plan','patient','basic_information','next_date'));
+            $final_data = view('backend.admin.plan.recommendations_pdf',compact('basic_information','color_days'));
+        }
 
         $text_footer = "$basic_information->company_name - Tel: $basic_information->phones_front - E-mail: $basic_information->email";
 
         $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
-            'header','final_data','basic_information','color_headers'))
-            ->setOption('footer-font-size',10)
-            ->setOption('header-font-size',10)
-            ->setOption('footer-spacing',0)
-            ->setOption('footer-center',$text_footer);
+                                                            'header','final_data','basic_information','color_headers'))
+                    ->setOption('footer-font-size',10)
+                    ->setOption('header-font-size',10)
+                    ->setOption('footer-spacing',0)
+                    ->setOption('footer-center',$text_footer);
 
         return $pdf->download("{$nombre_archivo}.pdf");
     }

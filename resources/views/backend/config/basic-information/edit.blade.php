@@ -100,7 +100,61 @@
             });
 
             showRecommendationByType();
+
+            var template = '{{ $basic_information->template }}';
+            if(template === '1')
+            {
+                $('#inline-minimalism').prop('checked',true);
+            }
+            else
+            {
+                $('#inline-full-data').prop('checked',true);
+            }
+
+            $(":radio").on('click',function ()
+            {
+               updateTemplate($(this));
+            });
         });
+
+        function updateTemplate(radioButton)
+        {
+            var template;
+            if(radioButton.attr('value') === 'full-data')
+            {
+                template = 2;
+            }
+            else
+            {
+                template = 1;
+            }
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+            $(":radio").attr('disabled',true);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:      '{{ route('config.basic-information.updateTemplate',$basic_information->id) }}',
+                data:    {
+                    'template': template,
+                },
+                type:     'PATCH',
+                success: function(data) {
+                    var datos = data;
+                    procesando.remove();
+                    Lobibox.notify('success',{ msg: datos.mensaje });
+                    $(":radio").attr('disabled',false);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
+                }
+            });
+        }
 
         function storePhone(event)
         {
@@ -363,8 +417,5 @@
                 }
             });
         }
-
-
-
     </script>
 @endpush
