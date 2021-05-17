@@ -50,10 +50,13 @@ class PlanController extends Controller
             $open       = (boolean) request('open');
             $duplicate  = (boolean) request('duplicate');
 
-            $data = $this->planRepository->with('patient')
-                         ->where('open',$open)
-                         ->where('duplicate',$duplicate)
-                         ->orderBy('id','desc')
+            $query = $this->planRepository->with('patient')
+                         ->where('open',$open);
+
+            if($duplicate)
+                $query->where('duplicate',$duplicate);
+
+            $data = $query->orderBy('id','desc')
                          ->get();
 
             return Datatables::of($data)
