@@ -6,11 +6,11 @@
             <td style="text-align: right !important;">{{ $basic_information->full_name }} - {{ $basic_information->m_professional }}</td>
         </tr>
         <tr>
-            <td style="text-align: left;"><span>EDAD: </span> 30</td>
+            <td style="text-align: left;"><span>EDAD: </span> {{ $patient->birthdate->age }}</td>
             <td style="text-align: right !important;">{{ $basic_information->address }}</td>
         </tr>
         <tr>
-            <td style="text-align: left;"><span>DIRECCIÓN: </span>  Calle sin nombre 123 </td>
+            <td style="text-align: left;"><span>DIRECCIÓN: </span>  {{ $basic_information->address }} </td>
             <td style="text-align: right !important;">{{ $basic_information->phones_front }}</td>
         </tr>
         <tr>
