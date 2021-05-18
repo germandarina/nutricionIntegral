@@ -370,7 +370,7 @@ class PlanController extends Controller
 
         $data =  PlanDetail::where('plan_id',$plan->id)
                             ->where('day',$day)
-                            ->with(['recipe.observations','observations'])
+                            ->with(['recipe','observations'])
                             ->orderBy('order')
                             ->get();
 
@@ -382,17 +382,18 @@ class PlanController extends Controller
                 return view('backend.admin.plan.includes.datatable-plan-detail-by-day-buttons',compact('row','day'));
             })
             ->editColumn('portions',function ($row){
-                return "<strong>$row->portions</strong>
-                        <a class='btn btn-sm btn-outline-primary' href='#' onclick='modalPortion(event,$row->id)'>
-                        <i class='fas fa-edit'></i>
-                        </a>";
+
+                if($row->open)
+                {
+                    return "<strong>$row->portions</strong>
+                            <a class='btn btn-sm btn-outline-primary' href='#' onclick='modalPortion(event,$row->id)'>
+                            <i class='fas fa-edit'></i>
+                            </a>";
+                }
+                return "<strong>$row->portions</strong>";
             })
             ->addColumn('recipe_name',function ($row){
-                if($row->observations->isNotEmpty())
-                    $observations = implode('. ', $row->observations->pluck('name')->toArray());
-                else
-                    $observations = implode('. ', $row->recipe->observations->pluck('name')->toArray());
-
+                $observations = implode('. ', $row->observations->pluck('name')->toArray());
                 return "<span style='width: 100% !important; display: block; height: 22px !important;' rel='tooltip' title='{$observations}'>{$row->recipe->name}</span>";
             })
             ->addColumn('energy', function($row) use ($day){

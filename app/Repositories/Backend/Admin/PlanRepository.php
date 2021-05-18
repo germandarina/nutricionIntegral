@@ -130,7 +130,7 @@ class PlanRepository extends BaseRepository
 
         $observations = $recipe->observations;
 
-        return DB::transaction(function () use ($datos,$observations) {
+        return DB::transaction(function () use ($datos,&$observations) {
 
             foreach ($datos['days'] as $day)
             {
@@ -151,7 +151,8 @@ class PlanRepository extends BaseRepository
                     if(!$plan_detail->save())
                         throw new GeneralException('Error al agregar receta por dia. Intente nuevamente',422);
 
-                    $plan_detail->observations()->attach($observations);
+                    if($observations)
+                        $plan_detail->observations()->attach($observations);
                 }
             }
         });
@@ -242,9 +243,9 @@ class PlanRepository extends BaseRepository
             $amm_hours = $this->calculateAMMValues($plan);
             $new_total = $amm_hours * $spending_amm->tmb * $spending_amm->activity;
 
-            $spending_amm->hours = $amm_hours;
-            $spending_amm->weekly_average_activity = $amm_hours;
-            $spending_amm->total = $new_total;
+            $spending_amm->hours                    = $amm_hours;
+            $spending_amm->weekly_average_activity  = $amm_hours;
+            $spending_amm->total                    = $new_total;
             if(!$spending_amm->save())
                 return false;
         }
@@ -328,12 +329,12 @@ class PlanRepository extends BaseRepository
         if (!auth()->user()->isAdmin())
             throw new GeneralException('No tiene permiso para realizar esta acción');
 
-        $datos            = $plan->toArray();
-        $datos['id']      = null;
-        $datos['open']    = true;
+        $datos                   = $plan->toArray();
+        $datos['id']             = null;
+        $datos['open']           = true;
         $datos['origin_plan_id'] = $plan->id;
-        $datos['name']          = "Duplicado de: {$plan->name}";
-        $datos['duplicate']     = true;
+        $datos['name']           = "Duplicado de: {$plan->name}";
+        $datos['duplicate']      = true;
 
         $plan->load('details','energySpendings');
 
@@ -347,8 +348,8 @@ class PlanRepository extends BaseRepository
                 {
                     $new_spending = new PlanEnergySpending();
                     $new_spending->fill($energy->toArray());
-                    $new_spending->id = null;
-                    $new_spending->plan_id = $new_plan->id;
+                    $new_spending->id       = null;
+                    $new_spending->plan_id  = $new_plan->id;
                     $new_spending->save();
                 }
 
@@ -356,8 +357,8 @@ class PlanRepository extends BaseRepository
                 {
                     $new_detail = new PlanDetail();
                     $new_detail->fill($detail->toArray());
-                    $new_detail->id = null;
-                    $new_detail->plan_id = $new_plan->id;
+                    $new_detail->id         = null;
+                    $new_detail->plan_id    = $new_plan->id;
                     $new_detail->save();
                 }
 
