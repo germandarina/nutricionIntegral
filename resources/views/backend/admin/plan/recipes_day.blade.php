@@ -1,5 +1,5 @@
 <div class="page">
-    <h3 style="text-align: center; background-color: {!! $color_days !!} ; padding: 3px; font-size: 30px !important;">DÍA {{ 1 }}</h3>
+    <h3 style="text-align: center; background-color: {!! $color_days !!} ; padding: 3px; font-size: 30px !important;">{{$description_day}}</h3>
     <br>
     @foreach($details_by_day as $j => $detail)
         <div>

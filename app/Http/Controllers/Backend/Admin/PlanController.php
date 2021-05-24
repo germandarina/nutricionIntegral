@@ -609,7 +609,6 @@ class PlanController extends Controller
         $pdf = PDF::loadView('backend.admin.plan.pdf',compact('plan','patient','view_by_day',
                                                             'header','final_data','basic_information','color_headers'))
                     ->setOption('footer-font-size',10)
-                    ->setOption('header-font-size',10)
                     ->setOption('footer-spacing',0)
                     ->setOption('footer-center',$text_footer);
 
