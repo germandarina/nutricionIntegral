@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\ClientScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\BaseModel withoutTrashed()
  * @mixin \Eloquent
  */
+
+
 class BaseModel extends Model
 {
     use SoftDeletes;
@@ -33,6 +36,9 @@ class BaseModel extends Model
     {
         parent::boot();
 
+        static::getTable();
+
+        static::addGlobalScope(new ClientScope());
         // create a event to happen on deleting
         static::deleting(function ($table) {
             if (auth()->user()) {
