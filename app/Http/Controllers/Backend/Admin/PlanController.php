@@ -60,6 +60,9 @@ class PlanController extends Controller
                          ->get();
 
             return Datatables::of($data)
+                ->editColumn('created_at',function ($row){
+                    return $row->created_at->format('d/m/Y');
+                })
                 ->editColumn('status',function ($row){
                     return $row->status;
                 })

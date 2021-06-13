@@ -24,25 +24,26 @@
                 <div class="table-responsive">
                     <table class="table data-table font-xs">
                         <thead>
-                        <tr>
-                            <th style="border-top: none; background: black;">
-                                <div class="col-lg-12 col-xs-12">
-                                    <a href="#" onclick="filterClose(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#60bd75;"><i class="fas fa-lock" style="color:#60bd75;"></i> <strong>Cerrados</strong></span></a>
-                                </div>
-                            </th>
-                            <th style="border-top: none; background: black;">
-                                <div class="row">
-                                    <div class="col-lg-6 col-xs-6">
+                            <tr>
+                                <th style="border-top: none; background: black;">
+                                    <div class="col-lg-12 col-xs-12">
+                                        <a href="#" onclick="filterClose(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#60bd75;"><i class="fas fa-lock" style="color:#60bd75;"></i> <strong>Cerrados</strong></span></a>
+                                    </div>
+                                </th>
+                                <th style="border-top: none; background: black;">
+                                    <div class="col-lg-12 col-xs-12">
                                         <a href="#" onclick="filterOpen(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#FFFFFF;"><i class="fas fa-unlock-alt" style="color:#FFFFFF;"></i> <strong>Abiertos</strong></span></a>
                                     </div>
-                                    <div class="col-lg-6 col-xs-6">
+                                </th>
+                                <th style="border-top: none; background: black;">
+                                    <div class="col-lg-12 col-xs-12">
                                         <a href="#" onclick="filterDuplicate(event)" class="btn btn-sm btn-square btn-dark btn-block"><span style="color:#fdde08;"><i class="fas fa-unlock-alt" style="color:#fdde08;"></i> <strong>Duplicados Abiertos</strong></span></a>
                                     </div>
-                                </div>
-                            </th>
-                            <th colspan="4" style="text-align: center;background: black; color: white; border-top: none; border-left: 2px white solid;">Necesidades Diarias</th>
-                        </tr>
+                                </th>
+                                <th colspan="4" style="text-align: center;background: black; color: white; border-top: none; border-left: 2px white solid;">Necesidades Diarias</th>
+                            </tr>
                         <tr>
+                            <th>Fecha</th>
                             <th>Paciente</th>
                             <th>Plan</th>
                             <th>Energia (kcal)</th>
@@ -98,6 +99,7 @@
                     }
                 },
                 columns: [
+                    {data: 'created_at', name: 'created_at'},
                     {data: 'patient.full_name', name: 'patient.full_name'},
                     {data: 'name', name: 'name'},
                     {data: 'energia_kcal_por_dia', name: 'energia_kcal_por_dia'},
