@@ -34,6 +34,13 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{active_class(Active::checkUriPattern('admin/equivalence'))}}" href="{{ route('admin.equivalence.index') }}">
+                                Equivalencias
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item nav-dropdown {{active_class(Active::checkUriPattern('config/*'), 'open') }}">
                     <a class="nav-link nav-dropdown-toggle {{active_class(Active::checkUriPattern('config/*')) }}" href="#">

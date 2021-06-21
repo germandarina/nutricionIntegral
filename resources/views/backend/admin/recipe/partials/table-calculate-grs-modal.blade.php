@@ -3,7 +3,7 @@
         <table class="table table-responsive-sm table-sm font-xs">
             <thead class="bg-success">
                 <tr>
-                    <th colspan="5" style="text-align: center;">Valores por cantidad gramos ingresados</th>
+                    <th colspan="5" style="text-align: center;">Valores por cantidad de gramos ingresados</th>
                 </tr>
                 <tr>
                     <th style="text-align: center;" >Energia (kcal)</th>
