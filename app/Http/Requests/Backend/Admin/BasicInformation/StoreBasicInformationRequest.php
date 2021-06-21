@@ -34,8 +34,9 @@ class StoreBasicInformationRequest extends FormRequest
             'address'           => ['required'],
             'image'             => ['image','mimes:jpeg,jpg,png'],
 //            'm_professional'    => ['string'],
-            'company_name'      => ['required'],
-            'frequency_days'    => ['required','integer']
+            'company_name'          => ['required'],
+            'frequency_days'        => ['integer',],
+            'show_frequency_days'   => ['required']
         ];
     }
 
@@ -47,11 +48,10 @@ class StoreBasicInformationRequest extends FormRequest
             'address.required'      => "La dirección es obligatoria.",
           //  'image.required'  => "La imagen es obligatoria.",
             'image.mimes'     => "El formato de la imagen debe ser: jpeg,jpg o png.",
-//            'm_professional.required' => "La matricula profesional es obligatoria.",
             'company_name.required'   => "El nombre de la empresa es obligatorio.",
-            'frequency_days.required' => 'La cantidad de días para el próximo turno es obligatorio',
-            'frequency_days.integer'  => 'La cantidad de días para el próximo turno debe ser un numero'
-
+//            'frequency_days.required' => 'La cantidad de días para el próximo turno es obligatorio',
+            'frequency_days.integer'  => 'La cantidad de días para el próximo turno debe ser un numero',
+            'show_frequency_days.required' => 'El campo mostrar días de frecuencia es obligatorio',
         ];
     }
 

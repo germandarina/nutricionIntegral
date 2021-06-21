@@ -89,7 +89,6 @@ class BasicInformationController extends Controller
 
             $request['path_image'] = null;
 
-
             if ($request->hasFile('image'))
             {
                 $image              = request()->file('image');

@@ -28,4 +28,18 @@
 @endsection
 @push('after-scripts')
     {!! $validator !!}
+    <script>
+        function showFrequencyDays()
+        {
+            var show = parseInt($("#show_frequency_days").val());
+            if(show === 1)
+            {
+                $("#div_frenquency_days").show();
+            }
+            else
+            {
+                $("#div_frenquency_days").hide();
+            }
+        }
+    </script>
 @endpush

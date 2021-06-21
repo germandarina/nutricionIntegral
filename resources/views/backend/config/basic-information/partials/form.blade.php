@@ -86,6 +86,23 @@
 <div class="row mt-4">
     <div class="col">
         <div class="form-group row">
+            {{ html()->label('Mostrar Día Próxima Consulta')
+                ->class('col-md-2 form-control-label')
+                ->for('frequency_days') }}
+
+            <div class="col-md-6">
+                {{ html()->select('show_frequency_days',\App\Models\BasicInformation::$show_frequency,isset($basic_information) ? $basic_information->show_frequency_days : 1)
+                    ->class('form-control')
+                    ->attributes(['onchange'=>'showFrequencyDays()'])
+                    ->required()
+                     }}
+            </div><!--col-->
+        </div><!--form-group-->
+    </div>
+</div>
+<div class="row mt-4" id="div_frenquency_days">
+    <div class="col">
+        <div class="form-group row">
             {{ html()->label('Días Estimados de la Próxima Consulta del Paciente')
                 ->class('col-md-2 form-control-label')
                 ->for('frequency_days') }}
@@ -94,7 +111,7 @@
                 {{ html()->input('number','frequency_days',isset($basic_information) ? $basic_information->frequency_days : 30)
                     ->class('form-control')
                     ->placeholder('Días Estimados de la Próxima Consulta del Paciente')
-                    ->attribute('max', 30)
+                    ->attribute('max', 60)
                     ->attribute('min',1)
                     ->required()
                     ->autofocus()

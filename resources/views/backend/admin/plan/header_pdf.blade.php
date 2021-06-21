@@ -18,20 +18,22 @@
             <td style="text-align: right !important;"><a href="mailto:{{ $basic_information->email }}">{{ $basic_information->email }}</a></td>
         </tr>
     </table>
-    <div style="border: 2px dashed {!! $basic_information->color_days !!} ; padding: 10px;">
-        <table>
-            <tr>
-                <td colspan="2" style="text-align: center">
-                    <strong>FECHA ESTIMADA DEL PRÓXIMO CONTROL: {{ $next_date }}</strong>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: center">
-                    <strong>Recuerde solicitar el turno con anticipación.</strong>
-                </td>
-            </tr>
-        </table>
-    </div>
+    @if ($basic_information->show_frequency_days)
+        <div style="border: 2px dashed {!! $basic_information->color_days !!} ; padding: 10px;">
+            <table>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <strong>FECHA ESTIMADA DEL PRÓXIMO CONTROL: {{ $next_date }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <strong>Recuerde solicitar el turno con anticipación.</strong>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    @endif
     <hr>
     <div id="logo_grande">
         @if(!is_null($basic_information->path_image))

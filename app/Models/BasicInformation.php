@@ -38,4 +38,12 @@ class BasicInformation extends BaseModel
 
     const template_minimalism = 1;
     const template_full_data  = 2;
+
+    const show_frequency_days = 1;
+    const dont_show_frequency_days = 0;
+
+    public static $show_frequency = [
+        self::show_frequency_days => 'Si',
+        self::dont_show_frequency_days => 'No'
+    ];
 }
