@@ -94,6 +94,11 @@ class BasicInformationRepository extends BaseRepository
             if(!$recommendation->save()){
                 throw new GeneralException('Error al guardar recomendación. Intente nuevamente');
             }
+
+            if($data['patients']) {
+                $patients_ids = explode(',',$data['patients']);
+                $recommendation->patients()->attach($patients_ids);
+            }
         });
     }
 

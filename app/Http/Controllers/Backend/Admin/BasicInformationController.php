@@ -212,6 +212,9 @@ class BasicInformationController extends Controller
         $basic_information->load('recommendations');
         $data = $basic_information->recommendations;
         return Datatables::of($data)
+            ->editColumn('origin',function ($row){
+                return Recommendation::$origins[$row->origin];
+            })
             ->editColumn('type',function ($row){
                 return Recommendation::$types[$row->type];
             })
@@ -220,6 +223,9 @@ class BasicInformationController extends Controller
                     return view('backend.config.basic-information.includes.show-recommendation-img',compact('row'));
                 }
                 return $row->recommendation;
+            })
+            ->addColumn('patients',function ($row){
+                return $row->origin == Recommendation::origin_general ? '-' : $row->patients_front;
             })
             ->addColumn('actions', function($row){
                 return view('backend.config.basic-information.includes.datatable-buttons-recommendations',compact('row'));
@@ -250,6 +256,9 @@ class BasicInformationController extends Controller
            $request['type']           = Recommendation::type_text;
         }
 
+        $request['origin']   = (int) request('origin');
+        $request['patients'] = request()->has('patients') ? request('patients') : null;
+
         try{
             $this->basicInformationRepository->storeRecommendation($request, $basic_information);
             return response()->json(['mensaje' => "Recomendación Agregada"], 200);
@@ -264,6 +273,9 @@ class BasicInformationController extends Controller
             $recommendation = Recommendation::find($id);
             if($recommendation->type == Recommendation::type_img)
                 unlink(public_path("img/backend/client/{$recommendation->recommendation}"));
+
+            if($recommendation->origin == Recommendation::origin_patient)
+                $recommendation->patients()->detach();
 
             $recommendation->forceDelete();
             return response()->json(['mensaje' => "Recomendación Eliminada"], 200);

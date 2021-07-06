@@ -8,6 +8,7 @@ use App\Models\Classification;
 use App\Models\Food;
 use App\Models\FoodGroup;
 use App\Models\Plan;
+use App\Models\Recommendation;
 
 /**
  * Class PatientRelationship.
@@ -31,5 +32,11 @@ trait PatientRelationship
     public function classifications()
     {
         return $this->belongsToMany(Classification::class,'classification_patient','patient_id');
+    }
+
+    public function recommendations()
+    {
+        return $this->belongsToMany(Recommendation::class,'basic_information_recommendation_patient','patient_id')
+                        ->orderBy('origin','asc');
     }
 }

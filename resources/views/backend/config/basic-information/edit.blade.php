@@ -89,9 +89,11 @@
                 dom: '',
                 ajax: "{{ route('config.basic-information.getRecommendations',$basic_information->id) }}",
                 columns: [
-                    {data: 'type', name: 'type',width:'30%'},
-                    {data: 'recommendation', name: 'recommendation',width:'30%'},
-                    {data: 'actions', name: 'actions'},
+                    {data: 'origin', name: 'origin',width:'15%'},
+                    {data: 'type', name: 'type',width:'10%'},
+                    {data: 'recommendation', name: 'recommendation',width:'40%'},
+                    {data: 'patients', name: 'patients',width:'30%'},
+                    {data: 'actions', name: 'actions',width:'5%'},
                 ]
             });
 
@@ -116,6 +118,39 @@
             {
                updateTemplate($(this));
             });
+
+            $('#patient_id').select2({
+                placeholder: "Buscar paciente...",
+                minimumInputLength: 2,
+                language: {
+                    noResults: function () {
+                        return "No hay resultados";
+                    },
+                    searching: function () {
+                        return "Buscando...";
+                    },
+                    inputTooShort: function(a){
+                        return"Por favor ingrese "+(a.minimum-a.input.length)+" o más caracteres"
+                    }
+                },
+                ajax: {
+                    url: "{{ route('admin.patient.searchPatients') }}",
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            q: $.trim(params.term),
+                            // food_group_id: $("#food_group_id").val(),
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+            controlOrigin();
         });
 
         function showFrequencyDays()
@@ -234,6 +269,20 @@
             }
         }
 
+        function controlOrigin()
+        {
+            var origin = $("#origin").val();
+            if(origin === '0')
+            {
+                $("#div_patient_recommendation").hide();
+            }
+            else
+            {
+                $("span.select2.select2-container.select2-container--default").css("width","100%");
+                $("#div_patient_recommendation").show();
+            }
+        }
+
         function controlImage(event)
         {
             event.preventDefault();
@@ -246,57 +295,40 @@
                 $('#recommendation_img').val("");
                 return Lobibox.notify('error',{msg: 'Debe seleccionar una imagen jpeg, jpg o png'})
             }
-
-
         }
 
         function storeRecommendation(event)
         {
             event.preventDefault();
-            var type = $("#type").val();
+            var type    = parseInt($("#type").val());
+            var origin  = parseInt($('#origin').val());
+            var patient_id = null;
+            var formData   = new FormData();
 
-            if(type === '0')
+            if (origin === 1)
+            {
+                patient_id = $('#patient_id').val();
+                if(patient_id.length === 0 || patient_id === '' || patient_id === 0 || patient_id === undefined)
+                    return Lobibox.notify("error",{msg:'Seleccione un paciente'});
+
+                let implode_patients = patient_id.join();
+                formData.append('patients',implode_patients);
+            }
+
+            formData.append('origin',origin);
+
+            if(type === 0)
             {
                 var recommendation = $("#recommendation_text").val();
 
                 if(recommendation.trim() === '')
-                {
                     return Lobibox.notify("error",{msg:"Ingrese la recomendación"});
-                }
 
-                procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: "{{ route('config.basic-information.storeRecommendation',$basic_information->id) }}",
-                    type: 'POST',
-                    data: {
-                        recommendation:recommendation
-                    },
-                    success: function(data) {
-                        var datos = data;
-                        procesando.remove();
-                        Lobibox.notify('success',{ msg: datos.mensaje });
-                        $("#recommendation_text").val("");
-                        $('#recommendation-datatable').DataTable().ajax.reload();
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        procesando.remove();
-                        if(xhr.status === 422){
-                            Lobibox.notify('error',{msg: xhr.responseJSON.error});
-                        }else{
-                            Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
-                        }
-                    }
-                });
+                formData.append('recommendation',recommendation);
             }
             else
             {
-                var fd    = new FormData();
-                var files = $('#recommendation_img')[0].files;
-
+                var files      = $('#recommendation_img')[0].files;
                 var name_file  = $('#recommendation_img')[0].files[0].name;
                 var split_name = name_file.split('.');
                 var extension  = split_name[split_name.length-1];
@@ -307,40 +339,39 @@
                     return Lobibox.notify('error',{msg: 'Debe seleccionar una imagen jpeg, jpg o png'})
                 }
 
-                if(files.length > 0 ){
-                    procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
-
-                    fd.append('recommendation_img',files[0]);
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: "{{ route('config.basic-information.storeRecommendation',$basic_information->id) }}",
-                        type: 'post',
-                        data: fd,
-                        contentType: false,
-                        processData: false,
-                        success: function(data) {
-                            var datos = data;
-                            Lobibox.notify('success',{ msg: datos.mensaje });
-                            $("#recommendation_img").val("");
-                            $('#recommendation-datatable').DataTable().ajax.reload();
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            procesando.remove();
-                            if(xhr.status === 422){
-                                Lobibox.notify('error',{msg: xhr.responseJSON.error});
-                            }else{
-                                Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
-                            }
-                        }
-                    });
-                }
-                else
-                {
+                if(files.length === 0 )
                     return Lobibox.notify('error',{msg:'Cargue una imagen'});
-                }
+
+                formData.append('recommendation_img',files[0]);
             }
+
+            procesando = Lobibox.notify("warning",{msg:"Espere por favor...",'position': 'top right','title':'Procesando', 'sound': false, 'icon': false, 'iconSource': false,'size': 'mini', 'iconClass': false});
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('config.basic-information.storeRecommendation',$basic_information->id) }}",
+                type: 'post',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    var datos = data;
+                    Lobibox.notify('success',{ msg: datos.mensaje });
+                    $("#recommendation_img").val("");
+                    $("#recommendation_text").val("");
+                    $('#recommendation-datatable').DataTable().ajax.reload();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    procesando.remove();
+                    if(xhr.status === 422){
+                        Lobibox.notify('error',{msg: xhr.responseJSON.error});
+                    }else{
+                        Lobibox.notify('error',{msg: "Se produjo un error. Intentelo nuevamente"});
+                    }
+                }
+            });
         }
 
         // COLOR DAY

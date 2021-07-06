@@ -8,6 +8,7 @@ use App\Models\BasicInformation;
 use App\Models\Observation;
 use App\Models\PlanDetail;
 use App\Models\PlanEnergySpending;
+use App\Models\Recommendation;
 use App\Repositories\Backend\Admin\PlanRepository;
 use App\Http\Requests\Backend\Admin\Plan\StorePlanRequest;
 use App\Http\Requests\Backend\Admin\Plan\ManagePlanRequest;
@@ -527,7 +528,15 @@ class PlanController extends Controller
         if($plan->open)
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe cerrar el plan para descargarlo']);
 
-        $basic_information = BasicInformation::with(['imageRecommendations','textRecommendations'])->first();
+        $basic_information = BasicInformation::with(['generalRecommendations'])->first();
+
+        $bi_recommendations_text = $basic_information->generalRecommendations->filter(function ($reco){
+                        return $reco->type == Recommendation::type_text;
+        });
+
+        $bi_recommendations_img = $basic_information->generalRecommendations->filter(function ($reco){
+            return $reco->type == Recommendation::type_img;
+        });
 
         if(!$basic_information)
             return redirect()->route('admin.plan.index')->with(['error'=>'Configure su información personal para descargar el plan']);
@@ -540,9 +549,18 @@ class PlanController extends Controller
         if($details_without_order)
             return redirect()->route('admin.plan.index')->with(['error'=>'Debe ordenar el plan para descargarlo']);
 
-        $plan->load('patient');
+        $plan->load('patient.recommendations');
 
         $patient = $plan->patient;
+
+        $patient_recommendations_text = $patient->recommendations->filter(function ($reco){
+            return $reco->type == Recommendation::type_text;
+        });
+
+        $patient_recommendations_img = $patient->recommendations->filter(function ($reco){
+            return $reco->type == Recommendation::type_img;
+        });
+
 
         $color_days         = $basic_information->color_days ? $basic_information->color_days : 'lightgrey';
         $color_headers      = $basic_information->color_headers ? $basic_information->color_headers : 'lightgrey';
@@ -591,20 +609,22 @@ class PlanController extends Controller
 
         }
 
-        $nombre_plan    = str_replace(',','_',strtolower(trim($plan->name))) ;
-        $nombre_patient = str_replace(',','_',$patient->full_name);
-        $nombre_archivo = snake_case("{$nombre_plan}_{$nombre_patient}");
+        $name_plan      = str_replace(',','_',strtolower(trim($plan->name))) ;
+        $name_patient   = str_replace(',','_',$patient->full_name);
+        $name_file      = snake_case("{$name_plan}_{$name_patient}");
         $next_date      = Carbon::now()->addDays($frequency_days)->format('d/m/Y');
 
         if($template == BasicInformation::template_minimalism)
         {
             $header     = view('backend.admin.plan.header_pdf_minimalism',compact('plan','patient','basic_information','next_date'));
-            $final_data = view('backend.admin.plan.recommendations_pdf_minimalism',compact('basic_information','color_days'));
+            $final_data = view('backend.admin.plan.recommendations_pdf_minimalism',compact('bi_recommendations_img',
+                'bi_recommendations_text','color_days','patient_recommendations_text','patient_recommendations_img'));
         }
         else
         {
             $header     = view('backend.admin.plan.header_pdf',compact('plan','patient','basic_information','next_date'));
-            $final_data = view('backend.admin.plan.recommendations_pdf',compact('basic_information','color_days'));
+            $final_data = view('backend.admin.plan.recommendations_pdf',compact('bi_recommendations_img',
+                'bi_recommendations_text','color_days','patient_recommendations_text','patient_recommendations_img'));
         }
 
         $text_footer = "$basic_information->company_name - Tel: $basic_information->phones_front - E-mail: $basic_information->email";
@@ -615,7 +635,7 @@ class PlanController extends Controller
                     ->setOption('footer-spacing',0)
                     ->setOption('footer-center',$text_footer);
 
-        return $pdf->download("{$nombre_archivo}.pdf");
+        return $pdf->download("{$name_file}.pdf");
     }
 
     public function storeOrderPlanDetailDay()
