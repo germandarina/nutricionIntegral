@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
+use App\Charts\ControlChart;
 use App\Http\Controllers\Controller;
+use App\Models\PatientControl;
 use App\Repositories\Backend\Admin\PatientRepository;
 use App\Http\Requests\Backend\Admin\Patient\StorePatientRequest;
 use App\Http\Requests\Backend\Admin\Patient\ManagePatientRequest;
@@ -127,10 +129,6 @@ class PatientController extends Controller
      */
     public function destroy(ManagePatientRequest $request, Patient $patient)
     {
-        if (!auth()->user()->isAdmin()) {
-            return response()->json(['error'=>"No tiene permiso para eliminar"],422);
-        }
-
         $patient->load('plans');
         if($patient->plans->isNotEmpty()){
             return response()->json(['error'=>"El paciente ya posee planes asignados"],422);
@@ -191,4 +189,185 @@ class PatientController extends Controller
         }
     }
 
+    public function storeControl(ManagePatientRequest $request, Patient $patient)
+    {
+        try{
+            $this->patientRepository->storeControl($request->all(),$patient);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage()],422);
+        }
+        return response()->json(['mensaje'=>'Control Guardado'],200);
+    }
+
+    public function controls(ManagePatientRequest $request,Patient $patient)
+    {
+        $patient->load('controls');
+        $data    = $patient->controls->sortBy('period');
+
+        return Datatables::of($data)
+            ->editColumn('period',function ($row){
+                return $row->period->format('d/m/Y');
+            })
+            ->addColumn('actions', function($row){
+                return view('backend.admin.patient.includes.datatable-patient-controls-buttons',compact('row'));
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
+
+    public function destroyControl(ManagePatientRequest $request)
+    {
+        if(request('id'))
+        {
+            $control = PatientControl::find(request('id'));
+            $this->patientRepository->deleteControl($control);
+            return response()->json(['mensaje'=>"Control eliminado"],200);
+        }
+        return App::abort(402);
+    }
+
+    public function getControl(ManagePatientRequest $request)
+    {
+        if(request('id'))
+        {
+            $control = PatientControl::find(request('id'));
+            return response()->json(['control'=>$control,'period' => $control->period->format('m/Y'),],200);
+        }
+        return App::abort(402);
+    }
+
+    public function controlGraphics(ManagePatientRequest $request,Patient $patient)
+    {
+        $patient->load('controls');
+        $controls = $patient->controls->sortBy('period');
+
+        if($controls->isNotEmpty())
+        {
+            $graphic_data = $this->processControls($controls);
+            $graphics     = $this->createControlGraphic($graphic_data);
+
+            return view('backend.admin.patient.partials.control-graphics', compact('graphics'));
+        }
+
+        return '';
+    }
+
+    private function processControls($controls)
+    {
+        $graphic_data = [];
+        $colors_used  = [];
+        foreach ($controls as $i => $control)
+        {
+            $color = $control->random_color();
+
+            while (in_array($color,$colors_used))
+            {
+                $color = $control->random_color();
+            }
+
+            $colors_used[] = $color;
+
+            $graphic_data['labels'][]   = $control->period->format('d/m/Y');
+            $graphic_data['controls'][$i]['pesos'][]    = $control->weight;
+            $graphic_data['controls'][$i]['cintura'][]  = $control->waist;
+            $graphic_data['controls'][$i]['cadera'][]   = $control->hips;
+            $graphic_data['controls'][$i]['kg musculo'][] = $control->muscle_kg;
+            $graphic_data['controls'][$i]['kg grasa'][]   = $control->fat_kg;
+            $graphic_data['controls'][$i]['% musculo'][]  = $control->muscle_percent;
+            $graphic_data['controls'][$i]['% grasa'][]    = $control->fat_percent;
+            $graphic_data['controls'][$i]['colors']     = $color;
+        }
+
+        return $graphic_data;
+    }
+
+    private function createControlGraphic(&$graphic_data)
+    {
+        $chart_progress_weight = new ControlChart();
+        $chart_progress_weight->options(
+            [
+                'tooltip' => [
+                    'show' => true
+                ]
+            ]
+        );
+
+        $chart_progress_weight->labels($graphic_data['labels']);
+
+        foreach ($graphic_data['controls'] as $i => $data_control)
+        {
+
+            $chart_progress_weight->dataset('Peso', 'line', $data_control['pesos'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+
+            $chart_progress_weight->dataset('Cintura', 'line', $data_control['cintura'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+
+            $chart_progress_weight->dataset('Cadera', 'line', $data_control['cadera'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+
+            $chart_progress_weight->dataset('Kg Músculo', 'line', $data_control['kg musculo'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+
+            $chart_progress_weight->dataset('Kg Grasa', 'line', $data_control['kg grasa'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+
+            $chart_progress_weight->dataset('% Músculo', 'line', $data_control['% musculo'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+
+            $chart_progress_weight->dataset('% Grasa', 'line', $data_control['% grasa'])
+                ->options(
+                    [
+                        'borderColor'    => $data_control['colors'],
+                        'color'          => $data_control['colors'],
+                        'backgroundColor'=> $data_control['colors'],
+                        'fill'           => false,
+                    ]
+                );
+        }
+
+        return $chart_progress_weight;
+    }
 }

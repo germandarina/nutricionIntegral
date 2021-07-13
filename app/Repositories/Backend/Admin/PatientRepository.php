@@ -3,6 +3,7 @@
 namespace App\Repositories\Backend\Admin;
 
 use App\Models\Patient;
+use App\Models\PatientControl;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
@@ -55,9 +56,9 @@ class PatientRepository extends BaseRepository
      */
     public function update(array $data, Patient $patient)
     {
-        if (!auth()->user()->isAdmin()) {
-            throw new GeneralException('No tiene permiso para realizar esta acción');
-        }
+//        if (!auth()->user()->isAdmin()) {
+//            throw new GeneralException('No tiene permiso para realizar esta acción');
+//        }
 
         // If the name is changing make sure it doesn't already exist
 //        if ($patient->document !== strtolower($data['document'])) {
@@ -135,5 +136,42 @@ class PatientRepository extends BaseRepository
             return $patient;
         }
         throw new GeneralException('Error al restaurar paciente. Intente nuevamente');
+    }
+
+    public function storeControl(array $data, Patient $patient)
+    {
+        $data['period']     = Carbon::createFromFormat('m/Y',$data['period'])->format('Y-m-d');
+        $data['patient_id'] = $patient->id;
+        $data['id']         = (int) $data['id'];
+        $control            = false;
+
+        return DB::transaction(function () use ($data,$control) {
+            if($data['id'])
+            {
+                $control = PatientControl::find($data['id']);
+                $control->fill($data);
+                $control->update();
+            }
+            else
+            {
+                $control = PatientControl::create($data);
+            }
+
+            if ($control)
+                return $control;
+
+            throw new GeneralException('Error al crear paciente. Intente nuevamente');
+        });
+    }
+
+    public function deleteControl(PatientControl $control)
+    {
+        return DB::transaction(function () use ($control) {
+
+            if($control->forceDelete())
+                return;
+
+            throw new GeneralException('Error al crear paciente. Intente nuevamente');
+        });
     }
 }

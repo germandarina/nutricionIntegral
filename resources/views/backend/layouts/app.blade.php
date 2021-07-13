@@ -239,20 +239,20 @@
         //     'clearMaskOnLostFocus': false
         // };
 
-        // var percentOptions = {
-        //     'alias': 'numeric',
-        //     'groupSeparator': '.',
-        //     'radixPoint': ',',
-        //     'autoGroup': true,
-        //     'digits': 0,
-        //     'suffix': ' %',
-        //     'digitsOptional': false,
-        //     'prefix':'',
-        //     'placeholder': '0',
-        //     'removeMaskOnSubmit': true,
-        //     'unmaskAsNumber': true,
-        //     'clearMaskOnLostFocus': false
-        // };
+        var percentOptions = {
+            'alias': 'numeric',
+            'groupSeparator': '.',
+            'radixPoint': ',',
+            'autoGroup': true,
+            'digits': 2,
+            'suffix': ' %',
+            'digitsOptional': false,
+            'prefix':'',
+            'placeholder': '0',
+            'removeMaskOnSubmit': true,
+            'unmaskAsNumber': true,
+            'clearMaskOnLostFocus': false
+        };
 
         // var percentDecimalOptions = {
         //     'alias': 'numeric',
@@ -273,6 +273,7 @@
         //$('.numericInteger').inputmask(currencyInteger);
         $('.numeric3Digits').inputmask(currency3DecimalOptions);
         $('.numericDigits').inputmask(currencyOptions);
+        $('.percentDigits').inputmask(percentOptions);
 
         //$(".cuit").inputmask("99-99999999-9");
         //$('.percentOptions').inputmask(percentOptions);
@@ -288,6 +289,8 @@
         }
     </style>
     @stack('after-scripts')
+    @stack('graphic-scripts')
+
     {{ script('select2/select2.min.js')}}
     {{ script('vendor/jsvalidation/js/jsvalidation.js') }}
     {{ script('loading/loadingoverlay.min.js') }}

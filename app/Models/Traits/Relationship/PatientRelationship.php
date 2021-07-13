@@ -7,6 +7,7 @@ namespace App\Models\Traits\Relationship;
 use App\Models\Classification;
 use App\Models\Food;
 use App\Models\FoodGroup;
+use App\Models\PatientControl;
 use App\Models\Plan;
 use App\Models\Recommendation;
 
@@ -27,6 +28,10 @@ trait PatientRelationship
 
     public function plans(){
         return $this->hasMany(Plan::class,'patient_id');
+    }
+
+    public function controls(){
+        return $this->hasMany(PatientControl::class,'patient_id');
     }
 
     public function classifications()
