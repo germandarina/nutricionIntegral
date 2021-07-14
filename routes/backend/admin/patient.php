@@ -23,6 +23,6 @@ Route::group(['prefix' => 'patient/{patient}'], function () {
     ##  control
     Route::post('store-control', [PatientController::class, 'storeControl'])->name('patient.storeControl');
     Route::get('controls', [PatientController::class, 'controls'])->name('patient.controls');
-    Route::post('control-graphics', [PatientController::class, 'controlGraphics'])->name('patient.controlGraphics');
+    Route::get('control-graphics', [PatientController::class, 'controlGraphics'])->name('patient.controlGraphics');
 
 });

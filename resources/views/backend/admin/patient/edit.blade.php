@@ -80,7 +80,13 @@
     {!! $validator !!}
     @include('datatables.includes')
 
+    {{ script("chart/Chart.min.js") }}
+
+    {!! $chart->script() !!}
+
     <script>
+
+        var original_api_url = {{ $chart->id }}_api_url;
 
         $('#birthdate').datepicker({
             format: 'dd/mm/yyyy',
@@ -275,6 +281,7 @@
                     procesando.remove();
                     Lobibox.notify('success',{msg:datos.mensaje});
                     $('#table-controls').DataTable().ajax.reload();
+                    {{ $chart->id }}_refresh(original_api_url);
                     $('#modalControl').modal('hide');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -379,44 +386,9 @@
                         complete:(function (data) {
                             $('#confirm').modal('hide');
                             $('.data-table').DataTable().draw(false);
+                            {{ $chart->id }}_refresh(original_api_url);
                         })
                     });
-                }
-            });
-        }
-
-        function getControlGraphic()
-        {
-            $('#div_graphic').LoadingOverlay('show', {
-                background  : "rgba(165, 190, 100, 0.5)"
-            });
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url:  '{{ route('admin.patient.controlGraphics',$patient->id) }}',
-                type: 'POST',
-                data: {
-                },
-                success: function(data) {
-                    var datos = data;
-                    $('#div_graphic').empty().html(datos);
-                    $('#div_graphic').LoadingOverlay('hide', true);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    procesando.remove();
-                    if (jqXHR.status === 422){
-                        let mensaje = jqXHR.responseJSON.error
-                        Lobibox.notify("error",{msg: mensaje,'position': 'top right','title':'Error'});
-                    }
-                    else
-                    {
-                        Lobibox.notify('error',{msg: 'Error al intentar acceder a los datos'});
-                    }
-                },
-                complete: function (){
-                    $("#btnControl").attr('disabled',false);
                 }
             });
         }
@@ -441,9 +413,11 @@
                 "ordering": false,
                 ajax: {
                     url : "{{ route('admin.patient.controls',$patient->id) }}",
-                    {{--data: function ( d ) {--}}
-                    {{--    d.patient_id = "{{  }}";--}}
-                    {{--},--}}
+                },
+                fnInitComplete: function (oSettings, json) {
+                    setTimeout(function (){
+                        $('#{{ $chart->id }}').css("height", 400);
+                    },1000);
                 },
                 columns: [
                     {data: 'period', name: 'period'},
@@ -459,7 +433,6 @@
                 ]
             });
 
-            getControlGraphic();
         });
     </script>
 @endpush

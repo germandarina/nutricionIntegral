@@ -16,7 +16,5 @@
 
 
 @push('graphic-scripts')
-    {{ script("chart/Chart.min.js") }}
 
-    {!! $graphics->script() !!}
 @endpush

@@ -34,5 +34,5 @@
 </div>
 <hr>
 <div id="div_graphic">
-
+    {!! $chart->container() !!}
 </div>

@@ -91,17 +91,46 @@ class PatientController extends Controller
      */
     public function edit(ManagePatientRequest $request, Patient $patient)
     {
-        if (!auth()->user()->isAdmin()) {
-            Session::flash('error','No tiene permiso para editar');
-            return redirect()->route('admin.patient.index');
-        }
-        $validator = JsValidator::formRequest(UpdatePatientRequest::class);
-        $foods = $patient->foods->pluck('id');
-        $food_groups = $patient->foodGroups->pluck('id');
+//        if (!auth()->user()->isAdmin()) {
+//            Session::flash('error','No tiene permiso para editar');
+//            return redirect()->route('admin.patient.index');
+//        }
+        $validator       = JsValidator::formRequest(UpdatePatientRequest::class);
+        $foods           = $patient->foods->pluck('id');
+        $food_groups     = $patient->foodGroups->pluck('id');
         $classifications = $patient->classifications->pluck('id');
-        return view('backend.admin.patient.edit',compact('patient','validator','foods','food_groups','classifications'));
+        $chart           = $this->getGraphic($patient);
+        $url_api         = route('admin.patient.controlGraphics',$patient->id);
+
+        $chart->load($url_api);
+
+        return view('backend.admin.patient.edit',compact('patient','validator','foods','food_groups','classifications','chart'));
     }
 
+    private function getGraphic(&$patient)
+    {
+        $patient->load('controls');
+        $controls = $patient->controls->sortBy('period');
+
+        if($controls->isNotEmpty())
+        {
+            $graphic_data = $this->processControls($controls);
+            $graphics     = $this->createControlGraphic($graphic_data);
+
+            return $graphics;
+        }
+
+        $chart_progress_weight = new ControlChart();
+        $chart_progress_weight->options(
+            [
+                'tooltip' => [
+                    'show' => true
+                ]
+            ]
+        );
+
+        return $chart_progress_weight;
+    }
     /**
      * @param UpdatePatientRequest $request
      * @param Patient              $patient
@@ -238,44 +267,25 @@ class PatientController extends Controller
 
     public function controlGraphics(ManagePatientRequest $request,Patient $patient)
     {
-        $patient->load('controls');
-        $controls = $patient->controls->sortBy('period');
-
-        if($controls->isNotEmpty())
-        {
-            $graphic_data = $this->processControls($controls);
-            $graphics     = $this->createControlGraphic($graphic_data);
-
-            return view('backend.admin.patient.partials.control-graphics', compact('graphics'));
-        }
-
-        return '';
+        $chart = $this->getGraphic($patient);
+        return $chart->api();
     }
 
     private function processControls($controls)
     {
         $graphic_data = [];
-        $colors_used  = [];
-        foreach ($controls as $i => $control)
+        $graphic_data['colors'] = ['#FF5733','#5FA049','#3BB4B2','#AE55BE','#FF335E','#373727','#336EFF'];
+
+        foreach ($controls as $control)
         {
-            $color = $control->random_color();
-
-            while (in_array($color,$colors_used))
-            {
-                $color = $control->random_color();
-            }
-
-            $colors_used[] = $color;
-
-            $graphic_data['labels'][]   = $control->period->format('d/m/Y');
-            $graphic_data['controls'][$i]['pesos'][]    = $control->weight;
-            $graphic_data['controls'][$i]['cintura'][]  = $control->waist;
-            $graphic_data['controls'][$i]['cadera'][]   = $control->hips;
-            $graphic_data['controls'][$i]['kg musculo'][] = $control->muscle_kg;
-            $graphic_data['controls'][$i]['kg grasa'][]   = $control->fat_kg;
-            $graphic_data['controls'][$i]['% musculo'][]  = $control->muscle_percent;
-            $graphic_data['controls'][$i]['% grasa'][]    = $control->fat_percent;
-            $graphic_data['controls'][$i]['colors']     = $color;
+            $graphic_data['labels'][]   = $control->period->format('m/Y');
+            $graphic_data['controls']['pesos'][]    = $control->weight;
+            $graphic_data['controls']['cintura'][]  = $control->waist;
+            $graphic_data['controls']['cadera'][]   = $control->hips;
+            $graphic_data['controls']['kg musculo'][] = $control->muscle_kg;
+            $graphic_data['controls']['kg grasa'][]   = $control->fat_kg;
+            $graphic_data['controls']['% musculo'][]  = $control->muscle_percent;
+            $graphic_data['controls']['% grasa'][]    = $control->fat_percent;
         }
 
         return $graphic_data;
@@ -294,79 +304,76 @@ class PatientController extends Controller
 
         $chart_progress_weight->labels($graphic_data['labels']);
 
-        foreach ($graphic_data['controls'] as $i => $data_control)
-        {
+        $chart_progress_weight->dataset('Peso', 'line', $graphic_data['controls']['pesos'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][0],
+                    'color'          => $graphic_data['colors'][0],
+                    'backgroundColor'=> $graphic_data['colors'][0],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('Peso', 'line', $data_control['pesos'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
+        $chart_progress_weight->dataset('Cintura', 'line', $graphic_data['controls']['cintura'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][1],
+                    'color'          => $graphic_data['colors'][1],
+                    'backgroundColor'=> $graphic_data['colors'][1],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('Cintura', 'line', $data_control['cintura'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
+        $chart_progress_weight->dataset('Cadera', 'line', $graphic_data['controls']['cadera'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][2],
+                    'color'          => $graphic_data['colors'][2],
+                    'backgroundColor'=> $graphic_data['colors'][2],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('Cadera', 'line', $data_control['cadera'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
+        $chart_progress_weight->dataset('Kg Músculo', 'line', $graphic_data['controls']['kg musculo'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][3],
+                    'color'          => $graphic_data['colors'][3],
+                    'backgroundColor'=> $graphic_data['colors'][3],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('Kg Músculo', 'line', $data_control['kg musculo'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
+        $chart_progress_weight->dataset('Kg Grasa', 'line', $graphic_data['controls']['kg grasa'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][4],
+                    'color'          => $graphic_data['colors'][4],
+                    'backgroundColor'=> $graphic_data['colors'][4],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('Kg Grasa', 'line', $data_control['kg grasa'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
+        $chart_progress_weight->dataset('% Músculo', 'line', $graphic_data['controls']['% musculo'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][5],
+                    'color'          => $graphic_data['colors'][5],
+                    'backgroundColor'=> $graphic_data['colors'][5],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('% Músculo', 'line', $data_control['% musculo'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
+        $chart_progress_weight->dataset('% Grasa', 'line', $graphic_data['controls']['% grasa'])
+            ->options(
+                [
+                    'borderColor'    => $graphic_data['colors'][6],
+                    'color'          => $graphic_data['colors'][6],
+                    'backgroundColor'=> $graphic_data['colors'][6],
+                    'fill'           => false,
+                ]
+            );
 
-            $chart_progress_weight->dataset('% Grasa', 'line', $data_control['% grasa'])
-                ->options(
-                    [
-                        'borderColor'    => $data_control['colors'],
-                        'color'          => $data_control['colors'],
-                        'backgroundColor'=> $data_control['colors'],
-                        'fill'           => false,
-                    ]
-                );
-        }
 
         return $chart_progress_weight;
     }
