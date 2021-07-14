@@ -10,7 +10,7 @@
             <td style="text-align: right !important;">{{ $basic_information->address }}</td>
         </tr>
         <tr>
-            <td style="text-align: left;"><span>DIRECCIÓN: </span>  {{ $basic_information->address }} </td>
+            <td style="text-align: left;"><span>DIRECCIÓN: </span>  {{ $patient->address }} </td>
             <td style="text-align: right !important;">{{ $basic_information->phones_front }}</td>
         </tr>
         <tr>
